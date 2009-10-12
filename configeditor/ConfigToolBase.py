@@ -76,6 +76,6 @@ class ConfigToolBase(object) :
         return dumpPython
 
     def __copy__(self):
-        c=copy.copy(self)
+        c=type(self)()
         c.setParameters(self.getParameters().copy())    
         return c
