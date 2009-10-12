@@ -21,7 +21,7 @@ class AdaptPFMuons(ConfigToolBase):
     def dumpPython(self):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.pfTools import *\n\nadaptPFMuons(process, "
-        dumpPython += str(self.getvalue('module'))+'\n'
+        dumpPython += str(self.getvalue('module'))+')\n'
         return dumpPython
  
     
@@ -74,7 +74,7 @@ class AdaptPFElectrons(ConfigToolBase):
     def dumpPython(self):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.pfTools import *\n\nadaptPFElectrons(process, "
-        dumpPython += str(self.getvalue('module'))+'\n'
+        dumpPython += str(self.getvalue('module'))+')\n'
         return dumpPython
  
     def __call__(self,process,module):
@@ -152,7 +152,7 @@ class AdaptPFTaus(ConfigToolBase):
     def dumpPython(self):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.pfTools import *\n\nadaptPFTaus(process, "
-        dumpPython += str(self.getvalue('tauType'))+'\n'
+        dumpPython += "'"+str(self.getvalue('tauType'))+"'"+')\n'
         return dumpPython
     
     def __call__(self,process,tauType = 'fixedConePFTau' ):
@@ -200,7 +200,8 @@ class AddPFCandidates(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.pfTools import *\n\nadaptPFCandidates(process, "
         dumpPython += str(self.getvalue('src'))+ ", "
-        dumpPython += str(self.getvalue('patLabel'))+'\n'
+        dumpPython += "'"+str(self.getvalue('patLabel'))+"'"+ ", "
+        dumpPython += "'"+str(self.getvalue('cut'))+"'"+')\n'
         return dumpPython
     def __call__(self,process,src,patLabel='PFParticles',cut=""):
 
@@ -249,7 +250,7 @@ class SwitchToPFMET(ConfigToolBase):
     def dumpPython(self):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.pfTools import *\n\nswitchToPFMET(process, "
-        dumpPython += str(self.getvalue('input'))+'\n'
+        dumpPython += str(self.getvalue('input'))+')\n'
         return dumpPython
     
     def __call__(self,process,input=cms.InputTag('pfMET')):
@@ -280,7 +281,7 @@ class SwitchToPFJets(ConfigToolBase):
     def dumpPython(self):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.pfTools import *\n\nswitchToPFJets(process, "
-        dumpPython += str(self.getvalue('input'))+'\n'
+        dumpPython += str(self.getvalue('input'))+')\n'
         return dumpPython
 
     def __call__(self,process,input=cms.InputTag('pfNoTau')):
@@ -313,7 +314,7 @@ class  UsePF2PAT(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.pfTools import *\n\nusePF2PAT(process, "
         dumpPython += str(self.getvalue('process'))+ ", "
-        dumpPython += str(self.getvalue('runPF2PAT'))+'\n'
+        dumpPython += str(self.getvalue('runPF2PAT'))+')\n'
         return dumpPython
     
     def __call__(self,process,runPF2PAT=True):

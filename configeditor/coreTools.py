@@ -23,7 +23,7 @@ class RestrictInputToAOD(ConfigToolBase):
     def dumpPython(self):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.coreTools import *\n\nrestrictInputToAOD(process, "
-        dumpPython += str(self.getvalue('names'))+'\n'
+        dumpPython += str(self.getvalue('names'))+')\n'
         return dumpPython
 
     
@@ -112,7 +112,7 @@ class RemoveMCMatching(ConfigToolBase):
     def dumpPython(self):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.coreTools import *\n\nremoveMCMatching(process, "
-        dumpPython += str(self.getvalue('name'))+'\n'
+        dumpPython += "'"+str(self.getvalue('name'))+"'"+')\n'
         return dumpPython
 
     def __call__(self,process,
@@ -205,7 +205,7 @@ class RemoveAllPATObjectsBut(ConfigToolBase):
     
     def dumpPython(self):
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.coreTools import *\n\nRemoveAllPATObjectsBut(process, "
-        dumpPython += str(self.getvalue('names'))+'\n'
+        dumpPython += str(self.getvalue('names'))+')\n'
         return dumpPython 
    
     def __call__(self,process,
@@ -243,7 +243,7 @@ class RemoveSpecificPATObjects(ConfigToolBase):
     
     def dumpPython(self):
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.coreTools import *\n\nremoveSpecificPATObjects(process, "
-        dumpPython += str(self.getvalue('names'))+'\n'
+        dumpPython += str(self.getvalue('names'))+')\n'
         return dumpPython 
     
     def __call__(self,process,

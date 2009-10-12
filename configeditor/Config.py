@@ -97,7 +97,6 @@ class Process(object):
     def __init__(self,name):
         self.__dict__['_Process__history'] = []
         self.__dict__['_Process__enableRecording'] = 0
-        self.__dict__['_Process__modifiedmodules'] = []
         self.__dict__['_Process__name'] = name
         self.__dict__['_Process__filters'] = {}
         self.__dict__['_Process__producers'] = {}
@@ -121,26 +120,6 @@ class Process(object):
         self.__dict__['_Process__partialschedules'] = {}
         self.__isStrict = False
         
-    def addAction(self,tool):
-        if self.__dict__['_Process__enableRecording'] == 0:
-            self.__dict__['_Process__history'].append(tool)
-
-    def deleteAction(self,i):
-        del self.__dict__['_Process__history'][i]
-
-    def disableRecording(self):
-        if self.__dict__['_Process__enableRecording'] == 0:
-            modification = self.dumpModified()
-            self.__dict__['_Process__modifiedmodules'].append(modification[0])
-            if modification[1]!="":
-                self.__dict__['_Process__history'].append(modification[1])
-        self.__dict__['_Process__enableRecording'] += 1
-
-    def enableRecording(self):
-        self.__dict__['_Process__enableRecording'] -= 1
-        if self.__dict__['_Process__enableRecording'] == 0:
-            self.resetModified()
-
     def history(self):
         return self.__dict__['_Process__history']
 
@@ -161,13 +140,33 @@ class Process(object):
                 dumpHistory+=item
         return dumpHistory 
 
+    def addAction(self,tool):
+        if self.__dict__['_Process__enableRecording'] == 0:
+            self.__dict__['_Process__history'].append(tool)
+
+    def deleteAction(self,i):
+        del self.__dict__['_Process__history'][i]
+
+    def disableRecording(self):
+        if self.__dict__['_Process__enableRecording'] == 0:
+            modification = self.dumpModified()[1]
+            if modification!="":
+                self.__dict__['_Process__history'].append(modification)
+            self.resetModified()
+        self.__dict__['_Process__enableRecording'] += 1
+
+    def enableRecording(self):
+        self.__dict__['_Process__enableRecording'] -= 1
+        if self.__dict__['_Process__enableRecording'] == 0:
+            self.resetModified()
+
     def recurseResetModified_(self, o):
         properties = []
+        if hasattr(o, "resetModified"):
+            o.resetModified()
         if hasattr(o, "parameterNames_"):
             for key in o.parameterNames_():
                 value = getattr(o, key)
-                if hasattr(value, "resetModified"):
-                    value.resetModified()
                 self.recurseResetModified_(value)
 
     def recurseDumpModified_(self, name, o):
@@ -175,24 +174,23 @@ class Process(object):
         if hasattr(o, "parameterNames_"):
             for key in o.parameterNames_():
                 value = getattr(o, key)
-                if not isinstance(value, PSet):
-                    if hasattr(value, "isModified") and value.isModified():
-                        if isinstance(value, InputTag):
-                            pythonValue = "\"" + str(value.value()) + "\""
-                        elif hasattr(value, "pythonValue"):
-                            pythonValue = value.pythonValue()
-                        elif hasattr(value, "value"):
-                            pythonValue = value.value()
-                        else:
-                            pythonValue = value
-                        dump = "process." + name + "." + key + " = " + str(pythonValue)
-                        if dumpPython != "" and dump != "":
-                            dumpPython += "\n"
-                        dumpPython += dump
                 dump = self.recurseDumpModified_(name + "." + key, value)
                 if dumpPython != "" and dump != "":
                     dumpPython += "\n"
                 dumpPython += dump
+        elif hasattr(o, "isModified") and o.isModified():
+            if isinstance(o, InputTag):
+                pythonValue="\"" + str(o.value()) + "\""
+            elif hasattr(o, "pythonValue"):
+                pythonValue=o.pythonValue()
+            elif hasattr(o, "value"):
+                pythonValue=o.value()
+            else:
+                pythonValue=o
+            dump = "process." + name + " = " + str(pythonValue)
+            if dumpPython != "" and dump != "":
+                dumpPython += "\n"
+            dumpPython += dump
         return dumpPython
 
     def resetModified(self):
@@ -208,7 +206,8 @@ class Process(object):
                 if dumpModified != "":
                     dumpModified += "\n"
                 dumpModified += dumpPython
-                modifiedObjects += [o]
+                if not o in modifiedObjects:
+                    modifiedObjects += [o]
         return (modifiedObjects, dumpModified)
 
     def moduleItems_(self):
@@ -238,13 +237,7 @@ class Process(object):
         if self.schedule:
             items += [("schedule", self.schedule)]
         return tuple(items)
-
-    def resetModifiedModules(self):
-        self.__dict__['_Process__modifiedmodules'] = []
-
-    def modifiedModules(self):
-        return self.__dict__['_Process__modifiedmodules']
-
+    
 
     def setStrict(self, value):
         self.__isStrict = value
@@ -471,7 +464,6 @@ class Process(object):
                 d[name] = mod
             if isinstance(mod,_Labelable):
                mod.setLabel(name)
-            self.__dict__['_Process__modifiedmodules'].append((mod,name))
     def _placeOutputModule(self,name,mod):
         self._place(name, mod, self.__outputmodules)
     def _placeProducer(self,name,mod):
@@ -515,17 +507,14 @@ class Process(object):
             del self.__dict__[self.__dict__['_Process__source'].type_()]
         self.__dict__['_Process__source'] = mod
         self.__dict__[mod.type_()] = mod
-        self.__dict__['_Process__modifiedmodules'].append(mod)
     def _placeLooper(self,name,mod):
         if name != 'looper':
             raise ValueError("The label '"+name+"' can not be used for a Looper.  Only 'looper' is allowed.")
         self.__dict__['_Process__looper'] = mod
         self.__dict__[mod.type_()] = mod
-        self.__dict__['_Process__modifiedmodules'].append(mod)
     def _placeService(self,typeName,mod):
         self._place(typeName, mod, self.__services)
         self.__dict__[typeName]=mod
-        self.__dict__['_Process__modifiedmodules'].append(mod)
     def load(self, moduleName):
         module = __import__(moduleName)
         self.extend(sys.modules[moduleName])

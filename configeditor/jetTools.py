@@ -107,7 +107,7 @@ class RunBTagging(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\nrunBTagging(process, "
         dumpPython += str(self.getvalue('jetCollection'))+ ", "
-        dumpPython += str(self.getvalue('label'))+'\n'
+        dumpPython += "'"+str(self.getvalue('label'))+"'"+')\n'
         return dumpPython
     
     def __call__(self,process,
@@ -251,7 +251,7 @@ class SwitchJetCollection(ConfigToolBase):
         dumpPython += str(self.getvalue('doBTagging'))+', '
         dumpPython += str(self.getvalue('jetCorrLabel'))+', '
         dumpPython += str(self.getvalue('doType1MET'))+', '
-        dumpPython += str(self.getvalue('genJetCollection'))+'\n'
+        dumpPython += str(self.getvalue('genJetCollection'))+')\n'
         return dumpPython
 
     def __call__(self,process,
@@ -423,13 +423,13 @@ class AddJetCollection(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\naddJetCollection(process, "
         dumpPython += str(self.getvalue('jetCollection'))+ ", "
-        dumpPython += str(self.getvalue('postfixLabel'))+', '
+        dumpPython += "'"+str(self.getvalue('postfixLabel'))+"'"+', '
         dumpPython += str(self.getvalue('doJTA'))+', '
         dumpPython += str(self.getvalue('doBTagging'))+', '
         dumpPython += str(self.getvalue('jetCorrLabel'))+', '
         dumpPython += str(self.getvalue('doType1MET'))+', '
         dumpPython += str(self.getvalue('doL1Counters'))+', '
-        dumpPython += str(self.getvalue('genJetCollection'))+'\n'
+        dumpPython += str(self.getvalue('genJetCollection'))+')\n'
         return dumpPython
 
     def __call__(self,process,

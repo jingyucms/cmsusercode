@@ -17,7 +17,7 @@ class RedoPFTauDiscriminators(ConfigToolBase):
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\nredoPFTauDiscriminators(process, "
         dumpPython += str(self.getvalue('oldPFTauLabel'))+ ", "
         dumpPython += str(self.getvalue('newPFTauLabel'))+", "
-        dumpPython += str(self.getvalue('tauType'))+'\n'
+        dumpPython += "'"+str(self.getvalue('tauType'))+"'"+')\n'
         return dumpPython
     
     def __call__(self,process,
@@ -67,7 +67,7 @@ class SwitchToCaloTau(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\nswitchToCaloTau(process, "
         dumpPython += str(self.getvalue('pfTauLabel'))+ ", "
-        dumpPython += str(self.getvalue('caloTauLabel'))+'\n'
+        dumpPython += str(self.getvalue('caloTauLabel'))+')\n'
         return dumpPython
     
     def __call__(self,process,
@@ -151,7 +151,7 @@ class SwitchToPFTauFixedCone(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\nswitchToPFTauFixedCone(process, "
         dumpPython += str(self.getvalue('pfTauLabelOld'))+ ", "
-        dumpPython += str(self.getvalue('pfTauLabelNew'))+'\n'
+        dumpPython += str(self.getvalue('pfTauLabelNew'))+')\n'
         return dumpPython
     
     def __call__(self,process,
@@ -190,7 +190,7 @@ class SwitchToPFTauFixedConeHighEff(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\nswitchToPFTauFixedConeHighEff(process, "
         dumpPython += str(self.getvalue('pfTauLabelOld'))+ ", "
-        dumpPython += str(self.getvalue('pfTauLabelNew'))+'\n'
+        dumpPython += str(self.getvalue('pfTauLabelNew'))+')\n'
         return dumpPython
  
     def __call__(self,process,
@@ -227,7 +227,7 @@ class SwitchToPFTauShrinkingCone(ConfigToolBase):
         
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\nswitchToPFTauShrinkingCone(process, "
         dumpPython += str(self.getvalue('pfTauLabelOld'))+ ", "
-        dumpPython += str(self.getvalue('pfTauLabelNew'))+'\n'
+        dumpPython += str(self.getvalue('pfTauLabelNew'))+')\n'
         return dumpPython
  
     # switch to PFTau collection produced for shrinking signal cone of size dR = 5.0/Et(PFTau)
@@ -281,7 +281,7 @@ class SwitchToAnyPFTau(ConfigToolBase):
         dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.jetTools import *\n\nswitchToAnyPFTau(process, "
         dumpPython += str(self.getvalue('pfTauLabelOld'))+ ", "
         dumpPython += str(self.getvalue('pfTauLabelNew'))+ ", "
-        dumpPython += str(self.getvalue('pfTauType'))+'\n'
+        dumpPython += "'"+str(self.getvalue('pfTauType'))+"'"+')\n'
         return dumpPython
  
     def __call__(self,process,

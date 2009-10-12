@@ -12,7 +12,7 @@ class SwitchOnTrigger(ConfigToolBase):
     _label='SwitchOnTrigger'
     def dumpPython(self):
         
-        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTrigger(proces) \n "
+        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTrigger(process) \n "
         return dumpPython
     
     
@@ -46,7 +46,7 @@ class SwitchOnTriggerStandAlone(ConfigToolBase):
     _label='SwitchOnTriggerStandAlone'
     def dumpPython(self):
         
-        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTriggerStandAlone(proces) \n "
+        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTriggerStandAlone(process) \n "
         return dumpPython
 
     def __call__(self, process ):
@@ -74,7 +74,7 @@ class SwitchOnTriggerAll(ConfigToolBase):
     _label='SwitchOnTriggerAll'
     def dumpPython(self):
         
-        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTriggerAll(proces) \n "
+        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTriggerAll(process) \n "
         return dumpPython
 
     def __call__( process ):
@@ -96,7 +96,7 @@ class SwitchOnTriggerMatchEmbedding(ConfigToolBase):
     _label='SwitchOnTriggerMatchEmbedding'
     def dumpPython(self):
         
-        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTriggerMatchEmbedding(proces) \n "
+        dumpPython = "\nfrom PhysicsTools.PatAlgos.tools.trigTools import *\n\nswitchOnTriggerMatchEmbedding(process) \n "
         return dumpPython
     
     def __call__(self,process ):
