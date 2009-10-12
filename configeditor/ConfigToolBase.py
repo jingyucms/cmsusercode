@@ -1,3 +1,4 @@
+import copy
 import FWCore.ParameterSet.Config as cms  
 class parameter:
     pass
@@ -73,3 +74,8 @@ class ConfigToolBase(object) :
         """
         dumpPython='#'+comment+'\n'
         return dumpPython
+
+    def __copy__(self):
+        c=copy.copy(self)
+        c.setParameters(self.getParameters().copy())    
+        return c

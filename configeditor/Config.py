@@ -134,10 +134,10 @@ class Process(object):
                 if dumpHistory != "":
                     dumpHistory += "\n"
                 dumpHistory+=dumpPython()
-            elif isinstance(item,str):
+            else:
                 if dumpHistory != "":
                     dumpHistory += "\n"
-                dumpHistory+=item
+                dumpHistory+=str(item)
         return dumpHistory 
 
     def addAction(self,tool):
