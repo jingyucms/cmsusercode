@@ -88,7 +88,7 @@ def plotKinematics():
     canvas.Divide(2,2)
     canvas.cd(1)
     canvas.GetPad(1).SetLogy()
-    plotVariable('mass','mjj', 'm_{12}','N / fb',50,0,3000,0.1,240)
+    plotVariable('mass','mjj', 'm_{jj}','N / fb',50,0,3000,0.1,240)
     canvas.cd(2)
     plotVariable('seta','jet.obj[0].eta()+jet.obj[1].eta()', '#eta_{1}+#eta_{2}','normalized',20,-5,5)
     canvas.cd(3)
