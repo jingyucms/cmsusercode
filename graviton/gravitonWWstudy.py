@@ -4,12 +4,12 @@ from CMGTools.RootTools.RootTools import *
 
 hists=[]
 
-colors=[1,2,3,4,6,7,8,9]
+colors=[1,2,3,4,6,7,8,9,10,11,12,13,14]
 
 def plotVariable(name,formula,labelx,labely,xbins,xmin,xmax,ymin=0,fitxmin=-1):
     print 'plotVariable:', name
     global hists
-    legend=TLegend(0.6,0.6,0.9,0.9,"")
+    legend=TLegend(0.5,0.6,0.9,0.9,"")
     firsthist=None
     ymax=0
     for i in range(len(samples)):
@@ -25,7 +25,43 @@ def plotVariable(name,formula,labelx,labely,xbins,xmin,xmax,ymin=0,fitxmin=-1):
 	    hist.Scale(1./hist.Integral())
 	hist.SetLineColor(colors[i])
         hist.Draw(options)
-	if fitxmin>0 and not 'G*' in samples[i][2]:
+	if fitxmin>0 and labelx=='jet mass' and not 'G*' in samples[i][2]:
+	    fit=TF1('fit '+str(i),'exp([0]+[1]*x)',fitxmin,xmax)
+	    fit.SetLineWidth(1)
+	    fit.SetLineColor(colors[i])
+	    hist.Fit(fit,"RQ0")
+	    fit.Draw('lsame')
+	elif fitxmin>0 and labelx=='jet mass' and 'G*' in samples[i][2] and not (name=="mass2" and i==0):
+	    fit=TF1('fit '+str(i),'[0]+[1]*x+[2]*exp(-0.5*((x-[3])/[4])**2)',65,95)
+	    fit.SetParameter(0,0)
+	    fit.SetParameter(1,0)
+	    fit.SetParameter(2,1)
+	    fit.SetParameter(3,80)
+	    fit.SetParameter(4,5)
+	    fit.SetLineWidth(1)
+	    fit.SetLineColor(colors[i])
+	    hist.Fit(fit,"R0")
+	    fit.Draw('lsame')
+	elif fitxmin>0 and labelx=='m_{12}' and 'G*' in samples[i][2] and i<2:
+            if '0.5 TeV' in samples[i][2]:
+	        m=350
+	        mmin=200
+	        mmax=500
+            if '1 TeV' in samples[i][2]:
+	        m=1000
+	        mmin=900
+	        mmax=1100
+	    fit=TF1('fit '+str(i),'[0]+[1]*x+[2]*exp(-0.5*((x-[3])/[4])**2)',mmin,mmax)
+	    fit.SetParameter(0,0)
+	    fit.SetParameter(1,0)
+	    fit.SetParameter(2,1)
+	    fit.SetParameter(3,m)
+	    fit.SetParameter(4,(mmax-mmin)/2)
+	    fit.SetLineWidth(1)
+	    fit.SetLineColor(colors[i])
+	    hist.Fit(fit,"R0")
+	    fit.Draw('lsame')
+	elif fitxmin>0 and not 'G*' in samples[i][2]:
 	    fit=TF1('fit '+str(i),'[0]*pow(x,[1])',fitxmin,xmax)
 	    fit.SetLineWidth(1)
 	    fit.SetLineColor(colors[i])
@@ -36,7 +72,7 @@ def plotVariable(name,formula,labelx,labely,xbins,xmin,xmax,ymin=0,fitxmin=-1):
             firsthist=hist
 	ymax=max(ymax,hist.GetMaximum())
 	if ymin>0:
-            firsthist.GetYaxis().SetRangeUser(ymin,ymax*2.0)
+            firsthist.GetYaxis().SetRangeUser(ymin,ymax*3.0)
 	else:
             firsthist.GetYaxis().SetRangeUser(ymin,ymax*1.1)
         legend.AddEntry(hist,samples[i][2],"l")
@@ -47,24 +83,6 @@ def plotVariable(name,formula,labelx,labely,xbins,xmin,xmax,ymin=0,fitxmin=-1):
     
 def plotKinematics(): 
     print 'plotKinematics'
-
-    canvas = TCanvas("","",0,0,400,400)
-    canvas.Divide(2,2)
-    canvas.cd(1)
-    canvas.GetPad(1).SetLogy()
-    plotVariable('mass1','jet.obj[0].mass()', 'mass','N / fb',100,0,300,0.1,18)
-    canvas.cd(2)
-    canvas.GetPad(2).SetLogy()
-    plotVariable('mass2','jet.obj[1].mass()', 'mass','N / fb',100,0,300,0.1,13)
-    canvas.cd(3)
-    canvas.GetPad(3).SetLogy()
-    plotVariable('mass3','jet.obj[2].mass()', 'mass','N / fb',100,0,300,0.1)
-    canvas.cd(4)
-    canvas.GetPad(4).SetLogy()
-    plotVariable('mass4','jet.obj[3].mass()', 'mass','N / fb',100,0,300,0.1)
-    canvas.SaveAs(prefix + '_mass.pdf')
-    canvas.SaveAs(prefix + '_mass.eps')
-    os.system("ghostview "+prefix + '_mass.eps')
 
     canvas = TCanvas("","",0,0,400,400)
     canvas.Divide(2,2)
@@ -85,16 +103,34 @@ def plotKinematics():
     canvas.Divide(2,2)
     canvas.cd(1)
     canvas.GetPad(1).SetLogy()
-    plotVariable('pT1','jet.obj[0].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.1,110)
+    plotVariable('mass1','jet.obj[0].mass()', 'jet mass','N / fb',60,0,200,0.01,14)
     canvas.cd(2)
     canvas.GetPad(2).SetLogy()
-    plotVariable('pT2','jet.obj[1].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.1,90)
+    plotVariable('mass2','jet.obj[1].mass()', 'jet mass','N / fb',60,0,200,0.01,12)
     canvas.cd(3)
     canvas.GetPad(3).SetLogy()
-    plotVariable('pT3','jet.obj[2].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.1)
+    plotVariable('mass3','jet.obj[2].mass()', 'jet mass','N / fb',60,0,200,0.01)
     canvas.cd(4)
     canvas.GetPad(4).SetLogy()
-    plotVariable('pT4','jet.obj[3].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.1)
+    plotVariable('mass4','jet.obj[3].mass()', 'jet mass','N / fb',60,0,200,0.01)
+    canvas.SaveAs(prefix + '_mass.pdf')
+    canvas.SaveAs(prefix + '_mass.eps')
+    os.system("ghostview "+prefix + '_mass.eps')
+
+    canvas = TCanvas("","",0,0,400,400)
+    canvas.Divide(2,2)
+    canvas.cd(1)
+    canvas.GetPad(1).SetLogy()
+    plotVariable('pT1','jet.obj[0].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.001,110)
+    canvas.cd(2)
+    canvas.GetPad(2).SetLogy()
+    plotVariable('pT2','jet.obj[1].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.001,90)
+    canvas.cd(3)
+    canvas.GetPad(3).SetLogy()
+    plotVariable('pT3','jet.obj[2].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.001)
+    canvas.cd(4)
+    canvas.GetPad(4).SetLogy()
+    plotVariable('pT4','jet.obj[3].pt()', 'p_{T} (GeV)','N / fb',100,0,1500,0.001)
     canvas.SaveAs(prefix + '_pT.pdf')
     canvas.SaveAs(prefix + '_pT.eps')
     os.system("ghostview "+prefix + '_pT.eps')
@@ -143,8 +179,12 @@ cuts += '*(jet.obj[0].pt()>100)'
 #cuts += '*(jet.obj[0].mass()<200)'
 #cuts += '*(jet.obj[1].mass()>50)'
 
-samples=[("pythia6_gravitonWW_500_tree_CMG.root",1.313e-08*1e9,'G* 0.5 TeV'),
-         ("pythia6_gravitonWW_1000_tree_CMG.root",2.558e-10*1e9,'G* 1 TeV'),
+samples=[("pythia6_gravitonWW_500_tree_CMG.root",1.313e-08*1e9,'G*->WW 0.5 TeV'),
+         #("pythia6_gravitonZZ_500_tree_CMG.root",1.313e-08*1e9,'G*->ZZ 0.5 TeV'),
+         ("pythia6_gravitonWW_1000_tree_CMG.root",2.558e-10*1e9,'G*->WW 1 TeV'),
+         #("pythia6_gravitonZZ_1000_tree_CMG.root",2.558e-10*1e9,'G*->ZZ 1 TeV'),
+         #("pythia6_gravitonWW_2000_tree_CMG.root",1.827e-12*1e9,'G*->WW 2 TeV'),
+         #("pythia6_gravitonZZ_2000_tree_CMG.root",1.827e-12*1e9,'G*->ZZ 2 TeV'),
          ("pythia6_WW_tree_CMG.root",2.780e-08*1e9,'WW'),
          ("pythia6_W_tree_CMG.root",7.314e-05*1e9,'W'),
          ("pythia6_QCD_tree_CMG.root",3.326e-04*1e9,'QCD'),
