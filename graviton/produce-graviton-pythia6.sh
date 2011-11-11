@@ -1,29 +1,29 @@
 #!/bin/sh
 
 startn=0
-endn=0
+endn=2
 n=${startn}
 while [ $n -le $endn ]
 do
 
 if [ $n -eq 0 ]
 then
-scale=1000
+scale=500
 fi
 
 if [ $n -eq 1 ]
 then
-scale=2000
+scale=1000
 fi
 
 if [ $n -eq 2 ]
 then
-scale=3000
+scale=2000
 fi
 
 if [ $n -eq 3 ]
 then
-scale=500
+scale=3000
 fi
 
 startm=0
@@ -148,21 +148,21 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
 	filterEfficiency = cms.untracked.double(1),
 	comEnergy = cms.double(7000.0),
 	crossSection = cms.untracked.double(1e10),
-	
+
 	PythiaParameters = cms.PSet(
 	        pythiaUESettingsBlock,
 		processParameters = cms.vstring(
-		        'PMAS(347,1)=${scale}',
-		        'PARP(50)=0.54',
-		        'MSEL=0',
-		        'MSUB(391)=1',
-		        'MSUB(392)=1',
+		        'MSEL = 0',
+		        'MSUB(391) = 1',
+		        'MSUB(392) = 1',
+		        'PMAS(347,1) = ${scale}',
+		        'PARP(50) = 0.54',
 		        '5000039:ALLOFF',
-		        '5000039:ONIFANY 24',
+		        '5000039:ONIFANY ${pdgid}',
 		),
 		parameterSets = cms.vstring(
 		        'pythiaUESettings',
-			'processParameters')
+		        'processParameters')
 	)
 )
 
@@ -227,8 +227,8 @@ EOF
   echo ********Running ${cfg}
   
 #crab -create -submit
-cmsRun ${py}
-cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/graviton/
+#cmsRun ${py}
+#cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/fastsim/
 
   pycmg=${dir}_CMG.py
 
@@ -252,7 +252,7 @@ runOnMC = True
 #JOSE: no need to run these guys for what you are up to
 runAK5LC = False
 runAK7 = False
-runCA8 = False
+runCA8 = True
 
 #COLIN: will need to include the event filters in tagging mode
 
@@ -275,7 +275,7 @@ else:#Data
     jetCorrections=['L1FastJet','L2Relative','L3Absolute','L2L3Residual']
 
 # process.load("CommonTools.ParticleFlow.Sources.source_ZtoMus_DBS_cfi")
-process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
+#process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 10
@@ -331,7 +331,7 @@ process.GlobalTag.globaltag = cms.string(getGlobalTag(runOnMC))
 
 # load the PAT config
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
-process.out.fileName = cms.untracked.string('${dir}_patTuple_PF2PAT.root')
+process.out.fileName = cms.untracked.string('/tmp/hinzmann/${dir}_patTuple_PF2PAT.root')
 
 # Configure PAT to use PF2PAT instead of AOD sources
 # this function will modify the PAT sequences. It is currently 
@@ -460,33 +460,126 @@ if runCA8:
   postfixCA8 = "CA8"
   jetAlgoCA8="CA8"
 
-  #COLIN : argh! CA8PFchs does not seem to exist yet...
-  # Maxime should maybe contact the JEC group if he wants them 
-  usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgoCA8, runOnMC=runOnMC, postfix=postfixCA8,
-          jetCorrections=('CA8PF', jetCorrections))
+  # gen jet reconstruction modules
+  process.load("RecoJets.Configuration.GenJetParticles_cff")
+  process.load("RecoJets.JetProducers.ca4GenJets_cfi")
+  process.ca08GenJets = process.ca4GenJets.clone( rParam = 0.8)
 
-  process.load('genJetTopTagCA8_cff')
-  process.p += process.genTopTagCA8Sequence
+  # pf jet reconstruction module
+  process.load("RecoJets.JetProducers.ca4PFJets_cfi")
+  process.ca08PFJets = process.ca4PFJets.clone( rParam = cms.double(0.8),
+                                              doAreaFastjet = cms.bool(True),
+                                              doRhoFastjet = cms.bool(True),
+                                              Rho_EtaMax = cms.double(6.0),
+                                              Ghost_EtaMax = cms.double(7.0)
+                                              )
 
-  # if doJetPileUpCorrection:
-  #    enablePileUpCorrection( process, postfix=postfixCA8)
+  addJetCollection(process,cms.InputTag('ca08PFJets'),
+                  'CA8','PF',
+                  doJTA = False,
+                  doBTagging = False,
+                  jetCorrLabel = ('AK5PF', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])),
+                  doType1MET = False,
+                  doL1Cleaning = False,
+                  doL1Counters = False,
+                  genJetCollection=cms.InputTag("ca08GenJets"),
+                  doJetID = False,
+                  jetIdLabel = "ca8"
+                  )
+  process.patJetsCA8PF.addDiscriminators = cms.bool(False)
+  process.patJetsCA8PF.embedCaloTowers = cms.bool(False)
+  process.patJetsCA8PF.embedGenJetMatch = cms.bool(False)
+  process.patJetsCA8PF.embedGenPartonMatch = cms.bool(False)
+  process.patJetsCA8PF.addGenPartonMatch = cms.bool(False)
+  process.patJetsCA8PF.getJetMCFlavour = cms.bool(False)
+  process.patJetsCA8PF.embedPFCandidates = cms.bool(False)
+  process.patJetCorrFactorsCA8PF.rho = cms.InputTag("kt6PFJets","rho")
 
-  # no need for taus in CA8 sequence. could remove the whole tau sequence to gain time?
-  # if hpsTaus:
-  #    adaptPFTaus(process,"hpsPFTau",postfix=postfixCA8)
+  process.recoMyCAJets = cms.Sequence(process.genJetParticles*process.ca08GenJets*process.ca08PFJets*process.patJetGenJetMatchCA8PF*process.patJetCorrFactorsCA8PF*process.patJetsCA8PF*process.selectedPatJetsCA8PF)
 
-  # no top projection: 
-  getattr(process,"pfNoMuon"+postfixCA8).enable = False 
-  getattr(process,"pfNoElectron"+postfixCA8).enable = False 
-  getattr(process,"pfNoTau"+postfixCA8).enable = False 
-  getattr(process,"pfNoJet"+postfixCA8).enable = True
+  ######
+  # Jet pruning
+  #####
 
-  removePhotonMatching( process, postfixCA8 )
+  from RecoJets.JetProducers.GenJetParameters_cfi import *
+  from RecoJets.JetProducers.PFJetParameters_cfi import *
+  from RecoJets.JetProducers.PFJetParameters_cfi import *
+  from RecoJets.JetProducers.CaloJetParameters_cfi import *
+  from RecoJets.JetProducers.AnomalousCellParameters_cfi import *
+  from RecoJets.JetProducers.SubJetParameters_cfi import SubJetParameters
 
-  # addPATElectronID( process, postfixCA8 , runOnMC )
+  #prune CA08 jets
+  process.ca08PrunedPFJets = cms.EDProducer(
+                              "SubJetProducer",
+                              PFJetParameters.clone(
+                                  #src = cms.InputTag(''), #default input, as for the fat CA jet
+                                  doAreaFastjet = cms.bool(True),
+                                  doRhoFastjet = cms.bool(False)
+                                  ),
+                              AnomalousCellParameters,
+                              SubJetParameters,
+                              jetAlgorithm = cms.string("CambridgeAachen"),
+                              rParam = cms.double(0.8),
+                              jetCollInstanceName=cms.string("subjets")
+                              )
+  process.ca08PrunedPFJets.nSubjets = cms.int32(2)
 
-  # addMETSig(process,postfixCA8)
+  process.ca08PrunedGenJets =  cms.EDProducer(
+                             "SubJetProducer",
+                             GenJetParameters.clone(
+                                 #src = cms.InputTag("genParticlesForJetsNoNu"), #default input
+                                 doAreaFastjet = cms.bool(False),
+                                 doRhoFastjet = cms.bool(False)
+                                 ),
+                             AnomalousCellParameters,
+                             SubJetParameters,
+                             jetAlgorithm = cms.string("CambridgeAachen"),
+                             rParam = cms.double(0.8),
+                             jetCollInstanceName=cms.string("subjets")
+                             )
 
+  process.genjetFilter = cms.EDFilter("CandViewCountFilter",
+                                  src = cms.InputTag("ca08PrunedGenJets"),
+                                  minNumber = cms.uint32(1)
+                                  )
+
+  #add pruned CA08 jets
+  addJetCollection(process, 
+                 cms.InputTag('ca08PrunedPFJets'),         
+                 'CA8Pruned', 'PF',
+                 doJTA=False,            # Run Jet-Track association & JetCharge
+                 doBTagging=False,       # Run b-tagging
+                 jetCorrLabel= ('AK5PF', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])),
+                 doType1MET=False,
+                 doL1Cleaning=False,
+                 doL1Counters=False,
+          #       genJetCollection = cms.InputTag("ca8GenJetsNoNu"), #why not the corresponding gen level ?
+                 genJetCollection = cms.InputTag("ca08PrunedGenJets:subjets"),
+                 #    genJetCollection = cms.InputTag("ca08GenJets"),
+                 doJetID = False
+                 )
+  process.patJetsCA8PrunedPF.addDiscriminators = cms.bool(False)
+  process.patJetsCA8PrunedPF.embedCaloTowers = cms.bool(False)
+  process.patJetsCA8PrunedPF.embedGenJetMatch = cms.bool(False)
+  process.patJetsCA8PrunedPF.embedGenPartonMatch = cms.bool(False)
+  process.patJetsCA8PrunedPF.addGenPartonMatch = cms.bool(False)
+  process.patJetsCA8PrunedPF.getJetMCFlavour = cms.bool(False)
+  process.patJetsCA8PrunedPF.embedPFCandidates = cms.bool(False)
+  process.patJetCorrFactorsCA8PrunedPF.rho = cms.InputTag("kt6PFJets","rho")
+
+  process.ca08PFconstituents = cms.EDProducer("JetSlimmer",
+                                     JetInputCollection=cms.untracked.InputTag("customPFJetsCA08"),
+                                     isPFJet=cms.untracked.bool(True),
+                                     debug=cms.untracked.bool(False)
+                                     )
+
+
+  process.recoMyPrunedCAJets = cms.Sequence(process.ca08PrunedGenJets*process.ca08PrunedPFJets*process.patJetGenJetMatchCA8PrunedPF*process.patJetCorrFactorsCA8PrunedPF*process.patJetsCA8PrunedPF*process.selectedPatJetsCA8PrunedPF)
+
+  setattr(process,"patPATSequence"+postfixCA8, cms.Sequence( process.recoMyCAJets + process.recoMyPrunedCAJets ))
+
+  ### END JET PRUNING SECTION
+  ###############
 
 # ---------------- Common stuff ---------------
 
@@ -519,6 +612,9 @@ if runAK5LC:
 if runAK7:
     process.p += getattr(process,"patPF2PATSequence"+postfixAK7) 
 
+if runCA8:
+    process.p += getattr(process,"patPATSequence"+postfixCA8) 
+
 # event cleaning (in tagging mode, no event rejected)
 
 process.load('CMGTools.Common.eventCleaning.eventCleaning_cff')
@@ -537,22 +633,37 @@ if runCMG:
 
     from CMGTools.Common.Tools.visitorUtils import replacePostfix
     
-    cloneProcessingSnippet(process, getattr(process, 'analysisSequence'), 'AK5LCCMG')
-    replacePostfix(getattr(process,"analysisSequenceAK5LCCMG"),'AK5','AK5LC') 
-    
-    cloneProcessingSnippet(process, getattr(process, 'analysisSequence'), 'AK7CMG')
-    replacePostfix(getattr(process,"analysisSequenceAK7CMG"),'AK5','AK7') 
-    
+    if runAK5LC:
+        cloneProcessingSnippet(process, getattr(process, 'analysisSequence'), 'AK5LCCMG')
+        replacePostfix(getattr(process,"analysisSequenceAK5LCCMG"),'AK5','AK5LC') 
+        process.p += process.analysisSequenceAK5LCCMG
+        
+    if runAK7:
+        cloneProcessingSnippet(process, getattr(process, 'analysisSequence'), 'AK7CMG')
+        replacePostfix(getattr(process,"analysisSequenceAK7CMG"),'AK5','AK7') 
+        process.p += process.analysisSequenceAK7CMG
+
+    if runCA8:
+        cloneProcessingSnippet(process, getattr(process, 'jetSequence'), 'CA8CMG')
+        replacePostfix(getattr(process,"jetSequenceCA8CMG"),'AK5','CA8PF') 
+        process.analysisSequence += process.jetSequenceCA8CMG
+        cloneProcessingSnippet(process, getattr(process, 'jetSequence'), 'CA8PrunedCMG')
+        replacePostfix(getattr(process,"jetSequenceCA8PrunedCMG"),'AK5','CA8PrunedPF') 
+	process.cmgPFJetCA8PrunedCMG.cfg.addConstituents=False
+	process.cmgPFJetCA8PrunedCMG.cfg.baseJetFactory.addSubjets=True
+	process.cmgPFBaseJetCA8PrunedCMG.cfg.addSubjets=True
+        process.analysisSequence += process.jetSequenceCA8PrunedCMG
+        #cloneProcessingSnippet(process, getattr(process, 'jetCutSummarySequence'), 'CA8CMG')
+        #replacePostfix(getattr(process,"jetCutSummarySequenceCA8CMG"),'AK5','CA8') 
+        #process.analysisSequence += process.jetCutSummarySequenceCA8CMG
+        #cloneProcessingSnippet(process, getattr(process, 'jetHistogramSequence'), 'CA8CMG')
+        #replacePostfix(getattr(process,"jetHistogramSequenceCA8CMG"),'AK5','CA8') 
+        #process.analysisSequence += process.jetHistogramSequenceCA8CMG
+
     from CMGTools.Common.Tools.tuneCMGSequences import * 
     tuneCMGSequences(process, postpostfix='CMG')
 
     process.p += process.analysisSequence
-
-    if runAK5LC:
-        process.p += process.analysisSequenceAK5LCCMG
-        
-    if runAK7:
-        process.p += process.analysisSequenceAK7CMG
 
 ### OUTPUT DEFINITION #############################################
 
@@ -581,6 +692,9 @@ process.out.outputCommands.extend( eventCleaning )
 
 from CMGTools.Common.eventContent.runInfoAccounting_cff import runInfoAccounting
 process.out.outputCommands.extend( runInfoAccounting )
+
+if runCA8:
+  process.out.outputCommands.extend(cms.untracked.vstring('keep *_ca08PrunedPFJets_*_*', 'keep *_ca08PrunedGenJets_*_*'))
 
 # CMG ---
 
