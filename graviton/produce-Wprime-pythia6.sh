@@ -26,25 +26,13 @@ then
 scale=3000
 fi
 
-startm=1
-endm=1
+startm=0
+endm=0
 m=${startm}
 while [ $m -le $endm ]
 do
 
-if [ $m -eq 0 ]
-then
-particle=W
-pdgid=24
-fi
-
-if [ $m -eq 1 ]
-then
-particle=Z
-pdgid=23
-fi
-
-  dir=pythia6_graviton${particle}${particle}_${scale}
+  dir=pythia6_Wprime_WZ_${scale}
 
   echo ********file ${dir}
   
@@ -148,21 +136,28 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
 	filterEfficiency = cms.untracked.double(1),
 	comEnergy = cms.double(7000.0),
 	crossSection = cms.untracked.double(1e10),
-
+	
 	PythiaParameters = cms.PSet(
 	        pythiaUESettingsBlock,
-		processParameters = cms.vstring(
-		        'MSEL = 0',
-		        'MSUB(391) = 1',
-		        'MSUB(392) = 1',
-		        'PMAS(347,1) = ${scale}',
-		        'PARP(50) = 0.54',
-		        '5000039:ALLOFF',
-		        '5000039:ONIFANY ${pdgid}',
-		),
+processParameters = cms.vstring(
+        'PMAS(34,1)=${scale} ! mass of Wprime',
+        'MSEL=0 ! (D=1) 0 to select full user control',
+        'MSUB(142)=1 ! qq->Wprime',
+        'MDME(311,1)=0 ! Wprime->dubar',        'MDME(312,1)=0 ! Wprime->dcbar',
+        'MDME(313,1)=0 ! Wprime->dtbar',
+        'MDME(315,1)=0 ! Wprime->subar',        'MDME(316,1)=0 ! Wprime->scbar',
+        'MDME(317,1)=0 ! Wprime->stbar',
+        'MDME(319,1)=0 ! Wprime->bubar',        'MDME(320,1)=0 ! Wprime->bcbar',
+        'MDME(321,1)=0 ! Wprime->btbar',
+        'MDME(327,1)=0 ! Wprime->enu',        'MDME(328,1)=0 ! Wprime->munu',
+        'MDME(329,1)=0 ! Wprime->taunu',
+        'MDME(331,1)=1 ! Wprime->WZ',
+        'MDME(332,1)=0 ! Wprime->Wgamma',
+        'MDME(333,1)=0 ! Wprime->Wh0',
+),
 		parameterSets = cms.vstring(
 		        'pythiaUESettings',
-		        'processParameters')
+			'processParameters')
 	)
 )
 
@@ -227,8 +222,8 @@ EOF
   echo ********Running ${cfg}
   
 #crab -create -submit
-cmsRun ${py}
-cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/graviton/
+#cmsRun ${py}
+#cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/fastsim/
 
   pycmg=${dir}_CMG.py
 
@@ -298,7 +293,7 @@ print sep_line
 
 # process.source.fileNames = cms.untracked.vstring(['/store/relval/CMSSW_4_2_5/RelValTTbar/GEN-SIM-RECO/START42_V12-v1/0113/1C538A2F-799E-E011-8A7E-0026189438BD.root'])
 
-process.source.fileNames = cms.untracked.vstring(['/store/cmst3/user/hinzmann/graviton/${dir}_PFAOD.root'])
+process.source.fileNames = cms.untracked.vstring(['/store/cmst3/user/hinzmann/fastsim/${dir}_PFAOD.root'])
 #process.source.fileNames = cms.untracked.vstring(['file:pythia6_gravitonWW_1000_PFAOD.root'])
 
 # process.load("CMGTools.Common.sources.SingleMu.Run2011A_May10ReReco_v1.AOD.source_cff")
@@ -702,7 +697,7 @@ from CMGTools.Common.eventContent.everything_cff import everything
 
 process.outcmg = cms.OutputModule(
     "PoolOutputModule",
-    fileName = cms.untracked.string('/tmp/hinzmann/${dir}_tree_CMG.root'),
+    fileName = cms.untracked.string('${dir}_tree_CMG.root'),
     SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
     outputCommands = everything,
     dropMetaData = cms.untracked.string('PRIOR')
@@ -725,7 +720,7 @@ process.outpath += process.ria
     
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("/tmp/hinzmann/${dir}_histograms_CMG.root"))
+                                   fileName = cms.string("${dir}_histograms_CMG.root"))
 
 # process.Timing = cms.Service("Timing")
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-startn=0
-endn=2
+startn=1
+endn=1
 n=${startn}
 while [ $n -le $endn ]
 do
@@ -35,16 +35,17 @@ do
 if [ $m -eq 0 ]
 then
 particle=W
-pdgid=24
+out='insert ResConstructor:Outgoing 0 /Herwig/Particles/W+'
 fi
 
 if [ $m -eq 1 ]
 then
 particle=Z
+out='insert ResConstructor:Outgoing 0 /Herwig/Particles/Z0'
 pdgid=23
 fi
 
-  dir=pythia6_graviton${particle}${particle}_${scale}
+  dir=herwigpp_graviton_${particle}${particle}_${scale}_noMPI_noHAD_noSHOWER
 
   echo ********file ${dir}
   
@@ -139,39 +140,50 @@ process.MessageLogger=cms.Service("MessageLogger",
     logs = cms.untracked.PSet(threshold=cms.untracked.string('WARNING'))
 )
 
-from Configuration.Generator.PythiaUEZ2Settings_cfi import *
+from Configuration.Generator.HerwigppDefaults_cfi import *
 
-process.generator = cms.EDFilter("Pythia6GeneratorFilter",
-	pythiaHepMCVerbosity = cms.untracked.bool(False),
-	maxEventsToPrint = cms.untracked.int32(0),
-	pythiaPylistVerbosity = cms.untracked.int32(0),
+process.generator = cms.EDFilter("ThePEGGeneratorFilter",
+	herwigDefaultsBlock,
 	filterEfficiency = cms.untracked.double(1),
-	comEnergy = cms.double(7000.0),
 	crossSection = cms.untracked.double(1e10),
 
-	PythiaParameters = cms.PSet(
-	        pythiaUESettingsBlock,
-		processParameters = cms.vstring(
-		        'MSEL = 0',
-		        'MSUB(391) = 1',
-		        'MSUB(392) = 1',
-		        'PMAS(347,1) = ${scale}',
-		        'PARP(50) = 0.54',
-		        '5000039:ALLOFF',
-		        '5000039:ONIFANY ${pdgid}',
-		),
-		parameterSets = cms.vstring(
-		        'pythiaUESettings',
-		        'processParameters')
-	)
+	configFiles = cms.vstring('RS.model'),
+	parameterSets = cms.vstring(
+		'cm7TeV',
+		'pdfCTEQ6L1',
+		'productionParameters',
+		'basicSetup',
+		'setParticlesStableForDetector',
+	),
+	productionParameters = cms.vstring(
+'cd /Herwig/NewPhysics',
+'insert ResConstructor:Incoming 0 /Herwig/Particles/g',
+'insert ResConstructor:Incoming 1 /Herwig/Particles/u',
+'insert ResConstructor:Incoming 2 /Herwig/Particles/ubar',
+'insert ResConstructor:Incoming 3 /Herwig/Particles/d',
+'insert ResConstructor:Incoming 4 /Herwig/Particles/dbar',
+'insert ResConstructor:Intermediates 0 /Herwig/Particles/Graviton',
+'${out}',
+'set RS/Model:Lambda_pi 10000*GeV',
+'set /Herwig/Particles/Graviton:NominalMass ${scale}*GeV',
+'set /Herwig/EventHandlers/LHCHandler:MultipleInteractionHandler NULL',
+'set /Herwig/EventHandlers/LHCHandler:HadronizationHandler NULL',
+'set /Herwig/EventHandlers/LHCHandler:CascadeHandler NULL',
+'erase /Herwig/EventHandlers/LHCHandler:PostSubProcessHandlers[0]',
+	),
 )
 
 process.pfPileUp.PFCandidates=cms.InputTag("particleFlow")
 process.pfNoPileUp.bottomCollection=cms.InputTag("particleFlow")
 process.pfPileUpCandidates.bottomCollection=cms.InputTag("particleFlow")
 
+process.load("CMGTools.Common.gen_cff")
+process.genParticlesStatus3.select=cms.vstring('keep status()==3','keep status()==2 && pdgId()==23','keep status()==2 && numberOfMothers()>0 && mother(0).pdgId()==23')
+process.out.outputCommands+=cms.untracked.vstring('keep *_genParticlesStatus3_*_*')
+
 # Path and EndPath definitions
-process.p = cms.Path(process.generator*process.pgen*process.simulationWithFamos*process.reconstructionWithFamos)
+#process.p = cms.Path(process.generator*process.pgen*process.simulationWithFamos*process.reconstructionWithFamos)
+process.p = cms.Path(process.generator*process.pgen*process.genSequence)
 process.endpath = cms.EndPath(process.out)
 process.schedule = cms.Schedule(process.p,process.endpath)
 
@@ -227,8 +239,10 @@ EOF
   echo ********Running ${cfg}
   
 #crab -create -submit
-cmsRun ${py}
-cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/graviton/
+#cmsRun ${py}
+#mv LHC.log ${dir}.log
+#mv LHC.out ${dir}.out
+#cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/fastsim/
 
   pycmg=${dir}_CMG.py
 
@@ -298,7 +312,8 @@ print sep_line
 
 # process.source.fileNames = cms.untracked.vstring(['/store/relval/CMSSW_4_2_5/RelValTTbar/GEN-SIM-RECO/START42_V12-v1/0113/1C538A2F-799E-E011-8A7E-0026189438BD.root'])
 
-process.source.fileNames = cms.untracked.vstring(['/store/cmst3/user/hinzmann/graviton/${dir}_PFAOD.root'])
+#process.source.fileNames = cms.untracked.vstring(['/store/cmst3/user/hinzmann/fastsim/${dir}_PFAOD.root'])
+process.source.fileNames = cms.untracked.vstring(['file:/tmp/hinzmann/${dir}_PFAOD.root'])
 #process.source.fileNames = cms.untracked.vstring(['file:pythia6_gravitonWW_1000_PFAOD.root'])
 
 # process.load("CMGTools.Common.sources.SingleMu.Run2011A_May10ReReco_v1.AOD.source_cff")
@@ -702,7 +717,7 @@ from CMGTools.Common.eventContent.everything_cff import everything
 
 process.outcmg = cms.OutputModule(
     "PoolOutputModule",
-    fileName = cms.untracked.string('/tmp/hinzmann/${dir}_tree_CMG.root'),
+    fileName = cms.untracked.string('${dir}_tree_CMG.root'),
     SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
     outputCommands = everything,
     dropMetaData = cms.untracked.string('PRIOR')
@@ -725,11 +740,14 @@ process.outpath += process.ria
     
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("/tmp/hinzmann/${dir}_histograms_CMG.root"))
+                                   fileName = cms.string("${dir}_histograms_CMG.root"))
 
 # process.Timing = cms.Service("Timing")
 
 # print process.dumpPython()
+
+process.genParticlesStatus3.select=cms.vstring('keep status()==3','keep status()==2 && pdgId()==23','keep status()==2 && numberOfMothers()>0 && mother(0).pdgId()==23')
+#process.outcmg.outputCommands.extend(cms.untracked.vstring('keep *_genParticles_*_*'))
 
 EOF
 
