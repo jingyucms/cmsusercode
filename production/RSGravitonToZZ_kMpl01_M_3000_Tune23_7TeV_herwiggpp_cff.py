@@ -4,7 +4,7 @@ from Configuration.Generator.HerwigppDefaults_cfi import *
 
 generator = cms.EDFilter("ThePEGGeneratorFilter",
 	herwigDefaultsBlock,
-	crossSection = cms.untracked.double(1.301),
+	crossSection = cms.untracked.double(0.1932e-03),
 	filterEfficiency = cms.untracked.double(1),
 
 	configFiles = cms.vstring('RS.model'),
@@ -24,8 +24,8 @@ generator = cms.EDFilter("ThePEGGeneratorFilter",
                 'insert ResConstructor:Incoming 4 /Herwig/Particles/dbar',
                 'insert ResConstructor:Intermediates 0 /Herwig/Particles/Graviton',
                 'insert ResConstructor:Outgoing 0 /Herwig/Particles/Z0',
-                'set RS/Model:Lambda_pi 1851*GeV',
-                'set /Herwig/Particles/Graviton:NominalMass 1000*GeV',
+                'set RS/Model:Lambda_pi 5553*GeV',
+                'set /Herwig/Particles/Graviton:NominalMass 3000*GeV',
 	),
 )
 

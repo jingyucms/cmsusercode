@@ -4,10 +4,10 @@ from Configuration.Generator.HerwigppDefaults_cfi import *
 
 generator = cms.EDFilter("ThePEGGeneratorFilter",
 	herwigDefaultsBlock,
-	crossSection = cms.untracked.double(8.181589e+01),
+	crossSection = cms.untracked.double(2.603),
 	filterEfficiency = cms.untracked.double(1),
 
-	configFiles = cms.vstring(),
+	configFiles = cms.vstring('RS.model'),
 	parameterSets = cms.vstring(
 		'cm7TeV',
 		'pdfMRST2001',
@@ -30,7 +30,7 @@ generator = cms.EDFilter("ThePEGGeneratorFilter",
 )
 
 configurationMetadata = cms.untracked.PSet(
-	version = cms.untracked.string('\$Revision: 1.1.2.1 $'),
-	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/Attic/RSGravitonToWW_kMpl01_M_1000_Tune23_7TeV_herwiggpp_cff.py,v $'),
+	version = cms.untracked.string('\$Revision: 1.2 $'),
+	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/RSGravitonToWW_kMpl01_M_1000_Tune23_7TeV_herwiggpp_cff.py,v $'),
 	annotation = cms.untracked.string('Fall2011 sample with HERWIGPP: RSGraviton -> WW, Tune23')
 )
