@@ -728,7 +728,7 @@ process.TFileService = cms.Service("TFileService",
 
 EOF
 
-cmsRun ${pycmg}
+#cmsRun ${pycmg}
 
   m=`expr $m + 1`
 done

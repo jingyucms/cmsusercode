@@ -16,7 +16,7 @@ options.register ('maxSize',
 				  "Maximum (suggested) file size (in Kb)")
 options.parseArguments()
 
-options.outputFile='/tmp/hinzmann/QCD_tree.root'
+options.outputFile='cmgtrees/W1Jet_tree.root'
 
 process = cms.Process("PickEvent")
 from CMGTools.Production.datasetToSource import *
@@ -31,6 +31,10 @@ elif 'WW' in options.outputFile:
 elif 'W' in options.outputFile:
   process.source = datasetToSource('hinzmann',
     '/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Summer11-PU_S4_START42_V11-v1/AODSIM/V2/PAT_CMG_Hinzmann6',
+    'tree.*root')
+elif 'W1Jet' in options.outputFile:
+  process.source = datasetToSource('hinzmann',
+    '/W1Jet_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM/V2',
     'tree.*root')
 
 if options.eventsToProcess:

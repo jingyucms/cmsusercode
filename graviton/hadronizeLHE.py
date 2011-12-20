@@ -21,7 +21,7 @@ process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source = cms.Source("LHESource",
-	fileNames = cms.untracked.vstring('file:graviton4j/graviton/testOutput.lhe')
+	fileNames = cms.untracked.vstring('file:graviton4j/graviton/g1000.lhe')
 )
 process.GlobalTag.globaltag = 'START42_V12::All'
 
@@ -110,7 +110,7 @@ process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
     "PoolOutputModule",
     process.AODSIMEventContent,
-    fileName = cms.untracked.string('LHE.root'),
+    fileName = cms.untracked.string('/tmp/hinzmann/JHU_graviton_ZZ_1000.root'),
     )
 
 process.load("CMGTools.Common.gen_cff")

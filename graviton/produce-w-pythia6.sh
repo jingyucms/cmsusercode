@@ -1,18 +1,54 @@
 #!/bin/sh
 
 startn=0
-endn=0
+endn=5
 n=${startn}
 while [ $n -le $endn ]
 do
 
-startm=0
-endm=0
+if [ $n -eq 0 ]
+then
+ptmin=100
+ptmax=300
+fi
+
+if [ $n -eq 1 ]
+then
+ptmin=300
+ptmax=600
+fi
+
+if [ $n -eq 2 ]
+then
+ptmin=600
+ptmax=1000
+fi
+
+if [ $n -eq 3 ]
+then
+ptmin=1000
+ptmax=1500
+fi
+
+if [ $n -eq 4 ]
+then
+ptmin=1500
+ptmax=2100
+fi
+
+if [ $n -eq 5 ]
+then
+ptmin=2100
+ptmax=-1
+fi
+
+startm=12
+endm=12
 m=${startm}
 while [ $m -le $endm ]
 do
 
-  dir=pythia6_W
+  dir=pythia6_W_${ptmin}_${ptmax}_${m}
 
   echo ********file ${dir}
   
@@ -27,7 +63,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("PFAOD")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(20000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -122,8 +158,8 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
 		processParameters = cms.vstring(
 		        'MSEL = 0',
 		        'MSUB(2) = 1',
-		        'CKIN(3) = 100',
-		        'CKIN(4) = 3000',
+		        'CKIN(3) = ${ptmin} ! pT>',
+		        'CKIN(4) = ${ptmax} ! pT<',
 		),
 		parameterSets = cms.vstring(
 		        'pythiaUESettings',
@@ -192,8 +228,8 @@ EOF
   echo ********Running ${cfg}
   
 #crab -create -submit
-#cmsRun ${py}
-#cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/fastsim/
+cmsRun ${py}
+cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/fastsim/
 
   pycmg=${dir}_CMG.py
 
@@ -263,7 +299,7 @@ print sep_line
 
 # process.source.fileNames = cms.untracked.vstring(['/store/relval/CMSSW_4_2_5/RelValTTbar/GEN-SIM-RECO/START42_V12-v1/0113/1C538A2F-799E-E011-8A7E-0026189438BD.root'])
 
-process.source.fileNames = cms.untracked.vstring(['/store/cmst3/user/hinzmann/graviton/${dir}_PFAOD.root'])
+process.source.fileNames = cms.untracked.vstring(['/store/cmst3/user/hinzmann/fastsim/${dir}_PFAOD.root'])
 #process.source.fileNames = cms.untracked.vstring(['file:pythia6_gravitonWW_1000_PFAOD.root'])
 
 # process.load("CMGTools.Common.sources.SingleMu.Run2011A_May10ReReco_v1.AOD.source_cff")
@@ -667,7 +703,7 @@ from CMGTools.Common.eventContent.everything_cff import everything
 
 process.outcmg = cms.OutputModule(
     "PoolOutputModule",
-    fileName = cms.untracked.string('${dir}_tree_CMG.root'),
+    fileName = cms.untracked.string('/tmp/hinzmann/${dir}_tree_CMG.root'),
     SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
     outputCommands = everything,
     dropMetaData = cms.untracked.string('PRIOR')
@@ -690,7 +726,7 @@ process.outpath += process.ria
     
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("${dir}_histograms_CMG.root"))
+                                   fileName = cms.string("/tmp/hinzmann/${dir}_histograms_CMG.root"))
 
 # process.Timing = cms.Service("Timing")
 

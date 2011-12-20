@@ -1,7 +1,7 @@
 #!/bin/sh
 
-startn=0
-endn=2
+startn=1
+endn=1
 n=${startn}
 while [ $n -le $endn ]
 do
@@ -44,7 +44,7 @@ particle=Z
 pdgid=23
 fi
 
-  dir=pythia6_graviton${particle}${particle}_${scale}
+  dir=pythia6_graviton${particle}${particle}_${scale}_noMPI_noHAD_noSHOWER
 
   echo ********file ${dir}
   
@@ -59,7 +59,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("PFAOD")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(50000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -156,9 +156,15 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
 		        'MSUB(391) = 1',
 		        'MSUB(392) = 1',
 		        'PMAS(347,1) = ${scale}',
-		        'PARP(50) = 0.54',
+		        'PARP(50) = 0.1', #0.54
 		        '5000039:ALLOFF',
 		        '5000039:ONIFANY ${pdgid}',
+
+'MSTP(81)=20     ! MPI Z2', 
+'MSTJ(1)=0     ! HAD', 
+'MSTJ(41)=0     ! PS', 
+'MSTP(61)=0     ! ISR', 
+'MSTP(71)=0     ! FSR', 
 		),
 		parameterSets = cms.vstring(
 		        'pythiaUESettings',
@@ -170,8 +176,13 @@ process.pfPileUp.PFCandidates=cms.InputTag("particleFlow")
 process.pfNoPileUp.bottomCollection=cms.InputTag("particleFlow")
 process.pfPileUpCandidates.bottomCollection=cms.InputTag("particleFlow")
 
+process.load("CMGTools.Common.gen_cff")
+process.genParticlesStatus3.select=cms.vstring('keep status()==3','keep status()==2 && pdgId()==23','keep numberOfMothers()>0 && mother(0).pdgId()==23')
+process.out.outputCommands+=cms.untracked.vstring('keep *_genParticlesStatus3_*_*')
+
 # Path and EndPath definitions
-process.p = cms.Path(process.generator*process.pgen*process.simulationWithFamos*process.reconstructionWithFamos)
+#process.p = cms.Path(process.generator*process.pgen*process.simulationWithFamos*process.reconstructionWithFamos)
+process.p = cms.Path(process.generator*process.pgen*process.genSequence)
 process.endpath = cms.EndPath(process.out)
 process.schedule = cms.Schedule(process.p,process.endpath)
 
@@ -227,7 +238,7 @@ EOF
   echo ********Running ${cfg}
   
 #crab -create -submit
-cmsRun ${py}
+#cmsRun ${py}
 cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/graviton/
 
   pycmg=${dir}_CMG.py
@@ -733,7 +744,7 @@ process.TFileService = cms.Service("TFileService",
 
 EOF
 
-cmsRun ${pycmg}
+#cmsRun ${pycmg}
 
   m=`expr $m + 1`
 done

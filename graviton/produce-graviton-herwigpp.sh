@@ -45,7 +45,7 @@ out='insert ResConstructor:Outgoing 0 /Herwig/Particles/Z0'
 pdgid=23
 fi
 
-  dir=herwigpp_graviton_${particle}${particle}_${scale}_noMPI_noHAD_noSHOWER
+  dir=herwigpp_graviton_${particle}${particle}_${scale}_l1851_noMPI_noHAD_noSHOWER
 
   echo ********file ${dir}
   
@@ -60,7 +60,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("PFAOD")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(50000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -164,8 +164,9 @@ process.generator = cms.EDFilter("ThePEGGeneratorFilter",
 'insert ResConstructor:Incoming 4 /Herwig/Particles/dbar',
 'insert ResConstructor:Intermediates 0 /Herwig/Particles/Graviton',
 '${out}',
-'set RS/Model:Lambda_pi 10000*GeV',
+'set RS/Model:Lambda_pi 1851*GeV',
 'set /Herwig/Particles/Graviton:NominalMass ${scale}*GeV',
+
 'set /Herwig/EventHandlers/LHCHandler:MultipleInteractionHandler NULL',
 'set /Herwig/EventHandlers/LHCHandler:HadronizationHandler NULL',
 'set /Herwig/EventHandlers/LHCHandler:CascadeHandler NULL',
@@ -178,7 +179,7 @@ process.pfNoPileUp.bottomCollection=cms.InputTag("particleFlow")
 process.pfPileUpCandidates.bottomCollection=cms.InputTag("particleFlow")
 
 process.load("CMGTools.Common.gen_cff")
-process.genParticlesStatus3.select=cms.vstring('keep status()==3','keep status()==2 && pdgId()==23','keep status()==2 && numberOfMothers()>0 && mother(0).pdgId()==23')
+process.genParticlesStatus3.select=cms.vstring('keep status()==3','keep status()==2 && pdgId()==23','keep numberOfMothers()>0 && mother(0).pdgId()==23')
 process.out.outputCommands+=cms.untracked.vstring('keep *_genParticlesStatus3_*_*')
 
 # Path and EndPath definitions
@@ -239,10 +240,10 @@ EOF
   echo ********Running ${cfg}
   
 #crab -create -submit
-#cmsRun ${py}
+cmsRun ${py}
 #mv LHC.log ${dir}.log
 #mv LHC.out ${dir}.out
-#cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/fastsim/
+#cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/graviton/
 
   pycmg=${dir}_CMG.py
 
@@ -717,7 +718,7 @@ from CMGTools.Common.eventContent.everything_cff import everything
 
 process.outcmg = cms.OutputModule(
     "PoolOutputModule",
-    fileName = cms.untracked.string('${dir}_tree_CMG.root'),
+    fileName = cms.untracked.string('/tmp/hinzmann/${dir}_tree_CMG.root'),
     SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
     outputCommands = everything,
     dropMetaData = cms.untracked.string('PRIOR')
@@ -740,7 +741,7 @@ process.outpath += process.ria
     
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("${dir}_histograms_CMG.root"))
+                                   fileName = cms.string("/tmp/hinzmann/${dir}_histograms_CMG.root"))
 
 # process.Timing = cms.Service("Timing")
 
@@ -751,7 +752,7 @@ process.genParticlesStatus3.select=cms.vstring('keep status()==3','keep status()
 
 EOF
 
-cmsRun ${pycmg}
+#cmsRun ${pycmg}
 
   m=`expr $m + 1`
 done
