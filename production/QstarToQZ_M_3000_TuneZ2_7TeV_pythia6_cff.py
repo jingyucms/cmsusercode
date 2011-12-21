@@ -8,7 +8,7 @@ generator = cms.EDFilter("Pythia6GeneratorFilter",
 	pythiaPylistVerbosity = cms.untracked.int32(0),
 	filterEfficiency = cms.untracked.double(1),
 	comEnergy = cms.double(7000.0),
-	crossSection = cms.untracked.double(1e10),
+	crossSection = cms.untracked.double(1.072e-3),
 	
 	PythiaParameters = cms.PSet(
 	        pythiaUESettingsBlock,
@@ -36,6 +36,6 @@ generator = cms.EDFilter("Pythia6GeneratorFilter",
 
 configurationMetadata = cms.untracked.PSet(
 	version = cms.untracked.string('\$Revision: 1.1 $'),
-	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/QstarToQW_M_3000_TuneZ2_7TeV_pythia6_cff.py,v $'),
+	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/QstarToQZ_M_3000_TuneZ2_7TeV_pythia6_cff.py,v $'),
 	annotation = cms.untracked.string('Fall2011 sample with PYTHIA6: Qstar -> qW, TuneZ2')
 )

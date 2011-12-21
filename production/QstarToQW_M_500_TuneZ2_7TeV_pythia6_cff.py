@@ -8,7 +8,7 @@ generator = cms.EDFilter("Pythia6GeneratorFilter",
 	pythiaPylistVerbosity = cms.untracked.int32(0),
 	filterEfficiency = cms.untracked.double(1),
 	comEnergy = cms.double(7000.0),
-	crossSection = cms.untracked.double(1e10),
+	crossSection = cms.untracked.double(5.207e+2),
 	
 	PythiaParameters = cms.PSet(
 	        pythiaUESettingsBlock,
