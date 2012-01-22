@@ -1,0 +1,23 @@
+/castor/cern.ch/user/l/lucieg/OpenHLT/Commish2011/r177449__Commissioning_Run2011B-v1__20111011_0948/
+-rw-r--r--   1 cms003   zh                  333731367 Oct 12 15:03 openhlt_r177449__Commissioning_Run2011B-v1__20111011_0948_1_1_XJG.root
+-rw-r--r--   1 cms003   zh                  190776583 Oct 12 15:04 openhlt_r177449__Commissioning_Run2011B-v1__20111011_0948_2_1_E5j.root
+-rw-r--r--   1 cms003   zh                  292813112 Oct 12 15:04 openhlt_r177449__Commissioning_Run2011B-v1__20111011_0948_3_1_lHO.root
+-rw-r--r--   1 cms003   zh                  292094795 Oct 12 15:05 openhlt_r177449__Commissioning_Run2011B-v1__20111011_0948_4_1_x8L.root
+-rw-r--r--   1 cms003   zh                  291508462 Oct 12 15:06 openhlt_r177449__Commissioning_Run2011B-v1__20111011_0948_5_1_ETS.root
+-rw-r--r--   1 cms003   zh                  296732408 Oct 12 15:07 openhlt_r177449__Commissioning_Run2011B-v1__20111011_0948_6_1_ssi.root
+
+
+
+/castor/cern.ch/user/l/lucieg/OpenHLT/Commish2011/r178208__L1EGHPF_Run2011B-v1__20111011_1309
+-rw-r--r--   1 cms003   zh                  711394005 Oct 19 20:57 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_28_1_sFO.root
+-rw-r--r--   1 cms003   zh                  650907005 Oct 19 20:57 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_30_1_wTB.root
+-rw-r--r--   1 cms003   zh                  685221181 Oct 19 20:59 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_33_1_ir8.root
+-rw-r--r--   1 cms003   zh                  625300830 Oct 19 21:00 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_34_1_fcU.root
+-rw-r--r--   1 cms003   zh                  615255659 Oct 19 21:00 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_35_1_K3Y.root
+-rw-r--r--   1 cms003   zh                  616138117 Oct 19 21:01 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_36_1_FUw.root
+-rw-r--r--   1 cms003   zh                  610809209 Oct 19 21:02 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_37_1_XAx.root
+-rw-r--r--   1 cms003   zh                  695487810 Oct 19 21:03 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_39_1_u3p.root
+-rw-r--r--   1 cms003   zh                  747340025 Oct 19 21:04 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_40_1_YnT.root
+-rw-r--r--   1 cms003   zh                  216898574 Oct 19 21:05 openhlt_r178208__L1EGHPF_Run2011B-v1__20111011_1309_41_1_BOB.root
+
+
