@@ -4,12 +4,13 @@ prefix="diJetAnalysis_ca8pruned_massdrop"
 
 #sample='QCD'
 #sample='WW'
+sample='RSGravitonToZZ_kMpl_01_M_1000'
 #sample='graviton-ZZ-1000'
 #sample='graviton-WW-1000'
 #sample='graviton-ZZ-2000'
 #sample='graviton-WW-2000'
 #sample='Wprime-WZ-1000'
-sample='Wprime-WZ-2000'
+#sample='Wprime-WZ-2000'
 #sample='qStar-qW-1000'
 #sample='qStar-qW-2000'
 #sample='qStar-qZ-1000'
@@ -36,6 +37,10 @@ elif sample=='WW':
 elif sample=='W':
   process.source = datasetToSource('hinzmann',
     '/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Summer11-PU_S4_START42_V11-v1/AODSIM/V2/PAT_CMG_Hinzmann6',
+    'tree.*root')
+elif sample=='RSGravitonToZZ_kMpl_01_M_1000':
+  process.source = datasetToSource('mpierini',
+    '/DiJetFASTSIM/RSGravitonToZZ',
     'tree.*root')
 elif sample=='graviton-ZZ-1000':
   process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring(['file:cmgtrees/pythia6_gravitonZZ_1000_tree_CMG.root']))
