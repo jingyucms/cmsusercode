@@ -38457,28 +38457,94 @@ process.hltPFTauTagInfo.UsePVconstraint = False
 process.hltPFTauLoosePVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
     PFTauProducer = cms.InputTag( "hltPFTaus" ),
     Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
-    vertexSrc = cms.InputTag("pixelVertices"),
+    vertexSrc = cms.InputTag("hltPixelVertices"),
+    useLeadingTrack = cms.bool(False),
+    trackSrc = cms.InputTag("hltIter4Merged"),
+    useLeadingRecoCandidate = cms.bool(True),
+    recoCandidateSrc = cms.InputTag("hltPixelMatchElectronsL1Iso"),
     dZ = cms.double(0.2),
 )
+process.hltSelectedPFTausLoosePV = cms.EDFilter( "PFTauSelector",
+    src = cms.InputTag( "hltPFTaus" ),
+    discriminators = cms.VPSet( 
+      cms.PSet(  discriminator = cms.InputTag( "hltPFTauLoosePVDiscriminator" ),
+        selectionCut = cms.double( 0.5 )
+      )
+    )
+)
+process.hltConvPFTausLoosePV = cms.EDProducer( "PFTauToJetProducer",
+    Source = cms.InputTag( "hltSelectedPFTausLoosePV" )
+)
+process.hltPFTausLoosePV = cms.EDFilter( "HLT1Tau",
+    inputTag = cms.InputTag( "hltConvPFTausLoosePV" ),
+    saveTags = cms.bool( True ),
+    MinPt = cms.double( 20.0 ),
+    MaxEta = cms.double( 2.5 ),
+    MinN = cms.int32( 1 )
+)
+process.filterPVloose = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTaus + process.hltPFTauLoosePVDiscriminator + process.hltSelectedPFTausLoosePV + process.hltConvPFTausLoosePV + process.hltPFTausLoosePV + process.HLTEndSequence )
 process.hltPFTauMediumPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
     PFTauProducer = cms.InputTag( "hltPFTausMediumIso" ),
     Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
-    vertexSrc = cms.InputTag("pixelVertices"),
+    vertexSrc = cms.InputTag("hltPixelVertices"),
+    useLeadingTrack = cms.bool(False),
+    trackSrc = cms.InputTag("hltIter4Merged"),
+    useLeadingRecoCandidate = cms.bool(True),
+    recoCandidateSrc = cms.InputTag("hltPixelMatchElectronsL1Iso"),
     dZ = cms.double(0.2),
 )
+process.hltSelectedPFTausMediumPV = cms.EDFilter( "PFTauSelector",
+    src = cms.InputTag( "hltPFTausMediumIso" ),
+    discriminators = cms.VPSet( 
+      cms.PSet(  discriminator = cms.InputTag( "hltPFTauMediumPVDiscriminator" ),
+        selectionCut = cms.double( 0.5 )
+      )
+    )
+)
+process.hltConvPFTausMediumPV = cms.EDProducer( "PFTauToJetProducer",
+    Source = cms.InputTag( "hltSelectedPFTausMediumPV" )
+)
+process.hltPFTausMediumPV = cms.EDFilter( "HLT1Tau",
+    inputTag = cms.InputTag( "hltConvPFTausMediumPV" ),
+    saveTags = cms.bool( True ),
+    MinPt = cms.double( 20.0 ),
+    MaxEta = cms.double( 2.5 ),
+    MinN = cms.int32( 1 )
+)
+process.filterPVmedium = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausMediumIso + process.hltPFTauMediumPVDiscriminator + process.hltSelectedPFTausMediumPV + process.hltConvPFTausMediumPV + process.hltPFTausMediumPV + process.HLTEndSequence )
 process.hltPFTauTightPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
     PFTauProducer = cms.InputTag( "hltPFTausTightIso" ),
     Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
-    vertexSrc = cms.InputTag("pixelVertices"),
+    vertexSrc = cms.InputTag("hltPixelVertices"),
+    useLeadingTrack = cms.bool(False),
+    trackSrc = cms.InputTag("hltIter4Merged"),
+    useLeadingRecoCandidate = cms.bool(True),
+    recoCandidateSrc = cms.InputTag("hltPixelMatchElectronsL1Iso"),
     dZ = cms.double(0.2),
 )
-process.filterPVloose = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTaus + process.hltPFTauLoosePVDiscriminator + process.HLTEndSequence )
-process.filterPVmedium = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausMediumIso + process.hltPFTauMediumPVDiscriminator + process.HLTEndSequence )
-process.filterPVtight = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausTightIso + process.hltPFTauTightPVDiscriminator + process.HLTEndSequence )
+process.hltSelectedPFTausTightPV = cms.EDFilter( "PFTauSelector",
+    src = cms.InputTag( "hltPFTausTightIso" ),
+    discriminators = cms.VPSet( 
+      cms.PSet(  discriminator = cms.InputTag( "hltPFTauTightPVDiscriminator" ),
+        selectionCut = cms.double( 0.5 )
+      )
+    )
+)
+process.hltConvPFTausTightPV = cms.EDProducer( "PFTauToJetProducer",
+    Source = cms.InputTag( "hltSelectedPFTausTightPV" )
+)
+process.hltPFTausTightPV = cms.EDFilter( "HLT1Tau",
+    inputTag = cms.InputTag( "hltConvPFTausTightPV" ),
+    saveTags = cms.bool( True ),
+    MinPt = cms.double( 20.0 ),
+    MaxEta = cms.double( 2.5 ),
+    MinN = cms.int32( 1 )
+)
+process.filterPVtight = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausTightIso + process.hltPFTauTightPVDiscriminator + process.hltSelectedPFTausTightPV + process.hltConvPFTausTightPV + process.hltPFTausTightPV + process.HLTEndSequence )
 
 #process.hltPFTaus.UseChargedHadrCandLeadChargedHadrCand_tksDZconstraint = False
 #process.hltPFTaus.UseTrackLeadTrackDZconstraint = False
-#process.hltPFTaus.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
+process.hltPFTaus.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
 #process.hltPFTauLooseIsolationDiscriminator.qualityCuts.signalQualityCuts.maxDeltaZ = 100
 #process.hltPFTauLooseIsolationDiscriminator.qualityCuts.isolationQualityCuts.maxDeltaZ = 0.05
 #process.hltPFTauLooseIsolationDiscriminator.applyOccupancyCut = False
@@ -38491,7 +38557,7 @@ process.HLT_Ele20_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau20_v6 = cms.Path
 
 #process.hltPFTausMediumIso.UseChargedHadrCandLeadChargedHadrCand_tksDZconstraint = False
 #process.hltPFTausMediumIso.UseTrackLeadTrackDZconstraint = False
-#process.hltPFTausMediumIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
+process.hltPFTausMediumIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
 #process.hltPFTauMediumIsoIsolationDiscriminator.qualityCuts.signalQualityCuts.maxDeltaZ = 100
 #process.hltPFTauMediumIsoIsolationDiscriminator.qualityCuts.isolationQualityCuts.maxDeltaZ = 0.05
 #process.hltPFTauMediumIsoIsolationDiscriminator.applyOccupancyCut = False
@@ -38504,7 +38570,7 @@ process.HLT_Ele20_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_MediumIsoPFTau20_v6 = cms.Pat
 
 #process.hltPFTausTightIso.UseChargedHadrCandLeadChargedHadrCand_tksDZconstraint = False
 #process.hltPFTausTightIso.UseTrackLeadTrackDZconstraint = False
-#process.hltPFTausTightIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
+process.hltPFTausTightIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
 #process.hltPFTauTightIsoIsolationDiscriminator.qualityCuts.signalQualityCuts.maxDeltaZ = 100
 #process.hltPFTauTightIsoIsolationDiscriminator.qualityCuts.isolationQualityCuts.maxDeltaZ = 0.05
 #process.hltPFTauTightIsoIsolationDiscriminator.applyOccupancyCut = False
@@ -38619,7 +38685,7 @@ process.out = cms.OutputModule(
     'keep triggerTriggerFilterObjectWithRefs_*_*_TEST',
     'keep recoVertexs_*_*_*',
     ),
-    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_usenewpvfilter.root'),
+    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_usenewpvfilter_v3_electron.root'),
     )
 
 process.endpath = cms.EndPath(process.out)
@@ -38954,7 +39020,7 @@ if 'PrescaleService' in process.__dict__:
 
 # limit the number of events to be processed
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32( 10000 )
+    input = cms.untracked.int32( 3000 )
 )
 
 # enable the TrigReport and TimeReport
