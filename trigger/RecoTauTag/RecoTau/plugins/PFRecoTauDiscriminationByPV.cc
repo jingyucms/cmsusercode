@@ -99,7 +99,7 @@ double PFRecoTauDiscriminationByPV::discriminate(const PFTauRef& pfTau)
    // discriminate by z position of leading vertex
    else
    {
-       if (pfTau->leadPFChargedHadrCand()->trackRef()->dz(vertices->at(0).position())<dZ_)
+       if (fabs(pfTau->leadPFChargedHadrCand()->trackRef()->dz(vertices->at(0).position()))<dZ_)
           isFromPV=1.;
    }
    return isFromPV;
