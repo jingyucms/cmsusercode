@@ -50,14 +50,14 @@ void PFRecoTauDiscriminationByPV::beginEvent(const edm::Event& event,
 
 double PFRecoTauDiscriminationByPV::discriminate(const PFTauRef& pfTau)
 {
-   double isFromPV=0.;
    // if no vertex in vertex collection or no leading track in tau return false
    if((!vertices.isValid())||
       (vertices->size()==0)||
-      (pfTau->leadPFChargedHadrCand().isNull())||
-      (pfTau->leadPFChargedHadrCand()->trackRef().isNull()))
+      (!pfTau->leadPFChargedHadrCand().isNonnull())||
+      (!pfTau->leadPFChargedHadrCand()->trackRef().isNonnull()))
       return 0.;
 
+   double isFromPV=0.;
    // discriminate by z position of leading track at vertex
    if (useLeadingTrack_)
    {
@@ -91,7 +91,9 @@ double PFRecoTauDiscriminationByPV::discriminate(const PFTauRef& pfTau)
   	   maxpt=pt;
          }
        }
-       if(fabs(pfTau->leadPFChargedHadrCand()->trackRef()->dz(vertices->at(0).position()) - recocandidates->ptrAt(i_maxpt)->bestTrack()->dz(vertices->at(0).position()) < dZ_))
+       const reco::Track* track = dynamic_cast<const reco::Track*>(recocandidates->ptrAt(i_maxpt)->bestTrack());
+       if((track)&&
+         (fabs(pfTau->leadPFChargedHadrCand()->trackRef()->dz(vertices->at(0).position()) - track->dz(vertices->at(0).position()) < dZ_)))
           isFromPV=1.;
        }
    }
@@ -102,6 +104,7 @@ double PFRecoTauDiscriminationByPV::discriminate(const PFTauRef& pfTau)
        if (fabs(pfTau->leadPFChargedHadrCand()->trackRef()->dz(vertices->at(0).position()))<dZ_)
           isFromPV=1.;
    }
+
    return isFromPV;
 }
 

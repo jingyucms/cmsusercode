@@ -38458,10 +38458,10 @@ process.hltPFTauLoosePVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationB
     PFTauProducer = cms.InputTag( "hltPFTaus" ),
     Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
     vertexSrc = cms.InputTag("hltPixelVertices"),
-    useLeadingTrack = cms.bool(False),
+    useLeadingTrack = cms.bool(True),
     trackSrc = cms.InputTag("hltIter4Merged"),
-    useLeadingRecoCandidate = cms.bool(True),
-    recoCandidateSrc = cms.InputTag("hltPixelMatchElectronsL1Iso"),
+    useLeadingRecoCandidate = cms.bool(False),
+    recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
     dZ = cms.double(0.2),
 )
 process.hltSelectedPFTausLoosePV = cms.EDFilter( "PFTauSelector",
@@ -38487,10 +38487,10 @@ process.hltPFTauMediumPVDiscriminator = cms.EDProducer( "PFRecoTauDiscrimination
     PFTauProducer = cms.InputTag( "hltPFTausMediumIso" ),
     Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
     vertexSrc = cms.InputTag("hltPixelVertices"),
-    useLeadingTrack = cms.bool(False),
+    useLeadingTrack = cms.bool(True),
     trackSrc = cms.InputTag("hltIter4Merged"),
-    useLeadingRecoCandidate = cms.bool(True),
-    recoCandidateSrc = cms.InputTag("hltPixelMatchElectronsL1Iso"),
+    useLeadingRecoCandidate = cms.bool(False),
+    recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
     dZ = cms.double(0.2),
 )
 process.hltSelectedPFTausMediumPV = cms.EDFilter( "PFTauSelector",
@@ -38516,10 +38516,10 @@ process.hltPFTauTightPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationB
     PFTauProducer = cms.InputTag( "hltPFTausTightIso" ),
     Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
     vertexSrc = cms.InputTag("hltPixelVertices"),
-    useLeadingTrack = cms.bool(False),
+    useLeadingTrack = cms.bool(True),
     trackSrc = cms.InputTag("hltIter4Merged"),
-    useLeadingRecoCandidate = cms.bool(True),
-    recoCandidateSrc = cms.InputTag("hltPixelMatchElectronsL1Iso"),
+    useLeadingRecoCandidate = cms.bool(False),
+    recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
     dZ = cms.double(0.2),
 )
 process.hltSelectedPFTausTightPV = cms.EDFilter( "PFTauSelector",
@@ -38685,7 +38685,7 @@ process.out = cms.OutputModule(
     'keep triggerTriggerFilterObjectWithRefs_*_*_TEST',
     'keep recoVertexs_*_*_*',
     ),
-    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_usenewpvfilter_v3_electron.root'),
+    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_usenewpvfilter_v3_track.root'),
     )
 
 process.endpath = cms.EndPath(process.out)
