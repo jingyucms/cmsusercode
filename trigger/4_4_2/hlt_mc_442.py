@@ -38454,9 +38454,31 @@ process.extraVertices5 = cms.Path( process.HLTBeginSequence + process.HLTRecoJet
 
 process.hltPFTauTagInfo.UsePVconstraint = False
 
+process.hltPFTauLoosePVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
+    PFTauProducer = cms.InputTag( "hltPFTaus" ),
+    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+    vertexSrc = cms.InputTag("pixelVertices"),
+    dZ = cms.double(0.2),
+)
+process.hltPFTauMediumPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
+    PFTauProducer = cms.InputTag( "hltPFTausMediumIso" ),
+    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+    vertexSrc = cms.InputTag("pixelVertices"),
+    dZ = cms.double(0.2),
+)
+process.hltPFTauTightPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
+    PFTauProducer = cms.InputTag( "hltPFTausTightIso" ),
+    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+    vertexSrc = cms.InputTag("pixelVertices"),
+    dZ = cms.double(0.2),
+)
+process.filterPVloose = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTaus + process.hltPFTauLoosePVDiscriminator + process.HLTEndSequence )
+process.filterPVmedium = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausMediumIso + process.hltPFTauMediumPVDiscriminator + process.HLTEndSequence )
+process.filterPVtight = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausTightIso + process.hltPFTauTightPVDiscriminator + process.HLTEndSequence )
+
 #process.hltPFTaus.UseChargedHadrCandLeadChargedHadrCand_tksDZconstraint = False
 #process.hltPFTaus.UseTrackLeadTrackDZconstraint = False
-process.hltPFTaus.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
+#process.hltPFTaus.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
 #process.hltPFTauLooseIsolationDiscriminator.qualityCuts.signalQualityCuts.maxDeltaZ = 100
 #process.hltPFTauLooseIsolationDiscriminator.qualityCuts.isolationQualityCuts.maxDeltaZ = 0.05
 #process.hltPFTauLooseIsolationDiscriminator.applyOccupancyCut = False
@@ -38469,7 +38491,7 @@ process.HLT_Ele20_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_LooseIsoPFTau20_v6 = cms.Path
 
 #process.hltPFTausMediumIso.UseChargedHadrCandLeadChargedHadrCand_tksDZconstraint = False
 #process.hltPFTausMediumIso.UseTrackLeadTrackDZconstraint = False
-process.hltPFTausMediumIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
+#process.hltPFTausMediumIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
 #process.hltPFTauMediumIsoIsolationDiscriminator.qualityCuts.signalQualityCuts.maxDeltaZ = 100
 #process.hltPFTauMediumIsoIsolationDiscriminator.qualityCuts.isolationQualityCuts.maxDeltaZ = 0.05
 #process.hltPFTauMediumIsoIsolationDiscriminator.applyOccupancyCut = False
@@ -38482,7 +38504,7 @@ process.HLT_Ele20_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_MediumIsoPFTau20_v6 = cms.Pat
 
 #process.hltPFTausTightIso.UseChargedHadrCandLeadChargedHadrCand_tksDZconstraint = False
 #process.hltPFTausTightIso.UseTrackLeadTrackDZconstraint = False
-process.hltPFTausTightIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
+#process.hltPFTausTightIso.ChargedHadrCandLeadChargedHadrCand_tksmaxDZ=0.2
 #process.hltPFTauTightIsoIsolationDiscriminator.qualityCuts.signalQualityCuts.maxDeltaZ = 100
 #process.hltPFTauTightIsoIsolationDiscriminator.qualityCuts.isolationQualityCuts.maxDeltaZ = 0.05
 #process.hltPFTauTightIsoIsolationDiscriminator.applyOccupancyCut = False
@@ -38597,7 +38619,7 @@ process.out = cms.OutputModule(
     'keep triggerTriggerFilterObjectWithRefs_*_*_TEST',
     'keep recoVertexs_*_*_*',
     ),
-    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_trackmaxdz02_nousepvconstraint.root'),
+    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_usenewpvfilter.root'),
     )
 
 process.endpath = cms.EndPath(process.out)
