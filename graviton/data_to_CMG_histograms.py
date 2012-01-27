@@ -4,32 +4,30 @@ from PhysicsTools.PatAlgos.patTemplate_cfg import *
 
 ### MASTER FLAGS  ######################################################################
 
+from switches import *
+
 # turn this on if you want to pick a relval in input (see below)
 pickRelVal = False
-
-# turn on when running on MC
-runOnMC = False
 
 # AK5 sequence with no cleaning is the default
 # the other sequences can be turned off with the following flags.
 #JOSE: no need to run these guys for what you are up to
 runAK5LC = False
-runAK7 = True
+runAK7 = False
 runCA8 = True
 
 #COLIN: will need to include the event filters in tagging mode
 
 #COLIN : reactivate HPS when bugs corrected
-hpsTaus = True
+hpsTaus = False
 
 #COLIN: the following leads to rare segmentation faults
 doJetPileUpCorrection = True
 
 #patTaus can now be saved even when running the CMG sequence.
-doEmbedPFCandidatesInTaus = True
+doEmbedPFCandidatesInTaus = False
 
 runCMG = True
-
 
 #add the L2L3Residual corrections only for data
 if runOnMC:#MC
@@ -147,11 +145,21 @@ getattr(process,"pfIsolatedElectrons"+postfixAK5).isolationCut = 999999
 
 # adding vbtf and cic electron IDs
 from CMGTools.Common.PAT.addPATElectronID_cff import addPATElectronID
-addPATElectronID( process, postfixAK5 , runOnMC )
+#addPATElectronID( process, postfixAK5 , runOnMC )
 
 # insert the PFMET sifnificance calculation
 from CMGTools.Common.PAT.addMETSignificance_cff import addMETSig
-addMETSig( process, postfixAK5 )
+#addMETSig( process, postfixAK5 )
+
+# remove non-jet objects
+from PhysicsTools.PatAlgos.tools.coreTools import *
+removeSpecificPATObjects(process, names=["Electrons","Muons","Photons","Taus"], outputModules=['out'], postfix=postfixAK5)
+
+process.patDefaultSequenceAK5.remove(process.patPFTauIsolationAK5)
+process.patDefaultSequenceAK5.remove(process.patShrinkingConePFTauDiscriminationAK5)
+process.patDefaultSequenceAK5.remove(process.btaggingAODAK5)
+process.patJetsAK5.addBTagInfo=False
+process.patJetsAK5.addDiscriminators=False
 
 # ---------------- Sequence AK5LC, lepton x-cleaning ---------------
 
@@ -236,14 +244,15 @@ if runCA8:
                                               doAreaFastjet = cms.bool(True),
                                               doRhoFastjet = cms.bool(True),
                                               Rho_EtaMax = cms.double(6.0),
-                                              Ghost_EtaMax = cms.double(7.0)
+                                              Ghost_EtaMax = cms.double(7.0),
+					      src = cms.InputTag("pfNoPileUpAK5"),
                                               )
 
   addJetCollection(process,cms.InputTag('ca08PFJets'),
                   'CA8','PF',
                   doJTA = False,
                   doBTagging = False,
-                  jetCorrLabel = ('AK5PF', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])),
+                  jetCorrLabel = ('AK5PFchs', cms.vstring(jetCorrections)),
                   doType1MET = False,
                   doL1Cleaning = False,
                   doL1Counters = False,
@@ -281,6 +290,7 @@ if runCA8:
   process.ca08PrunedPFJets = cms.EDProducer(
                               "SubJetProducer",
                               PFJetParameters.clone(
+                                  src = cms.InputTag("pfNoPileUpAK5"),
                                   #src = cms.InputTag(''), #default input, as for the fat CA jet
                                   doAreaFastjet = cms.bool(True),
                                   doRhoFastjet = cms.bool(False)
@@ -318,7 +328,7 @@ if runCA8:
                  'CA8Pruned', 'PF',
                  doJTA=False,            # Run Jet-Track association & JetCharge
                  doBTagging=False,       # Run b-tagging
-                 jetCorrLabel= ('AK5PF', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])),
+                 jetCorrLabel= ('AK5PFchs', cms.vstring(jetCorrections)),
                  doType1MET=False,
                  doL1Cleaning=False,
                  doL1Counters=False,
@@ -383,6 +393,13 @@ if runAK7:
     process.p += getattr(process,"patPF2PATSequence"+postfixAK7) 
 
 if runCA8:
+    process.selectedPatJetsAK5.cut="pt()>30"
+    process.ak5PFconstituents = cms.EDProducer("JetSlimmer",
+                                     JetInputCollection=cms.untracked.InputTag("selectedPatJetsAK5"),
+                                     isPFJet=cms.untracked.bool(True),
+                                     Verbosity=cms.untracked.bool(False)
+                                     )
+    process.p+=process.ak5PFconstituents
     process.p += getattr(process,"patPATSequence"+postfixCA8) 
 
 # event cleaning (in tagging mode, no event rejected)
@@ -390,14 +407,6 @@ if runCA8:
 process.load('CMGTools.Common.eventCleaning.eventCleaning_cff')
 
 #process.p += process.eventCleaningSequence
-
-process.selectedPatJetsAK5.cut="pt()>30"
-process.ak5PFconstituents = cms.EDProducer("JetSlimmer",
-                                     JetInputCollection=cms.untracked.InputTag("selectedPatJetsAK5"),
-                                     isPFJet=cms.untracked.bool(True),
-                                     Verbosity=cms.untracked.bool(False)
-                                     )
-process.p+=process.ak5PFconstituents
 
  
 # CMG ---
@@ -457,32 +466,34 @@ process.baseMETHistograms.inputCollection = cms.InputTag("cmgPFMET")
 
 process.load("CMGTools.Common.factories.cmgFatJet_cfi")
 
-process.cmgPFJetSel.cut="pt()>30"
+process.cmgPFJetSel.cut="pt()>30 && abs(eta())<2.5"
 
 process.cmgPFLeadJet.inputCollection = cms.InputTag("cmgPFJetSel")
 
-process.cmgFatJet.cfg.inputCollection = cms.InputTag("cmgPFLeadJet")
-#process.cmgFatJet.cuts.looseJetId = cms.untracked.string('leadPtr().getSelection("cuts_looseJetId")')
+process.cmgFatJet.cfg.inputCollection = cms.InputTag("cmgPFJetSel")
 
 process.cmgPFDiJet.cuts.dijetKinematics.jetsPhaseSpace.jet1=cms.string('abs(leg1().eta())<2.5 && leg1.getSelection("cuts_looseJetId")') #
 process.cmgPFDiJet.cuts.dijetKinematics.jetsPhaseSpace.jet2=cms.string('abs(leg2().eta())<2.5 && leg2.getSelection("cuts_looseJetId")') #
 #process.cmgPFDiJet.cuts.dijetKinematics.tightDeltaEta=cms.string('abs(leg1.eta()-leg2.eta()) < 0.7')
 
 process.cmgDiFatJet.cuts.fatDijetKinematics.jetsPhaseSpace.jet1=cms.string('abs(leg1().eta())<2.5')
-process.cmgDiFatJet.cuts.fatDijetKinematics.jetsPhaseSpace.jet2=cms.string('abs(leg1().eta())<2.5')
+process.cmgDiFatJet.cuts.fatDijetKinematics.jetsPhaseSpace.jet2=cms.string('abs(leg2().eta())<2.5')
 
-dijetSelection='getSelection("cuts_dijetKinematics_mediumMass") && getSelection("cuts_dijetKinematics_jetsPhaseSpace") && getSelection("cuts_dijetKinematics_tightDeltaEta")'
+dijetSelection='(mass>890) && getSelection("cuts_dijetKinematics_jetsPhaseSpace") && getSelection("cuts_dijetKinematics_tightDeltaEta")'
 process.cmgPFTightDiJet.cut = dijetSelection
 process.cmgPFTightDiJetFilter = process.filterHighMass.copy()
 process.cmgPFTightDiJetFilter.src=cms.InputTag('cmgPFTightDiJet')
 
 process.cmgPFFatTightDiJet.cut=dijetSelection.replace("dijetKinematics","fatDijetKinematics")
 process.cmgPFFatTightDiJet.src=cms.InputTag("cmgDiFatJet")
-#process.cmgPFFatTightDiJetFilter = process.cmgPFTightDiJetFilter.copy()
-#process.cmgPFFatTightDiJetFilter.src=cms.InputTag('cmgPFFatTightDiJet')
+
+process.cmgPFMediumDiJet = process.cmgPFTightDiJet.copy()
+process.cmgPFMediumDiJet.cut = 'getSelection("cuts_dijetKinematics_mediumMass") && getSelection("cuts_dijetKinematics_jetsPhaseSpace") && getSelection("cuts_dijetKinematics_tightDeltaEta")'
+process.cmgPFMediumDiJetFilter = process.cmgPFTightDiJetFilter.copy()
+process.cmgPFMediumDiJetFilter.src=cms.InputTag('cmgPFMediumDiJet')
 
 process.cmgPFDiJetHistograms.histograms.mass[0].nbins = 7001
-process.cmgPFDiJetHistograms.histograms.mass[0].low = 7001
+process.cmgPFDiJetHistograms.histograms.mass[0].low = 0
 process.cmgPFDiJetHistograms.histograms.mass[0].high = 7000
 process.cmgPFDiJetHistograms.histograms.mass1[0].nbins = 501
 process.cmgPFDiJetHistograms.histograms.mass1[0].low = 0
@@ -541,6 +552,27 @@ process.cmgPFDiJetCA8Pruned.cfg.leg2Collection = cms.InputTag("cmgPFLeadJetCA8Pr
 process.cmgPFDiJetCA8Pruned.cuts.w1tag=cms.string("abs(leg1.mass()-85.)<15. && max(leg1.subjets()[0].mass(),leg1.subjets()[1].mass())/leg1.mass()<0.25")
 process.cmgPFDiJetCA8Pruned.cuts.w2tag=cms.string("abs(leg2.mass()-85.)<15. && max(leg2.subjets()[0].mass(),leg2.subjets()[1].mass())/leg2.mass()<0.25")
 
+process.cmgPFDiJetCA8PrunedHistograms=process.cmgPFDiJetHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistograms.inputCollection=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.cmgPFDiJetCA8PrunedHistograms.histograms.massdrop1 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('max(leg1().subjets()[0].mass(),leg1().subjets()[1].mass())/leg1().mass()'),
+            nbins = cms.untracked.int32(100),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(1),
+            title = cms.untracked.string("massdrop_{1}")
+            )
+        )
+process.cmgPFDiJetCA8PrunedHistograms.histograms.massdrop2 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('max(leg2().subjets()[0].mass(),leg2().subjets()[1].mass())/leg2().mass()'),
+            nbins = cms.untracked.int32(100),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(1),
+            title = cms.untracked.string("massdrop_{2}")
+            )
+        )
+
 process.w1tag=process.highMass.copy()
 process.w1tag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
 process.w1tag.cut='getSelection("cuts_w1tag") || getSelection("cuts_w2tag")'
@@ -550,6 +582,8 @@ process.w1tagFilter.src=cms.InputTag('w1tag')
 process.cmgPFDiJetHistograms1tag=process.cmgPFDiJetHistograms.copy()
 
 process.cmgPFFatDiJetHistograms1tag=process.cmgPFFatDiJetHistograms.copy()
+
+process.cmgPFDiJetCA8PrunedHistograms1tag=process.cmgPFDiJetCA8PrunedHistograms.copy()
 
 process.w2tag=process.highMass.copy()
 process.w2tag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
@@ -561,6 +595,8 @@ process.cmgPFDiJetHistograms2tag=process.cmgPFDiJetHistograms.copy()
 
 process.cmgPFFatDiJetHistograms2tag=process.cmgPFFatDiJetHistograms.copy()
 
+process.cmgPFDiJetCA8PrunedHistograms2tag=process.cmgPFDiJetCA8PrunedHistograms.copy()
+
 # Total process
 process.dijetanalysis = cms.Sequence(
     process.cmgPFMET + 
@@ -571,7 +607,10 @@ process.dijetanalysis = cms.Sequence(
     process.cmgPFJetSel +
     process.cmgPFLeadJet +
     process.cmgPFDiJet +
+    process.cmgPFMediumDiJet +
     process.cmgPFTightDiJet +
+    
+    process.cmgPFMediumDiJetFilter +
 
     process.cmgFatJet +
     process.cmgDiFatJet +
@@ -583,29 +622,67 @@ process.dijetanalysis = cms.Sequence(
     process.cmgPFJetCA8PrunedCMG + 
     process.cmgPFJetSelCA8PrunedCMG + 
     process.cmgPFLeadJetCA8Pruned +
-    process.cmgPFDiJetCA8Pruned +
-
-    process.cmgPFTightDiJetFilter
+    process.cmgPFDiJetCA8Pruned
     )
     
-process.dijetanalysis2 = cms.Sequence(
+process.dijetanalysis_fromPAT = cms.Sequence(
     process.cmgPFTightDiJetFilter +
+
     process.cmgPFDiJetHistograms +
     process.cmgPFFatDiJetHistograms +
+    process.cmgPFDiJetCA8PrunedHistograms +
 
     process.w1tag +
     process.w1tagFilter +
     process.cmgPFDiJetHistograms1tag +
     process.cmgPFFatDiJetHistograms1tag +
+    process.cmgPFDiJetCA8PrunedHistograms1tag +
 
     process.w2tag +
     process.w2tagFilter +
     process.cmgPFDiJetHistograms2tag +
-    process.cmgPFFatDiJetHistograms2tag
+    process.cmgPFFatDiJetHistograms2tag +
+    process.cmgPFDiJetCA8PrunedHistograms2tag
+    )
+
+process.dijetanalysis_fromCMG = cms.Sequence(
+    process.baseMETHistograms +
+
+    process.cmgPFLeadJet +
+    process.cmgPFDiJet +
+    process.cmgPFMediumDiJet +
+    process.cmgPFTightDiJet +
+
+    process.cmgPFMediumDiJetFilter +
+
+    process.cmgFatJet +
+    process.cmgDiFatJet +
+    process.cmgPFFatTightDiJet +
+
+    process.cmgPFLeadJetCA8Pruned +
+    process.cmgPFDiJetCA8Pruned +
+
+    process.cmgPFTightDiJetFilter +
+
+    process.cmgPFDiJetHistograms +
+    process.cmgPFFatDiJetHistograms +
+    process.cmgPFDiJetCA8PrunedHistograms +
+
+    process.w1tag +
+    process.w1tagFilter +
+    process.cmgPFDiJetHistograms1tag +
+    process.cmgPFFatDiJetHistograms1tag +
+    process.cmgPFDiJetCA8PrunedHistograms1tag +
+
+    process.w2tag +
+    process.w2tagFilter +
+    process.cmgPFDiJetHistograms2tag +
+    process.cmgPFFatDiJetHistograms2tag +
+    process.cmgPFDiJetCA8PrunedHistograms2tag
     )
 
 process.p += process.dijetanalysis
-process.p2 = cms.Path(process.dijetanalysis2)
+process.p2 = cms.Path(process.dijetanalysis_fromPAT)
 
 ### OUTPUT DEFINITION #############################################
 
@@ -687,5 +764,26 @@ if runOnMC:
     #process.outcmg.outputCommands.extend(cms.untracked.vstring('keep *_genParticles_*_*'))
 
 process.outpath.remove(process.out)
-
 del process.out
+
+if runOnCMG:
+    process.setName_("CMG")
+    process.outpath.remove(process.outcmg)
+    del process.outcmg
+    process.outpath.remove(process.ria)
+    del process.ria
+    del process.p
+    process.p2 = cms.Path(process.dijetanalysis_fromCMG)
+
+    samplename="428_HT_Run2011A-May10ReReco-v1_vv4"
+    #samplename="428_HT_Run2011A-PromptReco-v4_vv4"
+    #samplename="428_HT_Run2011A-05Aug2011-v1_vv4"
+    #samplename="428_HT_Run2011A-PromptReco-v6_vv4"
+    #samplename="428_HT_Run2011B-PromptReco-v1_vv4"
+
+    files='CMG_tree.*root'
+
+    from CMGTools.Production.datasetToSource import *
+    process.source = datasetToSource('hinzmann', '/'+samplename, files)
+    process.TFileService.fileName = cms.string("/tmp/hinzmann/"+samplename+"_histograms.root")
+    

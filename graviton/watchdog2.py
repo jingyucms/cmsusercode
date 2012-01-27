@@ -483,9 +483,11 @@ for dir in crab_dirs:
         resubmit( dir, states[ 'Aborted' ], 'Aborted', options )
 
     if options.resubmit_grid_failed and 'Grid-Fail' in states:
+        call_crab( '-get', states[ 'Grid-Fail' ], dir, stdout=True )
         resubmit( dir, states[ 'Grid-Fail' ], 'Grid-Fail', options )
 
     if options.resubmit_app_failed and 'App-Fail' in states:
+        call_crab( '-get', states[ 'App-Fail' ], dir, stdout=True )
         resubmit( dir, states[ 'App-Fail' ], 'App-Fail', options )
 
     if options.kill_resubmit:

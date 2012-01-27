@@ -9,7 +9,7 @@ do
 
 if [ $m -eq 14 ]
 then
-dir=428_HT_Run2011A-May10ReReco-v1_vv3
+dir=428_HT_Run2011A-May10ReReco-v1_vv5
 datasetpath=/HT/Run2011A-May10ReReco-v1/AOD
 lumi_mask=Cert_160404-163869_7TeV_May10ReReco_Collisions11_JSON_v3.txt
 runselection=160329-163869
@@ -18,7 +18,7 @@ fi
 
 if [ $m -eq 15 ]
 then
-dir=428_HT_Run2011A-PromptReco-v4_vv3
+dir=428_HT_Run2011A-PromptReco-v4_vv5
 datasetpath=/HT/Run2011A-PromptReco-v4/AOD
 lumi_mask=Cert_160404-180252_7TeV_PromptReco_Collisions11_JSON.txt
 runselection=165071-168437
@@ -27,7 +27,7 @@ fi
 
 if [ $m -eq 16 ]
 then
-dir=428_HT_Run2011A-05Aug2011-v1_vv3
+dir=428_HT_Run2011A-05Aug2011-v1_vv5
 datasetpath=/HT/Run2011A-05Aug2011-v1/AOD
 lumi_mask=Cert_170249-172619_7TeV_ReReco5Aug_Collisions11_JSON_v3.txt
 runselection=1700053-172619
@@ -36,7 +36,7 @@ fi
 
 if [ $m -eq 17 ]
 then
-dir=428_HT_Run2011A-PromptReco-v6_vv3
+dir=428_HT_Run2011A-PromptReco-v6_vv5
 datasetpath=/HT/Run2011A-PromptReco-v6/AOD
 lumi_mask=Cert_160404-180252_7TeV_PromptReco_Collisions11_JSON.txt
 runselection=172620-175770
@@ -45,7 +45,7 @@ fi
 
 if [ $m -eq 18 ]
 then
-dir=428_HT_Run2011B-PromptReco-v1_vv3
+dir=428_HT_Run2011B-PromptReco-v1_vv5
 datasetpath=/HT/Run2011B-PromptReco-v1/AOD
 lumi_mask=Cert_160404-180252_7TeV_PromptReco_Collisions11_JSON.txt
 runselection=175832-180296
@@ -57,6 +57,11 @@ fi
   py=${dir}.py
 
   echo ********Creating ${py}
+
+cat > switches.py <<EOF
+runOnMC=False
+runOnCMG=False
+EOF
 
 cat > ${py} <<EOF
 
@@ -91,7 +96,7 @@ get_edm_output=1
 
 pset=${py}
 total_number_of_lumis=10000000
-lumis_per_job=1000
+lumis_per_job=50
 lumi_mask=${lumi_mask}
 runselection=${runselection}
 

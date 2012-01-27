@@ -1,3 +1,6 @@
 vv1 first analysis
 vv2 fix mass cut on saving tree
 vv3 new histogram binning
+vv4 remove leptons and ak7
+vv5 fix JEC for CA8, fix mass histogram binning, remove btagging, fix PFnoPileup for CA8
+vv6 plan to change high binning for jet mass
