@@ -38454,23 +38454,33 @@ process.extraVertices5 = cms.Path( process.HLTBeginSequence + process.HLTRecoJet
 
 process.hltPFTauTagInfo.UsePVconstraint = False
 
-process.hltPFTauLoosePVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
-    PFTauProducer = cms.InputTag( "hltPFTaus" ),
-    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+#process.hltPFTauLoosePVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
+#    PFTauProducer = cms.InputTag( "hltPFTaus" ),
+#    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+#    vertexSrc = cms.InputTag("hltPixelVertices"),
+#    useLeadingTrack = cms.bool(True),
+#    trackSrc = cms.InputTag("hltIter4Merged"),
+#    useLeadingRecoCandidate = cms.bool(False),
+#    recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
+#    dZ = cms.double(0.2),
+#)
+#process.hltSelectedPFTausLoosePV = cms.EDFilter( "PFTauSelector",
+#    src = cms.InputTag( "hltPFTaus" ),
+#    discriminators = cms.VPSet( 
+#      cms.PSet(  discriminator = cms.InputTag( "hltPFTauLoosePVDiscriminator" ),
+#        selectionCut = cms.double( 0.5 )
+#      )
+#    )
+#)
+process.hltSelectedPFTausLoosePV = cms.EDFilter( "PFTauVertexSelector",
+    tauSrc = cms.InputTag( "hltPFTaus" ),
     vertexSrc = cms.InputTag("hltPixelVertices"),
-    useLeadingTrack = cms.bool(True),
+    useLeadingTrack = cms.bool(False),
     trackSrc = cms.InputTag("hltIter4Merged"),
-    useLeadingRecoCandidate = cms.bool(False),
-    recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
+    useLeadingRecoCandidate = cms.bool(True),
+    recoCandidateSrc = cms.InputTag("hltPixelMatchElectronsL1Iso"),
     dZ = cms.double(0.2),
-)
-process.hltSelectedPFTausLoosePV = cms.EDFilter( "PFTauSelector",
-    src = cms.InputTag( "hltPFTaus" ),
-    discriminators = cms.VPSet( 
-      cms.PSet(  discriminator = cms.InputTag( "hltPFTauLoosePVDiscriminator" ),
-        selectionCut = cms.double( 0.5 )
-      )
-    )
+    filterOnNTaus = cms.uint32(1),
 )
 process.hltConvPFTausLoosePV = cms.EDProducer( "PFTauToJetProducer",
     Source = cms.InputTag( "hltSelectedPFTausLoosePV" )
@@ -38482,24 +38492,34 @@ process.hltPFTausLoosePV = cms.EDFilter( "HLT1Tau",
     MaxEta = cms.double( 2.5 ),
     MinN = cms.int32( 1 )
 )
-process.filterPVloose = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTaus + process.hltPFTauLoosePVDiscriminator + process.hltSelectedPFTausLoosePV + process.hltConvPFTausLoosePV + process.hltPFTausLoosePV + process.HLTEndSequence )
-process.hltPFTauMediumPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
-    PFTauProducer = cms.InputTag( "hltPFTausMediumIso" ),
-    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+process.filterPVloose = cms.Path( process.HLTBeginSequence + process.hltL1sL1SingleEG18orL1SingleEG20 + process.HLTEle20CaloIdVTCaloIsoTTrkIdTTrkIsoTSequenceL1SingleEG18orEG20 + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTaus + process.hltSelectedPFTausLoosePV + process.hltConvPFTausLoosePV + process.hltPFTausLoosePV + process.HLTEndSequence )
+#process.hltPFTauMediumPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
+#    PFTauProducer = cms.InputTag( "hltPFTausMediumIso" ),
+#    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+#    vertexSrc = cms.InputTag("hltPixelVertices"),
+#    useLeadingTrack = cms.bool(True),
+#    trackSrc = cms.InputTag("hltIter4Merged"),
+#    useLeadingRecoCandidate = cms.bool(False),
+#    recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
+#    dZ = cms.double(0.2),
+#)
+#process.hltSelectedPFTausMediumPV = cms.EDFilter( "PFTauSelector",
+#    src = cms.InputTag( "hltPFTausMediumIso" ),
+#    discriminators = cms.VPSet( 
+#      cms.PSet(  discriminator = cms.InputTag( "hltPFTauMediumPVDiscriminator" ),
+#        selectionCut = cms.double( 0.5 )
+#      )
+#    )
+#)
+process.hltSelectedPFTausMediumPV = cms.EDFilter( "PFTauVertexSelector",
+    tauSrc = cms.InputTag( "hltPFTausMediumIso" ),
     vertexSrc = cms.InputTag("hltPixelVertices"),
-    useLeadingTrack = cms.bool(True),
+    useLeadingTrack = cms.bool(False),
     trackSrc = cms.InputTag("hltIter4Merged"),
-    useLeadingRecoCandidate = cms.bool(False),
+    useLeadingRecoCandidate = cms.bool(True),
     recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
     dZ = cms.double(0.2),
-)
-process.hltSelectedPFTausMediumPV = cms.EDFilter( "PFTauSelector",
-    src = cms.InputTag( "hltPFTausMediumIso" ),
-    discriminators = cms.VPSet( 
-      cms.PSet(  discriminator = cms.InputTag( "hltPFTauMediumPVDiscriminator" ),
-        selectionCut = cms.double( 0.5 )
-      )
-    )
+    filterOnNTaus = cms.uint32(1),
 )
 process.hltConvPFTausMediumPV = cms.EDProducer( "PFTauToJetProducer",
     Source = cms.InputTag( "hltSelectedPFTausMediumPV" )
@@ -38511,24 +38531,34 @@ process.hltPFTausMediumPV = cms.EDFilter( "HLT1Tau",
     MaxEta = cms.double( 2.5 ),
     MinN = cms.int32( 1 )
 )
-process.filterPVmedium = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausMediumIso + process.hltPFTauMediumPVDiscriminator + process.hltSelectedPFTausMediumPV + process.hltConvPFTausMediumPV + process.hltPFTausMediumPV + process.HLTEndSequence )
-process.hltPFTauTightPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
-    PFTauProducer = cms.InputTag( "hltPFTausTightIso" ),
-    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+process.filterPVmedium = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausMediumIso + process.hltSelectedPFTausMediumPV + process.hltConvPFTausMediumPV + process.hltPFTausMediumPV + process.HLTEndSequence )
+#process.hltPFTauTightPVDiscriminator = cms.EDProducer( "PFRecoTauDiscriminationByPV",
+#    PFTauProducer = cms.InputTag( "hltPFTausTightIso" ),
+#    Prediscriminants = cms.PSet(  BooleanOperator = cms.string( "and" ) ),
+#    vertexSrc = cms.InputTag("hltPixelVertices"),
+#    useLeadingTrack = cms.bool(True),
+#    trackSrc = cms.InputTag("hltIter4Merged"),
+#    useLeadingRecoCandidate = cms.bool(False),
+#    recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
+#    dZ = cms.double(0.2),
+#)
+#process.hltSelectedPFTausTightPV = cms.EDFilter( "PFTauSelector",
+#    src = cms.InputTag( "hltPFTausTightIso" ),
+#    discriminators = cms.VPSet( 
+#      cms.PSet(  discriminator = cms.InputTag( "hltPFTauTightPVDiscriminator" ),
+#        selectionCut = cms.double( 0.5 )
+#      )
+#    )
+#)
+process.hltSelectedPFTausTightPV = cms.EDFilter( "PFTauVertexSelector",
+    tauSrc = cms.InputTag( "hltPFTausTightIso" ),
     vertexSrc = cms.InputTag("hltPixelVertices"),
     useLeadingTrack = cms.bool(True),
     trackSrc = cms.InputTag("hltIter4Merged"),
     useLeadingRecoCandidate = cms.bool(False),
     recoCandidateSrc = cms.InputTag("hltL3MuonCandidates"),
     dZ = cms.double(0.2),
-)
-process.hltSelectedPFTausTightPV = cms.EDFilter( "PFTauSelector",
-    src = cms.InputTag( "hltPFTausTightIso" ),
-    discriminators = cms.VPSet( 
-      cms.PSet(  discriminator = cms.InputTag( "hltPFTauTightPVDiscriminator" ),
-        selectionCut = cms.double( 0.5 )
-      )
-    )
+    filterOnNTaus = cms.uint32(1),
 )
 process.hltConvPFTausTightPV = cms.EDProducer( "PFTauToJetProducer",
     Source = cms.InputTag( "hltSelectedPFTausTightPV" )
@@ -38540,7 +38570,7 @@ process.hltPFTausTightPV = cms.EDFilter( "HLT1Tau",
     MaxEta = cms.double( 2.5 ),
     MinN = cms.int32( 1 )
 )
-process.filterPVtight = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausTightIso + process.hltPFTauTightPVDiscriminator + process.hltSelectedPFTausTightPV + process.hltConvPFTausTightPV + process.hltPFTausTightPV + process.HLTEndSequence )
+process.filterPVtight = cms.Path( process.HLTBeginSequence + process.HLTRecoJetSequencePrePF + process.HLTPFJetTriggerSequenceForTaus + process.hltPFTauJetTracksAssociator + process.hltPFTauTagInfo + process.hltPFTausTightIso + process.hltSelectedPFTausTightPV + process.hltConvPFTausTightPV + process.hltPFTausTightPV + process.HLTEndSequence )
 
 #process.hltPFTaus.UseChargedHadrCandLeadChargedHadrCand_tksDZconstraint = False
 #process.hltPFTaus.UseTrackLeadTrackDZconstraint = False
@@ -38685,7 +38715,7 @@ process.out = cms.OutputModule(
     'keep triggerTriggerFilterObjectWithRefs_*_*_TEST',
     'keep recoVertexs_*_*_*',
     ),
-    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_usenewpvfilter_v3_track.root'),
+    fileName = cms.untracked.string('/tmp/hinzmann/trigger_study_usenewpvfilter_vHLT_mix.root'),
     )
 
 process.endpath = cms.EndPath(process.out)

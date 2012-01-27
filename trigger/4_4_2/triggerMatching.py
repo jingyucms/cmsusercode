@@ -20,7 +20,7 @@ gStyle.SetLabelSize(0.05, "XYZ")
 gStyle.SetNdivisions(510, "XYZ")
 gStyle.SetLegendBorderSize(0)
 
-prefix = "plots/tauisolation_modified"
+prefix = "plots/tauisolation_modified_muon"
 wait=True
 
 def makeEfficiency(passing, all):
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     #events=Events("/tmp/hinzmann/trigger_study_offlineVertex_off_relsumpt.root")
     #events=Events("/tmp/hinzmann/trigger_study_all.root")
     #events=Events("/tmp/hinzmann/trigger_study_trackmaxdz02_nousepvconstraint.root")
-    events=Events("/tmp/hinzmann/trigger_study_usenewpvfilter_v2.root")
+    events=Events("/tmp/hinzmann/trigger_study_usenewpvfilter_vHLT_mix.root")
 
     tau_handle=Handle("std::vector<reco::PFTau>")
     tau_label="offlineSelectedPFTausLooseIsoTrackFinding"
@@ -117,12 +117,12 @@ if __name__ == '__main__':
     #tau_label="offlineSelectedPFTausTightIsoTrackFinding"
 
     hlttau_handle=Handle("std::vector<reco::PFTau>")
-    hlttau_label="hltPFTaus"
-    #hlttau_label="hltPFTausMediumIso"
+    #hlttau_label="hltPFTaus"
+    hlttau_label="hltPFTausMediumIso"
     #hlttau_label="hltPFTausTightIso"
 
-    selhlttau_handle=Handle("std::vector<reco::PFTau>")
-    selhlttau_label="hltSelectedPFTausLoosePV"
+    #selhlttau_handle=Handle("std::vector<reco::PFTau>")
+    #selhlttau_label="hltSelectedPFTausLoosePV"
     #selhlttau_label="hltSelectedPFTausMediumPV"
     #selhlttau_label="hltSelectedPFTausTightPV"
 
@@ -139,7 +139,9 @@ if __name__ == '__main__':
     #elefilter_label="hltOverlapFilterIsoEle20CaloJet5"
 
     selectionfilter_handle=Handle("trigger::TriggerFilterObjectWithRefs")
-    selectionfilter_label="hltPFTausLoosePV"
+    #selectionfilter_label="hltPFTausLoosePV"
+    selectionfilter_label="hltPFTausMediumPV"
+    #selectionfilter_label="hltPFTausTightPV"
 
     isolationfilter_handle=Handle("trigger::TriggerFilterObjectWithRefs")
     isolationfilter_label="hltPFTauTightIso20TrackTightIso"
@@ -182,8 +184,8 @@ if __name__ == '__main__':
         taus=tau_handle.product()
         events.getByLabel(hlttau_label,hlttau_handle)
         hlttaus=hlttau_handle.product()
-        events.getByLabel(selhlttau_label,selhlttau_handle)
-        selhlttaus=selhlttau_handle.product()
+        #events.getByLabel(selhlttau_label,selhlttau_handle)
+        #selhlttaus=selhlttau_handle.product()
         events.getByLabel(ele_label,ele_handle)
 	#if len(hlttaus)==0 or hlttaus[0].pt()<20 or abs(hlttaus[0].eta())>2.5:
 	#    continue
@@ -193,11 +195,14 @@ if __name__ == '__main__':
             hlteles=hltele_handle.product()
 	except: hlteles=()
         #events.getByLabel(l1filter_label,l1filter_handle)
-        #l1filter=l1filter_handle.product()
+        #l1filter=l1filter_handle.product()selectionfilter
         #events.getByLabel(elefilter_label,elefilter_handle)
         #elefilter=elefilter_handle.product()
-        events.getByLabel(selectionfilter_label,selectionfilter_handle)
-        selectionfilter=selectionfilter_handle.product()
+	try:
+	    selectionfilter=None
+            events.getByLabel(selectionfilter_label,selectionfilter_handle)
+            selectionfilter=selectionfilter_handle.product()
+	except: pass
         events.getByLabel(isolationfilter_label,isolationfilter_handle)
         isolationfilter=isolationfilter_handle.product()
         events.getByLabel(isolation2filter_label,isolation2filter_handle)
@@ -215,7 +220,7 @@ if __name__ == '__main__':
 	    muonfilter=None
             events.getByLabel(muonfilter_label,muonfilter_handle)
             muonfilter=muonfilter_handle.product()
-	except: pass #continue
+	except: continue #continue
 	try:
 	    hltvertices=()
             events.getByLabel(hltvertex_label,"","TEST",hltvertex_handle)
@@ -262,7 +267,7 @@ if __name__ == '__main__':
                     matched_tau_20=True
 	        #if len(selhlttaus)==0 or selhlttaus[0].pt()<20 or abs(selhlttaus[0].eta())>2.5:
 	        #    continue
-		if not selectionfilter.jetSize()>0:
+		if not selectionfilter or not selectionfilter.jetSize()>0:
 		    continue
 		#l1pass=l1filter.l1emSize()>0
 		#elepass=elefilter.electronSize()>0
@@ -312,7 +317,7 @@ if __name__ == '__main__':
 
         # check lepton vertex reco only
 	#matched_tau_20=num_hltvertices>0
-	#matched_tau_20=num_hltvertices>0 and electronfilter.electronSize()>0
+	#matched_tau_20=electronfilter and num_hltvertices>0 and electronfilter.electronSize()>0
 	#matched_tau_20=muonfilter.muonSize()>0 and num_hltvertices>0
 	
         matched_first_vertex=False
