@@ -373,6 +373,38 @@ process.patTrigger.processName = cms.string('*')
 #process.p = cms.Path( process.patTriggerDefaultSequence )
 process.p = cms.Path( )
 
+# filters
+
+process.noscraping = cms.EDFilter("FilterOutScraping",
+                                applyfilter = cms.untracked.bool(True),
+                                debugOn = cms.untracked.bool(False),
+                                numtrack = cms.untracked.uint32(10),
+                                thresh = cms.untracked.double(0.25)
+                                )
+
+process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
+
+process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
+                                           vertexCollection = cms.InputTag('offlinePrimaryVertices'),
+                                           minimumNDOF = cms.uint32(4) ,
+                                           maxAbsZ = cms.double(15), 
+                                           maxd0 = cms.double(2) 
+                                           )
+
+
+if not runOnMC:
+    from HLTrigger.HLTfilters.hltHighLevel_cfi import *
+    trigger_process_name="HLT"
+    process.triggerSelectionReference = hltHighLevel.clone(TriggerResultsTag = "TriggerResults::"+trigger_process_name, HLTPaths = ["HLT_HT450_v*","HLT_HT500_v*","HLT_HT550_v*"], throw=False)
+    process.triggerSelectionAnalysis1 = hltHighLevel.clone(TriggerResultsTag = "TriggerResults::"+trigger_process_name, HLTPaths = ["HLT_HT600_v*","HLT_FatJetMass850_DR1p1_Deta2p0_v*"], throw=False)
+    process.triggerSelectionAnalysis2 = hltHighLevel.clone(TriggerResultsTag = "TriggerResults::"+trigger_process_name, HLTPaths = ["HLT_HT650_v*","HLT_FatJetMass850_DR1p1_Deta2p0_v*"], throw=False)
+    process.triggerSelectionAnalysis3 = hltHighLevel.clone(TriggerResultsTag = "TriggerResults::"+trigger_process_name, HLTPaths = ["HLT_HT700_v*","HLT_FatJetMass850_DR1p1_Deta2p0_v*"], throw=False)
+    process.triggerSelectionAnalysis4 = hltHighLevel.clone(TriggerResultsTag = "TriggerResults::"+trigger_process_name, HLTPaths = ["HLT_FatJetMass850_DR1p1_Deta2p0_v*"], throw=False)
+    process.triggerSelectionAll = hltHighLevel.clone(TriggerResultsTag = "TriggerResults::"+trigger_process_name, HLTPaths = ["HLT_HT450_v*","HLT_HT500_v*","HLT_HT550_v*","HLT_HT600_v*","HLT_HT650*","HLT_HT700_v*","HLT_FatJetMass850_DR1p1_Deta2p0_v*"], throw=False)
+    process.p += process.triggerSelectionAll
+    process.p += process.noscraping
+    process.p += process.HBHENoiseFilter
+
 # gen ---- 
 
 if runOnMC:
@@ -492,15 +524,18 @@ process.cmgPFMediumDiJet.cut = 'getSelection("cuts_dijetKinematics_mediumMass") 
 process.cmgPFMediumDiJetFilter = process.cmgPFTightDiJetFilter.copy()
 process.cmgPFMediumDiJetFilter.src=cms.InputTag('cmgPFMediumDiJet')
 
+process.cmgPFFatMediumDiJet = process.cmgPFFatTightDiJet.copy()
+process.cmgPFFatMediumDiJet.cut = 'getSelection("cuts_fatDijetKinematics_mediumMass") && getSelection("cuts_fatDijetKinematics_jetsPhaseSpace") && getSelection("cuts_fatDijetKinematics_tightDeltaEta")'
+
 process.cmgPFDiJetHistograms.histograms.mass[0].nbins = 7001
 process.cmgPFDiJetHistograms.histograms.mass[0].low = 0
 process.cmgPFDiJetHistograms.histograms.mass[0].high = 7000
-process.cmgPFDiJetHistograms.histograms.mass1[0].nbins = 501
+process.cmgPFDiJetHistograms.histograms.mass1[0].nbins = 2001
 process.cmgPFDiJetHistograms.histograms.mass1[0].low = 0
-process.cmgPFDiJetHistograms.histograms.mass1[0].high = 500
-process.cmgPFDiJetHistograms.histograms.mass2[0].nbins = 501
+process.cmgPFDiJetHistograms.histograms.mass1[0].high = 2000
+process.cmgPFDiJetHistograms.histograms.mass2[0].nbins = 2001
 process.cmgPFDiJetHistograms.histograms.mass2[0].low = 0
-process.cmgPFDiJetHistograms.histograms.mass2[0].high = 500
+process.cmgPFDiJetHistograms.histograms.mass2[0].high = 2000
 process.cmgPFDiJetHistograms.inputCollection=cms.InputTag("cmgPFTightDiJet")
 process.cmgPFDiJetHistograms.histograms.deltaPhi[0].nbins = 50
 process.cmgPFDiJetHistograms.histograms.deltaEta[0].nbins = 50
@@ -580,9 +615,7 @@ process.w1tagFilter = process.filterHighMass.copy()
 process.w1tagFilter.src=cms.InputTag('w1tag')
 
 process.cmgPFDiJetHistograms1tag=process.cmgPFDiJetHistograms.copy()
-
 process.cmgPFFatDiJetHistograms1tag=process.cmgPFFatDiJetHistograms.copy()
-
 process.cmgPFDiJetCA8PrunedHistograms1tag=process.cmgPFDiJetCA8PrunedHistograms.copy()
 
 process.w2tag=process.highMass.copy()
@@ -592,13 +625,64 @@ process.w2tagFilter = process.filterHighMass.copy()
 process.w2tagFilter.src=cms.InputTag('w2tag')
 
 process.cmgPFDiJetHistograms2tag=process.cmgPFDiJetHistograms.copy()
-
 process.cmgPFFatDiJetHistograms2tag=process.cmgPFFatDiJetHistograms.copy()
-
 process.cmgPFDiJetCA8PrunedHistograms2tag=process.cmgPFDiJetCA8PrunedHistograms.copy()
 
+process.cmgPFDiJetHistogramsReference=process.cmgPFDiJetHistograms.copy()
+process.cmgPFDiJetHistogramsReference.inputCollection=cms.InputTag("cmgPFMediumDiJet")
+process.cmgPFFatDiJetHistogramsReference=process.cmgPFFatDiJetHistograms.copy()
+process.cmgPFFatDiJetHistogramsReference.inputCollection=cms.InputTag("cmgPFFatMediumDiJet")
+process.cmgPFDiJetCA8PrunedHistogramsReference=process.cmgPFDiJetCA8PrunedHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference.inputCollection=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.cmgPFDiJetHistogramsReference1tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference1tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference1tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsReference2tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference2tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference2tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+
+process.cmgPFDiJetHistogramsAnalysis1=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis1=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis1=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis11tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis11tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis11tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis12tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis12tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis12tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+
+process.cmgPFDiJetHistogramsAnalysis2=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis2=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis2=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis21tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis21tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis21tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis22tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis22tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis22tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+
+process.cmgPFDiJetHistogramsAnalysis3=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis3=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis3=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis31tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis31tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis31tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis32tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis32tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis32tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+
+process.cmgPFDiJetHistogramsAnalysis4=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis4=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis4=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis41tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis41tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis41tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsAnalysis42tag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsAnalysis42tag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsAnalysis42tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+
 # Total process
-process.dijetanalysis = cms.Sequence(
+process.dijetanalysis_fromPAT = cms.Sequence(
     process.cmgPFMET + 
     process.cmgPFMETSel + 
     process.baseMETHistograms +
@@ -614,6 +698,7 @@ process.dijetanalysis = cms.Sequence(
 
     process.cmgFatJet +
     process.cmgDiFatJet +
+    process.cmgPFFatMediumDiJet +
     process.cmgPFFatTightDiJet +
 
     process.cmgPFJetCA8CMG + 
@@ -625,26 +710,6 @@ process.dijetanalysis = cms.Sequence(
     process.cmgPFDiJetCA8Pruned
     )
     
-process.dijetanalysis_fromPAT = cms.Sequence(
-    process.cmgPFTightDiJetFilter +
-
-    process.cmgPFDiJetHistograms +
-    process.cmgPFFatDiJetHistograms +
-    process.cmgPFDiJetCA8PrunedHistograms +
-
-    process.w1tag +
-    process.w1tagFilter +
-    process.cmgPFDiJetHistograms1tag +
-    process.cmgPFFatDiJetHistograms1tag +
-    process.cmgPFDiJetCA8PrunedHistograms1tag +
-
-    process.w2tag +
-    process.w2tagFilter +
-    process.cmgPFDiJetHistograms2tag +
-    process.cmgPFFatDiJetHistograms2tag +
-    process.cmgPFDiJetCA8PrunedHistograms2tag
-    )
-
 process.dijetanalysis_fromCMG = cms.Sequence(
     process.baseMETHistograms +
 
@@ -657,10 +722,15 @@ process.dijetanalysis_fromCMG = cms.Sequence(
 
     process.cmgFatJet +
     process.cmgDiFatJet +
+    process.cmgPFFatMediumDiJet +
     process.cmgPFFatTightDiJet +
 
     process.cmgPFLeadJetCA8Pruned +
-    process.cmgPFDiJetCA8Pruned +
+    process.cmgPFDiJetCA8Pruned
+    )
+
+process.dijetanalysis = cms.Sequence(
+    process.primaryVertexFilter + 
 
     process.cmgPFTightDiJetFilter +
 
@@ -681,8 +751,107 @@ process.dijetanalysis_fromCMG = cms.Sequence(
     process.cmgPFDiJetCA8PrunedHistograms2tag
     )
 
-process.p += process.dijetanalysis
-process.p2 = cms.Path(process.dijetanalysis_fromPAT)
+process.trigger_analysis_reference = cms.Sequence(
+    process.primaryVertexFilter + 
+    
+    process.cmgPFDiJetHistogramsReference +
+    process.cmgPFFatDiJetHistogramsReference +
+    process.cmgPFDiJetCA8PrunedHistogramsReference +
+
+    process.w1tag +
+    process.w1tagFilter +
+    process.cmgPFDiJetHistogramsReference1tag +
+    process.cmgPFFatDiJetHistogramsReference1tag +
+    process.cmgPFDiJetCA8PrunedHistogramsReference1tag +
+
+    process.w2tag +
+    process.w2tagFilter +
+    process.cmgPFDiJetHistogramsReference2tag +
+    process.cmgPFFatDiJetHistogramsReference2tag +
+    process.cmgPFDiJetCA8PrunedHistogramsReference2tag
+    )
+
+process.trigger_analysis1 = cms.Sequence(
+    process.primaryVertexFilter + 
+
+    process.cmgPFDiJetHistogramsAnalysis1 +
+    process.cmgPFFatDiJetHistogramsAnalysis1 +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis1 +
+
+    process.w1tag +
+    process.w1tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis11tag +
+    process.cmgPFFatDiJetHistogramsAnalysis11tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis11tag +
+
+    process.w2tag +
+    process.w2tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis12tag +
+    process.cmgPFFatDiJetHistogramsAnalysis12tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis12tag
+    )
+
+process.trigger_analysis2 = cms.Sequence(
+    process.primaryVertexFilter + 
+
+    process.cmgPFDiJetHistogramsAnalysis2 +
+    process.cmgPFFatDiJetHistogramsAnalysis2 +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis2 +
+
+    process.w1tag +
+    process.w1tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis21tag +
+    process.cmgPFFatDiJetHistogramsAnalysis21tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis21tag +
+
+    process.w2tag +
+    process.w2tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis22tag +
+    process.cmgPFFatDiJetHistogramsAnalysis22tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis22tag
+    )
+
+process.trigger_analysis3 = cms.Sequence(
+    process.primaryVertexFilter + 
+
+    process.cmgPFDiJetHistogramsAnalysis3 +
+    process.cmgPFFatDiJetHistogramsAnalysis3 +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis3 +
+
+    process.w1tag +
+    process.w1tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis31tag +
+    process.cmgPFFatDiJetHistogramsAnalysis31tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis31tag +
+
+    process.w2tag +
+    process.w2tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis32tag +
+    process.cmgPFFatDiJetHistogramsAnalysis32tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis32tag
+    )
+
+process.trigger_analysis4 = cms.Sequence(
+    process.primaryVertexFilter + 
+
+    process.cmgPFDiJetHistogramsAnalysis4 +
+    process.cmgPFFatDiJetHistogramsAnalysis4 +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis4 +
+
+    process.w1tag +
+    process.w1tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis41tag +
+    process.cmgPFFatDiJetHistogramsAnalysis41tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis41tag +
+
+    process.w2tag +
+    process.w2tagFilter +
+    process.cmgPFDiJetHistogramsAnalysis42tag +
+    process.cmgPFFatDiJetHistogramsAnalysis42tag +
+    process.cmgPFDiJetCA8PrunedHistogramsAnalysis42tag
+    )
+
+process.p += process.dijetanalysis_fromPAT
 
 ### OUTPUT DEFINITION #############################################
 
@@ -740,6 +909,9 @@ if runCA8:
   process.outcmg.outputCommands.extend(cms.untracked.vstring('drop *_selectedPatElectronsAK5_*_*'))
   process.outcmg.outputCommands.extend(cms.untracked.vstring('drop *_selectedPatElectronsAK7_*_*'))
 
+process.outcmg.outputCommands.extend(cms.untracked.vstring('keep *_TriggerResults_*_HLT'))
+process.outcmg.outputCommands.extend(cms.untracked.vstring('keep *_HBHENoiseFilter_*_*'))
+
 process.load("CMGTools.Common.runInfoAccounting_cff")
 process.ria = cms.Sequence(
     process.runInfoAccountingDataSequence
@@ -767,23 +939,51 @@ process.outpath.remove(process.out)
 del process.out
 
 if runOnCMG:
+    process.p = cms.Path(process.dijetanalysis_fromCMG)
     process.setName_("CMG")
     process.outpath.remove(process.outcmg)
     del process.outcmg
     process.outpath.remove(process.ria)
     del process.ria
-    del process.p
-    process.p2 = cms.Path(process.dijetanalysis_fromCMG)
 
-    samplename="428_HT_Run2011A-May10ReReco-v1_vv4"
-    #samplename="428_HT_Run2011A-PromptReco-v4_vv4"
-    #samplename="428_HT_Run2011A-05Aug2011-v1_vv4"
-    #samplename="428_HT_Run2011A-PromptReco-v6_vv4"
-    #samplename="428_HT_Run2011B-PromptReco-v1_vv4"
+    #samplename="428_HT_Run2011A-May10ReReco-v1_vv9"
+    #samplename="428_HT_Run2011A-PromptReco-v4_vv9"
+    #samplename="428_HT_Run2011A-05Aug2011-v1_vv9"
+    #samplename="428_HT_Run2011A-PromptReco-v6_vv9"
+    samplename="428_HT_Run2011B-PromptReco-v1_vv9"
 
     files='CMG_tree.*root'
 
     from CMGTools.Production.datasetToSource import *
     process.source = datasetToSource('hinzmann', '/'+samplename, files)
     process.TFileService.fileName = cms.string("/tmp/hinzmann/"+samplename+"_histograms.root")
-    
+
+
+if not runOnMC:
+    process.p2 = process.p.copy()
+    process.p2 += process.triggerSelectionAll
+    process.p2 += process.dijetanalysis
+    process.p3 = process.p.copy()
+    process.p3 += process.triggerSelectionReference
+    process.p3 += process.trigger_analysis_reference
+    process.p4 = process.p.copy()
+    process.p4 += process.triggerSelectionReference
+    process.p4 += process.triggerSelectionAnalysis1
+    process.p4 += process.trigger_analysis1
+    process.p5 = process.p.copy()
+    process.p5 += process.triggerSelectionReference
+    process.p5 += process.triggerSelectionAnalysis2
+    process.p5 += process.trigger_analysis2
+    process.p6 = process.p.copy()
+    process.p6 += process.triggerSelectionReference
+    process.p6 += process.triggerSelectionAnalysis3
+    process.p6 += process.trigger_analysis3
+    process.p7 = process.p.copy()
+    process.p7 += process.triggerSelectionReference
+    process.p7 += process.triggerSelectionAnalysis4
+    process.p7 += process.trigger_analysis4
+else:
+    process.p2 = process.p.copy()
+    process.p2 += process.dijetanalysis
+    process.p3 = process.p.copy()
+    process.p3 += process.trigger_analysis_reference

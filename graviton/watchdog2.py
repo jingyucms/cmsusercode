@@ -100,6 +100,8 @@ def make_state( job, use_server ):
                 return job.state
             else:
                 raise JobStatusError( job )
+        elif job.state == 'Submitting':
+            return job.state
         elif job.state == 'Aborted':
             return job.state
         elif job.state == 'CannotSubmit':
@@ -156,7 +158,10 @@ def parse_output( output, use_server ):
         if job.state == 'Cancelled':
             del split_line[4:6]
 
-        job.action = split_line[3]
+        if len( split_line ) >= 4:
+            job.action = split_line[3]
+	else:
+	    job.action = None
 
         if len( split_line ) == 4:
             job.host = None
@@ -185,7 +190,10 @@ def parse_output( output, use_server ):
             job.grid = int( split_line[5] )
             job.host = split_line[6]
         else:
-            raise Exception( 'Unexpected line in crab output: %s' % line )
+            if job.action==None:
+	        print "Warning: no jobaction found"
+	    else:
+                raise Exception( 'Unexpected line in crab output: %s' % line )
 
         job.state = make_state( job, use_server )
 

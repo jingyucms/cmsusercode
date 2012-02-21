@@ -1,6 +1,9 @@
-vv1 first analysis
-vv2 fix mass cut on saving tree
+buggy - vv1 first analysis
+buggy - vv2 fix mass cut on saving tree
 vv3 new histogram binning
 vv4 remove leptons and ak7
 vv5 fix JEC for CA8, fix mass histogram binning, remove btagging, fix PFnoPileup for CA8
-vv6 plan to change high binning for jet mass
+vv6 change high binning for jet mass, fix wide jets
+buggy - vv7 add trigger information
+buggy - vv8 fix event selection of tree and trigger histograms
+vv9 fix filter logic

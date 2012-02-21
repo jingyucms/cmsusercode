@@ -26,8 +26,13 @@ then
 scale=3000
 fi
 
-startm=1
-endm=1
+if [ $n -eq 4 ]
+then
+scale=1500
+fi
+
+startm=0
+endm=0
 m=${startm}
 while [ $m -le $endm ]
 do
@@ -44,7 +49,7 @@ particle=Z
 pdgid=23
 fi
 
-  dir=pythia6_graviton${particle}${particle}_${scale}_noMPI_noHAD_noSHOWER
+  dir=pythia6_graviton${particle}${particle}_${scale}_noMPI_noHAD_noSHOWER_xsec
 
   echo ********file ${dir}
   
@@ -156,7 +161,7 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
 		        'MSUB(391) = 1',
 		        'MSUB(392) = 1',
 		        'PMAS(347,1) = ${scale}',
-		        'PARP(50) = 0.1', #0.54
+		        'PARP(50) = 0.54', #0.54
 		        '5000039:ALLOFF',
 		        '5000039:ONIFANY ${pdgid}',
 
@@ -238,8 +243,8 @@ EOF
   echo ********Running ${cfg}
   
 #crab -create -submit
-#cmsRun ${py}
-cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/graviton/
+cmsRun ${py}
+#cmsStage -f /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/graviton/
 
   pycmg=${dir}_CMG.py
 

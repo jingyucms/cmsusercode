@@ -1,0 +1,2 @@
+runOnMC=True
+runOnCMG=False
