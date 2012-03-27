@@ -32,3 +32,5 @@ configurationMetadata = cms.untracked.PSet(
 	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/RSGravitonToZZ_M_2000_TuneZ2_7TeV_pythia6_cff.py,v $'),
 	annotation = cms.untracked.string('Fall2011 sample with PYTHIA6: RSG -> ZZ, TuneZ2')
 )
+
+ProductionFilterSequence = cms.Sequence(generator)

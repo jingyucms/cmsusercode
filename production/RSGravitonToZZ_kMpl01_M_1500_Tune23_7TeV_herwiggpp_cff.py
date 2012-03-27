@@ -30,7 +30,9 @@ generator = cms.EDFilter("ThePEGGeneratorFilter",
 )
 
 configurationMetadata = cms.untracked.PSet(
-	version = cms.untracked.string('\$Revision: 1.2 $'),
-	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/RSGravitonToZZ_kMpl01_M_1000_Tune23_7TeV_herwiggpp_cff.py,v $'),
+	version = cms.untracked.string('\$Revision: 1.1 $'),
+	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/RSGravitonToZZ_kMpl01_M_1500_Tune23_7TeV_herwiggpp_cff.py,v $'),
 	annotation = cms.untracked.string('Fall2011 sample with HERWIGPP: RSGraviton -> ZZ, Tune23')
 )
+
+ProductionFilterSequence = cms.Sequence(generator)

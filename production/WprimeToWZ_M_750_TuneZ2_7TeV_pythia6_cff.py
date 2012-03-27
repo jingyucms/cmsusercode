@@ -35,7 +35,9 @@ generator = cms.EDFilter("Pythia6GeneratorFilter",
 )
 
 configurationMetadata = cms.untracked.PSet(
-	version = cms.untracked.string('\$Revision: 1.2 $'),
+	version = cms.untracked.string('\$Revision: 1.1 $'),
 	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/WprimeToWZ_M_750_TuneZ2_7TeV_pythia6_cff.py,v $'),
 	annotation = cms.untracked.string('Fall2011 sample with PYTHIA6: Wprime -> WZ, TuneZ2')
 )
+
+ProductionFilterSequence = cms.Sequence(generator)

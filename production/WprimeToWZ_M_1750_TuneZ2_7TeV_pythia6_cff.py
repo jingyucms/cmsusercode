@@ -39,3 +39,5 @@ configurationMetadata = cms.untracked.PSet(
 	name = cms.untracked.string('\$Source: /cvs/CMSSW/UserCode/hinzmann/production/WprimeToWZ_M_1750_TuneZ2_7TeV_pythia6_cff.py,v $'),
 	annotation = cms.untracked.string('Fall2011 sample with PYTHIA6: Wprime -> WZ, TuneZ2')
 )
+
+ProductionFilterSequence = cms.Sequence(generator)
