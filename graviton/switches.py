@@ -1,2 +1,2 @@
-runOnMC=True
-runOnCMG=False
+runOnMC=False
+runOnCMG=True

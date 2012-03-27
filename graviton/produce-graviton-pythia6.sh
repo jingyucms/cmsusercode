@@ -31,8 +31,8 @@ then
 scale=1500
 fi
 
-startm=0
-endm=0
+startm=1
+endm=1
 m=${startm}
 while [ $m -le $endm ]
 do
@@ -49,7 +49,7 @@ particle=Z
 pdgid=23
 fi
 
-  dir=pythia6_graviton${particle}${particle}_${scale}_noMPI_noHAD_noSHOWER_xsec
+  dir=pythia6_graviton${particle}${particle}_${scale}_test1
 
   echo ********file ${dir}
   
@@ -64,7 +64,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("PFAOD")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(50000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -165,11 +165,11 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
 		        '5000039:ALLOFF',
 		        '5000039:ONIFANY ${pdgid}',
 
-'MSTP(81)=20     ! MPI Z2', 
-'MSTJ(1)=0     ! HAD', 
-'MSTJ(41)=0     ! PS', 
-'MSTP(61)=0     ! ISR', 
-'MSTP(71)=0     ! FSR', 
+#'MSTP(81)=20     ! MPI Z2', 
+#'MSTJ(1)=0     ! HAD', 
+#'MSTJ(41)=0     ! PS', 
+#'MSTP(61)=0     ! ISR', 
+#'MSTP(71)=0     ! FSR', 
 		),
 		parameterSets = cms.vstring(
 		        'pythiaUESettings',

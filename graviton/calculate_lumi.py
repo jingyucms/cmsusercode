@@ -20,10 +20,10 @@ if __name__=="__main__":
         # --correctionv2 not yet in
         command="lumiCalc2.py -c frontier://LumiProd/CMS_LUMI_PROD -i "+dataset+".txt -hltpath HLT_HT* -o "+dataset+"-HT.cvs recorded"
         print command
-        os.system(command)
+        #os.system(command)
         command="lumiCalc2.py -c frontier://LumiProd/CMS_LUMI_PROD -i "+dataset+".txt -hltpath HLT_FatJetMass* -o "+dataset+"-FatJetMass.cvs recorded"
         print command
-        os.system(command)
+        #os.system(command)
 
     lumi={}
     for trigger in triggers:

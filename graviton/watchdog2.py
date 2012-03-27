@@ -107,7 +107,8 @@ def make_state( job, use_server ):
         elif job.state == 'CannotSubmit':
             return 'Aborted'
         else:
-            raise JobStatusError( job )
+	    print "problem!!!", JobStatusError( job )
+            #raise JobStatusError( job )
     else:
         if job.state == 'Retrieved' or job.state == 'Cleared':
             raise JobStatusError( job )

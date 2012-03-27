@@ -1,7 +1,7 @@
 #!/bin/sh
 
-startm=101
-endm=101
+startm=61
+endm=61
 m=${startm}
 while [ $m -le $endm ]
 do
@@ -22,6 +22,61 @@ datasetpath=/W1Jet_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODS
 fi
 
 
+if [ $m -eq 49 ]
+then
+dir=428_QCD_Pt-300to470_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+datasetpath=/QCD_Pt-300to470_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
+fi
+
+if [ $m -eq 50 ]
+then
+dir=428_QCD_Pt-470to600_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+datasetpath=/QCD_Pt-470to600_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
+fi
+
+if [ $m -eq 51 ]
+then
+dir=428_QCD_Pt-600to800_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+datasetpath=/QCD_Pt-600to800_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
+fi
+
+if [ $m -eq 52 ]
+then
+dir=428_QCD_Pt-800to1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+datasetpath=/QCD_Pt-800to1000_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
+fi
+
+if [ $m -eq 53 ]
+then
+dir=428_QCD_Pt-1000to1400_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+datasetpath=/QCD_Pt-1000to1400_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
+fi
+
+if [ $m -eq 54 ]
+then
+dir=428_QCD_Pt-1400to1800_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v2_vv9
+datasetpath=/QCD_Pt-1400to1800_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v2/AODSIM
+fi
+
+if [ $m -eq 55 ]
+then
+dir=428_QCD_Pt-1800_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+datasetpath=/QCD_Pt-1800_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
+fi
+
+if [ $m -eq 60 ]
+then
+dir=428_QCD_TuneZ2_HT-1000_7TeV-madgraph_Fall11-PU_S6_START42_V14B-v1_vv9
+datasetpath=/QCD_TuneZ2_HT-1000_7TeV-madgraph/Fall11-PU_S6_START42_V14B-v1/AODSIM
+fi
+
+if [ $m -eq 61 ]
+then
+dir=428_QCD_TuneZ2_HT-1000_7TeV-madgraph_Summer11-PU_S4_START42_V11-v1_vv9
+datasetpath=/QCD_TuneZ2_HT-1000_7TeV-madgraph/Summer11-PU_S4_START42_V11-v1/AODSIM
+fi
+
+
 if [ $m -eq 100 ]
 then
 dir=428_QstarToQW_M_750_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_3
@@ -30,7 +85,7 @@ fi
 
 if [ $m -eq 101 ]
 then
-dir=428_QstarToQW_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_3
+dir=428_QstarToQW_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_4
 datasetpath=/QstarToQW_M_1000_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
 fi
 
@@ -61,7 +116,7 @@ fi
 
 if [ $m -eq 111 ]
 then
-dir=428_QstarToQZ_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_3
+dir=428_QstarToQZ_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_4
 datasetpath=/QstarToQZ_M_1000_TuneZ2_7TeV_pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM
 fi
 
@@ -210,7 +265,11 @@ cat > ${cfg} <<EOF
 [CRAB]
 jobtype=cmssw
 scheduler=glite
+### FOR T3 FNAL
+#scheduler=condor
 use_server=1
+### FOR T3 FNAL
+#use_server=0
 #server_name=pisa
 #server_name=rwth
 #server_name=bari
@@ -253,6 +312,8 @@ additional_jdl_parameters=rank=-other.GlueCEStateEstimatedResponseTime+(RegExp("
 #max_wall_clock_time=600
 #ce_black_list=desy.de
 #ce_white_list=sprace.org.br
+### FOR T3 FNAL
+#se_white_list=
 
 EOF
 

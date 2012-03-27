@@ -1,7 +1,7 @@
 #!/bin/sh
 
-startm=91
-endm=91
+startm=89
+endm=90
 m=${startm}
 while [ $m -le $endm ]
 do
@@ -11,6 +11,8 @@ startn=0
 endn=0
 n=${startn}
 useCMG=False
+
+dir=""
 
 if [ $m -eq 1 ]
 then
@@ -128,7 +130,51 @@ fi
 
 
 
-if [ $m -eq 6 ]
+
+if [ $m -eq 21 ]
+then
+dir=pythia6_graviton_WW_1000_vv5
+path=/graviton/
+user=hinzmann
+pattern=pythia6_gravitonWW_1000_PFAOD.*root
+globaltag=START42_V17::All
+split=50000
+fi
+
+if [ $m -eq 22 ]
+then
+dir=pythia6_graviton_WW_2000_vv5
+path=/graviton/
+user=hinzmann
+pattern=pythia6_gravitonWW_2000_PFAOD.*root
+globaltag=START42_V17::All
+split=50000
+fi
+
+if [ $m -eq 23 ]
+then
+dir=pythia6_graviton_ZZ_1000_vv5
+path=/graviton/
+user=hinzmann
+pattern=pythia6_gravitonZZ_1000_PFAOD.*root
+globaltag=START42_V17::All
+split=50000
+fi
+
+if [ $m -eq 24 ]
+then
+dir=pythia6_graviton_ZZ_2000_vv5
+path=/graviton/
+user=hinzmann
+pattern=pythia6_gravitonZZ_2000_PFAOD.*root
+globaltag=START42_V17::All
+split=50000
+fi
+
+
+
+
+if [ $m -eq 36 ]
 then
 dir=pythia6_Wprime_WZ_1000_vv5
 path=/fastsim/
@@ -138,7 +184,7 @@ globaltag=START42_V17::All
 split=50000
 fi
 
-if [ $m -eq 7 ]
+if [ $m -eq 37 ]
 then
 dir=pythia6_Wprime_WZ_2000_vv5
 path=/fastsim/
@@ -148,7 +194,7 @@ globaltag=START42_V17::All
 split=50000
 fi
 
-if [ $m -eq 8 ]
+if [ $m -eq 38 ]
 then
 dir=pythia6_qstar_qW_1000_vv5
 path=/fastsim/
@@ -158,7 +204,7 @@ globaltag=START42_V17::All
 split=50000
 fi
 
-if [ $m -eq 9 ]
+if [ $m -eq 39 ]
 then
 dir=pythia6_qstar_qW_2000_vv5
 path=/fastsim/
@@ -168,7 +214,7 @@ globaltag=START42_V17::All
 split=50000
 fi
 
-if [ $m -eq 10 ]
+if [ $m -eq 40 ]
 then
 dir=pythia6_qstar_qZ_1000_vv5
 path=/fastsim/
@@ -178,7 +224,7 @@ globaltag=START42_V17::All
 split=50000
 fi
 
-if [ $m -eq 11 ]
+if [ $m -eq 41 ]
 then
 dir=pythia6_qstar_qZ_2000_vv5
 path=/fastsim/
@@ -203,6 +249,19 @@ fi
 
 if [ $m -eq 71 ]
 then
+dir=428_QstarToQW_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_4
+path=/CMG/${dir}/
+user=hinzmann
+pattern=F.*root
+globaltag=START42_V17::All
+split=1000
+endn=31
+fi
+
+
+
+if [ $m -eq 80 ]
+then
 dir=QCD_Pt-15to3000_TuneZ2_Flat_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv5
 path=/QCD_vv5/
 user=hinzmann
@@ -210,6 +269,55 @@ pattern=QCD_Pt-15to3000_TuneZ2_Flat_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv
 globaltag=START42_V17::All
 split=10000000
 useCMG=True
+fi
+
+if [ $m -eq 81 ]
+then
+dir=428_QstarToQW_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_4
+path=/CMG/${dir}/
+user=hinzmann
+pattern=428_QstarToQW_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_4.*root
+globaltag=START42_V17::All
+split=10000000
+useCMG=True
+fi
+
+
+
+
+if [ $m -eq 84 ]
+then
+dir=428_QCD_Pt-300to470_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+fi
+
+if [ $m -eq 85 ]
+then
+dir=428_QCD_Pt-470to600_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+fi
+
+if [ $m -eq 86 ]
+then
+dir=428_QCD_Pt-600to800_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+fi
+
+if [ $m -eq 87 ]
+then
+dir=428_QCD_Pt-800to1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+fi
+
+if [ $m -eq 88 ]
+then
+dir=428_QCD_Pt-1000to1400_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
+fi
+
+if [ $m -eq 89 ]
+then
+dir=428_QCD_Pt-1400to1800_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v2_vv9
+fi
+
+if [ $m -eq 90 ]
+then
+dir=428_QCD_Pt-1800_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9
 fi
 
 
@@ -225,6 +333,8 @@ if [ $m -eq 92 ]
 then
 dir=428_W1Jet_TuneZ2_7TeV-madgraph-tauola_Fall11-PU_S6_START42_V14B-v1_vv9_4
 fi
+
+
 
 
 if [ $m -eq 100 ]
@@ -260,7 +370,7 @@ fi
 
 if [ $m -eq 111 ]
 then
-dir=428_QstarToQZ_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_3
+dir=428_QstarToQZ_M_1000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_4
 fi
 
 if [ $m -eq 112 ]
@@ -270,7 +380,7 @@ fi
 
 if [ $m -eq 113 ]
 then
-dir=428_QstarToQZ_M_2000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_3
+dir=428_QstarToQZ_M_2000_TuneZ2_7TeV_pythia6_Fall11-PU_S6_START42_V14B-v1_vv9_4
 fi
 
 if [ $m -eq 114 ]
@@ -361,7 +471,7 @@ fi
 
 
 
-if [ $m > 90 ]
+if [ 83 -le $m ]
 then
 path=/${dir}/
 user=hinzmann
@@ -406,6 +516,8 @@ EOF
 
   echo ********Running ${py}
   
+cmsLs /store/cmst3/user/${user}/${path}
+
 if [ $(($n % 5)) -eq 0 ]
 then
     cmsRun ${py}

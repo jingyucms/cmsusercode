@@ -1,3 +1,4 @@
+import os
 
 ## import skeleton process
 from PhysicsTools.PatAlgos.patTemplate_cfg import *
@@ -39,7 +40,7 @@ else:#Data
 #process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 10
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 sep_line = "-" * 50
 print sep_line
@@ -142,6 +143,8 @@ getattr(process,"pfNoTau"+postfixAK5).enable = False
 getattr(process,"pfNoJet"+postfixAK5).enable = True
 getattr(process,"pfIsolatedMuons"+postfixAK5).isolationCut = 999999
 getattr(process,"pfIsolatedElectrons"+postfixAK5).isolationCut = 999999
+
+process.patJetCorrFactorsAK5.rho = cms.InputTag("kt6PFJets","rho")
 
 # adding vbtf and cic electron IDs
 from CMGTools.Common.PAT.addPATElectronID_cff import addPATElectronID
@@ -280,7 +283,6 @@ if runCA8:
   #####
 
   from RecoJets.JetProducers.GenJetParameters_cfi import *
-  from RecoJets.JetProducers.PFJetParameters_cfi import *
   from RecoJets.JetProducers.PFJetParameters_cfi import *
   from RecoJets.JetProducers.CaloJetParameters_cfi import *
   from RecoJets.JetProducers.AnomalousCellParameters_cfi import *
@@ -448,6 +450,15 @@ process.load('CMGTools.DiJetHighMass.pfJets_cff')
 process.load("CMGTools.Common.skims.cmgPFJetSel_cfi")
 process.load("CMGTools.Common.histograms.baseMETHistograms_cfi")
 
+process.baseMETHistograms.histograms.metSumEt = cms.untracked.VPSet(
+            cms.untracked.PSet( 
+               var = cms.untracked.string('pt()/sumEt()'),
+               nbins = cms.untracked.int32(100),
+               low = cms.untracked.double(0),
+               high = cms.untracked.double(1)
+               )
+            )
+
 if runCMG:
     
     process.load('CMGTools.Common.analysis_cff')
@@ -562,9 +573,122 @@ process.cmgPFDiJetHistograms.histograms.Eta2_vs_Phi2[0].low = -5
 process.cmgPFDiJetHistograms.histograms.Eta2_vs_Phi2[0].high = 5
 process.cmgPFDiJetHistograms.histograms.Phi1_vs_Phi2[0].nbins = 50
 process.cmgPFDiJetHistograms.histograms.Phi1_vs_Phi2[1].nbins = 50
+process.cmgPFDiJetHistograms.histograms.metSumPt = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('sqrt(pow(leg1().px() + leg2().px(),2)+pow(leg1().py() + leg2().py(),2)) / (leg1().pt() + leg2().pt())'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(1),
+            title = cms.untracked.string("|#sum #vec{p}_{T}| / #sum p_{T}")
+            )
+        )
 
-process.cmgPFFatDiJetHistograms.histograms=process.cmgPFDiJetHistograms.histograms
+process.dijetPrinter = cms.EDAnalyzer(
+    "PhysicsObjectPrinter",
+    inputCollection = cms.untracked.InputTag("cmgPFTightDiJet"),
+    printSelections = cms.untracked.bool(False),
+    reportEvery = cms.untracked.uint32(1)
+)
+process.dijetPrinter1tag=process.dijetPrinter.clone()
+process.dijetPrinter2tag=process.dijetPrinter.clone()
+
+process.dijetPrinterCA8Pruned=process.dijetPrinter.clone()
+process.dijetPrinterCA8Pruned.inputCollection=cms.untracked.InputTag("cmgPFDiJetCA8Pruned")
+process.dijetPrinterCA8Pruned1tag=process.dijetPrinterCA8Pruned.clone()
+process.dijetPrinterCA8Pruned2tag=process.dijetPrinterCA8Pruned.clone()
+
+process.cmgPFFatDiJetHistograms.histograms=process.cmgPFDiJetHistograms.histograms.clone()
 process.cmgPFFatDiJetHistograms.inputCollection=cms.InputTag("cmgPFFatTightDiJet")
+process.cmgPFFatDiJetHistograms.histograms.dptrel1 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('(leg1().leadPtr().pt() - leg1().pt()) / leg1().pt()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-1),
+            high = cms.untracked.double(1),
+            title = cms.untracked.string("#Delta p_{T,1} / p_{T,1}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.dptrel2 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('(leg2().leadPtr().pt() - leg2().pt()) / leg2().pt()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-1),
+            high = cms.untracked.double(1),
+            title = cms.untracked.string("#Delta p_{T,2} / p_{T,2}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.dpt1 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg1().leadPtr().pt() - leg1().pt()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-500),
+            high = cms.untracked.double(500),
+            title = cms.untracked.string("#Delta p_{T,1}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.dpt2 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg2().leadPtr().pt() - leg2().pt()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-500),
+            high = cms.untracked.double(500),
+            title = cms.untracked.string("#Delta p_{T,2}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.deta1 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg1().leadPtr().eta() - leg1().eta()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-2),
+            high = cms.untracked.double(2),
+            title = cms.untracked.string("#Delta #eta_{1}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.deta2 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg2().leadPtr().eta() - leg2().eta()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-2),
+            high = cms.untracked.double(2),
+            title = cms.untracked.string("#Delta #eta_{2}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.dphi1 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('deltaPhi(leg1().leadPtr().phi() , leg1().phi())'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(3.15),
+            title = cms.untracked.string("#Delta #phi_{1}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.dphi2 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('deltaPhi(leg2().leadPtr().phi() , leg2().phi())'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(3.15),
+            title = cms.untracked.string("#Delta #phi_{2}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.njets1 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg1().numConstituents()'),
+            nbins = cms.untracked.int32(20),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(20),
+            title = cms.untracked.string("n_{1}")
+            )
+        )
+process.cmgPFFatDiJetHistograms.histograms.njets2 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg2().numConstituents()'),
+            nbins = cms.untracked.int32(20),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(20),
+            title = cms.untracked.string("n_{2}")
+            )
+        )
 
 process.cmgPFJetSelCA8CMG.cut="pt()>30"
 process.cmgPFJetSelCA8PrunedCMG.cut="pt()>30"
@@ -576,16 +700,20 @@ process.cmgPFDiJetCA8Pruned=process.cmgPFDiJet.copy()
 process.cmgPFDiJetCA8Pruned.cfg.leg1Collection = cms.InputTag("cmgPFLeadJetCA8Pruned")
 process.cmgPFDiJetCA8Pruned.cfg.leg2Collection = cms.InputTag("cmgPFLeadJetCA8Pruned")
 
-#process.cmgPFDiJetCA8Pruned.cuts.w1tag=cms.string("abs(leg1.mass()-85.)<15.")
-#process.cmgPFDiJetCA8Pruned.cuts.w2tag=cms.string("abs(leg2.mass()-85.)<15.")
 #process.cmgPFDiJetCA8Pruned.cuts.w1tag=cms.string("leg1.mass()>70.")
 #process.cmgPFDiJetCA8Pruned.cuts.w2tag=cms.string("leg2.mass()>70.")
 #process.cmgPFDiJetCA8Pruned.cuts.w1tag=cms.string("abs(leg1.mass()-85.)<10.")
 #process.cmgPFDiJetCA8Pruned.cuts.w2tag=cms.string("abs(leg2.mass()-85.)<10.")
 #process.cmgPFDiJetCA8Pruned.cuts.w1tag=cms.string("abs(leg1.mass()-85.)<25.")
 #process.cmgPFDiJetCA8Pruned.cuts.w2tag=cms.string("abs(leg2.mass()-85.)<25.")
+process.cmgPFDiJetCA8Pruned.cuts.w1mtag=cms.string("abs(leg1.mass()-85.)<15.")
+process.cmgPFDiJetCA8Pruned.cuts.w2mtag=cms.string("abs(leg2.mass()-85.)<15.")
 process.cmgPFDiJetCA8Pruned.cuts.w1tag=cms.string("abs(leg1.mass()-85.)<15. && max(leg1.subjets()[0].mass(),leg1.subjets()[1].mass())/leg1.mass()<0.25")
 process.cmgPFDiJetCA8Pruned.cuts.w2tag=cms.string("abs(leg2.mass()-85.)<15. && max(leg2.subjets()[0].mass(),leg2.subjets()[1].mass())/leg2.mass()<0.25")
+process.cmgPFDiJetCA8Pruned.cuts.w1ltag=cms.string("abs(leg1.mass()-85.)<15. && max(leg1.subjets()[0].mass(),leg1.subjets()[1].mass())/leg1.mass()<0.30")
+process.cmgPFDiJetCA8Pruned.cuts.w2ltag=cms.string("abs(leg2.mass()-85.)<15. && max(leg2.subjets()[0].mass(),leg2.subjets()[1].mass())/leg2.mass()<0.30")
+process.cmgPFDiJetCA8Pruned.cuts.w1ttag=cms.string("abs(leg1.mass()-85.)<15. && max(leg1.subjets()[0].mass(),leg1.subjets()[1].mass())/leg1.mass()<0.20")
+process.cmgPFDiJetCA8Pruned.cuts.w2ttag=cms.string("abs(leg2.mass()-85.)<15. && max(leg2.subjets()[0].mass(),leg2.subjets()[1].mass())/leg2.mass()<0.20")
 
 process.cmgPFDiJetCA8PrunedHistograms=process.cmgPFDiJetHistograms.copy()
 process.cmgPFDiJetCA8PrunedHistograms.inputCollection=cms.InputTag("cmgPFDiJetCA8Pruned")
@@ -607,6 +735,100 @@ process.cmgPFDiJetCA8PrunedHistograms.histograms.massdrop2 = cms.untracked.VPSet
             title = cms.untracked.string("massdrop_{2}")
             )
         )
+process.cmgPFDiJetCA8PrunedHistograms.histograms.dR1 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('sqrt(pow(deltaPhi(leg1().subjets()[0].phi() , leg1().subjets()[1].phi()),2)+pow(leg1().subjets()[0].eta() - leg1().subjets()[1].eta(),2))'),
+            nbins = cms.untracked.int32(100),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(2),
+            title = cms.untracked.string("#Delta R_{1}")
+            )
+        )
+process.cmgPFDiJetCA8PrunedHistograms.histograms.dR2 = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('sqrt(pow(deltaPhi(leg2().subjets()[0].phi() , leg2().subjets()[1].phi()),2)+pow(leg2().subjets()[0].eta() - leg2().subjets()[1].eta(),2))'),
+            nbins = cms.untracked.int32(100),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(2),
+            title = cms.untracked.string("#Delta R_{2}")
+            )
+        )
+
+process.cmgPFDiJetAK5CA8Pruned=process.cmgPFDiJet.copy()
+process.cmgPFDiJetAK5CA8Pruned.cfg.leg1Collection = cms.InputTag("cmgPFLeadJet")
+process.cmgPFDiJetAK5CA8Pruned.cfg.leg2Collection = cms.InputTag("cmgPFLeadJetCA8Pruned")
+
+process.cmgPFDiJetAK5CA8PrunedHistograms=process.cmgPFDiJetHistograms.clone()
+process.cmgPFDiJetAK5CA8PrunedHistograms.inputCollection=cms.InputTag("cmgPFDiJetAK5CA8Pruned")
+process.cmgPFDiJetAK5CA8PrunedHistograms.histograms = cms.untracked.PSet()
+process.cmgPFDiJetAK5CA8PrunedHistograms.histograms.dptrel = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('(leg2().pt() - leg1().pt()) / leg1().pt()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-1),
+            high = cms.untracked.double(1),
+            title = cms.untracked.string("#Delta p_{T} / p_{T}")
+            )
+        )
+process.cmgPFDiJetAK5CA8PrunedHistograms.histograms.dpt = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg2().pt() - leg1().pt()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-500),
+            high = cms.untracked.double(500),
+            title = cms.untracked.string("#Delta p_{T}")
+            )
+        )
+process.cmgPFDiJetAK5CA8PrunedHistograms.histograms.deta = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('leg2().eta() - leg1().eta()'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(-2),
+            high = cms.untracked.double(2),
+            title = cms.untracked.string("#Delta #eta")
+            )
+        )
+process.cmgPFDiJetAK5CA8PrunedHistograms.histograms.dphi = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('deltaPhi(leg2().phi() , leg1().phi())'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(3.15),
+            title = cms.untracked.string("#Delta #phi")
+            )
+        )
+process.cmgPFDiJetAK5CA8PrunedHistograms.histograms.dR = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            var = cms.untracked.string('sqrt(pow(deltaPhi(leg2().phi() , leg1().phi()),2)+pow(leg2().eta() - leg1().eta(),2))'),
+            nbins = cms.untracked.int32(200),
+            low = cms.untracked.double(0),
+            high = cms.untracked.double(4),
+            title = cms.untracked.string("#Delta R")
+            )
+        )
+
+
+process.w1mtag=process.highMass.copy()
+process.w1mtag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.w1mtag.cut='getSelection("cuts_w1mtag") || getSelection("cuts_w2mtag")'
+process.w1mtagFilter = process.filterHighMass.copy()
+process.w1mtagFilter.src=cms.InputTag('w1mtag')
+
+process.cmgPFDiJetHistograms1mtag=process.cmgPFDiJetHistograms.copy()
+process.cmgPFFatDiJetHistograms1mtag=process.cmgPFFatDiJetHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistograms1mtag=process.cmgPFDiJetCA8PrunedHistograms.copy()
+process.cmgPFDiJetAK5CA8PrunedHistograms1tag=process.cmgPFDiJetAK5CA8PrunedHistograms.clone()
+
+process.w2mtag=process.highMass.copy()
+process.w2mtag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.w2mtag.cut='getSelection("cuts_w1mtag") && getSelection("cuts_w2mtag")'
+process.w2mtagFilter = process.filterHighMass.copy()
+process.w2mtagFilter.src=cms.InputTag('w2mtag')
+
+process.cmgPFDiJetHistograms2mtag=process.cmgPFDiJetHistograms.copy()
+process.cmgPFFatDiJetHistograms2mtag=process.cmgPFFatDiJetHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistograms2mtag=process.cmgPFDiJetCA8PrunedHistograms.copy()
+process.cmgPFDiJetAK5CA8PrunedHistograms2tag=process.cmgPFDiJetAK5CA8PrunedHistograms.clone()
 
 process.w1tag=process.highMass.copy()
 process.w1tag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
@@ -628,6 +850,46 @@ process.cmgPFDiJetHistograms2tag=process.cmgPFDiJetHistograms.copy()
 process.cmgPFFatDiJetHistograms2tag=process.cmgPFFatDiJetHistograms.copy()
 process.cmgPFDiJetCA8PrunedHistograms2tag=process.cmgPFDiJetCA8PrunedHistograms.copy()
 
+process.w1ltag=process.highMass.copy()
+process.w1ltag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.w1ltag.cut='getSelection("cuts_w1ltag") || getSelection("cuts_w2ltag")'
+process.w1ltagFilter = process.filterHighMass.copy()
+process.w1ltagFilter.src=cms.InputTag('w1ltag')
+
+process.cmgPFDiJetHistograms1ltag=process.cmgPFDiJetHistograms.copy()
+process.cmgPFFatDiJetHistograms1ltag=process.cmgPFFatDiJetHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistograms1ltag=process.cmgPFDiJetCA8PrunedHistograms.copy()
+
+process.w2ltag=process.highMass.copy()
+process.w2ltag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.w2ltag.cut='getSelection("cuts_w1ltag") && getSelection("cuts_w2ltag")'
+process.w2ltagFilter = process.filterHighMass.copy()
+process.w2ltagFilter.src=cms.InputTag('w2ltag')
+
+process.cmgPFDiJetHistograms2ltag=process.cmgPFDiJetHistograms.copy()
+process.cmgPFFatDiJetHistograms2ltag=process.cmgPFFatDiJetHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistograms2ltag=process.cmgPFDiJetCA8PrunedHistograms.copy()
+
+process.w1ttag=process.highMass.copy()
+process.w1ttag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.w1ttag.cut='getSelection("cuts_w1ttag") || getSelection("cuts_w2ttag")'
+process.w1ttagFilter = process.filterHighMass.copy()
+process.w1ttagFilter.src=cms.InputTag('w1ttag')
+
+process.cmgPFDiJetHistograms1ttag=process.cmgPFDiJetHistograms.copy()
+process.cmgPFFatDiJetHistograms1ttag=process.cmgPFFatDiJetHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistograms1ttag=process.cmgPFDiJetCA8PrunedHistograms.copy()
+
+process.w2ttag=process.highMass.copy()
+process.w2ttag.src=cms.InputTag("cmgPFDiJetCA8Pruned")
+process.w2ttag.cut='getSelection("cuts_w1ttag") && getSelection("cuts_w2ttag")'
+process.w2ttagFilter = process.filterHighMass.copy()
+process.w2ttagFilter.src=cms.InputTag('w2ttag')
+
+process.cmgPFDiJetHistograms2ttag=process.cmgPFDiJetHistograms.copy()
+process.cmgPFFatDiJetHistograms2ttag=process.cmgPFFatDiJetHistograms.copy()
+process.cmgPFDiJetCA8PrunedHistograms2ttag=process.cmgPFDiJetCA8PrunedHistograms.copy()
+
 process.cmgPFDiJetHistogramsReference=process.cmgPFDiJetHistograms.copy()
 process.cmgPFDiJetHistogramsReference.inputCollection=cms.InputTag("cmgPFMediumDiJet")
 process.cmgPFFatDiJetHistogramsReference=process.cmgPFFatDiJetHistograms.copy()
@@ -640,6 +902,24 @@ process.cmgPFDiJetCA8PrunedHistogramsReference1tag=process.cmgPFDiJetCA8PrunedHi
 process.cmgPFDiJetHistogramsReference2tag=process.cmgPFDiJetHistogramsReference.copy()
 process.cmgPFFatDiJetHistogramsReference2tag=process.cmgPFFatDiJetHistogramsReference.copy()
 process.cmgPFDiJetCA8PrunedHistogramsReference2tag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsReference1mtag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference1mtag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference1mtag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsReference2mtag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference2mtag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference2mtag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsReference1ltag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference1ltag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference1ltag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsReference2ltag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference2ltag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference2ltag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsReference1ttag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference1ttag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference1ttag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
+process.cmgPFDiJetHistogramsReference2ttag=process.cmgPFDiJetHistogramsReference.copy()
+process.cmgPFFatDiJetHistogramsReference2ttag=process.cmgPFFatDiJetHistogramsReference.copy()
+process.cmgPFDiJetCA8PrunedHistogramsReference2ttag=process.cmgPFDiJetCA8PrunedHistogramsReference.copy()
 
 process.cmgPFDiJetHistogramsAnalysis1=process.cmgPFDiJetHistogramsReference.copy()
 process.cmgPFFatDiJetHistogramsAnalysis1=process.cmgPFFatDiJetHistogramsReference.copy()
@@ -696,10 +976,10 @@ process.dijetanalysis_fromPAT = cms.Sequence(
     
     process.cmgPFMediumDiJetFilter +
 
-    process.cmgFatJet +
-    process.cmgDiFatJet +
-    process.cmgPFFatMediumDiJet +
-    process.cmgPFFatTightDiJet +
+    #process.cmgFatJet +
+    #process.cmgDiFatJet +
+    #process.cmgPFFatMediumDiJet +
+    #process.cmgPFFatTightDiJet +
 
     process.cmgPFJetCA8CMG + 
     process.cmgPFJetSelCA8CMG + 
@@ -708,6 +988,7 @@ process.dijetanalysis_fromPAT = cms.Sequence(
     process.cmgPFJetSelCA8PrunedCMG + 
     process.cmgPFLeadJetCA8Pruned +
     process.cmgPFDiJetCA8Pruned
+    #process.cmgPFDiJetAK5CA8Pruned
     )
     
 process.dijetanalysis_fromCMG = cms.Sequence(
@@ -720,13 +1001,14 @@ process.dijetanalysis_fromCMG = cms.Sequence(
 
     process.cmgPFMediumDiJetFilter +
 
-    process.cmgFatJet +
-    process.cmgDiFatJet +
-    process.cmgPFFatMediumDiJet +
-    process.cmgPFFatTightDiJet +
+    #process.cmgFatJet +
+    #process.cmgDiFatJet +
+    #process.cmgPFFatMediumDiJet +
+    #process.cmgPFFatTightDiJet +
 
     process.cmgPFLeadJetCA8Pruned +
     process.cmgPFDiJetCA8Pruned
+    #process.cmgPFDiJetAK5CA8Pruned
     )
 
 process.dijetanalysis = cms.Sequence(
@@ -735,59 +1017,137 @@ process.dijetanalysis = cms.Sequence(
     process.cmgPFTightDiJetFilter +
 
     process.cmgPFDiJetHistograms +
-    process.cmgPFFatDiJetHistograms +
+    #process.cmgPFFatDiJetHistograms +
     process.cmgPFDiJetCA8PrunedHistograms +
+    #process.cmgPFDiJetAK5CA8PrunedHistograms +
+
+    #process.w1mtag +
+    #process.w1mtagFilter +
+    #process.cmgPFDiJetHistograms1mtag +
+    #process.cmgPFFatDiJetHistograms1mtag +
+    #process.cmgPFDiJetCA8PrunedHistograms1mtag +
+
+    #process.w1ltag +
+    #process.w1ltagFilter +
+    #process.cmgPFDiJetHistograms1ltag +
+    #process.cmgPFFatDiJetHistograms1ltag +
+    #process.cmgPFDiJetCA8PrunedHistograms1ltag +
 
     process.w1tag +
     process.w1tagFilter +
     process.cmgPFDiJetHistograms1tag +
-    process.cmgPFFatDiJetHistograms1tag +
+    #process.cmgPFFatDiJetHistograms1tag +
     process.cmgPFDiJetCA8PrunedHistograms1tag +
+    #process.cmgPFDiJetAK5CA8PrunedHistograms1tag +
+
+    #process.w1ttag +
+    #process.w1ttagFilter +
+    #process.cmgPFDiJetHistograms1ttag +
+    #process.cmgPFFatDiJetHistograms1ttag +
+    #process.cmgPFDiJetCA8PrunedHistograms1ttag +
+
+    #process.w2mtag +
+    #process.w2mtagFilter +
+    #process.cmgPFDiJetHistograms2mtag +
+    #process.cmgPFFatDiJetHistograms2mtag +
+    #process.cmgPFDiJetCA8PrunedHistograms2mtag +
+
+    #process.w2ltag +
+    #process.w2ltagFilter +
+    #process.cmgPFDiJetHistograms2ltag +
+    #process.cmgPFFatDiJetHistograms2ltag +
+    #process.cmgPFDiJetCA8PrunedHistograms2ltag +
 
     process.w2tag +
     process.w2tagFilter +
     process.cmgPFDiJetHistograms2tag +
-    process.cmgPFFatDiJetHistograms2tag +
-    process.cmgPFDiJetCA8PrunedHistograms2tag
+    #process.cmgPFFatDiJetHistograms2tag +
+    process.cmgPFDiJetCA8PrunedHistograms2tag +
+    #process.cmgPFDiJetAK5CA8PrunedHistograms2tag
+
+    process.dijetPrinter2tag +
+    process.dijetPrinterCA8Pruned2tag
+
+    #process.w2ttag +
+    #process.w2ttagFilter +
+    #process.cmgPFDiJetHistograms2ttag +
+    #process.cmgPFFatDiJetHistograms2ttag +
+    #process.cmgPFDiJetCA8PrunedHistograms2ttag
     )
 
 process.trigger_analysis_reference = cms.Sequence(
     process.primaryVertexFilter + 
     
     process.cmgPFDiJetHistogramsReference +
-    process.cmgPFFatDiJetHistogramsReference +
+    #process.cmgPFFatDiJetHistogramsReference +
     process.cmgPFDiJetCA8PrunedHistogramsReference +
+
+    #process.w1mtag +
+    #process.w1mtagFilter +
+    #process.cmgPFDiJetHistogramsReference1mtag +
+    #process.cmgPFFatDiJetHistogramsReference1mtag +
+    #process.cmgPFDiJetCA8PrunedHistogramsReference1mtag +
+
+    #process.w1ltag +
+    #process.w1ltagFilter +
+    #process.cmgPFDiJetHistogramsReference1ltag +
+    #process.cmgPFFatDiJetHistogramsReference1ltag +
+    #process.cmgPFDiJetCA8PrunedHistogramsReference1ltag +
 
     process.w1tag +
     process.w1tagFilter +
     process.cmgPFDiJetHistogramsReference1tag +
-    process.cmgPFFatDiJetHistogramsReference1tag +
+    #process.cmgPFFatDiJetHistogramsReference1tag +
     process.cmgPFDiJetCA8PrunedHistogramsReference1tag +
+
+    #process.w1ttag +
+    #process.w1ttagFilter +
+    #process.cmgPFDiJetHistogramsReference1ttag +
+    #process.cmgPFFatDiJetHistogramsReference1ttag +
+    #process.cmgPFDiJetCA8PrunedHistogramsReference1ttag +
+
+    #process.w2mtag +
+    #process.w2mtagFilter +
+    #process.cmgPFDiJetHistogramsReference2mtag +
+    #process.cmgPFFatDiJetHistogramsReference2mtag +
+    #process.cmgPFDiJetCA8PrunedHistogramsReference2mtag +
+
+    #process.w2ltag +
+    #process.w2ltagFilter +
+    #process.cmgPFDiJetHistogramsReference2ltag +
+    #process.cmgPFFatDiJetHistogramsReference2ltag +
+    #process.cmgPFDiJetCA8PrunedHistogramsReference2ltag +
 
     process.w2tag +
     process.w2tagFilter +
     process.cmgPFDiJetHistogramsReference2tag +
-    process.cmgPFFatDiJetHistogramsReference2tag +
+    #process.cmgPFFatDiJetHistogramsReference2tag +
     process.cmgPFDiJetCA8PrunedHistogramsReference2tag
+
+    #process.w2ttag +
+    #process.w2ttagFilter +
+    #process.cmgPFDiJetHistogramsReference2ttag +
+    #process.cmgPFFatDiJetHistogramsReference2ttag +
+    #process.cmgPFDiJetCA8PrunedHistogramsReference2ttag
     )
 
 process.trigger_analysis1 = cms.Sequence(
     process.primaryVertexFilter + 
 
     process.cmgPFDiJetHistogramsAnalysis1 +
-    process.cmgPFFatDiJetHistogramsAnalysis1 +
+    #process.cmgPFFatDiJetHistogramsAnalysis1 +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis1 +
 
     process.w1tag +
     process.w1tagFilter +
     process.cmgPFDiJetHistogramsAnalysis11tag +
-    process.cmgPFFatDiJetHistogramsAnalysis11tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis11tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis11tag +
 
     process.w2tag +
     process.w2tagFilter +
     process.cmgPFDiJetHistogramsAnalysis12tag +
-    process.cmgPFFatDiJetHistogramsAnalysis12tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis12tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis12tag
     )
 
@@ -795,19 +1155,19 @@ process.trigger_analysis2 = cms.Sequence(
     process.primaryVertexFilter + 
 
     process.cmgPFDiJetHistogramsAnalysis2 +
-    process.cmgPFFatDiJetHistogramsAnalysis2 +
+    #process.cmgPFFatDiJetHistogramsAnalysis2 +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis2 +
 
     process.w1tag +
     process.w1tagFilter +
     process.cmgPFDiJetHistogramsAnalysis21tag +
-    process.cmgPFFatDiJetHistogramsAnalysis21tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis21tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis21tag +
 
     process.w2tag +
     process.w2tagFilter +
     process.cmgPFDiJetHistogramsAnalysis22tag +
-    process.cmgPFFatDiJetHistogramsAnalysis22tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis22tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis22tag
     )
 
@@ -815,19 +1175,19 @@ process.trigger_analysis3 = cms.Sequence(
     process.primaryVertexFilter + 
 
     process.cmgPFDiJetHistogramsAnalysis3 +
-    process.cmgPFFatDiJetHistogramsAnalysis3 +
+    #process.cmgPFFatDiJetHistogramsAnalysis3 +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis3 +
 
     process.w1tag +
     process.w1tagFilter +
     process.cmgPFDiJetHistogramsAnalysis31tag +
-    process.cmgPFFatDiJetHistogramsAnalysis31tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis31tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis31tag +
 
     process.w2tag +
     process.w2tagFilter +
     process.cmgPFDiJetHistogramsAnalysis32tag +
-    process.cmgPFFatDiJetHistogramsAnalysis32tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis32tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis32tag
     )
 
@@ -835,19 +1195,19 @@ process.trigger_analysis4 = cms.Sequence(
     process.primaryVertexFilter + 
 
     process.cmgPFDiJetHistogramsAnalysis4 +
-    process.cmgPFFatDiJetHistogramsAnalysis4 +
+    #process.cmgPFFatDiJetHistogramsAnalysis4 +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis4 +
 
     process.w1tag +
     process.w1tagFilter +
     process.cmgPFDiJetHistogramsAnalysis41tag +
-    process.cmgPFFatDiJetHistogramsAnalysis41tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis41tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis41tag +
 
     process.w2tag +
     process.w2tagFilter +
     process.cmgPFDiJetHistogramsAnalysis42tag +
-    process.cmgPFFatDiJetHistogramsAnalysis42tag +
+    #process.cmgPFFatDiJetHistogramsAnalysis42tag +
     process.cmgPFDiJetCA8PrunedHistogramsAnalysis42tag
     )
 
@@ -946,17 +1306,27 @@ if runOnCMG:
     process.outpath.remove(process.ria)
     del process.ria
 
-    #samplename="428_HT_Run2011A-May10ReReco-v1_vv9"
-    #samplename="428_HT_Run2011A-PromptReco-v4_vv9"
-    #samplename="428_HT_Run2011A-05Aug2011-v1_vv9"
-    #samplename="428_HT_Run2011A-PromptReco-v6_vv9"
-    samplename="428_HT_Run2011B-PromptReco-v1_vv9"
+    #samplename="428_HT_Run2011A-May10ReReco-v1_vv12"
+    #samplename="428_HT_Run2011A-PromptReco-v4_vv12"
+    #samplename="428_HT_Run2011A-05Aug2011-v1_vv12"
+    #samplename="428_HT_Run2011A-PromptReco-v6_vv12"
+    samplename="428_HT_Run2011B-PromptReco-v1_vv12"
+    #samplename="QCD_vv5"
+    #samplename="428_QCD_Pt-15to3000_Tune23_Flat_7TeV_herwigpp_Fall11-PU_S6_START42_V14B-v2_vv9_3"
+
+    process.TFileService.fileName = cms.string("/tmp/hinzmann/"+samplename+"_metsumpt_histograms.root")
 
     files='CMG_tree.*root'
-
     from CMGTools.Production.datasetToSource import *
     process.source = datasetToSource('hinzmann', '/'+samplename, files)
-    process.TFileService.fileName = cms.string("/tmp/hinzmann/"+samplename+"_histograms.root")
+    
+    #process.source.fileNames=cms.untracked.vstring([])
+    #filenames=os.listdir("/tmp/hinzmann/"+samplename)
+    #process.source.fileNames+=["file:///tmp/hinzmann/"+samplename+"/"+filename for filename in filenames]
+    
+    process.source.eventsToProcess = cms.untracked.VEventRange('176309:1022524-176309:1022524','177074:1171400298-177074:1171400298')
+    
+    #print process.source.fileNames
 
 
 if not runOnMC:
@@ -970,14 +1340,14 @@ if not runOnMC:
     process.p4 += process.triggerSelectionReference
     process.p4 += process.triggerSelectionAnalysis1
     process.p4 += process.trigger_analysis1
-    process.p5 = process.p.copy()
-    process.p5 += process.triggerSelectionReference
-    process.p5 += process.triggerSelectionAnalysis2
-    process.p5 += process.trigger_analysis2
-    process.p6 = process.p.copy()
-    process.p6 += process.triggerSelectionReference
-    process.p6 += process.triggerSelectionAnalysis3
-    process.p6 += process.trigger_analysis3
+    #process.p5 = process.p.copy()
+    #process.p5 += process.triggerSelectionReference
+    #process.p5 += process.triggerSelectionAnalysis2
+    #process.p5 += process.trigger_analysis2
+    #process.p6 = process.p.copy()
+    #process.p6 += process.triggerSelectionReference
+    #process.p6 += process.triggerSelectionAnalysis3
+    #process.p6 += process.trigger_analysis3
     process.p7 = process.p.copy()
     process.p7 += process.triggerSelectionReference
     process.p7 += process.triggerSelectionAnalysis4
