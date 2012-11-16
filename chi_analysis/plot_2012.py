@@ -169,7 +169,7 @@ if __name__=="__main__":
     lambdasetlength=lengths[lambdaset]
     theories_plot2=False
 
-    prefix="run2012_12fb_"
+    prefix="run2012_12fb_2012_chs_"
 
     if theories_plot:
         prefix+="theories"+str(lambdaset)+"_"
@@ -186,10 +186,10 @@ if __name__=="__main__":
 
     mass_bins=[#(400,600),
                #(600,800),
-               (800,1000),
-               (1000,1200),
-               (1200,1500),
-               (1500,1900),
+               #(800,1000),
+               #(1000,1200),
+               #(1200,1500),
+               #(1500,1900),
                (1900,2400),
                (2400,3000),
                (3000,4000),
@@ -197,10 +197,10 @@ if __name__=="__main__":
               ] 
     mass_bins2=[#0,
                 #1,
-                2,
-                3,
-                4,
-                5,
+                #2,
+                #3,
+                #4,
+                #5,
                 6,
                 7,
                 8,
@@ -208,10 +208,10 @@ if __name__=="__main__":
                ]
     mass_bins_nlo=[#(400,600),
                #(600,800),
-               (800,1000),
-               (1000,1200),
-               (1200,1500),
-               (1500,1900),
+               #(800,1000),
+               #(1000,1200),
+               #(1200,1500),
+               #(1500,1900),
                (1900,2300,2400),
                (2400,2800,3000),
                (3000,3200,4000),
@@ -219,10 +219,10 @@ if __name__=="__main__":
               ] 
     mass_bins_nlo2=[#(1,),
                 #(2,),
-                (3,),
-                (4,),
-                (5,),
-                (6,),
+                #(3,),
+                #(4,),
+                #(5,),
+                #(6,),
                 (7,8),
                 (9,10),
                 (11,12),
@@ -276,15 +276,15 @@ if __name__=="__main__":
 
     chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+              #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+              #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+              #(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
 #              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-#              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,3,5,7,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              #(1,3,5,7,10,12,14,16),
               (1,3,5,7,10,12,14,16),
               #(1,5,10,16),
               ]
@@ -310,28 +310,28 @@ if __name__=="__main__":
     #    else:
     #        offsets=[0,0,0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.5,0.68]
     if doRatio:
-        offsets=[-0.5,0,0.5,1.0,1.5,2.0,3.0,4.0,5.0,7.0]
+        offsets=[-0.5,0,0.5,1.0,1.5,3.0]
     else:
-        offsets=[0,0.05,0.1,0.15,0.2,0.25,0.35,0.45,0.63]
+        offsets=[0,0.05,0.1,0.15,0.3]
     if doRatio:
-        offsets=[-0.5,0,0.5,1.0,1.5,2.0,2.5,3.2,4.5,7.5]
+        offsets=[-0.5,0,0.5,1.0,1.5,3.0]
     else:
         if compareNewData:
-            offsets=[0,0.05,0.1,0.15,0.2,0.25,0.3,0.39,0.55]
+            offsets=[0,0.05,0.1,0.2,0.35]
         else:
-            offsets=[0,0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.55]
+            offsets=[0,0.05,0.1,0.2,0.35]
 
     if theories_plot:
         if doRatio:
-            offsets=[0,0,0,0,0,0,0,0,0,2]
+            offsets=[0,0,0,0,0,2]
         else:
-            offsets=[0,0,0,0,0,0,0,0,0,0.23]
+            offsets=[0,0,0,0,0,0.23]
 
     if jetalgo+jettype=="AK5PF":
         filename_old_data="new2data_hists_norebin_AK5PF.root"
         filename_data="run2011a_2fb_data_hists_AK5PF.root"
         filename_new_2011_data="run2011a_5_0fb_data_hists_AK5PF.root"
-        filename_new_data="chi_HCP.root"
+        filename_new_data="chi_HCP_chs.root"
 
         # new data
         mjj_jes = [[1.0323192053302788, 0.88484503314023577, 0.73737086095020388, 0.58989668876016088, 0.44242251657011789, 0.29494834438007489, 0.147474172190043, 0.0, 0.14747417219003189, 0.36868543047510194, 0.66363377485518793, 0.95858211923525172], [0.87284629310275808, 0.74815396551665136, 0.62346163793053355, 0.49876931034442684, 0.37407698275832013, 0.24938465517221342, 0.12469232758610671, 0.0, 0.12469232758611781, 0.31173081896527233, 0.56111547413748575, 0.81050012930969917], [0.83700307195109236, 0.71743120452949505, 0.59785933710791994, 0.47828746968634483, 0.35871560226474752, 0.23914373484317242, 0.11957186742157511, 0.0, 0.11957186742158621, 0.29892966855395997, 0.53807340339712129, 0.7772171382402937], [0.88514663300889307, 0.75869711400762263, 0.63224759500635219, 0.50579807600508175, 0.37934855700381132, 0.25289903800254088, 0.12644951900127044, 0.0, 0.12644951900127044, 0.3161237975031761, 0.56902283550571697, 0.82192187350826895], [0.80361162743214365, 0.68880996637041836, 0.57400830530867086, 0.45920664424694557, 0.34440498318519808, 0.22960332212347279, 0.11480166106172529, 0.0, 0.11480166106173639, 0.28700415265433543, 0.51660747477780822, 0.746210796901281], [0.70129234050475553, 0.6011077204326476, 0.50092310036053966, 0.40073848028843173, 0.3005538602163238, 0.20036924014421587, 0.10018462007210793, 0.0, 0.10018462007210793, 0.25046155018026983, 0.4508307903244857, 0.65120003046870156], [1.4118036491669872, 1.2101174135716986, 1.008431177976421, 0.80674494238113237, 0.60505870678585483, 0.40337247119056618, 0.20168623559528864, 0.0, 0.20168623559528864, 0.50421558898821051, 0.90758806017876559, 1.3109605313693429], [0.73523461277310576, 0.63020109666266366, 0.52516758055222157, 0.42013406444177948, 0.31510054833132628, 0.21006703222088419, 0.10503351611044209, 0.0, 0.10503351611044209, 0.26258379027610523, 0.47265082249698942, 0.68271785471787361], [0.58491471464491296, 0.40494095629263205, 0.22496719794035114, 0.0, 0.22496719794036224, 0.40494095629264315, 0.58491471464492406], [0.58491471464491296, 0.40494095629263205, 0.22496719794035114, 0.0, 0.22496719794036224, 0.40494095629264315, 0.58491471464492406], [0.58491471464491296, 0.40494095629263205, 0.22496719794035114, 0.0, 0.22496719794036224, 0.40494095629264315, 0.58491471464492406]]
@@ -385,7 +385,7 @@ if __name__=="__main__":
     table["Total"]=[]
 
     #c = TCanvas("nlo-final", "nlo-final", 0, 0, 400, 500)
-    c = TCanvas("nlo-final", "nlo-final", 0, 0, 400, 600)
+    c = TCanvas("nlo-final", "nlo-final", 0, 0, 400, 400)
     if theories_plot:
         c = TCanvas("nlo-final", "nlo-final", 0, 0, 300, 300)
     c.Divide(1,1)
@@ -1485,7 +1485,8 @@ if __name__=="__main__":
                 first=False
             if not doDataData:
                 if alt3a:
-                    h1graph.Draw("e2")
+		    pass
+                    #h1graph.Draw("e2")
                 elif alt3:
                     h3.Draw("histsame")
                     h2.Draw("histsame")
@@ -1526,9 +1527,10 @@ if __name__=="__main__":
             else:
                 if not doRatio:
                   if mx<10:
-                    h0old.Draw("psame")
-                    h0oldsys.Draw("e1x0same")
-                    h0oldall.Draw("esame")
+		    pass
+                    #h0old.Draw("psame")
+                    #h0oldsys.Draw("e1x0same")
+                    #h0oldall.Draw("esame")
                 else:
                     h1.SetLineColor(2)
                     h1.Draw("histlsame")
@@ -1543,11 +1545,12 @@ if __name__=="__main__":
                 if compareNewData:
                     h0newsys.SetMarkerSize(0)
             if mx<8:
-  	      h0.Draw("psame")
-              if doRatio:
-                h0sys.Draw("e1x0same")
-              h0all.Draw("esame")
-            if compareNewData and mx>4:
+  	      pass
+	      #h0.Draw("psame")
+              #if doRatio:
+              #  h0sys.Draw("e1x0same")
+              #h0all.Draw("esame")
+            if compareNewData:
                 h0new.Draw("psame")
                 if doRatio:
                     h0newsys.Draw("e1x0same")
@@ -1570,10 +1573,8 @@ if __name__=="__main__":
             if mx==9: ylabel+=0.070
         else:
             if compareNewData:
-                ylabel=offsets[mx-1]*1.46+0.21
-                if mx==7: ylabel+=0.02
-                if mx==8: ylabel+=0.07
-                if mx==9: ylabel+=0.09
+                ylabel=offsets[mx-1]*2.25+0.255
+                if mx==4: ylabel+=0.10
             else:
                 ylabel=offsets[mx-1]*1.4+0.188
                 if mx==7: ylabel+=0.000
@@ -1621,15 +1622,11 @@ if __name__=="__main__":
         if mx==8: title="3.0 < #font[72]{M_{jj}} < 4.0"
         if mx==9: title="#font[72]{M_{jj}} > 4.0"
 
-        if mx==1: title="0.8 < #font[72]{M_{jj}} < 1.0"
-        if mx==2: title="1.0 < #font[72]{M_{jj}} < 1.2"
-        if mx==3: title="1.2 < #font[72]{M_{jj}} < 1.5"
-        if mx==4: title="1.5 < #font[72]{M_{jj}} < 1.9"
-        if mx==5: title="1.9 < #font[72]{M_{jj}} < 2.4"
-        if mx==6: title="2.4 < #font[72]{M_{jj}} < 3.0"
-        if mx==7: title="3.0 < #font[72]{M_{jj}} < 4.0"
-        if mx==8: title="4.0 < #font[72]{M_{jj}} < 5.0"
-        if mx==9: title="#font[72]{M_{jj}} > 5.0"
+        if mx==1: title="1.9 < #font[72]{M_{jj}} < 2.4"
+        if mx==2: title="2.4 < #font[72]{M_{jj}} < 3.0"
+        if mx==3: title="3.0 < #font[72]{M_{jj}} < 4.0"
+        #if mx==4: title="4.0 < #font[72]{M_{jj}} < 5.0"
+        if mx==4: title="#font[72]{M_{jj}} > 4.0"
 
         #if offsets[m-1]==0: title+=" TeV"
         #elif offsets[m-1]<0: title+=" TeV ("+str(offsets[m-1])+")"
@@ -1674,7 +1671,7 @@ if __name__=="__main__":
         l5.Draw("same")
         new_hists+=[l5]
          
-        l5=TLegend(0.32,0.86,1.0,0.85,"#sqrt{s} = 7 TeV")
+        l5=TLegend(0.32,0.83,1.0,0.82,"#sqrt{s} = 7 TeV")
         l5.SetTextSize(0.035)
         l5.SetFillStyle(0)
         l5.Draw("same")
@@ -1682,13 +1679,13 @@ if __name__=="__main__":
          
         if not doDataData:
             if run2010new:
-                l=TLegend(0.32,0.81,1.0,0.80,"L = 36 pb^{-1}")
+                l=TLegend(0.32,0.75,1.0,0.74,"L = 36 pb^{-1}")
             else:
-                l=TLegend(0.32,0.81,1.0,0.80,"L = 2.2 fb^{-1}")
+                l=TLegend(0.32,0.75,1.0,0.74,"L = 2.2 fb^{-1}")
                 if compareNewData:
-                    l=TLegend(0.32,0.81,1.0,0.80,"")
+                    l=TLegend(0.32,0.75,1.0,0.74,"")
                 elif combineNew2011Data or useNewData:
-                    l=TLegend(0.32,0.81,1.0,0.80,"L = 5.0 fb^{-1}")
+                    l=TLegend(0.32,0.75,1.0,0.74,"L = 5.0 fb^{-1}")
             l.SetTextSize(0.035)
             l.SetFillStyle(0)
             l.Draw("same")
@@ -1726,7 +1723,7 @@ if __name__=="__main__":
         #l2.AddEntry(h1,"QCD prediction","l")
         #l2.AddEntry(h3,"Theory uncertainty","f")
         if not doDataData:
-            l2.AddEntry(h3,"QCD prediction #sqrt{s} = 7 TeV","f")
+            #l2.AddEntry(h3,"QCD prediction #sqrt{s} = 7 TeV","f")
             if addLambda and not compareNewData:
                 if theories_plot:
                   if lambdaset==0:
@@ -1807,9 +1804,9 @@ if __name__=="__main__":
         new_hists+=[l2]
         if alt4:
             if addLambda:
-                l3=TLegend(0.275,0.85,0.276,0.96,"")
+                l3=TLegend(0.275,0.79,0.276,0.96,"")
             else:
-                l3=TLegend(0.575,0.85,0.576,0.96,"")
+                l3=TLegend(0.575,0.79,0.576,0.96,"")
             l3.SetTextSize(0.035)
             l3.AddEntry(h0,"","le")
             l3.AddEntry(h0,"","")
@@ -1822,40 +1819,40 @@ if __name__=="__main__":
 
     else:
         if doPaper:
-            l5=TLegend(0.74,0.94,1.0,0.94,"CMS")
+            l5=TLegend(0.74,0.92,1.0,0.92,"CMS")
         elif doPreliminary:
-            l5=TLegend(0.65,0.94,1.0,0.94,"CMS Preliminary")
+            l5=TLegend(0.65,0.92,1.0,0.92,"CMS Preliminary")
         else:
-            l5=TLegend(0.65,0.94,1.0,0.94,"")
+            l5=TLegend(0.65,0.92,1.0,0.92,"")
         l5.SetTextSize(0.035)
         l5.SetFillStyle(0)
         l5.Draw("same")
         new_hists+=[l5]
          
-        l5=TLegend(0.7,0.91,1.0,0.91,"#sqrt{s} = 7 TeV")
+        l5=TLegend(0.7,0.88,1.0,0.88,"#sqrt{s} = 7 TeV")
         l5.SetTextSize(0.035)
         l5.SetFillStyle(0)
-        #l5.Draw("same")
+        l5.Draw("same")
         new_hists+=[l5]
          
         if not doDataData:
             if run2010new:
-                l=TLegend(0.7,0.88,1.0,0.88,"L = 36 pb^{-1}")
+                l=TLegend(0.7,0.82,1.0,0.82,"L = 36 pb^{-1}")
             else:
-                l=TLegend(0.7,0.88,1.0,0.88,"L = 2.2 fb^{-1}")
+                l=TLegend(0.7,0.82,1.0,0.82,"L = 2.2 fb^{-1}")
                 if compareNewData:
-                    l=TLegend(0.7,0.88,1.0,0.88,"")
+                    l=TLegend(0.7,0.82,1.0,0.82,"")
                 elif combineNew2011Data or useNewData:
-                    l=TLegend(0.7,0.88,1.0,0.88,"L = 5.0 fb^{-1}")
+                    l=TLegend(0.7,0.82,1.0,0.82,"L = 5.0 fb^{-1}")
             l.SetTextSize(0.035)
             l.SetFillStyle(0)
             l.Draw("same")
             new_hists+=[l]
 
         if addLambda:
-            l2=TLegend(0.23,0.85,0.76,0.96,"")
+            l2=TLegend(0.23,0.79,0.76,0.96,"")
         else:
-            l2=TLegend(0.23,0.86,0.76,0.95,"")
+            l2=TLegend(0.23,0.80,0.76,0.95,"")
         l2.SetTextSize(0.035)
         if alt4:
             l2.AddEntry(h0,"Data","p")
@@ -1874,7 +1871,8 @@ if __name__=="__main__":
             else:
                 if compareNewData:
                   if combineNew2011Data or useNewData:
-                    l2.AddEntry(h0,"2011 Data 5.0 fb^{-1}","lep")
+		    pass
+                    #l2.AddEntry(h0,"2011 Data 5.0 fb^{-1}","lep")
 		  else:
                     l2.AddEntry(h0,"2011 Data 2.2 fb^{-1}","lep")
                 else:
@@ -1884,7 +1882,7 @@ if __name__=="__main__":
         #l2.AddEntry(h1,"QCD prediction","l")
         #l2.AddEntry(h3,"Theory uncertainty","f")
         if not doDataData:
-            l2.AddEntry(h3,"QCD prediction","f")
+            #l2.AddEntry(h3,"QCD prediction","f")
             #l2.AddEntry(h1_alt,"#Lambda_{LL/RR}^{#font[122]{+}} = 7 TeV (NLO)","l")
             if addLambda and not compareNewData:
                 if theories_plot:

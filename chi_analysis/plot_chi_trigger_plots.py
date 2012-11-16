@@ -26,8 +26,8 @@ if __name__ == '__main__':
 
    #data="5fb_5TeV"
    #data="8fb_5TeV"
-   data="11_9fb"
-   f=TFile.Open("data_"+data+".root")
+   data="11fb"
+   f=TFile.Open("chi_HCP_ABv2.root")
 
    canvas = TCanvas("","",0,0,200,200)
    legend=TLegend(0.5,0.7,0.95,0.90,"")
