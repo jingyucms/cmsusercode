@@ -1,7 +1,7 @@
 import os
 
 minMasses=[1500,2000,2500]
-signalMasses=[4000,6000,8000,10000,12000]
+signalMasses=[4000,6000,8000,10000,12000,14000,16000,18000,20000]
 couplings=[(1,0,0),]
 samples=[]
 
