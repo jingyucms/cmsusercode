@@ -1,1 +1,0 @@
-ProductionTasks.py -w 'cmgTuple*.root' -c -N 3 -q 8nh -t HTT_Sep12_hinzmann --output_wildcard '[!h]*.root' --cfg h2TauTau_diTau_cfg.py --max_threads 100 `cat samples_newmet_2012.txt`
