@@ -1,6 +1,12 @@
 #!/bin/sh
 
-  dir=pythia6_RSGWW1000_20PU_small
+startn=0
+endn=10
+n=${startn}
+while [ $n -le $endn ]
+do
+
+  dir=pythia6_RSGWW1000_12PU_$n
 
   echo ********file ${dir}
   
@@ -15,7 +21,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("PFAOD")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(30000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(200) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -117,7 +123,9 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
 		        '5000039:ONIFANY 24',
 		        'MSTP(131) = 1', #pileup on
 		        'MSTP(132) = 4', #all pileup processes
-		        'MSTP(134) = 20', #number of pileup interactions
+		        'MSTP(134) = 12', #number of pileup interactions
+		        'MSTP(151) = 1', #different vertices for pileup
+		        'PARP(153) = 100', #beamspot z length in mm
         ),
 		parameterSets = cms.vstring(
 		        'pythiaUESettings',
@@ -160,16 +168,20 @@ process.load("CMGTools.Susy.common.susy_cff")
 process.razorMJObjectSequence.remove(process.razorMJHemiSequence)
 process.susyGenSequence.remove(process.dumpPdfWeights)
 process.razorMJHadTriggerInfo.printSelections=False
-process.demo.buffers.remove('hcalFilter')
-process.demo.buffers.remove('edmTriggerResultsHelper')
-process.demo.buffers.remove('edmTriggerResultsHelper1')
+process.demo.buffers=['patJetHelperGenCA8CHS']
+process.demo.ntupleName='${dir}_ntuple.root'
 
 process.p = cms.Path(process.generator*process.genParticles*process.genParticlesForJetsNoNu*process.ca8GenJetsNoNu*process.patGenJetsCA8CHS*process.demo)
 #process.endpath = cms.EndPath(process.out)
 #process.schedule = cms.Schedule(process.p,process.endpath)
+
+process.RandomNumberGeneratorService.generator.initialSeed=$n
 
 EOF
 
   cmsRun ${dir}.py
   #cmsStage /tmp/hinzmann/${dir}_PFAOD.root /store/cmst3/user/hinzmann/fastsim
   #cmsBatch.py 300 ${dir}.py -b 'bsub -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/${dir}/
+
+  n=`expr $n + 1`
+done
