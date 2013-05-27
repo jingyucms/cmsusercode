@@ -1,2 +1,0 @@
-runOnMC=False
-runOnCMG=True
