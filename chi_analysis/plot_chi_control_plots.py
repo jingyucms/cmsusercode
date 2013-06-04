@@ -24,29 +24,31 @@ if __name__ == '__main__':
    variables=["chi","pt1","pt2","y1","y2","yboost","metsumet","mptsumpt","dphi"]
    label=["#chi","p_{T1}","p_{T2}","y_{1}","y_{2}","y_{boost}","missing E_{T} / #sum E_{T}","#sum #vec p_{T} / #sum |p_{T}|","#Delta #phi"]
 
-   masses=[1900,2400,3000,4000,5000]
+   masses=[1900,2400,3000,3600,4200,7000]
 
    colors=[1,2,3,4,6,7,8,9,10,11,12,13]
    styles=[1,2,3,4,5,6,7,8,9,11,12,13]
 
-   prefix="HCP"
+   prefix="Moriond"
 
-   data=["chi_Run2012A",
-         "chi_Run2012Ar",
-         "chi_Run2012B",
-         "chi_Run2012C1_fast",
-         "chi_Run2012C2_fast",
+   data=["chi_Moriond_Run2012A",
+         "chi_Moriond_Run2012Ar",
+         "chi_Moriond_Run2012B",
+         "chi_Moriond_Run2012C1",
+         "chi_Moriond_Run2012C2",
+         "chi_Moriond_Run2012D",
          ]
-   data2=[#"chi_Run2012A",
-         #"chi_Run2012Ar",
-         #"chi_Run2012B",
-         #"chi_Run2012C1_fast",
-         "chi_Run2012C2_fast",
+   data2=[#"chi_Moriond_Run2012A",
+         #"chi_Moriond_Run2012Ar",
+         #"chi_Moriond_Run2012B",
+         #"chi_Moriond_Run2012C1",
+         #"chi_Moriond_Run2012C2",
+         "chi_Moriond_Run2012D",
          ]
-   mc=[("chi_QCD_1000",204.0/13479218),
-       ("chi_QCD_500",8426.0/31743483),
-       ("chi_QCD_250",276000.0/26900255),
-       ("chi_QCD_100",1.036e7/48365102),
+   mc=[("chi_Moriond_QCD_1000",204.0/13479218),
+       ("chi_Moriond_QCD_500",8426.0/31743483),
+       ("chi_Moriond_QCD_250",276000.0/26900255),
+       ("chi_Moriond_QCD_100",1.036e7/48365102),
        ]
    f_data=[]
    f_data2=[]
@@ -79,7 +81,7 @@ if __name__ == '__main__':
    hist.GetXaxis().SetTitleSize(0.06)
    hist.GetYaxis().SetTitleSize(0.06)
    hist.Draw("le")
-   legend.AddEntry(hist,"2012ABC","l")
+   legend.AddEntry(hist,"2012","l")
 
    hist2=f_data2[0].Get("dijet_mass")
    for i in range(1,len(data2)):
@@ -88,7 +90,7 @@ if __name__ == '__main__':
    hist2.SetLineWidth(2)
    hist2.SetLineColor(4)
    hist2.Draw("lesame")
-   legend.AddEntry(hist2,"2012C2","l")
+   legend.AddEntry(hist2,"2012D","l")
 
    hist_mc=f_mc[0].Get("dijet_mass")
    for i in range(1,len(mc)):
@@ -97,7 +99,7 @@ if __name__ == '__main__':
    hist_mc.SetLineWidth(2)
    hist_mc.SetLineColor(2)
    hist_mc.Draw("histsame")
-   legend.AddEntry(hist_mc,"QCD MC","l")
+   legend.AddEntry(hist_mc,"Madgraph QCD","l")
 
    legend.SetTextSize(0.04)
    legend.SetFillStyle(0)
@@ -107,8 +109,8 @@ if __name__ == '__main__':
    canvas.SaveAs("chi_control_plots_mass_"+prefix+".pdf")
 
    for var in variables:
-    canvas = TCanvas("","",0,0,400,400)
-    canvas.Divide(2,2)
+    canvas = TCanvas("","",0,0,600,400)
+    canvas.Divide(3,2)
     log="pt" in var or "et" in var or "dphi" in var
     legends=[]
     for mass in range(len(masses)-1):
@@ -138,7 +140,7 @@ if __name__ == '__main__':
         hist.GetXaxis().SetTitleSize(0.06)
         hist.GetYaxis().SetTitleSize(0.06)
         hist.Draw("le")
-        legend.AddEntry(hist,"2012ABC","l")
+        legend.AddEntry(hist,"2012","l")
 
         hist2=f_data2[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
         for i in range(1,len(data2)):
@@ -154,7 +156,7 @@ if __name__ == '__main__':
             miny=log*0.1
 	hist2.SetTitle("")
         hist2.Draw("lesame")
-        legend.AddEntry(hist2,"2012C2","l")
+        legend.AddEntry(hist2,"2012D","l")
 
      	hist_mc=f_mc[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
      	for i in range(1,len(mc)):
@@ -166,7 +168,7 @@ if __name__ == '__main__':
 	if "metsumet" in var:
 	    hist_mc.Rebin(4)
         hist_mc.Draw("histsame")
-        legend.AddEntry(hist_mc,"QCD MC","l")
+        legend.AddEntry(hist_mc,"Madgraph QCD","l")
 
         legend.SetTextSize(0.04)
         legend.SetFillStyle(0)

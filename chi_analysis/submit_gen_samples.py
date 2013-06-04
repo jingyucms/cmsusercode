@@ -1,7 +1,7 @@
 import os
 
-minMasses=[1500,2000,2500]
-signalMasses=[4000,6000,8000,10000,12000,14000,16000,18000,20000]
+minMasses=[2500,3700]#1500,2000
+signalMasses=[9000]#4000,6000,8000,10000,12000,14000,15000,16000,18000,20000
 couplings=[(1,0,0),]
 samples=[]
 
@@ -11,7 +11,7 @@ for minMass in minMasses:
         for coupling in couplings:
              samples+=[('pythia8_ci',minMass,signalMass,coupling),]
 
-version="Nov15"
+version="May27"
 
 for sample,minMass,signalMass,coupling in samples:
     samplename=sample+"_m"+str(minMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version

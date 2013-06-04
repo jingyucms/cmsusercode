@@ -24,32 +24,35 @@ if __name__ == '__main__':
    var="chi"
    label="#chi"
 
-   masses=[1900,2400,3000,4000,5000]
+   masses=[1900,2400,3000,3600,4200,7000]
 
    colors=[1,2,3,4,6,7,8,9,10,11,12,13]
    styles=[1,2,3,4,5,6,7,8,9,11,12,13]
    
-   sources=["Absolute", "HighPtExtra", "SinglePion", "Flavor", "Time",
+   sources=["Absolute", "HighPtExtra", "SinglePionECAL", "SinglePionHCAL",
+   "Flavor", "Time",
    "RelativeJEREC1", "RelativeJEREC2", "RelativeJERHF",
-   "RelativeStatEC2", "RelativeStatHF", "RelativeFSR",
-   "PileUpDataMC", "PileUpOOT", "PileUpPt", "PileUpBias", "PileUpJetRate"]
-   sourcesets=[[0,1,2,3,4],[5,6,7,8,9,10],[11,12,13,14,15]]
+   "RelativePtEC1", "RelativePtEC2", "RelativePtHF",
+   "RelativeStatEC2", "RelativeStatHF", 
+   "PileUpDataMC",  "PileUpBias",
+   "PileUpPtBB", "PileUpPtEC", "PileUpPtHF"]
+   sourcesets=[[0,1,2,3,4,5],[6,7,8,9,10,11,12,13],[14,15,16,17,18]]
 
-   prefix="HCP"
+   prefix="Moriond"
 
-   mc=[("chi_QCD_1000_jec",204.0/13479218),
-       ("chi_QCD_500_jec",8426.0/31743483),
-       ("chi_QCD_250_jec",276000.0/26900255),
-       ("chi_QCD_100_jec",1.036e7/48365102),
-       ]
-   #mc=[("chi_HCP_jec",1)]
+   #mc=[("chi_QCD_1000_jec",204.0/13479218),
+   #    ("chi_QCD_500_jec",8426.0/31743483),
+   #    ("chi_QCD_250_jec",276000.0/26900255),
+   #    ("chi_QCD_100_jec",1.036e7/48365102),
+   #    ]
+   mc=[("chi_Moriond",1)]
    f_mc=[]
    for name,xsec in mc:
       f_mc+=[TFile.Open(name+".root")]
 
    for sourceset in sourcesets:
-    canvas = TCanvas("","",0,0,400,400)
-    canvas.Divide(2,2)
+    canvas = TCanvas("","",0,0,600,400)
+    canvas.Divide(3,2)
     log="pt" in var or "et" in var or "dphi" in var
     legends=[]
     hists=[]

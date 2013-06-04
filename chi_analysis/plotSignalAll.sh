@@ -5,6 +5,7 @@ python plotSignal.py QCDCI8000 &
 python plotSignal.py QCDCI10000 &
 python plotSignal.py QCDCI12000 &
 python plotSignal.py QCDCI14000 &
+python plotSignal.py QCDCI15000 &
 python plotSignal.py QCDCI16000 &
 python plotSignal.py QCDCI18000 &
 python plotSignal.py QCDCI20000 &
