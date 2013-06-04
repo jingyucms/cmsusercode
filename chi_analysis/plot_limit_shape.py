@@ -59,7 +59,7 @@ if __name__=="__main__":
     g_exp1p.SetLineWidth(3)
     mg.Add(g_exp1p)
     
-    mg.Draw("apc")
+    mg.Draw("apl")
     mg.SetTitle("")
     mg.GetXaxis().SetTitle("contact interaction scale [GeV]")
     mg.GetYaxis().SetTitle("CLs")
@@ -74,15 +74,15 @@ if __name__=="__main__":
     exp=0
     exp1m=0
     exp1p=0
-    for i in range(10000):
+    for i in reversed(range(10000)):
         mass=i*(limits[-1][0]-limits[0][0])/10000.+limits[0][0]
-	if limit==0 and g.Eval(mass,0,"S")>0.05:
+	if limit==0 and g.Eval(mass,0)<0.05:
 	    limit=mass
-	if exp==0 and g_exp.Eval(mass,0,"S")>0.05:
+	if exp==0 and g_exp.Eval(mass,0)<0.05:
 	    exp=mass
-	if exp1m==0 and g_exp1m.Eval(mass,0,"S")>0.05:
+	if exp1m==0 and g_exp1m.Eval(mass,0)<0.05:
 	    exp1m=mass
-	if exp1p==0 and g_exp1p.Eval(mass,0,"S")>0.05:
+	if exp1p==0 and g_exp1p.Eval(mass,0)<0.05:
 	    exp1p=mass
 
     print "limit",limit,"exp",exp,"-",exp-exp1m,"+",exp1p-exp

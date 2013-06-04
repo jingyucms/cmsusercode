@@ -1,7 +1,7 @@
 import os
 
-minMasses=[2500,3700]#1500,2000
-signalMasses=[9000]#4000,6000,8000,10000,12000,14000,15000,16000,18000,20000
+minMasses=[2500,3700]
+signalMasses=[6000,8000,9000,10000,12000,14000,15000,16000,18000,20000]
 couplings=[(1,0,0),]
 samples=[]
 
@@ -157,7 +157,7 @@ process.load("CMGTools.Common.gen_cff")
 
 process.load("RecoJets.Configuration.GenJetParticles_cff")
 process.load("RecoJets.Configuration.RecoGenJets_cff")
-process.ak5GenJets.jetPtMin=20
+process.ak5GenJets.jetPtMin=100
 
 process.p = cms.Path(process.generator*process.genParticles*process.genJetParticles*process.ak5GenJets)#*process.ca08PrunedGenJets
 process.endpath = cms.EndPath(process.out)

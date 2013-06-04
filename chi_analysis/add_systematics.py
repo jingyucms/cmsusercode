@@ -68,6 +68,8 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_ci_m3700_6000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI8000",[("fileList_pythia8_ci_m2500_8000_1_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_8000_1_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDCI9000",[("fileList_pythia8_ci_m2500_9000_1_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_9000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI10000",[("fileList_pythia8_ci_m2500_10000_1_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_10000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI12000",[("fileList_pythia8_ci_m2500_12000_1_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
@@ -329,13 +331,13 @@ if __name__ == '__main__':
         scaledown.Write()
 
 	# DATA BLINDED
-	#data=alt.Clone("data_blinded")
-        #for b in range(data.GetXaxis().GetNbins()):
-        #    data.SetBinError(b+1,sqrt(data.GetBinContent(b+1)))
-        #out.cd()
-	#for k in range(0,100):
-        #    out.Delete('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
-	#data.Write('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
+	data=alt.Clone("data_blinded")
+        for b in range(data.GetXaxis().GetNbins()):
+            data.SetBinError(b+1,sqrt(data.GetBinContent(b+1)))
+        out.cd()
+	for k in range(0,100):
+            out.Delete('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
+	data.Write('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
 	# FAKE SIGNAL
 	#ci=alt.Clone("fake_signal")
