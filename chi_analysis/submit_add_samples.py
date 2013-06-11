@@ -1,18 +1,26 @@
 import os
 
-minMasses=[3700] #2500
-lambdaTes=[2000]
+minMasses=[2500,3700]
+scenarios=[(10000,5000,4,0,0),
+	   (12000,6000,4,0,0),
+	   (14000,7000,4,0,0),
+	   (16000,8000,4,0,0),
+	   (18000,9000,4,0,0),
+	   (20000,10000,4,0,0),
+	   (22000,11000,4,0,0),
+	   ]
 samples=[]
 
 for minMass in minMasses:
     #samples+=[('pythia8_qcd',minMass,""),]
-    for lambdaT in lambdaTes:
-             samples+=[('pythia8_add',minMass,lambdaT),]
+    for lambdaT,MD,nED,negInt,opMode in scenarios:
+             samples+=[('pythia8_add',minMass,lambdaT,MD,nED,negInt,opMode),]
 
 version="May27"
 
-for sample,minMass,lambdaT in samples:
-    samplename=sample+"_m"+str(minMass)+"_"+str(lambdaT)+"_"+version
+for sample,minMass,lambdaT,MD,nED,negInt,opMode in samples:
+    samplename=sample+"_m"+str(minMass)+"_"+str(lambdaT)+"_"+str(MD)+"_"+str(nED)+"_"+str(negInt)+"_"+str(opMode)+"_"+version
+    print samplename
     cfg=open(samplename+".py","w")
     cfg.writelines("""
 import FWCore.ParameterSet.Config as cms
@@ -123,12 +131,15 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
         cfg.writelines("""			'HardQCD:all = on ',
 """)
     else:
-        cfg.writelines("""			'ExtraDimensionsLED:dijets = on',
+        cfg.writelines("""			'HardQCD:all = off ',
+	                'ExtraDimensionsLED:dijets = on',
 			'ExtraDimensionsLED:CutOffmode = 0',
 			'ExtraDimensionsLED:LambdaT = """+str(lambdaT)+"""',
+			'ExtraDimensionsLED:MD = """+str(MD)+"""',
+			'ExtraDimensionsLED:n = """+str(nED)+"""', # Number of extra dimensions
 			'ExtraDimensionsLED:nQuarkNew = 5', # outgoing mass-less quark flavours
-			'ExtraDimensionsLED:negInt = 0', # Change sign of interferecen term if ==1
-			'ExtraDimensionsLED:opMode = 0', # 0=Franceshini paper 1=Giudice paper
+			'ExtraDimensionsLED:negInt = """+str(negInt)+"""', # Change sign of interferecen term if ==1
+			'ExtraDimensionsLED:opMode = """+str(opMode)+"""', # 0=Franceshini paper 1=Giudice paper
 """)
     cfg.writelines("""
 		),
@@ -140,8 +151,6 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 #process.pfNoPileUp.bottomCollection=cms.InputTag("particleFlow")
 #process.pfPileUpCandidates.bottomCollection=cms.InputTag("particleFlow")
 
-process.load("CMGTools.Common.gen_cff")
-
 process.load("RecoJets.Configuration.GenJetParticles_cff")
 process.load("RecoJets.Configuration.RecoGenJets_cff")
 process.ak5GenJets.jetPtMin=100
@@ -152,4 +161,4 @@ process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles_*_*','drop *_genParticlesForJets_*_*')
 """)
     cfg.close()
-    #os.system("cmsBatch.py 200 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")
+    os.system("cmsBatch.py 200 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")

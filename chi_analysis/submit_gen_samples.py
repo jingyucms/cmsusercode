@@ -153,8 +153,6 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 #process.pfNoPileUp.bottomCollection=cms.InputTag("particleFlow")
 #process.pfPileUpCandidates.bottomCollection=cms.InputTag("particleFlow")
 
-process.load("CMGTools.Common.gen_cff")
-
 process.load("RecoJets.Configuration.GenJetParticles_cff")
 process.load("RecoJets.Configuration.RecoGenJets_cff")
 process.ak5GenJets.jetPtMin=100
