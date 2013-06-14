@@ -20,8 +20,19 @@ gStyle.SetNdivisions(510, "XYZ")
 gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
-    f=file("limits.txt")
+
+    model=2
+
+    if model==0:
+    	signal="CI"    
+    if model==1:
+    	signal="ADD_4_0_0_"
+    if model==2:
+    	signal="ADD_4_0_1_"
+
+    f=file("limits"+signal+".txt")
     limits=eval(f.readline())
+    print limits
 
     canvas = TCanvas("","",0,0,300,300)
     #canvas.GetPad(0).SetLogy()
@@ -92,6 +103,6 @@ if __name__=="__main__":
     l2.SetLineStyle(2)
     l2.Draw("same")
     
-    canvas.SaveAs('limits.pdf')
-    canvas.SaveAs('limits.eps')
+    canvas.SaveAs('limits'+signal+'.pdf')
+    canvas.SaveAs('limits'+signal+'.eps')
     

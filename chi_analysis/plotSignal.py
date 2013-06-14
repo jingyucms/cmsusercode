@@ -43,7 +43,7 @@ def createPlots(sample,prefix,massbins):
 
     event_count=0
     events=TChain('Events')
-    for f in files[:1]:
+    for f in files[:]:
       events.Add(f)
     
     print sample,events.GetEntries()
@@ -113,20 +113,41 @@ if __name__ == '__main__':
              ("QCDADD2000_2_0_1",[("fileList_pythia8_add_m3700_2000_2_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_2000_2_0_1_May27_grid.txt",[(4200,8000)])]),
 
-             ("QCDADD_4000_2000_4_0_0",[("fileList_pythia8_add_m2500_4000_2000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_4000_2000_4_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDADD_6000_3000_4_0_0",[("fileList_pythia8_add_m2500_6000_3000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_6000_3000_4_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDADD_8000_4000_4_0_0",[("fileList_pythia8_add_m2500_8000_4000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_8000_4000_4_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDADD_10000_5000_4_0_0",[("fileList_pythia8_add_m2500_10000_5000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+             ("QCDADD_4_0_0_5000",[("fileList_pythia8_add_m2500_10000_5000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_10000_5000_4_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDADD_12000_6000_4_0_0",[("fileList_pythia8_add_m2500_12000_6000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+             ("QCDADD_4_0_0_6000",[("fileList_pythia8_add_m2500_12000_6000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_12000_6000_4_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDADD_14000_7000_4_0_0",[("fileList_pythia8_add_m2500_14000_7000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+             ("QCDADD_4_0_0_7000",[("fileList_pythia8_add_m2500_14000_7000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_14000_7000_4_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDADD_16000_8000_4_0_0",[("fileList_pythia8_add_m2500_16000_8000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+             ("QCDADD_4_0_0_8000",[("fileList_pythia8_add_m2500_16000_8000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_16000_8000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_9000",[("fileList_pythia8_add_m2500_18000_9000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_18000_9000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_10000",[("fileList_pythia8_add_m2500_20000_10000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_20000_10000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_11000",[("fileList_pythia8_add_m2500_22000_11000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_22000_11000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+
+             ("QCDADD_4_0_1_2000",[("fileList_pythia8_add_m2500_4000_2000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_4000_2000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_3000",[("fileList_pythia8_add_m2500_6000_3000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_6000_3000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_4000",[("fileList_pythia8_add_m2500_8000_4000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_8000_4000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_5000",[("fileList_pythia8_add_m2500_10000_5000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_10000_5000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_6000",[("fileList_pythia8_add_m2500_12000_6000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_12000_6000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_7000",[("fileList_pythia8_add_m2500_14000_7000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_14000_7000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_8000",[("fileList_pythia8_add_m2500_16000_8000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_16000_8000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_9000",[("fileList_pythia8_add_m2500_18000_9000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_18000_9000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_10000",[("fileList_pythia8_add_m2500_20000_10000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_20000_10000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_11000",[("fileList_pythia8_add_m2500_22000_11000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_22000_11000_4_0_1_May27_grid.txt",[(4200,8000)])]),
              ]
 
     chi_binnings=[]
@@ -144,7 +165,10 @@ if __name__ == '__main__':
 	        newsamples+=[sample]
 		break
 	samples=newsamples
-	prefix+="_"+samples[-1][0].replace("QCDCI","CI")
+	if samples[-1][0]=="QCD":
+            prefix+="_"+samples[-1][0]
+        else:
+	    prefix+="_"+samples[-1][0].replace("QCD","")
   
     print prefix, samples
 

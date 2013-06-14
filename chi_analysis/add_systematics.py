@@ -84,6 +84,42 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_ci_m3700_18000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI20000",[("fileList_pythia8_ci_m2500_20000_1_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_20000_1_0_0_May27_grid.txt",[(4200,8000)])]),
+
+             ("QCDADD_4_0_0_5000",[("fileList_pythia8_add_m2500_10000_5000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_10000_5000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_6000",[("fileList_pythia8_add_m2500_12000_6000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_12000_6000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_7000",[("fileList_pythia8_add_m2500_14000_7000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_14000_7000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_8000",[("fileList_pythia8_add_m2500_16000_8000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_16000_8000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_9000",[("fileList_pythia8_add_m2500_18000_9000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_18000_9000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_10000",[("fileList_pythia8_add_m2500_20000_10000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_20000_10000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_0_11000",[("fileList_pythia8_add_m2500_22000_11000_4_0_0_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_22000_11000_4_0_0_May27_grid.txt",[(4200,8000)])]),
+
+             ("QCDADD_4_0_1_2000",[("fileList_pythia8_add_m2500_4000_2000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_4000_2000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_3000",[("fileList_pythia8_add_m2500_6000_3000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_6000_3000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_4000",[("fileList_pythia8_add_m2500_8000_4000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_8000_4000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_5000",[("fileList_pythia8_add_m2500_10000_5000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_10000_5000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_6000",[("fileList_pythia8_add_m2500_12000_6000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_12000_6000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_7000",[("fileList_pythia8_add_m2500_14000_7000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_14000_7000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_8000",[("fileList_pythia8_add_m2500_16000_8000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_16000_8000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_9000",[("fileList_pythia8_add_m2500_18000_9000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_18000_9000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_10000",[("fileList_pythia8_add_m2500_20000_10000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_20000_10000_4_0_1_May27_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_11000",[("fileList_pythia8_add_m2500_22000_11000_4_0_1_May27_grid.txt",[(3000,3600),(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_22000_11000_4_0_1_May27_grid.txt",[(4200,8000)])]),
              ]
 
     dataevents={}
@@ -96,7 +132,7 @@ if __name__ == '__main__':
 
      # signal cards
      for i in range(len(samples)):
-      sample=prefix + "_"+samples[i][0].replace("QCDCI","CI") + '_chi.root'
+      sample=prefix + "_"+samples[i][0].replace("QCD","") + '_chi.root'
       print sample
       out=TFile(sample,'UPDATE')
 
@@ -331,13 +367,13 @@ if __name__ == '__main__':
         scaledown.Write()
 
 	# DATA BLINDED
-	data=alt.Clone("data_blinded")
-        for b in range(data.GetXaxis().GetNbins()):
-            data.SetBinError(b+1,sqrt(data.GetBinContent(b+1)))
-        out.cd()
-	for k in range(0,100):
-            out.Delete('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
-	data.Write('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
+	#data=alt.Clone("data_blinded")
+        #for b in range(data.GetXaxis().GetNbins()):
+        #    data.SetBinError(b+1,sqrt(data.GetBinContent(b+1)))
+        #out.cd()
+	#for k in range(0,100):
+        #    out.Delete('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
+	#data.Write('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
 	# FAKE SIGNAL
 	#ci=alt.Clone("fake_signal")
@@ -399,5 +435,5 @@ if __name__ == '__main__':
         legend1.SetFillStyle(0)
         legend1.Draw("same")
 
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCDCI","CI") + '_sys.pdf')
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCDCI","CI") + '_sys.eps')
+      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.pdf')
+      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.eps')
