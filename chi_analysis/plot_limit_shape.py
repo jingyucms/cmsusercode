@@ -21,7 +21,7 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
-    model=2
+    model=0
 
     if model==0:
     	signal="CI"    

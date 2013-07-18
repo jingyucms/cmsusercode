@@ -9,7 +9,7 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
-model=1
+model=0
 
 if model==0:
     signal="CI"    
@@ -25,7 +25,7 @@ prefix="datacard_shapelimit"
 
 limits={}
 for signalMass in signalMasses:
-    cfg=open("chi_datacard_"+str(signalMass)+".txt","w")
+    cfg=open("chi_datacard_"+signal+"_"+str(signalMass)+".txt","w")
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 2 number of backgrounds
@@ -85,7 +85,7 @@ kmax 3 number of nuisance parameters
 """)
 
     cfg.close()
-    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard_"+str(signalMass)+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+str(signalMass)+".root")
+    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard_"+signal+"_"+str(signalMass)+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+str(signalMass)+".root")
     os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 10000 fixedMu_"+str(signalMass)+".root > limits"+signal+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
     os.system('root -q -b higgsCombineTest.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+str(signalMass)+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
     os.system('root -q -b "./extractSignificanceStats.C(\\"'+str(signalMass)+'\\")" > limits'+signal+'_exp_'+str(signalMass)+'.txt')
