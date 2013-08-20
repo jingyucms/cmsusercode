@@ -1,17 +1,18 @@
 import os
 
 minMasses=[2500,3700]
-scenarios=[(4000,2000,4,0,1),
-	   (6000,3000,4,0,1),
-	   (8000,4000,4,0,1),
-	   #(10000,5000,4,0,1),
-	   #(12000,6000,4,0,1),
-	   #(14000,7000,4,0,1),
-	   #(16000,8000,4,0,1),
-	   #(18000,9000,4,0,1),
-	   #(20000,10000,4,0,1),
-	   #(22000,11000,4,0,1),
+scenarios=[(4000,4000,4,0,0),
+	   (5000,5000,4,0,0),
+	   (6000,6000,4,0,0),
+	   (7000,7000,4,0,0),
+	   (8000,8000,4,0,0),
 	   ]
+#scenarios=[(4000,0,0,0,1),
+#	   (5000,0,0,0,1),
+#	   (6000,0,0,0,1),
+#	   (7000,0,0,0,1),
+#	   (8000,0,0,0,1),
+#	   ]
 samples=[]
 
 for minMass in minMasses:
@@ -19,7 +20,7 @@ for minMass in minMasses:
     for lambdaT,MD,nED,negInt,opMode in scenarios:
              samples+=[('pythia8_add',minMass,lambdaT,MD,nED,negInt,opMode),]
 
-version="May27"
+version="Aug19"
 
 for sample,minMass,lambdaT,MD,nED,negInt,opMode in samples:
     samplename=sample+"_m"+str(minMass)+"_"+str(lambdaT)+"_"+str(MD)+"_"+str(nED)+"_"+str(negInt)+"_"+str(opMode)+"_"+version
@@ -156,7 +157,7 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 
 process.load("RecoJets.Configuration.GenJetParticles_cff")
 process.load("RecoJets.Configuration.RecoGenJets_cff")
-process.ak5GenJets.jetPtMin=100
+process.ak5GenJets.jetPtMin=200
 
 process.p = cms.Path(process.generator*process.genParticles*process.genJetParticles*process.ak5GenJets)#*process.ca08PrunedGenJets
 process.endpath = cms.EndPath(process.out)
