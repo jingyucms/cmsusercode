@@ -40,12 +40,13 @@ if __name__ == '__main__':
 
    prefix="Moriond"
 
-   #mc=[("chi_QCD_1000_jec",204.0/13479218),
-   #    ("chi_QCD_500_jec",8426.0/31743483),
-   #    ("chi_QCD_250_jec",276000.0/26900255),
-   #    ("chi_QCD_100_jec",1.036e7/48365102),
-   #    ]
-   mc=[("chi_Moriond",1)]
+   mc=[("chi_QCD_1000",204.0/13479218),
+       ("chi_QCD_500",8426.0/31743483),
+       ("chi_QCD_250",276000.0/26900255),
+       ("chi_QCD_100",1.036e7/48365102),
+       ]
+   mc=[("chi_EPS2",1)]
+   mc=[("chi_QCDHerwig",1)]
    f_mc=[]
    for name,xsec in mc:
       f_mc+=[TFile.Open(name+".root")]

@@ -31,25 +31,17 @@ if __name__ == '__main__':
 
    prefix="Moriond"
 
-   data=["chi_Moriond_Run2012A",
-         "chi_Moriond_Run2012Ar",
-         "chi_Moriond_Run2012B",
-         "chi_Moriond_Run2012C1",
-         "chi_Moriond_Run2012C2",
-         "chi_Moriond_Run2012D",
+   data=["chi_EPS2",
          ]
-   data2=[#"chi_Moriond_Run2012A",
-         #"chi_Moriond_Run2012Ar",
-         #"chi_Moriond_Run2012B",
-         #"chi_Moriond_Run2012C1",
-         #"chi_Moriond_Run2012C2",
-         "chi_Moriond_Run2012D",
+   data2=["chi_ReRun2012D",
          ]
-   mc=[("chi_Moriond_QCD_1000",204.0/13479218),
-       ("chi_Moriond_QCD_500",8426.0/31743483),
-       ("chi_Moriond_QCD_250",276000.0/26900255),
-       ("chi_Moriond_QCD_100",1.036e7/48365102),
+   mc=[("chi_QCD_1000",204.0/13479218),
+       ("chi_QCD_500",8426.0/31743483),
+       ("chi_QCD_250",276000.0/26900255),
+       ("chi_QCD_100",1.036e7/48365102),
        ]
+   mc2=[("chi_QCDHerwig",1.0),
+         ]
    f_data=[]
    f_data2=[]
    for name in data:
@@ -57,8 +49,11 @@ if __name__ == '__main__':
    for name in data2:
       f_data2+=[TFile.Open(name+".root")]
    f_mc=[]
+   f_mc2=[]
    for name,xsec in mc:
       f_mc+=[TFile.Open(name+".root")]
+   for name,xsec in mc2:
+      f_mc2+=[TFile.Open(name+".root")]
 
    canvas = TCanvas("","",0,0,200,200)
    canvas.SetLogy(True)
@@ -69,6 +64,8 @@ if __name__ == '__main__':
        hist.Add(f_data[i].Get("dijet_mass"))
    hist.SetLineWidth(2)
    hist.SetLineColor(1)
+   hist.SetMarkerStyle(24)
+   hist.SetMarkerSize(0.2)
    hist.SetTitle("")
    hist.GetXaxis().SetTitle("dijet mass")
    hist.GetYaxis().SetTitle("N")
@@ -80,16 +77,17 @@ if __name__ == '__main__':
    hist.GetYaxis().SetLabelSize(0.05)
    hist.GetXaxis().SetTitleSize(0.06)
    hist.GetYaxis().SetTitleSize(0.06)
-   hist.Draw("le")
-   legend.AddEntry(hist,"2012","l")
+   hist.Draw("pe")
+   legend.AddEntry(hist,"2012ABCD","l")
 
    hist2=f_data2[0].Get("dijet_mass")
    for i in range(1,len(data2)):
        hist2.Add(f_data2[i].Get("dijet_mass"))
-   hist2.Scale(hist.Integral(hist.FindBin(1900),hist.GetNbinsX())/hist2.Integral(hist2.FindBin(1900),hist2.GetNbinsX()))
    hist2.SetLineWidth(2)
    hist2.SetLineColor(4)
-   hist2.Draw("lesame")
+   hist2.SetMarkerStyle(25)
+   hist2.SetMarkerSize(0.2)
+   hist2.Draw("pesame")
    legend.AddEntry(hist2,"2012D","l")
 
    hist_mc=f_mc[0].Get("dijet_mass")
@@ -100,6 +98,18 @@ if __name__ == '__main__':
    hist_mc.SetLineColor(2)
    hist_mc.Draw("histsame")
    legend.AddEntry(hist_mc,"Madgraph QCD","l")
+
+   hist_mc2=f_mc2[0].Get("dijet_mass")
+   for i in range(1,len(mc2)):
+       hist_mc2.Add(f_mc2[i].Get("dijet_mass"),mc2[i][1]/mc2[0][1])
+   hist_mc2.Scale(hist.Integral(hist.FindBin(1900),hist.GetNbinsX())/hist_mc2.Integral(hist_mc2.FindBin(1900),hist_mc2.GetNbinsX()))
+   hist_mc2.SetLineWidth(2)
+   hist_mc2.SetLineColor(6)
+   hist_mc2.Draw("histsame")
+   legend.AddEntry(hist_mc2,"Herwig++ QCD","l")
+
+   hist2.Draw("pesame")
+   hist.Draw("pesame")
 
    legend.SetTextSize(0.04)
    legend.SetFillStyle(0)
@@ -124,6 +134,8 @@ if __name__ == '__main__':
             hist.Add(f_data[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
         hist.SetLineWidth(2)
       	hist.SetLineColor(1)
+        hist.SetMarkerStyle(24)
+        hist.SetMarkerSize(0.2)
 	if "metsumet" in var:
 	    hist.Rebin(4)
 	miny=0
@@ -140,15 +152,15 @@ if __name__ == '__main__':
         hist.GetXaxis().SetTitleSize(0.06)
         hist.GetYaxis().SetTitleSize(0.06)
         hist.Draw("le")
-        legend.AddEntry(hist,"2012","l")
+        legend.AddEntry(hist,"2012ABCD","l")
 
         hist2=f_data2[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
         for i in range(1,len(data2)):
             hist2.Add(f_data2[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
-	if hist2.Integral()>0:
-            hist2.Scale(hist.Integral()/hist2.Integral())
         hist2.SetLineWidth(2)
       	hist2.SetLineColor(4)
+        hist2.SetMarkerStyle(25)
+        hist2.SetMarkerSize(0.2)
 	if "metsumet" in var:
 	    hist2.Rebin(4)
 	miny=0
@@ -169,6 +181,21 @@ if __name__ == '__main__':
 	    hist_mc.Rebin(4)
         hist_mc.Draw("histsame")
         legend.AddEntry(hist_mc,"Madgraph QCD","l")
+
+     	hist_mc2=f_mc2[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
+     	for i in range(1,len(mc2)):
+     	    hist_mc2.Add(f_mc2[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var),mc2[i][1]/mc2[0][1])
+	if hist_mc2.Integral()>0:
+            hist_mc2.Scale(hist.Integral()/hist_mc2.Integral())
+        hist_mc2.SetLineWidth(2)
+      	hist_mc2.SetLineColor(6)
+	if "metsumet" in var:
+	    hist_mc2.Rebin(4)
+        hist_mc2.Draw("histsame")
+        legend.AddEntry(hist_mc2,"Herwig++ QCD","l")
+
+        hist2.Draw("lesame")
+        hist.Draw("lesame")
 
         legend.SetTextSize(0.04)
         legend.SetFillStyle(0)
