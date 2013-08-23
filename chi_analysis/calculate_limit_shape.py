@@ -9,23 +9,24 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
-model=0
+model=1
 
 if model==0:
     signal="CI"    
     signalMasses=[8000,9000,10000,12000]
 if model==1:
     signal="ADD_4_0_0_"
-    signalMasses=[5000,6000,7000,8000,9000,10000,11000]
+    signalMasses=[4000,5000,6000,7000,8000]
 if model==2:
     signal="ADD_4_0_1_"
-    signalMasses=[2000,3000,4000,5000,6000,7000]
+    signalMasses=[4000,5000,6000,7000,8000]
 
 prefix="datacard_shapelimit"
 
 limits={}
 for signalMass in signalMasses:
     cfg=open("chi_datacard_"+signal+"_"+str(signalMass)+".txt","w")
+    f=TFile(prefix+"_"+str(signal)+str(signalMass)+"_chi.root")
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 2 number of backgrounds
@@ -41,9 +42,8 @@ kmax 3 number of nuisance parameters
     for i in range(len(massbins)):
        text+=str(i)+" "
     text+="\nobservation "
-    fdata=TFile(prefix+"_data_obs_chi.root")
     for i in range(len(massbins)):
-       hData=fdata.Get("data_obs#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
+       hData=f.Get("data_obs#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
        text+=str(hData.Integral())+" "
     cfg.writelines(text+"""
 -----------
@@ -58,7 +58,6 @@ kmax 3 number of nuisance parameters
     for i in range(len(massbins)):
        text+="-1 0 1 "
     text+="\nrate "
-    f=TFile(prefix+"_"+str(signal)+str(signalMass)+"_chi.root")
     for i in range(len(massbins)):
        hQCD=f.Get("QCD#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
        hALT=f.Get("QCD"+str(signal)+str(signalMass)+"_ALT#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
