@@ -126,8 +126,31 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_add_m3700_9000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
              ("QCDADD_4_0_1_10000",[("fileList_pythia8_add_m2500_10000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_10000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-             ]
 
+             ("QCDLOCI5000",[]),
+             ("QCDLOCI6000",[]),
+             ("QCDLOCI7000",[]),
+             ("QCDLOCI8000",[]),
+             ("QCDLOCI9000",[]),
+             ("QCDLOCI10000",[]),
+             ("QCDLOCI11000",[]),
+             ("QCDLOCI12000",[]),
+             ("QCDLOCI13000",[]),
+             ("QCDLOCI14000",[]),
+             ("QCDLOCI15000",[]),
+             ("QCDNLOCI5000",[]),
+             ("QCDNLOCI6000",[]),
+             ("QCDNLOCI7000",[]),
+             ("QCDNLOCI8000",[]),
+             ("QCDNLOCI9000",[]),
+             ("QCDNLOCI10000",[]),
+             ("QCDNLOCI11000",[]),
+             ("QCDNLOCI12000",[]),
+             ("QCDNLOCI13000",[]),
+             ("QCDNLOCI14000",[]),
+             ("QCDNLOCI15000",[]),
+             ]
+ 
     dataevents={}
     data={}
     for prefix in prefixs: 
@@ -142,6 +165,7 @@ if __name__ == '__main__':
       print sample
       out=TFile(sample,'UPDATE')
 
+      # data file
       insample='chi_EPS2.root'
       print insample
       infile=TFile(insample,'READ')
@@ -193,22 +217,38 @@ if __name__ == '__main__':
         # CI (=LO CI+NLO QCD)
 	histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
         print histname
-        cibackup=out.Get(histname)
-	histname=cibackup.GetName().replace("_backup","")
-        ci=cibackup.Clone(histname)
-	# properly normalize LO QCD+CI and LO QCD before substracting LO QCD
-	f=file("xsecs.txt")
-	crosssections=eval(f.readline())
-	xsec_qcd=1
-	xsec_ci=1
-	for xsec in crosssections:
+	if "LOCI" in samples[i][0]:
+	  lambdamass=samples[i][0].split("I")[-1]
+	  if "NLO" in samples[i][0]:
+            filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-1_xmu-1.root"
+          else:
+	    filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
+          print filenamecinlo
+          cinlofile = TFile.Open(filenamecinlo)
+          histname2="chi-"+str(massbins[j][0])+"-"+str(massbins[j][1])
+          print histname2
+          ci = TH1F(cinlofile.Get(histname2))
+          ci.Scale(float(massbins[j][1]-massbins[j][0]))
+          ci=rebin(ci,len(chi_binnings[j])-1,chi_binnings[j]).Clone(histname.replace("_backup",""))
+          for b in range(ci.GetXaxis().GetNbins()):
+              ci.SetBinContent(b+1,ci.GetBinContent(b+1)*ci.GetBinWidth(b+1))
+	else:
+          cibackup=out.Get(histname)
+  	  histname=cibackup.GetName().replace("_backup","")
+          ci=cibackup.Clone(histname)
+	  # properly normalize LO QCD+CI and LO QCD before substracting LO QCD
+	  f=file("xsecs.txt")
+	  crosssections=eval(f.readline())
+	  xsec_qcd=1
+	  xsec_ci=1
+	  for xsec in crosssections:
 	    if xsec[0]=="QCD" and massbins[j] in xsec[1]:
 	        xsec_qcd=float(xsec[2])
 	    if xsec[0]==samples[i][0] and massbins[j] in xsec[1]:
 	        xsec_ci=float(xsec[2])
-	ci.Scale(xsec_ci/xsec_qcd)
-        ci.Add(qcd,-1)
-	ci.Scale(1./qcd.Integral())
+	  ci.Scale(xsec_ci/xsec_qcd)
+          ci.Add(qcd,-1)
+	  ci.Scale(1./qcd.Integral())
         ci.Add(nloqcd)
 	if ci.Integral()>0:
           ci.Scale(dataevents[j]/ci.Integral())
@@ -222,7 +262,10 @@ if __name__ == '__main__':
         # ALT (=NLO QCD)
         histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
-        alt=out.Get(histname)
+	if "LOCI" in samples[i][0]:
+    	    alt=nloqcd.Clone(histname)
+	else:
+            alt=out.Get(histname)
         alt.Add(alt,-1)
         alt.Add(nloqcd)
         alt.Scale(dataevents[j]/alt.Integral())
@@ -235,7 +278,10 @@ if __name__ == '__main__':
 	
         # jes uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	clone=out.Get(histname)
+	if "LOCI" in samples[i][0]:
+    	    clone=ci.Clone(histname)
+	else:
+            clone=out.Get(histname)
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
 	for b in range(clone.GetNbinsX()):
@@ -248,7 +294,10 @@ if __name__ == '__main__':
         jesup.Write()
         jesdown.Write()
         histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	clone=out.Get(histname)
+	if "LOCI" in samples[i][0]:
+    	    clone=alt.Clone(histname)
+	else:
+            clone=out.Get(histname)
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
 	for b in range(clone.GetNbinsX()):
@@ -385,6 +434,7 @@ if __name__ == '__main__':
         legend1.AddEntry(data,"data","lpe")
 	plots+=[alt]
 	alt.SetLineColor(2)
+	alt.SetTitle("")
         alt.Draw("he")
 	alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*2)
         legend1.AddEntry(alt,"QCD","l")
