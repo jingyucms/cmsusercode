@@ -144,6 +144,8 @@ cout<<"Cutting at "<<cut<<endl;
   cout<<"Prob( q < median(S) | S ) = "<<bulkSM<<"  ("<<ROOT::Math::normal_quantile_c(bulkSM,1.0) <<" sigma)"<<endl;
   cout<<"Prob( q > median(P) | P ) = "<<bulkPS<<"  ("<<ROOT::Math::normal_quantile_c(bulkPS,1.0) <<" sigma)"<<endl;
 
+  cout<<"Observed CLs = "<<(1.-hSM->Integral(1,hSM->FindBin(v_Obs.at(0)))/integralSM)/(1.-hPS->Integral(1,hPS->FindBin(v_Obs.at(0)))/integralPS)<<endl;
+
   cout<<"Expected CLs = "<<(1.-tailSM)/(1.-bulkSM)<<endl;
 
   medianPS=v_PS.at(int(ntoysPS*0.159));
@@ -201,7 +203,7 @@ cout<<"Cutting at "<<cut<<endl;
   hObs->SetLineWidth(2);
   hSM->Draw();
   hPS->Draw("sames");
-  //  hObs->Draw("sames");
+  hObs->Draw("sames");
 
   TLegend *leg = new TLegend(0.2,0.6,0.45,0.9);
   leg->SetFillColor(0);

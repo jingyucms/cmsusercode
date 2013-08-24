@@ -21,7 +21,7 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
-    model=2
+    model=3
 
     if model==0:
     	signal="CI"    
@@ -29,6 +29,10 @@ if __name__=="__main__":
     	signal="ADD_4_0_0_"
     if model==2:
     	signal="ADD_4_0_1_"
+    if model==3:
+    	signal="LOCI"    
+    if model==4:
+    	signal="NLOCI"    
 
     f=file("limits"+signal+".txt")
     limits=eval(f.readline())
