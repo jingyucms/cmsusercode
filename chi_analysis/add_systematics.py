@@ -61,6 +61,18 @@ if __name__ == '__main__':
 	      #(3000,3600),
 	      (3600,4200),
 	      (4200,8000)]
+    mass_bins_nlo={}
+    mass_bins_nlo[4]=3000
+    mass_bins_nlo[5]=3600
+    mass_bins_nlo[6]=4000
+    mass_bins_nlo[7]=4200
+    mass_bins_nlo[8]=8000
+    mass_bins_nlo2=[#(4,),
+    	      (5,6,),
+    	      (7,),
+    	     ]
+    mass_bins_nlo_max=7
+
 
     samples=[("QCDCI4000",[("fileList_pythia8_ci_m2500_4000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_4000_1_0_0_May27_grid.txt",[(4200,8000)])]),
@@ -68,6 +80,8 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_ci_m3700_6000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI8000",[("fileList_pythia8_ci_m2500_8000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_8000_1_0_0_May27_grid.txt",[(4200,8000)])]),
+             ("QCDCI9000",[("fileList_pythia8_ci_m2500_9000_1_0_0_May27_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_9000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI10000",[("fileList_pythia8_ci_m2500_10000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_10000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI12000",[("fileList_pythia8_ci_m2500_12000_1_0_0_May27_grid.txt",[(3600,4200)]),
@@ -108,6 +122,10 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_add_m3700_7000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
              ("QCDADD_4_0_1_8000",[("fileList_pythia8_add_m2500_8000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_8000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_9000",[("fileList_pythia8_add_m2500_9000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_9000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
+             ("QCDADD_4_0_1_10000",[("fileList_pythia8_add_m2500_10000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_add_m3700_10000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
              ]
 
     dataevents={}
@@ -129,17 +147,6 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # NLO correction
-      mass_bins_nlo={}
-      mass_bins_nlo[4]=3000
-      mass_bins_nlo[5]=3600
-      mass_bins_nlo[6]=4000
-      mass_bins_nlo[7]=4200
-      mass_bins_nlo[8]=8000
-      mass_bins_nlo2=[(4,),
-                (5,6,),
-                (7,),
-               ]
-      mass_bins_nlo_max=7
       filename1nu="fastnlo/fnl3622g_ct10-nlo_aspdf.root"
       print filename1nu
       nlofile = TFile.Open(filename1nu)
