@@ -9,7 +9,7 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
-model=1
+model=2
 
 if model==0:
     signal="CI"    

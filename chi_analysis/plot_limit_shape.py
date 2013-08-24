@@ -21,7 +21,7 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
-    model=0
+    model=2
 
     if model==0:
     	signal="CI"    
@@ -74,7 +74,7 @@ if __name__=="__main__":
     mg.SetTitle("")
     mg.GetXaxis().SetTitle("contact interaction scale [GeV]")
     mg.GetYaxis().SetTitle("CLs")
-    mg.GetYaxis().SetRangeUser(0,1)
+    mg.GetYaxis().SetRangeUser(0,0.1)
     
     l=TLine(limits[0][0],0.05,limits[-1][0],0.05)
     l.SetLineColor(2)
