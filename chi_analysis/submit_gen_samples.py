@@ -6,12 +6,12 @@ couplings=[(1,0,0),]
 samples=[]
 
 for minMass in minMasses:
-    samples+=[('pythia8_qcd',minMass,"",""),]
+    #samples+=[('pythia8_qcd',minMass,"",""),]
     for signalMass in signalMasses:
         for coupling in couplings:
              samples+=[('pythia8_ci',minMass,signalMass,coupling),]
 
-version="May27"
+version="Aug24"
 
 for sample,minMass,signalMass,coupling in samples:
     samplename=sample+"_m"+str(minMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version
@@ -155,7 +155,7 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 
 process.load("RecoJets.Configuration.GenJetParticles_cff")
 process.load("RecoJets.Configuration.RecoGenJets_cff")
-process.ak5GenJets.jetPtMin=100
+process.ak5GenJets.jetPtMin=200
 
 process.p = cms.Path(process.generator*process.genParticles*process.genJetParticles*process.ak5GenJets)#*process.ca08PrunedGenJets
 process.endpath = cms.EndPath(process.out)

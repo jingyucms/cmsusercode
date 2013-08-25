@@ -62,7 +62,7 @@ if __name__ == '__main__':
 	      (3600,4200),
 	      (4200,8000)]
     mass_bins_nlo={}
-    mass_bins_nlo[4]=3000
+    #mass_bins_nlo[4]=3000
     mass_bins_nlo[5]=3600
     mass_bins_nlo[6]=4000
     mass_bins_nlo[7]=4200
@@ -96,6 +96,27 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_ci_m3700_18000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI20000",[("fileList_pythia8_ci_m2500_20000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_20000_1_0_0_May27_grid.txt",[(4200,8000)])]),
+
+             ("QCDCIminusLL6000",[("fileList_pythia8_ci_m2500_6000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_6000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL8000",[("fileList_pythia8_ci_m2500_8000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_8000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL9000",[("fileList_pythia8_ci_m2500_9000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_9000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL10000",[("fileList_pythia8_ci_m2500_10000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_10000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL12000",[("fileList_pythia8_ci_m2500_12000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_12000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL14000",[("fileList_pythia8_ci_m2500_14000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_14000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL15000",[("fileList_pythia8_ci_m2500_15000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_15000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL16000",[("fileList_pythia8_ci_m2500_16000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_16000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL18000",[("fileList_pythia8_ci_m2500_18000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_18000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             ("QCDCIminusLL20000",[("fileList_pythia8_ci_m2500_20000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+		        ("fileList_pythia8_ci_m3700_20000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
 
              #("QCDADD_4_0_0_2000",[("fileList_pythia8_add_m2500_2000_2000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
 		#        ("fileList_pythia8_add_m3700_2000_2000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
@@ -138,7 +159,8 @@ if __name__ == '__main__':
              ("QCDLOCI13000",[]),
              ("QCDLOCI14000",[]),
              ("QCDLOCI15000",[]),
-             ("QCDNLOCI5000",[]),
+             
+	     ("QCDNLOCI5000",[]),
              ("QCDNLOCI6000",[]),
              ("QCDNLOCI7000",[]),
              ("QCDNLOCI8000",[]),
@@ -149,6 +171,30 @@ if __name__ == '__main__':
              ("QCDNLOCI13000",[]),
              ("QCDNLOCI14000",[]),
              ("QCDNLOCI15000",[]),
+             
+	     ("QCDDLOCI5000",[]),
+             ("QCDDLOCI6000",[]),
+             ("QCDDLOCI7000",[]),
+             ("QCDDLOCI8000",[]),
+             ("QCDDLOCI9000",[]),
+             ("QCDDLOCI10000",[]),
+             ("QCDDLOCI11000",[]),
+             ("QCDDLOCI12000",[]),
+             ("QCDDLOCI13000",[]),
+             ("QCDDLOCI14000",[]),
+             
+	     ("QCDDLOCI15000",[]),
+             ("QCDDNLOCI5000",[]),
+             ("QCDDNLOCI6000",[]),
+             ("QCDDNLOCI7000",[]),
+             ("QCDDNLOCI8000",[]),
+             ("QCDDNLOCI9000",[]),
+             ("QCDDNLOCI10000",[]),
+             ("QCDDNLOCI11000",[]),
+             ("QCDDNLOCI12000",[]),
+             ("QCDDNLOCI13000",[]),
+             ("QCDDNLOCI14000",[]),
+             ("QCDDNLOCI15000",[]),
              ]
  
     dataevents={}
@@ -194,8 +240,8 @@ if __name__ == '__main__':
         nloqcd=None
         for k in mass_bins_nlo2[j]:
          histname="h10"
-         if k+mass_bins_nlo_max<10: histname+="0"
-         histname+=str(k+mass_bins_nlo_max)+"00"
+         if k<10: histname+="0"
+         histname+=str(k)+"00"
          print histname
          hnlo = TH1F(nlofile.Get(histname))
          hnlo.Scale(float(mass_bins_nlo[k+1]-mass_bins_nlo[k]))
@@ -206,50 +252,56 @@ if __name__ == '__main__':
 	    nloqcd=hnlo
         for b in range(nloqcd.GetXaxis().GetNbins()):
             nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*nloqcd.GetBinWidth(b+1))
+        nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
 	nloqcd.Scale(1./nloqcd.Integral())
 
         # QCD (empty background, not used in limit)
         histname='QCD#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
         qcd=out.Get(histname)
-	qcd.Scale(1e10)
+        f=file("xsecs.txt")
+        crosssections=eval(f.readline())
+        xsec_qcd=1
+        for xsec in crosssections:
+          if xsec[0]=="QCD" and massbins[j] in xsec[1]:
+              xsec_qcd=float(xsec[2])
+	qcd.Scale(1e10*xsec_qcd)
+	print "k-factor", nloqcdbackup.Integral()/qcd.Integral()
 
         # CI (=LO CI+NLO QCD)
 	histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
         print histname
 	if "LOCI" in samples[i][0]:
 	  lambdamass=samples[i][0].split("I")[-1]
-	  if "NLO" in samples[i][0]:
+	  if "QCDDNLO" in samples[i][0]:
             filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-1_xmu-1.root"
+          elif "QCDNLO" in samples[i][0]:
+	    filenamecinlo="fastnlo/cidijet_DijetChi_CILHC_2012_Lambda-"+lambdamass+"_Order-1_xmu-1.root"
+	  elif "QCDDLO" in samples[i][0]:
+            filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
           else:
-	    filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
+	    filenamecinlo="fastnlo/cidijet_DijetChi_CILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
           print filenamecinlo
           cinlofile = TFile.Open(filenamecinlo)
           histname2="chi-"+str(massbins[j][0])+"-"+str(massbins[j][1])
           print histname2
           ci = TH1F(cinlofile.Get(histname2))
-          ci.Scale(float(massbins[j][1]-massbins[j][0]))
-          ci=rebin(ci,len(chi_binnings[j])-1,chi_binnings[j]).Clone(histname.replace("_backup",""))
-          for b in range(ci.GetXaxis().GetNbins()):
-              ci.SetBinContent(b+1,ci.GetBinContent(b+1)*ci.GetBinWidth(b+1))
+          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName()+"_rebin1",chi_binnings[j]).Clone(histname.replace("_backup",""))
+	  ci.Scale(1./nloqcdbackup.Integral())
+          ci.Add(nloqcd)
 	else:
           cibackup=out.Get(histname)
   	  histname=cibackup.GetName().replace("_backup","")
           ci=cibackup.Clone(histname)
 	  # properly normalize LO QCD+CI and LO QCD before substracting LO QCD
-	  f=file("xsecs.txt")
-	  crosssections=eval(f.readline())
-	  xsec_qcd=1
-	  xsec_ci=1
+	  xsec_ci=0
 	  for xsec in crosssections:
-	    if xsec[0]=="QCD" and massbins[j] in xsec[1]:
-	        xsec_qcd=float(xsec[2])
 	    if xsec[0]==samples[i][0] and massbins[j] in xsec[1]:
 	        xsec_ci=float(xsec[2])
-	  ci.Scale(xsec_ci/xsec_qcd)
+	  ci.Scale(xsec_ci)
           ci.Add(qcd,-1)
 	  ci.Scale(1./qcd.Integral())
-        ci.Add(nloqcd)
+          ci.Add(nloqcd)
 	if ci.Integral()>0:
           ci.Scale(dataevents[j]/ci.Integral())
         for b in range(ci.GetXaxis().GetNbins()):
