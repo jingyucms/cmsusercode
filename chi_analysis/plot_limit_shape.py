@@ -21,18 +21,28 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
-    model=3
+ models=[-1,0,1,2,3,4,5,6]
 
+ for model in models:
+
+    if model==-1:
+       signal="CIminusLL"    
     if model==0:
-    	signal="CI"    
+       signal="CI"    
     if model==1:
-    	signal="ADD_4_0_0_"
+       signal="ADD_4_0_0_"
     if model==2:
-    	signal="ADD_4_0_1_"
+       signal="ADD_4_0_1_"
     if model==3:
-    	signal="LOCI"    
+       signal="LOCI"    
     if model==4:
-    	signal="NLOCI"    
+       signal="NLOCI"    
+    if model==5:
+       signal="DLOCI"    
+    if model==6:
+       signal="DNLOCI"    
+
+    print signal
 
     f=file("limits"+signal+".txt")
     limits=eval(f.readline())
