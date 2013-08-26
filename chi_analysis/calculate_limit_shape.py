@@ -10,6 +10,7 @@ massbins=[(4200,8000),
               ]
 
 models=[-1,0,1,2,3,4,5,6]
+models=[-1]
 
 for model in models:
 
@@ -18,7 +19,7 @@ for model in models:
     signalMasses=[6000,8000,9000,10000,12000,14000,16000,18000,20000]
  if model==0:
     signal="CI"    
-    signalMasses=[6000,8000,9000,10000,12000,14000]
+    signalMasses=[6000,8000,9000,10000,12000,14000,16000,18000,20000]
  if model==1:
     signal="ADD_4_0_0_"
     signalMasses=[4000,5000,6000,7000,8000]
@@ -103,22 +104,22 @@ kmax 3 number of nuisance parameters
     cfg.close()
     os.system("cp HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
     os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard_"+signal+"_"+str(signalMass)+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signal+"_"+str(signalMass)+".root")
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 10000 fixedMu_"+signal+"_"+str(signalMass)+".root > limits"+signal+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
-    os.system('root -q -b higgsCombineTest.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+str(signalMass)+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    os.system('root -q -b "./extractSignificanceStats.C(\\"'+str(signalMass)+'\\")" > limits'+signal+'_exp_'+str(signalMass)+'.txt')
+    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+" fixedMu_"+signal+"_"+str(signalMass)+".root > limits"+signal+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
+    os.system('root -q -b higgsCombine'+signal+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
+    os.system('root -q -b "./extractSignificanceStats.C(\\"'+signal+str(signalMass)+'\\")" > limits'+signal+'_exp_'+str(signalMass)+'.txt')
 
+    limits[signalMass]=[]
     f=file("limits"+signal+"_"+str(signalMass)+".txt")
     for line in f.readlines():
         if "CLs = " in line:
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
 	   break
-
+    if len(limits[signalMass])==0:
+         limits[signalMass]+=[signalMass]
     f=file("limits"+signal+"_exp_"+str(signalMass)+".txt")
     for line in f.readlines():
         if "Expected CLs" in line:
            limits[signalMass]+=[float(line.strip().split(" ")[-1])]
-    if len(limits[signalMass])==0:
-         limits[signalMass]=[signalMass]
     for i in range(len(limits[signalMass]),8):
          limits[signalMass]+=[0]
 
