@@ -50,33 +50,36 @@ if __name__ == '__main__':
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
    
-   prefix="Moriond"
+   for prefix in ["QCD","CI"]:
 
-   sum_in_quadrature_up=[]
-   sum_in_quadrature_down=[]
-   for mass in range(len(masses)-1):
+     sum_in_quadrature_up=[]
+     sum_in_quadrature_down=[]
+     for mass in range(len(masses)-1):
        sum_in_quadrature_up+=[len(chi_binnings[mass])*[0]]
        sum_in_quadrature_down+=[len(chi_binnings[mass])*[0]]
 
-   for sourceset in sourcesets:
-    canvas = TCanvas("jes","jes",0,0,600,400)
-    canvas.Divide(3,2)
-    log=False
-    legends=[]
-    hists=[]
-    for mass in range(len(masses)-1):
-
-        #mc=[("chi_EPS2",1)]
-        #mc=[("chi_QCDHerwig",1)]
+     for sourceset in sourcesets:
+      canvas = TCanvas("jes","jes",0,0,600,400)
+      canvas.Divide(3,2)
+      log=False
+      legends=[]
+      hists=[]
+      for mass in range(len(masses)-1):
         mc=[("chi_QCD_1000",204.0/13479218),
             ("chi_QCD_500",8426.0/31743483),
             ("chi_QCD_250",276000.0/26900255),
-            ("chi_QCD_100",1.036e7/48365102),
-           ]
-	if masses[mass]>=4200:
-            mc=[("chi_QCDGen3700",1)]
-	elif masses[mass]>=3000:
-            mc=[("chi_QCDGen2500",1)]
+     	    ("chi_QCD_100",1.036e7/48365102),
+        	]
+        if prefix=="CI":
+          if masses[mass]>=4200:
+        	 mc=[("chi_CI10000Gen3700",1)]
+          elif masses[mass]>=3000:
+     	    mc=[("chi_CI10000Gen2500",1)]
+        else:
+          if masses[mass]>=4200:
+     	    mc=[("chi_QCDGen3700",1)]
+          elif masses[mass]>=3000:
+        	 mc=[("chi_QCDGen2500",1)]
         f_mc=[]
         for name,xsec in mc:
           f_mc+=[TFile.Open(name+".root")]
@@ -194,5 +197,5 @@ if __name__ == '__main__':
         legend.SetFillStyle(0)
         legend.Draw("same")
 
-    canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+".root")
-    canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+".pdf")
+      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+".root")
+      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+".pdf")
