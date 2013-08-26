@@ -221,10 +221,15 @@ if __name__ == '__main__':
       print filename1nu
       nlofile = TFile.Open(filename1nu)
 
-      # JES uncertainty
-      filename1jes="chi_systematic_plotschi_Moriond4.root"
+      # JES uncertainty QCD
+      filename1jes="chi_systematic_plotschi_QCD4.root"
       print filename1jes
       jesfile = TFile.Open(filename1jes)
+
+      # JES uncertainty CI
+      filename1jesci="chi_systematic_plotschi_CI4.root"
+      print filename1jesci
+      jescifile = TFile.Open(filename1jesci)
 
       canvas = TCanvas("","",0,0,400,200)
       canvas.Divide(2,1)
@@ -341,7 +346,7 @@ if __name__ == '__main__':
             clone=out.Get(histname)
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
-        jespad=jesfile.Get("jes")
+        jespad=jescifile.Get("jes")
 	jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
@@ -490,7 +495,7 @@ if __name__ == '__main__':
       
         # PLOTS
         canvas.cd(j+1)
-        legend1=TLegend(0.2,0.6,0.9,0.95,"")
+        legend1=TLegend(0.2,0.6,0.9,0.95,str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV")
         legends+=[legend1]
         legend1.AddEntry(data,"data","lpe")
 	plots+=[alt]
