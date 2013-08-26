@@ -29,6 +29,18 @@ if __name__ == '__main__':
    colors=[1,2,3,4,6,7,8,9,10,11,12,13]
    styles=[1,2,3,4,5,6,7,8,9,11,12,13]
 
+   chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+             (1,2,3,4,5,6,7,8,9,10,12,14,16),
+             (1,2,3,4,5,6,7,8,9,10,12,14,16),
+             (1,2,3,4,5,6,7,8,9,10,12,14,16),
+             (1,3,5,7,10,12,14,16),
+             ]
+   chi_binnings=[]
+   for mass_bin in chi_bins:
+        chi_binnings+=[array.array('d')]
+        for chi_bin in mass_bin:
+            chi_binnings[-1].append(chi_bin)
+   
    prefix="Moriond"
 
    data=["chi_EPS2",
@@ -132,6 +144,8 @@ if __name__ == '__main__':
         hist=f_data[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
         for i in range(1,len(data)):
             hist.Add(f_data[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
+	if var=="chi":
+            hist=hist.Rebin(len(chi_binnings[mass])-1,hist.GetName()+"_rebin1",chi_binnings[mass])
         hist.SetLineWidth(2)
       	hist.SetLineColor(1)
         hist.SetMarkerStyle(24)
@@ -157,6 +171,8 @@ if __name__ == '__main__':
         hist2=f_data2[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
         for i in range(1,len(data2)):
             hist2.Add(f_data2[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
+	if var=="chi":
+            hist2=hist2.Rebin(len(chi_binnings[mass])-1,hist2.GetName()+"_rebin1",chi_binnings[mass])
         hist2.SetLineWidth(2)
       	hist2.SetLineColor(4)
         hist2.SetMarkerStyle(25)
@@ -173,6 +189,8 @@ if __name__ == '__main__':
      	hist_mc=f_mc[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
      	for i in range(1,len(mc)):
      	    hist_mc.Add(f_mc[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var),mc[i][1]/mc[0][1])
+	if var=="chi":
+            hist_mc=hist_mc.Rebin(len(chi_binnings[mass])-1,hist_mc.GetName()+"_rebin1",chi_binnings[mass])
 	if hist_mc.Integral()>0:
             hist_mc.Scale(hist.Integral()/hist_mc.Integral())
         hist_mc.SetLineWidth(2)
@@ -185,6 +203,8 @@ if __name__ == '__main__':
      	hist_mc2=f_mc2[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
      	for i in range(1,len(mc2)):
      	    hist_mc2.Add(f_mc2[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var),mc2[i][1]/mc2[0][1])
+	if var=="chi":
+            hist_mc2=hist_mc2.Rebin(len(chi_binnings[mass])-1,hist_mc2.GetName()+"_rebin1",chi_binnings[mass])
 	if hist_mc2.Integral()>0:
             hist_mc2.Scale(hist.Integral()/hist_mc2.Integral())
         hist_mc2.SetLineWidth(2)

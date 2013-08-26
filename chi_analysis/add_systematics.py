@@ -221,6 +221,11 @@ if __name__ == '__main__':
       print filename1nu
       nlofile = TFile.Open(filename1nu)
 
+      # JES uncertainty
+      filename1jes="chi_systematic_plotschi_Moriond4.root"
+      print filename1jes
+      jesfile = TFile.Open(filename1jes)
+
       canvas = TCanvas("","",0,0,400,200)
       canvas.Divide(2,1)
       plots=[]
@@ -336,9 +341,11 @@ if __name__ == '__main__':
             clone=out.Get(histname)
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
+        jespad=jesfile.Get("jes")
+	jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
 	for b in range(clone.GetNbinsX()):
-	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1+(8.5-clone.GetBinCenter(b+1))/7.5*0.1))
-            jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1-(8.5-clone.GetBinCenter(b+1))/7.5*0.1))
+	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
+            jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
 	out.cd()
 	for k in range(0,100):
             out.Delete(histname+"_jesUp"+";"+str(k))
@@ -352,9 +359,11 @@ if __name__ == '__main__':
             clone=out.Get(histname)
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
+        jespad=jesfile.Get("jes")
+	jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
 	for b in range(clone.GetNbinsX()):
-	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1+(8.5-clone.GetBinCenter(b+1))/7.5*0.1))
-            jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1-(8.5-clone.GetBinCenter(b+1))/7.5*0.1))
+	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
+            jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
 	out.cd()
 	for k in range(0,100):
             out.Delete(histname+"_jesUp"+";"+str(k))
