@@ -139,11 +139,17 @@ if __name__ == '__main__':
             legend.AddEntry(hist2,"JEC "+sources[sourceset[i]],"l")
 	    if sourceset!=sourcesets[-1]:
               for chi_bin in range(len(chi_binnings[mass])):
+	       if (hist2.GetBinContent(chi_bin+1)-1.0)*(hist2.GetBinCenter(chi_bin+1)-8.5)>0:
 	        sum_in_quadrature_up[mass][chi_bin]=sqrt(pow(sum_in_quadrature_up[mass][chi_bin],2)+pow(hist2.GetBinContent(chi_bin+1)-1.0,2))
+	       else:
+	        sum_in_quadrature_down[mass][chi_bin]=sqrt(pow(sum_in_quadrature_down[mass][chi_bin],2)+pow(hist2.GetBinContent(chi_bin+1)-1.0,2))
             else:
 	      hist2b=hist2.Clone(hist2.GetName()+"SumInQuadrature")
               for chi_bin in range(len(chi_binnings[mass])):
+	       if hist2b.GetBinCenter(chi_bin+1)-8.5>0:
 	        hist2b.SetBinContent(chi_bin+1,1.0+sum_in_quadrature_up[mass][chi_bin])
+	       else:
+	        hist2b.SetBinContent(chi_bin+1,1.0-sum_in_quadrature_up[mass][chi_bin])
               hist2b.SetLineColor(colors[i+1])
     	      hists+=[hist2b]
               hist2b.Draw("histsame")
@@ -169,11 +175,17 @@ if __name__ == '__main__':
             hist3.Draw("histsame")
 	    if sourceset!=sourcesets[-1]:
               for chi_bin in range(len(chi_binnings[mass])):
-	        sum_in_quadrature_down[mass][chi_bin]=sqrt(pow(sum_in_quadrature_down[mass][chi_bin],2)+pow(hist2.GetBinContent(chi_bin+1)-1.0,2))
+	       if (hist3.GetBinContent(chi_bin+1)-1.0)*(hist3.GetBinCenter(chi_bin+1)-8.5)>0:
+	        sum_in_quadrature_up[mass][chi_bin]=sqrt(pow(sum_in_quadrature_up[mass][chi_bin],2)+pow(hist3.GetBinContent(chi_bin+1)-1.0,2))
+               else:
+	        sum_in_quadrature_down[mass][chi_bin]=sqrt(pow(sum_in_quadrature_down[mass][chi_bin],2)+pow(hist3.GetBinContent(chi_bin+1)-1.0,2))
             else:
 	      hist3b=hist3.Clone(hist3.GetName()+"SumInQuadrature")
               for chi_bin in range(len(chi_binnings[mass])):
+	       if hist3b.GetBinCenter(chi_bin+1)-8.5>0:
 	        hist3b.SetBinContent(chi_bin+1,1.0-sum_in_quadrature_down[mass][chi_bin])
+	       else:
+	        hist3b.SetBinContent(chi_bin+1,1.0+sum_in_quadrature_down[mass][chi_bin])
               hist3b.SetLineColor(colors[i+1])
     	      hists+=[hist3b]
               hist3b.Draw("histsame")
