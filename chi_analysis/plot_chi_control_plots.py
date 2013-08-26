@@ -74,7 +74,6 @@ if __name__ == '__main__':
    hist=f_data[0].Get("dijet_mass")
    for i in range(1,len(data)):
        hist.Add(f_data[i].Get("dijet_mass"))
-   hist.SetLineWidth(2)
    hist.SetLineColor(1)
    hist.SetMarkerStyle(24)
    hist.SetMarkerSize(0.2)
@@ -89,16 +88,17 @@ if __name__ == '__main__':
    hist.GetYaxis().SetLabelSize(0.05)
    hist.GetXaxis().SetTitleSize(0.06)
    hist.GetYaxis().SetTitleSize(0.06)
+   hist.SetStats(False)
    hist.Draw("pe")
    legend.AddEntry(hist,"2012ABCD","l")
 
    hist2=f_data2[0].Get("dijet_mass")
    for i in range(1,len(data2)):
        hist2.Add(f_data2[i].Get("dijet_mass"))
-   hist2.SetLineWidth(2)
    hist2.SetLineColor(4)
    hist2.SetMarkerStyle(25)
    hist2.SetMarkerSize(0.2)
+   hist2.SetStats(False)
    hist2.Draw("pesame")
    legend.AddEntry(hist2,"2012D","l")
 
@@ -106,8 +106,8 @@ if __name__ == '__main__':
    for i in range(1,len(mc)):
        hist_mc.Add(f_mc[i].Get("dijet_mass"),mc[i][1]/mc[0][1])
    hist_mc.Scale(hist.Integral(hist.FindBin(1900),hist.GetNbinsX())/hist_mc.Integral(hist_mc.FindBin(1900),hist_mc.GetNbinsX()))
-   hist_mc.SetLineWidth(2)
    hist_mc.SetLineColor(2)
+   hist_mc.SetStats(False)
    hist_mc.Draw("histsame")
    legend.AddEntry(hist_mc,"Madgraph QCD","l")
 
@@ -115,8 +115,8 @@ if __name__ == '__main__':
    for i in range(1,len(mc2)):
        hist_mc2.Add(f_mc2[i].Get("dijet_mass"),mc2[i][1]/mc2[0][1])
    hist_mc2.Scale(hist.Integral(hist.FindBin(1900),hist.GetNbinsX())/hist_mc2.Integral(hist_mc2.FindBin(1900),hist_mc2.GetNbinsX()))
-   hist_mc2.SetLineWidth(2)
    hist_mc2.SetLineColor(6)
+   hist_mc2.SetStats(False)
    hist_mc2.Draw("histsame")
    legend.AddEntry(hist_mc2,"Herwig++ QCD","l")
 
@@ -146,7 +146,6 @@ if __name__ == '__main__':
             hist.Add(f_data[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
 	if var=="chi":
             hist=hist.Rebin(len(chi_binnings[mass])-1,hist.GetName()+"_rebin1",chi_binnings[mass])
-        hist.SetLineWidth(2)
       	hist.SetLineColor(1)
         hist.SetMarkerStyle(24)
         hist.SetMarkerSize(0.2)
@@ -165,6 +164,7 @@ if __name__ == '__main__':
         hist.GetYaxis().SetLabelSize(0.05)
         hist.GetXaxis().SetTitleSize(0.06)
         hist.GetYaxis().SetTitleSize(0.06)
+        hist.SetStats(False)
         hist.Draw("le")
         legend.AddEntry(hist,"2012ABCD","l")
 
@@ -173,7 +173,6 @@ if __name__ == '__main__':
             hist2.Add(f_data2[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
 	if var=="chi":
             hist2=hist2.Rebin(len(chi_binnings[mass])-1,hist2.GetName()+"_rebin1",chi_binnings[mass])
-        hist2.SetLineWidth(2)
       	hist2.SetLineColor(4)
         hist2.SetMarkerStyle(25)
         hist2.SetMarkerSize(0.2)
@@ -183,6 +182,7 @@ if __name__ == '__main__':
 	if hist2.Integral()>0:
             miny=log*0.1
 	hist2.SetTitle("")
+        hist2.SetStats(False)
         hist2.Draw("lesame")
         legend.AddEntry(hist2,"2012D","l")
 
@@ -193,10 +193,10 @@ if __name__ == '__main__':
             hist_mc=hist_mc.Rebin(len(chi_binnings[mass])-1,hist_mc.GetName()+"_rebin1",chi_binnings[mass])
 	if hist_mc.Integral()>0:
             hist_mc.Scale(hist.Integral()/hist_mc.Integral())
-        hist_mc.SetLineWidth(2)
       	hist_mc.SetLineColor(2)
 	if "metsumet" in var:
 	    hist_mc.Rebin(4)
+        hist_mc.SetStats(False)
         hist_mc.Draw("histsame")
         legend.AddEntry(hist_mc,"Madgraph QCD","l")
 
@@ -207,10 +207,10 @@ if __name__ == '__main__':
             hist_mc2=hist_mc2.Rebin(len(chi_binnings[mass])-1,hist_mc2.GetName()+"_rebin1",chi_binnings[mass])
 	if hist_mc2.Integral()>0:
             hist_mc2.Scale(hist.Integral()/hist_mc2.Integral())
-        hist_mc2.SetLineWidth(2)
       	hist_mc2.SetLineColor(6)
 	if "metsumet" in var:
 	    hist_mc2.Rebin(4)
+        hist_mc2.SetStats(False)
         hist_mc2.Draw("histsame")
         legend.AddEntry(hist_mc2,"Herwig++ QCD","l")
 
