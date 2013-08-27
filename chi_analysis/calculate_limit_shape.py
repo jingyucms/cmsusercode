@@ -10,7 +10,7 @@ massbins=[(4200,8000),
               ]
 
 models=[-1,0,1,2,3,4,5,6]
-models=[-1]
+models=[0]
 
 for model in models:
 
