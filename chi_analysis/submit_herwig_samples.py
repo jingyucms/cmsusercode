@@ -6,13 +6,8 @@ couplings=[(1,0,0),]
 samples=[]
 
 for minMass in minMasses:
-    #samples+=[('pythia8_qcd',minMass,"",""),]
-    
-    #for signalMass in signalMasses:
-    #    for coupling in couplings:
-    #         samples+=[('pythia8_ci',minMass,signalMass,coupling),]
-
-    samples+=[('pythia8_qcdNonPert',minMass,"",""),]
+    samples+=[('herwigpp_qcd',minMass,"",""),]
+    samples+=[('herwigpp_qcdNonPert',minMass,"",""),]
 
 version="Aug24"
 
@@ -105,56 +100,35 @@ process.MessageLogger=cms.Service("MessageLogger",
     logs = cms.untracked.PSet(threshold=cms.untracked.string('WARNING'))
 )
 
-process.generator = cms.EDFilter("Pythia8GeneratorFilter",
-	comEnergy = cms.double(8000.0),
-	crossSection = cms.untracked.double(1e10),
-	filterEfficiency = cms.untracked.double(1),
-	maxEventsToPrint = cms.untracked.int32(0),
-	pythiaHepMCVerbosity = cms.untracked.bool(False),
-	pythiaPylistVerbosity = cms.untracked.int32(0),
-	#useUserHook = cms.bool(True),
-	
-	PythiaParameters = cms.PSet(
-		processParameters = cms.vstring(
-			'Main:timesAllowErrors    = 10000',
-			'ParticleDecays:limitTau0 = on',
-			'ParticleDecays:tauMax = 10',
-			'PhaseSpace:mHatMin = """+str(minMass)+""" ',
-			'PhaseSpace:pTHatMin = """+str(minMass/10)+""" ',
-			'Tune:pp 5',
-			'Tune:ee 3',
+from Configuration.Generator.HerwigppDefaults_cfi import *
+from Configuration.Generator.HerwigppUE_EE_3C_cfi import *
+
+process.generator = cms.EDFilter("ThePEGGeneratorFilter",
+	herwigDefaultsBlock,
+	herwigppUESettingsBlock,
+	crossSection = cms.untracked.double(1.),
+	filterEfficiency = cms.untracked.double(1.),
+	configFiles = cms.vstring(),
+	parameterSets = cms.vstring(
+	    'herwigppUE_EE_3C_8000GeV',
+	    'QCDParameters',
+	    'basicSetup',
+	    'setParticlesStableForDetector',
+	),
+	QCDParameters = cms.vstring(
+	     'cd /Herwig/MatrixElements/',
+	     'insert SimpleQCD:MatrixElements[0] MEQCD2to2',
+	     'cd /',
+	     'set /Herwig/Cuts/JetKtCut:MinKT """+str(minMass/10)+"""*GeV',
+	     'set /Herwig/Cuts/QCDCuts:MHatMin """+str(minMass)+"""*GeV',
+	     'set /Herwig/UnderlyingEvent/MPIHandler:IdenticalToUE 0',
 """)
-    if signalMass=="" and "NonPert" in sample:
-        cfg.writelines("""			'HardQCD:all = on ',
-			'PartonLevel:MPI = off',
-			'HadronLevel:Hadronize = off',
-""")
-    elif signalMass=="":
-        cfg.writelines("""			'HardQCD:all = on ',
-""")
-    else:
-        cfg.writelines("""			'HardQCD:gg2gg = on',
-			'HardQCD:gg2qqbar = on',
-			'HardQCD:qg2qg = on',
-			'HardQCD:qqbar2gg = on',
-			'HardQCD:gg2ccbar = on',
-			'HardQCD:qqbar2ccbar = on',
-			'HardQCD:gg2bbbar = on',
-			'HardQCD:qqbar2bbbar = on',
-			'HardQCD:qq2qq = off',
-			'HardQCD:qqbar2qqbarNew = off',
-			'ContactInteractions:QCqq2qq = on',
-			'ContactInteractions:QCqqbar2qqbar = on',
-			'ContactInteractions:nQuarkNew = 5', # outgoing mass-less quark flavours
-			'ContactInteractions:Lambda = """+str(signalMass)+"""',
-			'ContactInteractions:etaLL = """+str(coupling[0])+"""', #helicity
-			'ContactInteractions:etaRR = """+str(coupling[1])+"""', #helicity
-			'ContactInteractions:etaLR = """+str(coupling[2])+"""', #helicity
+    if "NonPert" in sample:
+        cfg.writelines("""	     'set /Herwig/EventHandlers/LHCHandler:MultipleInteractionHandler NULL',
+	     'set /Herwig/EventHandlers/LHCHandler:HadronizationHandler NULL',
 """)
     cfg.writelines("""
-		),
-		parameterSets = cms.vstring('processParameters')
-	)
+	),
 )
 
 #process.pfPileUp.PFCandidates=cms.InputTag("particleFlow")

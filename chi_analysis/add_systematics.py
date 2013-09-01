@@ -244,7 +244,10 @@ if __name__ == '__main__':
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
 	out.cd()
-	data.Write('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
+	histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	for k in range(0,200):
+            out.Delete(histname+";"+str(k))
+	data.Write(histname)
 
         # NLO
         nloqcd=None
@@ -295,8 +298,9 @@ if __name__ == '__main__':
           cinlofile = TFile.Open(filenamecinlo)
           histname2="chi-"+str(massbins[j][0])+"-"+str(massbins[j][1])
           print histname2
+  	  histname=histname.replace("_backup","")
           ci = TH1F(cinlofile.Get(histname2))
-          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName()+"_rebin1",chi_binnings[j]).Clone(histname.replace("_backup",""))
+          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName()+"_rebin1",chi_binnings[j]).Clone(histname)
 	  ci.Scale(1./nloqcdbackup.Integral())
           ci.Add(nloqcd)
 	else:
@@ -317,7 +321,7 @@ if __name__ == '__main__':
         for b in range(ci.GetXaxis().GetNbins()):
             ci.SetBinError(b+1,0)
         out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(histname+";"+str(k))
         ci.Write()
 
@@ -334,7 +338,7 @@ if __name__ == '__main__':
         for b in range(alt.GetXaxis().GetNbins()):
             alt.SetBinError(b+1,0)
         out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(histname+";"+str(k))
         alt.Write(histname)
 	
@@ -352,7 +356,7 @@ if __name__ == '__main__':
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
 	out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(histname+"_jesUp"+";"+str(k))
             out.Delete(histname+"_jesDown"+";"+str(k))
         jesup.Write()
@@ -370,7 +374,7 @@ if __name__ == '__main__':
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
 	out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(histname+"_jesUp"+";"+str(k))
             out.Delete(histname+"_jesDown"+";"+str(k))
         jesup.Write()
@@ -397,7 +401,7 @@ if __name__ == '__main__':
         for b in range(pdfup.GetXaxis().GetNbins()):
             pdfup.SetBinError(b+1,0)
 	out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(alt.GetName()+"_pdfUp"+";"+str(k))
         pdfup.Write()
 
@@ -422,7 +426,7 @@ if __name__ == '__main__':
         for b in range(pdfdown.GetXaxis().GetNbins()):
             pdfdown.SetBinError(b+1,0)
 	out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(alt.GetName()+"_pdfDown"+";"+str(k))
         pdfdown.Write()
 
@@ -448,7 +452,7 @@ if __name__ == '__main__':
         for b in range(scaleup.GetXaxis().GetNbins()):
             scaleup.SetBinError(b+1,0)
 	out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(alt.GetName()+"_scaleUp"+";"+str(k))
         scaleup.Write()
 
@@ -473,7 +477,7 @@ if __name__ == '__main__':
         for b in range(scaledown.GetXaxis().GetNbins()):
             scaledown.SetBinError(b+1,0)
 	out.cd()
-	for k in range(0,100):
+	for k in range(0,200):
             out.Delete(alt.GetName()+"_scaleDown"+";"+str(k))
         scaledown.Write()
 
@@ -482,14 +486,14 @@ if __name__ == '__main__':
         #for b in range(data.GetXaxis().GetNbins()):
         #    data.SetBinError(b+1,sqrt(data.GetBinContent(b+1)))
         #out.cd()
-	#for k in range(0,100):
+	#for k in range(0,200):
         #    out.Delete('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
 	#data.Write('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
 	# FAKE SIGNAL
 	#ci=alt.Clone("fake_signal")
         #out.cd()
-	#for k in range(0,100):
+	#for k in range(0,200):
         #    out.Delete(samples[i][0]+'chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
 	#ci.Write(samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       

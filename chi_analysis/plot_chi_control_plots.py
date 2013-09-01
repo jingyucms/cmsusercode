@@ -43,7 +43,7 @@ if __name__ == '__main__':
    
    prefix="Moriond"
 
-   data=["chi_EPS2",
+   data=["chi_EPS3",
          ]
    data2=["chi_ReRun2012D",
          ]
@@ -52,7 +52,15 @@ if __name__ == '__main__':
        ("chi_QCD_250",276000.0/26900255),
        ("chi_QCD_100",1.036e7/48365102),
        ]
-   mc2=[("chi_QCDHerwig",1.0),
+   mc2=[("chi_QCDHerwig",1.0),]
+   mc3=[("chi_QCDPythia8170",37974.99/800046),
+        ("chi_QCDPythia8300",1938.868/490042),
+        ("chi_QCDPythia8470",124.8942/500051),
+        ("chi_QCDPythia8600",29.55049/492988),
+        ("chi_QCDPythia8800",3.871308/400059),
+        ("chi_QCDPythia81000",0.8031018/400050),
+        ("chi_QCDPythia81400",0.03637225/200070),
+        ("chi_QCDPythia81800",0.00197726/194313),
          ]
    f_data=[]
    f_data2=[]
@@ -62,10 +70,13 @@ if __name__ == '__main__':
       f_data2+=[TFile.Open(name+".root")]
    f_mc=[]
    f_mc2=[]
+   f_mc3=[]
    for name,xsec in mc:
       f_mc+=[TFile.Open(name+".root")]
    for name,xsec in mc2:
       f_mc2+=[TFile.Open(name+".root")]
+   for name,xsec in mc3:
+      f_mc3+=[TFile.Open(name+".root")]
 
    canvas = TCanvas("","",0,0,200,200)
    canvas.SetLogy(True)
@@ -99,8 +110,8 @@ if __name__ == '__main__':
    hist2.SetMarkerStyle(25)
    hist2.SetMarkerSize(0.2)
    hist2.SetStats(False)
-   hist2.Draw("pesame")
-   legend.AddEntry(hist2,"2012D","l")
+   #hist2.Draw("pesame")
+   #legend.AddEntry(hist2,"2012D","l")
 
    hist_mc=f_mc[0].Get("dijet_mass")
    for i in range(1,len(mc)):
@@ -109,7 +120,16 @@ if __name__ == '__main__':
    hist_mc.SetLineColor(2)
    hist_mc.SetStats(False)
    hist_mc.Draw("histsame")
-   legend.AddEntry(hist_mc,"Madgraph QCD","l")
+   legend.AddEntry(hist_mc,"MG+Pythia6 QCD","l")
+
+   hist_mc3=f_mc3[0].Get("dijet_mass")
+   for i in range(1,len(mc3)):
+       hist_mc3.Add(f_mc3[i].Get("dijet_mass"),mc3[i][1]/mc3[0][1])
+   hist_mc3.Scale(hist.Integral(hist.FindBin(1900),hist.GetNbinsX())/hist_mc3.Integral(hist_mc3.FindBin(1900),hist_mc3.GetNbinsX()))
+   hist_mc3.SetLineColor(4)
+   hist_mc3.SetStats(False)
+   hist_mc3.Draw("histsame")
+   legend.AddEntry(hist_mc3,"Pythia8 QCD","l")
 
    hist_mc2=f_mc2[0].Get("dijet_mass")
    for i in range(1,len(mc2)):
@@ -120,7 +140,7 @@ if __name__ == '__main__':
    hist_mc2.Draw("histsame")
    legend.AddEntry(hist_mc2,"Herwig++ QCD","l")
 
-   hist2.Draw("pesame")
+   #hist2.Draw("pesame")
    hist.Draw("pesame")
 
    legend.SetTextSize(0.04)
@@ -183,8 +203,8 @@ if __name__ == '__main__':
             miny=log*0.1
 	hist2.SetTitle("")
         hist2.SetStats(False)
-        hist2.Draw("lesame")
-        legend.AddEntry(hist2,"2012D","l")
+        #hist2.Draw("lesame")
+        #legend.AddEntry(hist2,"2012D","l")
 
      	hist_mc=f_mc[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
      	for i in range(1,len(mc)):
@@ -198,7 +218,21 @@ if __name__ == '__main__':
 	    hist_mc.Rebin(4)
         hist_mc.SetStats(False)
         hist_mc.Draw("histsame")
-        legend.AddEntry(hist_mc,"Madgraph QCD","l")
+        legend.AddEntry(hist_mc,"MG+Pythia6 QCD","l")
+
+     	hist_mc3=f_mc3[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
+     	for i in range(1,len(mc3)):
+     	    hist_mc3.Add(f_mc3[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var),mc3[i][1]/mc3[0][1])
+	if var=="chi":
+            hist_mc3=hist_mc3.Rebin(len(chi_binnings[mass])-1,hist_mc3.GetName()+"_rebin1",chi_binnings[mass])
+	if hist_mc3.Integral()>0:
+            hist_mc3.Scale(hist.Integral()/hist_mc3.Integral())
+      	hist_mc3.SetLineColor(4)
+	if "metsumet" in var:
+	    hist_mc3.Rebin(4)
+        hist_mc3.SetStats(False)
+        hist_mc3.Draw("histsame")
+        legend.AddEntry(hist_mc3,"Pythia8 QCD","l")
 
      	hist_mc2=f_mc2[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
      	for i in range(1,len(mc2)):
@@ -214,7 +248,7 @@ if __name__ == '__main__':
         hist_mc2.Draw("histsame")
         legend.AddEntry(hist_mc2,"Herwig++ QCD","l")
 
-        hist2.Draw("lesame")
+        #hist2.Draw("lesame")
         hist.Draw("lesame")
 
         legend.SetTextSize(0.04)

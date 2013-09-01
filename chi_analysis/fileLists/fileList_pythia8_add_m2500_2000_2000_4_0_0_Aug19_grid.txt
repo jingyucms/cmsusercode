@@ -1,0 +1,5 @@
+root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/pythia8_add_m2500_2000_2000_4_0_0_Aug19/PFAOD_11.root
+root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/pythia8_add_m2500_2000_2000_4_0_0_Aug19/PFAOD_21.root
+root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/pythia8_add_m2500_2000_2000_4_0_0_Aug19/PFAOD_3.root
+root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/pythia8_add_m2500_2000_2000_4_0_0_Aug19/PFAOD_5.root
+root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/pythia8_add_m2500_2000_2000_4_0_0_Aug19/PFAOD_71.root

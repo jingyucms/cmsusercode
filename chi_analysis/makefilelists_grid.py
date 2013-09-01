@@ -4,6 +4,12 @@ import subprocess
 samples = [
 #('/pythia8_qcd_m2500___May27',True,True, 'cmsBatchFastsim'),
 #('/pythia8_qcd_m3700___May27',True,True, 'cmsBatchFastsim'),
+#('/pythia8_qcdNonPert_m2500___Aug24',True,True, 'cmsBatchFastsim'),
+#('/pythia8_qcdNonPert_m3700___Aug24',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcd_m2500___Aug24',True,True, 'cmsBatchFastsim'),
+('/herwigpp_qcd_m3700___Aug24',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcdNonPert_m2500___Aug24',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcdNonPert_m3700___Aug24',True,True, 'cmsBatchFastsim'),
 #('/pythia8_ci_m2500_4000_1_0_0_May27',True,True, 'cmsBatchFastsim'),
 #('/pythia8_ci_m3700_4000_1_0_0_May27',True,True, 'cmsBatchFastsim'),
 #('/pythia8_ci_m2500_6000_1_0_0_May27',True,True, 'cmsBatchFastsim'),
@@ -90,7 +96,7 @@ for sample, mc, fastsim, production in samples:
     #	shortsample=sample.strip("/").split("/")[0]+"_grid"
     #else:
     shortsample="_".join(sample.strip("/").split("/"))+"_grid"
-    filelist=open("fileList_"+shortsample+".txt","w")
+    filelist=open("fileLists/fileList_"+shortsample+".txt","w")
     if production=="ProductionTask":
       command="cmsLs -l /store/cmst3/user/hinzmann/CMG"+sample+"""/ | awk '{size+=$2}END{print size/1024/1024/1024" GB"}'"""
       os.system(command)
@@ -139,17 +145,3 @@ for sample, mc, fastsim, production in samples:
     filelist.close()
 
     #os.system("heavy_tagged_dijet_analysis fileList_"+shortsample+".txt "+shortsample+".root &> "+shortsample+".log &")
-
-    continue
-    # make local copy
-    filelist=open("fileList_"+shortsample+"_local.txt","w")
-    command="mkdir /tmp/hinzmann/"+shortsample
-    print command
-    os.system(command)
-    for filename in filesl:
-      command="cmsStage "+filename+" /tmp/hinzmann/"+shortsample
-      print command
-      os.system(command)
-    for filename in filesl:
-        filelist.write("/tmp/hinzmann/"+shortsample+"/"+filename.split("/")[-1]+"\n")
-    filelist.close()
