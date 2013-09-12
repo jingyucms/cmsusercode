@@ -1,0 +1,20 @@
+
+imax 2 number of channels
+jmax 2 number of backgrounds
+kmax 3 number of nuisance parameters
+-----------
+shapes * bin0 datacard_shapelimit_CI6000_chi.root $PROCESS#chi4200_8000_rebin1 $PROCESS#chi4200_8000_rebin1_$SYSTEMATIC
+shapes * bin1 datacard_shapelimit_CI6000_chi.root $PROCESS#chi3600_4200_rebin1 $PROCESS#chi3600_4200_rebin1_$SYSTEMATIC
+-----------
+bin 0 1 
+observation 50.0 359.0 
+-----------
+bin 0 0 0 1 1 1 
+process QCDCI6000 QCDCI6000_ALT QCD QCDCI6000 QCDCI6000_ALT QCD 
+process -1 0 1 -1 0 1 
+rate 50.0000002384 49.9999995232 2.07400998988e-05 358.999996185 359.0 2.49260000373e-06 
+-----------
+jes shape 1 1 - 1 1 - 
+pdf shape - 1 - - 1 - 
+scale shape - 1 - - 1 - 
+-----------
