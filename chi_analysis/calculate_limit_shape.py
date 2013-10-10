@@ -9,8 +9,8 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
-models=[-1,0,1,2,3,4,5,6]
-models=[5]
+models=[-1,0,1,2,3,4,5,6,7]
+models=[8]
 
 for model in models:
 
@@ -38,6 +38,14 @@ for model in models:
  if model==6:
     signal="DNLOCI"    
     signalMasses=[5000,6000,7000,8000,9000,10000,11000,12000]
+ if model==7:
+    signal="ADLOCI"    
+    signalMasses=[11000]
+    massbins=[(3600,4200),]
+ if model==8:
+    signal="DLOCI"    
+    signalMasses=[11000]
+    massbins=[(4200,8000),]
 
  prefix="datacard_shapelimit"
 
