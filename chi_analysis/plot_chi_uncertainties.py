@@ -35,168 +35,40 @@ if __name__ == '__main__':
 
     prefixs=["datacard_shapelimit"]
  
-    chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
-               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
-               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,5,7,10,12,14,16),
               ]
-          
-    #chi_bins=[(1,2,3,4,5,6,7),
-    #           (1,2,3,4,5,6,7),
-    #           (1,2,3,4,5,6,7),
-    #           (1,3,5,7),
-    #          ]
     chi_binnings=[]
     for mass_bin in chi_bins:
         chi_binnings+=[array.array('d')]
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
-    #massbins=[(1900,2400),
-    #          (2400,3000),
-	#      (3000,4000),
-	#      (4000,8000)]
-    massbins=[#(1900,2400),
-              #(2400,3000),
-	      #(3000,3600),
+    massbins=[(1900,2400),
+              (2400,3000),
+	      (3000,3600),
 	      (3600,4200),
 	      (4200,8000)]
     mass_bins_nlo={}
-    #mass_bins_nlo[4]=3000
+    mass_bins_nlo[2]=1900
+    mass_bins_nlo[3]=2400
+    mass_bins_nlo[4]=3000
     mass_bins_nlo[5]=3600
     mass_bins_nlo[6]=4000
     mass_bins_nlo[7]=4200
     mass_bins_nlo[8]=8000
-    mass_bins_nlo2=[#(4,),
+    mass_bins_nlo2=[(2,),
+    	      (3,),
+    	      (4,),
     	      (5,6,),
     	      (7,),
     	     ]
     mass_bins_nlo_max=7
 
 
-    samples=[("QCDCI4000",[("fileList_pythia8_ci_m2500_4000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_4000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI6000",[("fileList_pythia8_ci_m2500_6000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_6000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI8000",[("fileList_pythia8_ci_m2500_8000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_8000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI9000",[("fileList_pythia8_ci_m2500_9000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_9000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI10000",[("fileList_pythia8_ci_m2500_10000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_10000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI12000",[("fileList_pythia8_ci_m2500_12000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_12000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI14000",[("fileList_pythia8_ci_m2500_14000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_14000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI15000",[("fileList_pythia8_ci_m2500_15000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_15000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI16000",[("fileList_pythia8_ci_m2500_16000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_16000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI18000",[("fileList_pythia8_ci_m2500_18000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_18000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI20000",[("fileList_pythia8_ci_m2500_20000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_20000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-
-             ("QCDCIminusLL6000",[("fileList_pythia8_ci_m2500_6000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_6000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL8000",[("fileList_pythia8_ci_m2500_8000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_8000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL9000",[("fileList_pythia8_ci_m2500_9000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_9000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL10000",[("fileList_pythia8_ci_m2500_10000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_10000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL12000",[("fileList_pythia8_ci_m2500_12000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_12000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL14000",[("fileList_pythia8_ci_m2500_14000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_14000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL15000",[("fileList_pythia8_ci_m2500_15000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_15000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL16000",[("fileList_pythia8_ci_m2500_16000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_16000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL18000",[("fileList_pythia8_ci_m2500_18000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_18000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL20000",[("fileList_pythia8_ci_m2500_20000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_20000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-
-             #("QCDADD_4_0_0_2000",[("fileList_pythia8_add_m2500_2000_2000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
-		#        ("fileList_pythia8_add_m3700_2000_2000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
-             #("QCDADD_4_0_0_3000",[("fileList_pythia8_add_m2500_3000_3000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
-		#        ("fileList_pythia8_add_m3700_3000_3000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_0_4000",[("fileList_pythia8_add_m2500_4000_4000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_4000_4000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_0_5000",[("fileList_pythia8_add_m2500_5000_5000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_5000_5000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_0_6000",[("fileList_pythia8_add_m2500_6000_6000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_6000_6000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_0_7000",[("fileList_pythia8_add_m2500_7000_7000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_7000_7000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_0_8000",[("fileList_pythia8_add_m2500_8000_8000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_8000_8000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
-
-             ("QCDADD_4_0_1_4000",[("fileList_pythia8_add_m2500_4000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_4000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_1_5000",[("fileList_pythia8_add_m2500_5000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_5000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_1_6000",[("fileList_pythia8_add_m2500_6000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_6000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_1_7000",[("fileList_pythia8_add_m2500_7000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_7000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_1_8000",[("fileList_pythia8_add_m2500_8000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_8000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_1_9000",[("fileList_pythia8_add_m2500_9000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_9000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-             ("QCDADD_4_0_1_10000",[("fileList_pythia8_add_m2500_10000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_add_m3700_10000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
-
-             ("QCDLOCI5000",[]),
-             ("QCDLOCI6000",[]),
-             ("QCDLOCI7000",[]),
-             ("QCDLOCI8000",[]),
-             ("QCDLOCI9000",[]),
-             ("QCDLOCI10000",[]),
-             ("QCDLOCI11000",[]),
-             ("QCDLOCI12000",[]),
-             ("QCDLOCI13000",[]),
-             ("QCDLOCI14000",[]),
-             ("QCDLOCI15000",[]),
-             
-	     ("QCDNLOCI5000",[]),
-             ("QCDNLOCI6000",[]),
-             ("QCDNLOCI7000",[]),
-             ("QCDNLOCI8000",[]),
-             ("QCDNLOCI9000",[]),
-             ("QCDNLOCI10000",[]),
-             ("QCDNLOCI11000",[]),
-             ("QCDNLOCI12000",[]),
-             ("QCDNLOCI13000",[]),
-             ("QCDNLOCI14000",[]),
-             ("QCDNLOCI15000",[]),
-             
-	     ("QCDDLOCI5000",[]),
-             ("QCDDLOCI6000",[]),
-             ("QCDDLOCI7000",[]),
-             ("QCDDLOCI8000",[]),
-             ("QCDDLOCI9000",[]),
-             ("QCDDLOCI10000",[]),
-             ("QCDDLOCI11000",[]),
-             ("QCDDLOCI12000",[]),
-             ("QCDDLOCI13000",[]),
-             ("QCDDLOCI14000",[]),
-	     ("QCDDLOCI15000",[]),
-
-             ("QCDDNLOCI5000",[]),
-             ("QCDDNLOCI6000",[]),
-             ("QCDDNLOCI7000",[]),
-             ("QCDDNLOCI8000",[]),
-             ("QCDDNLOCI9000",[]),
-             ("QCDDNLOCI10000",[]),
-             ("QCDDNLOCI11000",[]),
-             ("QCDDNLOCI12000",[]),
-             ("QCDDNLOCI13000",[]),
-             ("QCDDNLOCI14000",[]),
-             ("QCDDNLOCI15000",[]),
-
-             ("QCDADLOCI11000",[]),
+    samples=[("QCD",[]),
              ]
  
     dataevents={}
@@ -209,7 +81,7 @@ if __name__ == '__main__':
 
      # signal cards
      for i in range(len(samples)):
-      sample=prefix + "_"+samples[i][0].replace("QCD","") + '_chi.root'
+      sample=prefix + "_"+samples[i][0] + '_chi.root'
       print sample
       out=TFile(sample,'UPDATE')
 
@@ -233,8 +105,8 @@ if __name__ == '__main__':
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
 
-      canvas = TCanvas("","",0,0,400,200)
-      canvas.Divide(2,1)
+      canvas = TCanvas("","",0,0,600,400)
+      canvas.Divide(3,2)
       plots=[]
       legends=[]
 
@@ -332,7 +204,7 @@ if __name__ == '__main__':
         ci.Write()
 
         # ALT (=NLO QCD)
-        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+        histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
 	if "LOCI" in samples[i][0]:
     	    alt=nloqcd.Clone(histname)
@@ -367,24 +239,24 @@ if __name__ == '__main__':
             out.Delete(histname+"_jesDown"+";"+str(k))
         jesup.Write()
         jesdown.Write()
-        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	if "LOCI" in samples[i][0]:
-    	    clone=alt.Clone(histname)
-	else:
-            clone=out.Get(histname)
-        jesup=clone.Clone(histname+"_jesUp")
-        jesdown=clone.Clone(histname+"_jesDown")
-        jespad=jesfile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
-	for b in range(clone.GetNbinsX()):
-	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
-            jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
-	out.cd()
-	for k in range(0,200):
-            out.Delete(histname+"_jesUp"+";"+str(k))
-            out.Delete(histname+"_jesDown"+";"+str(k))
-        jesup.Write()
-        jesdown.Write()
+        #histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	#if "LOCI" in samples[i][0]:
+    	#    clone=alt.Clone(histname)
+	#else:
+        #    clone=out.Get(histname)
+        #jesup=clone.Clone(histname+"_jesUp")
+        #jesdown=clone.Clone(histname+"_jesDown")
+        #jespad=jesfile.Get("jes")
+	#jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
+	#for b in range(clone.GetNbinsX()):
+	#    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
+        #    jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
+	#out.cd()
+	#for k in range(0,200):
+        #    out.Delete(histname+"_jesUp"+";"+str(k))
+        #    out.Delete(histname+"_jesDown"+";"+str(k))
+        #jesup.Write()
+        #jesdown.Write()
 
         # NLO PDFup/down
         nloPDFupqcd=None
@@ -501,16 +373,24 @@ if __name__ == '__main__':
         #    out.Delete(samples[i][0]+'chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
 	#ci.Write(samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
+        jesup.Divide(jesup,alt)
+        jesdown.Divide(jesdown,alt)
+        pdfup.Divide(pdfup,alt)
+        pdfdown.Divide(pdfdown,alt)
+        scaleup.Divide(scaleup,alt)
+        scaledown.Divide(scaledown,alt)
+        alt.Divide(alt,alt)
+      
         # PLOTS
         canvas.cd(j+1)
-        legend1=TLegend(0.2,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
+        legend1=TLegend(0.5,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
         legends+=[legend1]
-        legend1.AddEntry(data,"data","lpe")
+        #legend1.AddEntry(data,"data","lpe")
 	plots+=[alt]
 	alt.SetLineColor(2)
 	alt.SetTitle("")
         alt.Draw("he")
-	alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*2)
+	alt.GetYaxis().SetRangeUser(0.8,1.3)
         legend1.AddEntry(alt,"QCD","l")
 	plots+=[jesup]
 	jesup.SetLineColor(3)
@@ -542,9 +422,9 @@ if __name__ == '__main__':
 	scaledown.SetLineStyle(2)
         scaledown.Draw("hesame")
         legend1.AddEntry(scaledown,"scale down","l")
-	plots+=[ci]
-        ci.Draw("hesame")
-        legend1.AddEntry(ci,"CI","l")
+	#plots+=[ci]
+        #ci.Draw("hesame")
+        #legend1.AddEntry(ci,"CI","l")
 	data=TGraphAsymmErrors(data)
 	plots+=[data]
 	alpha=1.-0.6827
@@ -559,11 +439,11 @@ if __name__ == '__main__':
 	data.SetLineColor(1)
 	data.SetMarkerStyle(24)
         data.SetMarkerSize(0.5)
-        data.Draw("pe0zsame")
+        #data.Draw("pe0zsame")
 	
         legend1.SetTextSize(0.04)
         legend1.SetFillStyle(0)
         legend1.Draw("same")
 
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.pdf')
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.eps')
+      canvas.SaveAs(prefix + "_"+samples[i][0] + '_sys.pdf')
+      canvas.SaveAs(prefix + "_"+samples[i][0] + '_sys.eps')

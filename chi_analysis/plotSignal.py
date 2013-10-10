@@ -46,7 +46,8 @@ def createPlots(sample,prefix,massbins):
     for f in files[:]:
       events.Add(f)
     
-    print sample,events.GetEntries()
+    nevents=events.GetEntries()
+    print sample,nevents
     jets="recoGenJets_ak5GenJets__PFAOD.obj"
     yboost='abs('+jets+'[0].y()+'+jets+'[1].y())/2.'
     chi='exp(abs('+jets+'[0].y()-'+jets+'[1].y()))'
@@ -54,6 +55,9 @@ def createPlots(sample,prefix,massbins):
     for massbin in massbins:
       events.Project(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',""),chi,'('+yboost+'<1.11)*('+mass+'>='+str(massbin[0])+')*('+mass+'<'+str(massbin[1])+')')
       #events.Project(prefix+'y_{boost}'+str(massbin).strip("()").replace(',',"_").replace(' ',""),yboost,'('+chi+'<16)*('+mass+'>='+str(massbin[0])+')*('+mass+'<='+str(massbin[1])+')')
+    for plot in plots:
+      if nevents>0:
+        plot.Scale(1./nevents)
     return plots
 
 if __name__ == '__main__':
@@ -61,29 +65,40 @@ if __name__ == '__main__':
     wait=False
  
     prefix="datacard_shapelimit"
-    chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
-              #(1,2,3,4,5,6,7,8,9,10,12,14,16),
-              #(1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,3,5,7,10,12,14,16),
+    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,3,5,7,10,12,14,16),
               ]
-    massbins=[#(1900,2400),
-              #(2400,3000),
-	      #(3000,3600),
-	      (3600,4200),
+    massbins=[(3600,4200),
 	      (4200,8000)]
     #expectedevents=[1814*2,196*2,35*2]#89179*2,14448*2,
     #expectedevents=[3070,355,50]#23948
  
-    samples=[("QCD",[("fileLists/fileList_pythia8_qcd_m2500___May27_grid.txt",[(3600,4200)]),
-		     ("fileLists/fileList_pythia8_qcd_m3700___May27_grid.txt",[(4200,8000)])]),
+    if "QCD" in sys.argv[1]:
+      chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,3,5,7,10,12,14,16),
+              ]
+      massbins=[(1900,2400),
+              (2400,3000),
+	      (3000,3600),
+	      (3600,4200),
+	      (4200,8000)]
+ 
+    samples=[("QCD",[("fileLists/fileList_pythia8_qcd_m1400___Sep4_grid.txt",[(1900,2400),(2400,3000)]),
+		     ("fileLists/fileList_pythia8_qcd_m2500___Sep4_grid.txt",[(3000,3600),(3600,4200)]),
+		     ("fileLists/fileList_pythia8_qcd_m3700___Sep4_grid.txt",[(4200,8000)])]),
              
-	     ("QCDNonPert",[("fileLists/fileList_pythia8_qcdNonPert_m2500___Aug24_grid.txt",[(3600,4200)]),
-                            ("fileLists/fileList_pythia8_qcdNonPert_m3700___Aug24_grid.txt",[(4200,8000)])]),
-	     ("QCDHpp",[("fileLists/fileList_herwigpp_qcd_m2500___Aug24_grid.txt",[(3600,4200)]),
-                        ("fileLists/fileList_herwigpp_qcd_m3700___Aug24_grid.txt",[(4200,8000)])]),
-	     ("QCDHppNonPert",[("fileLists/fileList_herwigpp_qcdNonPert_m2500___Aug24_grid.txt",[(3600,4200)]),
-                               ("fileLists/fileList_herwigpp_qcdNonPert_m3700___Aug24_grid.txt",[(4200,8000)])]),
+	     ("QCDNonPert",[("fileLists/fileList_pythia8_qcdNonPert_m1400___Sep4_grid.txt",[(1900,2400),(2400,3000)]),
+                            ("fileLists/fileList_pythia8_qcdNonPert_m2500___Sep4_grid.txt",[(3000,3600),(3600,4200)]),
+                            ("fileLists/fileList_pythia8_qcdNonPert_m3700___Sep4_grid.txt",[(4200,8000)])]),
+	     ("QCDHpp",[("fileLists/fileList_herwigpp_qcd_m1400___Sep4_grid.txt",[(1900,2400),(2400,3000)]),
+                        ("fileLists/fileList_herwigpp_qcd_m2500___Sep4_grid.txt",[(3000,3600),(3600,4200)]),
+                        ("fileLists/fileList_herwigpp_qcd_m3700___Sep4_grid.txt",[(4200,8000)])]),
+	     ("QCDHppNonPert",[("fileLists/fileList_herwigpp_qcdNonPert_m1400___Sep5_grid.txt",[(1900,2400),(2400,3000)]),
+                               ("fileLists/fileList_herwigpp_qcdNonPert_m2500___Sep5_grid.txt",[(3000,3600),(3600,4200)]),
+                               ("fileLists/fileList_herwigpp_qcdNonPert_m3700___Sep5_grid.txt",[(4200,8000)])]),
              
 	     ("QCDCI4000",[("fileLists/fileList_pythia8_ci_m2500_4000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileLists/fileList_pythia8_ci_m3700_4000_1_0_0_May27_grid.txt",[(4200,8000)])]),
@@ -225,13 +240,16 @@ if __name__ == '__main__':
 
     canvas = TCanvas("","",0,0,400,200)
     canvas.Divide(2,1)
+    if len(massbins)>2:
+      canvas = TCanvas("","",0,0,600,400)
+      canvas.Divide(3,2)
 
     legends=[]
     for j in range(len(massbins)):
       canvas.cd(j+1)
       plots[0][j].Draw("he")
       print "number of events passed:",plots[0][j].GetEntries()
-      legend1=TLegend(0.6,0.6,0.9,0.9,"")
+      legend1=TLegend(0.6,0.6,0.9,0.9,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
       legends+=[legend1]
       legend1.AddEntry(plots[0][j],samples[0][0],"l")
       for i in range(1,len(samples)):

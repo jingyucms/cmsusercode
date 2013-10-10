@@ -21,8 +21,8 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__ == '__main__':
 
-   variables=["chi","pt1","pt2","y1","y2","yboost","metsumet","mptsumpt","dphi"]
-   label=["#chi","p_{T1}","p_{T2}","y_{1}","y_{2}","y_{boost}","missing E_{T} / #sum E_{T}","#sum #vec p_{T} / #sum |p_{T}|","#Delta #phi"]
+   variables=["chi","pt1","pt2","y1","y2","yboost","metsumet","mptsumpt","dphi","dpt"]
+   label=["#chi","p_{T1}","p_{T2}","y_{1}","y_{2}","y_{boost}","missing E_{T} / #sum E_{T}","#sum #vec p_{T} / #sum |p_{T}|","#Delta #phi","#Delta p_{T} / #sum p_T"]
 
    masses=[1900,2400,3000,3600,4200,7000]
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
    
-   prefix="Moriond"
+   prefix="2012"
 
    data=["chi_EPS3",
          ]
@@ -78,8 +78,20 @@ if __name__ == '__main__':
    for name,xsec in mc3:
       f_mc3+=[TFile.Open(name+".root")]
 
-   canvas = TCanvas("","",0,0,200,200)
-   canvas.SetLogy(True)
+   canvas = TCanvas("","",0,0,200,260)
+   canvas.Divide(1,2,0,0,0)
+   canvas.GetPad(1).SetPad(0.0,0.28,1.0,1.0)
+   canvas.GetPad(1).SetLeftMargin(0.15)
+   canvas.GetPad(1).SetRightMargin(0.08)
+   canvas.GetPad(1).SetTopMargin(0.08)
+   canvas.GetPad(1).SetBottomMargin(0.05)
+   canvas.GetPad(2).SetPad(0.0,0.0,1.0,0.28)
+   canvas.GetPad(2).SetLeftMargin(0.15)
+   canvas.GetPad(2).SetRightMargin(0.08)
+   canvas.GetPad(2).SetTopMargin(0.08)
+   canvas.GetPad(2).SetBottomMargin(0.45)
+   canvas.cd(1)
+   canvas.GetPad(1).SetLogy(True)
    legend=TLegend(0.45,0.7,0.95,0.90,"#Chi<16 , y_{boost}<1.11")
 
    hist=f_data[0].Get("dijet_mass")
@@ -89,7 +101,8 @@ if __name__ == '__main__':
    hist.SetMarkerStyle(24)
    hist.SetMarkerSize(0.2)
    hist.SetTitle("")
-   hist.GetXaxis().SetTitle("dijet mass")
+   #hist.GetXaxis().SetTitle("dijet mass")
+   hist.GetXaxis().SetLabelColor(0)
    hist.GetYaxis().SetTitle("N")
    hist.GetXaxis().SetRangeUser(1900,6000)
    hist.GetYaxis().SetRangeUser(0.5,hist.GetMaximum()*1.5)
@@ -147,18 +160,70 @@ if __name__ == '__main__':
    legend.SetFillStyle(0)
    legend.Draw("same")
 
+   canvas.cd(2)
+   ratio=hist.Clone(hist.GetName()+"clone")
+   ratio.Divide(hist,hist)
+   for b in range(hist.GetNbinsX()):
+     if hist.GetBinContent(b+1)>0:
+       ratio.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+   ratio.SetTitle("")
+   ratio.GetYaxis().SetTitle("Data / Sim")
+   ratio.GetYaxis().SetTitleSize(0.13)
+   ratio.GetYaxis().SetTitleOffset(0.5)
+   ratio.SetMarkerSize(0.1)
+   ratio.GetYaxis().SetLabelSize(0.14)
+   ratio.GetYaxis().SetRangeUser(0,2)
+   ratio.GetXaxis().SetNdivisions(506)
+   ratio.GetYaxis().SetNdivisions(503)
+   ratio.GetXaxis().SetLabelColor(1)
+   ratio.GetXaxis().SetTitle("dijet mass")
+   ratio.GetXaxis().SetTitleSize(0.16)
+   ratio.GetXaxis().SetTitleOffset(1.1)
+   ratio.GetXaxis().SetLabelSize(0.14)
+   ratio.Draw("histe")
+   ratio_mc=hist_mc.Clone(hist_mc.GetName()+"clone")
+   ratio_mc.Divide(hist_mc,hist)
+   for b in range(hist.GetNbinsX()):
+     if hist.GetBinContent(b+1)>0:
+       ratio_mc.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+   ratio_mc.Draw("histsame")
+   ratio_mc2=hist_mc2.Clone(hist_mc2.GetName()+"clone")
+   ratio_mc2.Divide(hist_mc2,hist)
+   for b in range(hist.GetNbinsX()):
+     if hist.GetBinContent(b+1)>0:
+       ratio_mc2.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+   ratio_mc2.Draw("histsame")
+   ratio_mc3=hist_mc3.Clone(hist_mc3.GetName()+"clone")
+   ratio_mc3.Divide(hist_mc3,hist)
+   for b in range(hist.GetNbinsX()):
+     if hist.GetBinContent(b+1)>0:
+       ratio_mc3.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+   ratio_mc3.Draw("histsame")
+   canvas.cd(1)
+   hist.GetYaxis().SetTitleOffset(1.2)
+
    canvas.SaveAs("chi_control_plots_mass_"+prefix+".root")
    canvas.SaveAs("chi_control_plots_mass_"+prefix+".pdf")
 
    for var in variables:
-    canvas = TCanvas("","",0,0,600,400)
-    canvas.Divide(3,2)
     log="pt" in var or "et" in var or "dphi" in var
     legends=[]
     for mass in range(len(masses)-1):
-        canvas.cd(mass+1)
-        canvas.GetPad(mass+1).SetLogy(log)
-        legend=TLegend(0.45,0.7,0.95,0.90,str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV")
+        canvas = TCanvas("","",0,0,200,260)
+        canvas.Divide(1,2,0,0,0)
+        canvas.GetPad(1).SetPad(0.0,0.28,1.0,1.0)
+        canvas.GetPad(1).SetLeftMargin(0.15)
+        canvas.GetPad(1).SetRightMargin(0.08)
+        canvas.GetPad(1).SetTopMargin(0.08)
+        canvas.GetPad(1).SetBottomMargin(0.05)
+        canvas.GetPad(2).SetPad(0.0,0.0,1.0,0.28)
+        canvas.GetPad(2).SetLeftMargin(0.15)
+        canvas.GetPad(2).SetRightMargin(0.08)
+        canvas.GetPad(2).SetTopMargin(0.08)
+        canvas.GetPad(2).SetBottomMargin(0.45)
+        canvas.cd(1)
+        canvas.GetPad(1).SetLogy(log)
+        legend=TLegend(0.45,0.7,0.95,0.90,(str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
 	legends+=[legend]
     
         hist=f_data[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
@@ -175,10 +240,11 @@ if __name__ == '__main__':
 	if hist.Integral()>0:
             miny=log*0.1
 	hist.SetTitle("")
-	hist.GetXaxis().SetTitle(label[variables.index(var)])
+	#hist.GetXaxis().SetTitle(label[variables.index(var)])
+        hist.GetXaxis().SetLabelColor(0)
 	hist.GetYaxis().SetTitle("N")
 	hist.GetYaxis().SetRangeUser(miny,hist.GetMaximum()*(1.5+log*10))
-        hist.GetXaxis().SetTitleOffset(1.1)
+        #hist.GetXaxis().SetTitleOffset(1.1)
         hist.GetYaxis().SetTitleOffset(1.1)
         hist.GetXaxis().SetLabelSize(0.05)
         hist.GetYaxis().SetLabelSize(0.05)
@@ -255,5 +321,47 @@ if __name__ == '__main__':
         legend.SetFillStyle(0)
         legend.Draw("same")
 
-    canvas.SaveAs("chi_control_plots"+var+"_"+prefix+".root")
-    canvas.SaveAs("chi_control_plots"+var+"_"+prefix+".pdf")
+        canvas.cd(2)
+        ratio=hist.Clone(hist.GetName()+"clone")
+        ratio.Divide(hist,hist)
+        for b in range(hist.GetNbinsX()):
+          if hist.GetBinContent(b+1)>0:
+            ratio.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+        ratio.SetTitle("")
+        ratio.GetYaxis().SetTitle("Data / Sim")
+        ratio.GetYaxis().SetTitleSize(0.13)
+        ratio.GetYaxis().SetTitleOffset(0.5)
+        ratio.SetMarkerSize(0.1)
+        ratio.GetYaxis().SetLabelSize(0.14)
+        ratio.GetYaxis().SetRangeUser(0,2)
+        ratio.GetXaxis().SetNdivisions(506)
+        ratio.GetYaxis().SetNdivisions(503)
+        ratio.GetXaxis().SetLabelColor(1)
+        ratio.GetXaxis().SetTitle(label[variables.index(var)])
+        ratio.GetXaxis().SetTitleSize(0.16)
+        ratio.GetXaxis().SetTitleOffset(1.1)
+        ratio.GetXaxis().SetLabelSize(0.14)
+        ratio.Draw("histe")
+        ratio_mc=hist_mc.Clone(hist_mc.GetName()+"clone")
+        ratio_mc.Divide(hist_mc,hist)
+        for b in range(hist.GetNbinsX()):
+          if hist.GetBinContent(b+1)>0:
+            ratio_mc.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+        ratio_mc.Draw("histsame")
+        ratio_mc2=hist_mc2.Clone(hist_mc2.GetName()+"clone")
+        ratio_mc2.Divide(hist_mc2,hist)
+        for b in range(hist.GetNbinsX()):
+          if hist.GetBinContent(b+1)>0:
+            ratio_mc2.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+        ratio_mc2.Draw("histsame")
+        ratio_mc3=hist_mc3.Clone(hist_mc3.GetName()+"clone")
+        ratio_mc3.Divide(hist_mc3,hist)
+        for b in range(hist.GetNbinsX()):
+          if hist.GetBinContent(b+1)>0:
+            ratio_mc3.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
+        ratio_mc3.Draw("histsame")
+        canvas.cd(1)
+        hist.GetYaxis().SetTitleOffset(1.2)
+
+        canvas.SaveAs("chi_control_plots_"+var+"_"+str(mass)+"_"+prefix+".root")
+        canvas.SaveAs("chi_control_plots_"+var+"_"+str(mass)+"_"+prefix+".pdf")

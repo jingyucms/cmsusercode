@@ -1,15 +1,13 @@
 import os
 
-minMasses=[2500,3700]
-signalMasses=[6000,8000,9000,10000,12000,14000,15000,16000,18000,20000]
-couplings=[(1,0,0),]
+minMasses=[1400,2500,3700]
 samples=[]
 
 for minMass in minMasses:
-    samples+=[('herwigpp_qcd',minMass,"",""),]
+    #samples+=[('herwigpp_qcd',minMass,"",""),]
     samples+=[('herwigpp_qcdNonPert',minMass,"",""),]
 
-version="Aug24"
+version="Sep5"
 
 for sample,minMass,signalMass,coupling in samples:
     samplename=sample+"_m"+str(minMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version
@@ -145,4 +143,4 @@ process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles_*_*','drop *_genParticlesForJets_*_*')
 """)
     cfg.close()
-    os.system("cmsBatch.py 200 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")
+    os.system("cmsBatch.py 600 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")

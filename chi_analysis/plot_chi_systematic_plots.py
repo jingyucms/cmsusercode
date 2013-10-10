@@ -88,7 +88,7 @@ if __name__ == '__main__':
 	
         canvas.cd(mass+1)
         canvas.GetPad(mass+1).SetLogy(log)
-        legend=TLegend(0.4,0.55,0.95,0.90,str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV")
+        legend=TLegend(0.2,0.55,0.95,0.90,(str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
 	legends+=[legend]
     
         hist=f_mc[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
@@ -139,7 +139,10 @@ if __name__ == '__main__':
             hist2.SetStats(False)
 	    hists+=[hist2]
             hist2.Draw("histsame")
-            legend.AddEntry(hist2,"JEC "+sources[sourceset[i]],"l")
+	    if sources[sourceset[i]]=="Total":
+              legend.AddEntry(hist2,"JEC Single overall variation","l")
+            else:
+	      legend.AddEntry(hist2,"JEC "+sources[sourceset[i]],"l")
 	    if sourceset!=sourcesets[-1]:
               for chi_bin in range(len(chi_binnings[mass])):
 	       if (hist2.GetBinContent(chi_bin+1)-1.0)*(hist2.GetBinCenter(chi_bin+1)-8.5)>0:
@@ -156,7 +159,7 @@ if __name__ == '__main__':
               hist2b.SetLineColor(colors[i+1])
     	      hists+=[hist2b]
               hist2b.Draw("histsame")
-              legend.AddEntry(hist2b,"JEC sum in quadrature","l")
+              legend.AddEntry(hist2b,"JEC Total sum in quadrature","l")
 
 	for i in range(len(sourceset)):
             hist3=f_mc[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var+"_JECdown"+str(sourceset[i]))

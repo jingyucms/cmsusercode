@@ -33,8 +33,11 @@ def rebin(h1,nbins,binning):
 
 if __name__ == '__main__':
 
-    prefixs=["datacard_shapelimit"]
- 
+    prefix="datacard_shapelimit"
+
+    colors=[1,2,3,4,6,7,8,9,11,12,13]
+    styles=[1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]
+
     chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
                #(1,2,3,4,5,6,7,8,9,10,12,14,16),
                #(1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -74,7 +77,7 @@ if __name__ == '__main__':
     mass_bins_nlo_max=7
 
 
-    samples=[("QCDCI4000",[("fileList_pythia8_ci_m2500_4000_1_0_0_May27_grid.txt",[(3600,4200)]),
+    samples=[[("QCDCI4000",[("fileList_pythia8_ci_m2500_4000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_4000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI6000",[("fileList_pythia8_ci_m2500_6000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_6000_1_0_0_May27_grid.txt",[(4200,8000)])]),
@@ -86,8 +89,8 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_ci_m3700_10000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI12000",[("fileList_pythia8_ci_m2500_12000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_12000_1_0_0_May27_grid.txt",[(4200,8000)])]),
-             ("QCDCI14000",[("fileList_pythia8_ci_m2500_14000_1_0_0_May27_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_14000_1_0_0_May27_grid.txt",[(4200,8000)])]),
+             #("QCDCI14000",[("fileList_pythia8_ci_m2500_14000_1_0_0_May27_grid.txt",[(3600,4200)]),
+		#        ("fileList_pythia8_ci_m3700_14000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI15000",[("fileList_pythia8_ci_m2500_15000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_15000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI16000",[("fileList_pythia8_ci_m2500_16000_1_0_0_May27_grid.txt",[(3600,4200)]),
@@ -97,7 +100,7 @@ if __name__ == '__main__':
              ("QCDCI20000",[("fileList_pythia8_ci_m2500_20000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_20000_1_0_0_May27_grid.txt",[(4200,8000)])]),
 
-             ("QCDCIminusLL6000",[("fileList_pythia8_ci_m2500_6000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+             ],[("QCDCIminusLL6000",[("fileList_pythia8_ci_m2500_6000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_6000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
              ("QCDCIminusLL8000",[("fileList_pythia8_ci_m2500_8000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_8000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
@@ -107,8 +110,8 @@ if __name__ == '__main__':
 		        ("fileList_pythia8_ci_m3700_10000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
              ("QCDCIminusLL12000",[("fileList_pythia8_ci_m2500_12000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_12000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
-             ("QCDCIminusLL14000",[("fileList_pythia8_ci_m2500_14000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
-		        ("fileList_pythia8_ci_m3700_14000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
+             #("QCDCIminusLL14000",[("fileList_pythia8_ci_m2500_14000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
+	#	        ("fileList_pythia8_ci_m3700_14000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
              ("QCDCIminusLL15000",[("fileList_pythia8_ci_m2500_15000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_15000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
              ("QCDCIminusLL16000",[("fileList_pythia8_ci_m2500_16000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
@@ -118,7 +121,7 @@ if __name__ == '__main__':
              ("QCDCIminusLL20000",[("fileList_pythia8_ci_m2500_20000_-1_0_0_Aug24_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_20000_-1_0_0_Aug24_grid.txt",[(4200,8000)])]),
 
-             #("QCDADD_4_0_0_2000",[("fileList_pythia8_add_m2500_2000_2000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
+             ],[#("QCDADD_4_0_0_2000",[("fileList_pythia8_add_m2500_2000_2000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
 		#        ("fileList_pythia8_add_m3700_2000_2000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
              #("QCDADD_4_0_0_3000",[("fileList_pythia8_add_m2500_3000_3000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
 		#        ("fileList_pythia8_add_m3700_3000_3000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
@@ -133,7 +136,7 @@ if __name__ == '__main__':
              ("QCDADD_4_0_0_8000",[("fileList_pythia8_add_m2500_8000_8000_4_0_0_Aug19_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_8000_8000_4_0_0_Aug19_grid.txt",[(4200,8000)])]),
 
-             ("QCDADD_4_0_1_4000",[("fileList_pythia8_add_m2500_4000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
+             ],[("QCDADD_4_0_1_4000",[("fileList_pythia8_add_m2500_4000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_4000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
              ("QCDADD_4_0_1_5000",[("fileList_pythia8_add_m2500_5000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_5000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
@@ -148,7 +151,7 @@ if __name__ == '__main__':
              ("QCDADD_4_0_1_10000",[("fileList_pythia8_add_m2500_10000_0_0_0_1_Aug19_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_add_m3700_10000_0_0_0_1_Aug19_grid.txt",[(4200,8000)])]),
 
-             ("QCDLOCI5000",[]),
+             ],[("QCDLOCI5000",[]),
              ("QCDLOCI6000",[]),
              ("QCDLOCI7000",[]),
              ("QCDLOCI8000",[]),
@@ -160,7 +163,7 @@ if __name__ == '__main__':
              ("QCDLOCI14000",[]),
              ("QCDLOCI15000",[]),
              
-	     ("QCDNLOCI5000",[]),
+	     ],[("QCDNLOCI5000",[]),
              ("QCDNLOCI6000",[]),
              ("QCDNLOCI7000",[]),
              ("QCDNLOCI8000",[]),
@@ -172,7 +175,7 @@ if __name__ == '__main__':
              ("QCDNLOCI14000",[]),
              ("QCDNLOCI15000",[]),
              
-	     ("QCDDLOCI5000",[]),
+	     ],[("QCDDLOCI5000",[]),
              ("QCDDLOCI6000",[]),
              ("QCDDLOCI7000",[]),
              ("QCDDLOCI8000",[]),
@@ -184,7 +187,7 @@ if __name__ == '__main__':
              ("QCDDLOCI14000",[]),
 	     ("QCDDLOCI15000",[]),
 
-             ("QCDDNLOCI5000",[]),
+             ],[("QCDDNLOCI5000",[]),
              ("QCDDNLOCI6000",[]),
              ("QCDDNLOCI7000",[]),
              ("QCDDNLOCI8000",[]),
@@ -196,22 +199,30 @@ if __name__ == '__main__':
              ("QCDDNLOCI14000",[]),
              ("QCDDNLOCI15000",[]),
 
-             ("QCDADLOCI11000",[]),
+             ]
              ]
  
     dataevents={}
     data={}
-    for prefix in prefixs: 
-     ## data cards
-     #sample=prefix + '_data_obs_chi.root'
-     #print sample
-     #out=TFile(sample,'RECREATE')
+    # signal cards
+    for i in range(len(samples)):
+     canvas = TCanvas("","",0,0,400,200)
+     canvas.Divide(2,1)
+     plots=[]
+     legends={}
 
-     # signal cards
-     for i in range(len(samples)):
-      sample=prefix + "_"+samples[i][0].replace("QCD","") + '_chi.root'
+     for j in range(len(massbins)):
+        canvas.cd(j+1)
+        legend1=TLegend(0.4,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
+        legends[j]=legend1
+
+     files=[]
+
+     for l in range(len(samples[i])):
+      sample=prefix + "_"+samples[i][l][0].replace("QCD","") + '_chi.root'
       print sample
-      out=TFile(sample,'UPDATE')
+      out=TFile(sample,'READ')
+      files+=[out]
 
       # data file
       insample='chi_EPS2.root'
@@ -233,11 +244,6 @@ if __name__ == '__main__':
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
 
-      canvas = TCanvas("","",0,0,400,200)
-      canvas.Divide(2,1)
-      plots=[]
-      legends=[]
-
       for j in range(len(massbins)):
         # data
         histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
@@ -249,7 +255,6 @@ if __name__ == '__main__':
 	histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
 	for k in range(0,200):
             out.Delete(histname+";"+str(k))
-	data.Write(histname)
 
         # NLO
         nloqcd=None
@@ -284,17 +289,17 @@ if __name__ == '__main__':
 	print "k-factor", nloqcdbackup.Integral()/qcd.Integral()
 
         # CI (=LO CI+NLO QCD)
-	histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
+	histname=samples[i][l][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
         print histname
-	if "LOCI" in samples[i][0]:
-	  lambdamass=samples[i][0].split("I")[-1]
-	  if "QCDDNLO" in samples[i][0]:
+	if "LOCI" in samples[i][l][0]:
+	  lambdamass=samples[i][l][0].split("I")[-1]
+	  if "QCDDNLO" in samples[i][l][0]:
             filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-1_xmu-1.root"
-          elif "QCDNLO" in samples[i][0]:
+          elif "QCDNLO" in samples[i][l][0]:
 	    filenamecinlo="fastnlo/cidijet_DijetChi_CILHC_2012_Lambda-"+lambdamass+"_Order-1_xmu-1.root"
-	  elif "QCDADLO" in samples[i][0]:
+	  elif "QCDADLO" in samples[i][l][0]:
             filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
-	  elif "QCDDLO" in samples[i][0]:
+	  elif "QCDDLO" in samples[i][l][0]:
             filenamecinlo="fastnlo/cidijet_DijetChi_DILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
           else:
 	    filenamecinlo="fastnlo/cidijet_DijetChi_CILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
@@ -306,7 +311,7 @@ if __name__ == '__main__':
           ci = TH1F(cinlofile.Get(histname2))
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName()+"_rebin1",chi_binnings[j]).Clone(histname)
 	  ci.Scale(1./nloqcdbackup.Integral())
-	  if "QCDADLO" in samples[i][0]:
+	  if "QCDADLO" in samples[i][l][0]:
 	    ci.Scale(-1)
           ci.Add(nloqcd)
 	else:
@@ -316,7 +321,7 @@ if __name__ == '__main__':
 	  # properly normalize LO QCD+CI and LO QCD before substracting LO QCD
 	  xsec_ci=0
 	  for xsec in crosssections:
-	    if xsec[0]==samples[i][0] and massbins[j] in xsec[1]:
+	    if xsec[0]==samples[i][l][0] and massbins[j] in xsec[1]:
 	        xsec_ci=float(xsec[2])
 	  ci.Scale(xsec_ci)
           ci.Add(qcd,-1)
@@ -329,12 +334,11 @@ if __name__ == '__main__':
         out.cd()
 	for k in range(0,200):
             out.Delete(histname+";"+str(k))
-        ci.Write()
 
         # ALT (=NLO QCD)
-        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+        histname=samples[i][l][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
-	if "LOCI" in samples[i][0]:
+	if "LOCI" in samples[i][l][0]:
     	    alt=nloqcd.Clone(histname)
 	else:
             alt=out.Get(histname)
@@ -346,11 +350,10 @@ if __name__ == '__main__':
         out.cd()
 	for k in range(0,200):
             out.Delete(histname+";"+str(k))
-        alt.Write(histname)
 	
         # jes uncertainty
-        histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	if "LOCI" in samples[i][0]:
+        histname=samples[i][l][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	if "LOCI" in samples[i][l][0]:
     	    clone=ci.Clone(histname)
 	else:
             clone=out.Get(histname)
@@ -365,10 +368,8 @@ if __name__ == '__main__':
 	for k in range(0,200):
             out.Delete(histname+"_jesUp"+";"+str(k))
             out.Delete(histname+"_jesDown"+";"+str(k))
-        jesup.Write()
-        jesdown.Write()
-        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	if "LOCI" in samples[i][0]:
+        histname=samples[i][l][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	if "LOCI" in samples[i][l][0]:
     	    clone=alt.Clone(histname)
 	else:
             clone=out.Get(histname)
@@ -383,8 +384,6 @@ if __name__ == '__main__':
 	for k in range(0,200):
             out.Delete(histname+"_jesUp"+";"+str(k))
             out.Delete(histname+"_jesDown"+";"+str(k))
-        jesup.Write()
-        jesdown.Write()
 
         # NLO PDFup/down
         nloPDFupqcd=None
@@ -432,8 +431,6 @@ if __name__ == '__main__':
 	for k in range(0,200):
             out.Delete(alt.GetName()+"_pdfUp"+";"+str(k))
             out.Delete(alt.GetName()+"_pdfDown"+";"+str(k))
-        pdfup.Write()
-        pdfdown.Write()
 
         # NLO Scaleup/down
         nloScaleupqcd=None
@@ -482,8 +479,6 @@ if __name__ == '__main__':
 	for k in range(0,200):
             out.Delete(alt.GetName()+"_scaleUp"+";"+str(k))
             out.Delete(alt.GetName()+"_scaleDown"+";"+str(k))
-        scaleup.Write()
-        scaledown.Write()
 
 	# DATA BLINDED
 	#data=alt.Clone("data_blinded")
@@ -492,78 +487,55 @@ if __name__ == '__main__':
         #out.cd()
 	#for k in range(0,200):
         #    out.Delete('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
-	#data.Write('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
 	# FAKE SIGNAL
 	#ci=alt.Clone("fake_signal")
         #out.cd()
 	#for k in range(0,200):
-        #    out.Delete(samples[i][0]+'chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
-	#ci.Write(samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
+        #    out.Delete(samples[i][l][0]+'chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
       
         # PLOTS
         canvas.cd(j+1)
-        legend1=TLegend(0.2,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
-        legends+=[legend1]
-        legend1.AddEntry(data,"data","lpe")
-	plots+=[alt]
-	alt.SetLineColor(2)
-	alt.SetTitle("")
-        alt.Draw("he")
-	alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*2)
-        legend1.AddEntry(alt,"QCD","l")
-	plots+=[jesup]
-	jesup.SetLineColor(3)
-	jesup.SetLineStyle(2)
-        jesup.Draw("hesame")
-        legend1.AddEntry(jesup,"JES up","l")
-	plots+=[jesdown]
-	jesdown.SetLineColor(4)
-	jesdown.SetLineStyle(2)
-        jesdown.Draw("hesame")
-        legend1.AddEntry(jesdown,"JES down","l")
-	plots+=[pdfup]
-	pdfup.SetLineColor(5)
-	pdfup.SetLineStyle(2)
-        pdfup.Draw("hesame")
-        legend1.AddEntry(pdfup,"PDF up","l")
-	plots+=[pdfdown]
-	pdfdown.SetLineColor(6)
-	pdfdown.SetLineStyle(2)
-        pdfdown.Draw("hesame")
-        legend1.AddEntry(pdfdown,"PDF down","l")
-	plots+=[scaleup]
-	scaleup.SetLineColor(7)
-	scaleup.SetLineStyle(2)
-        scaleup.Draw("hesame")
-        legend1.AddEntry(scaleup,"scale up","l")
-	plots+=[scaledown]
-	scaledown.SetLineColor(8)
-	scaledown.SetLineStyle(2)
-        scaledown.Draw("hesame")
-        legend1.AddEntry(scaledown,"scale down","l")
-	plots+=[ci]
-        ci.Draw("hesame")
-        legend1.AddEntry(ci,"CI","l")
-	data=TGraphAsymmErrors(data)
-	plots+=[data]
-	alpha=1.-0.6827
-	for b in range(data.GetN()):
-	    N=data.GetY()[b]
-	    L=0
-	    if N>0:
-	      L=ROOT.Math.gamma_quantile(alpha/2.,N,1.)
-            U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
-            data.SetPointEYlow(b,N-L)
-            data.SetPointEYhigh(b,U-N)
-	data.SetLineColor(1)
-	data.SetMarkerStyle(24)
-        data.SetMarkerSize(0.5)
-        data.Draw("pe0zsame")
-	
-        legend1.SetTextSize(0.04)
-        legend1.SetFillStyle(0)
-        legend1.Draw("same")
+	if l==0:
+  	 plots+=[alt]
+	 alt.SetLineColor(1)
+	 alt.SetTitle("")
+         alt.Draw("he")
+	 alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*2)
+         alt.GetXaxis().SetTitle("\chi")
+         alt.GetYaxis().SetTitle("N")
+         alt.GetYaxis().SetTitleOffset(1.1)
+         alt.GetXaxis().SetLabelSize(0.05)
+         alt.GetYaxis().SetLabelSize(0.05)
+         alt.GetXaxis().SetTitleSize(0.06)
+         alt.GetYaxis().SetTitleSize(0.06)
+         legends[j].AddEntry(alt,"QCD","l")
+	else:
+	 plots+=[ci]
+	 ci.SetLineColor(colors[l])
+	 ci.SetLineStyle(styles[l])
+         ci.Draw("hesame")
+	 if "QCDCIminusLL" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"#Lambda_{LL}^{-} (LO) = "+samples[i][l][0].replace("QCDCIminusLL","")+" GeV","l")
+	 elif "QCDCI" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"#Lambda_{LL}^{+} (LO) = "+samples[i][l][0].replace("QCDCI","")+" GeV","l")
+	 elif "QCDADD_4_0_0_" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"M_{D} (Fra) = "+samples[i][l][0].replace("QCDADD_4_0_0_","")+" GeV","l")
+	 elif "QCDADD_4_0_1_" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"#Lambda_{T} (GRW) = "+samples[i][l][0].replace("QCDADD_4_0_1_","")+" GeV","l")
+	 elif "QCDLOCI" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"#Lambda_{LL}^{-} (LO) = "+samples[i][l][0].replace("QCDLOCI","")+" GeV","l")
+	 elif "QCDDLOCI" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"#Lambda_{LL}^{+} (LO) = "+samples[i][l][0].replace("QCDDLOCI","")+" GeV","l")
+	 elif "QCDNLOCI" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"#Lambda_{LL}^{-} (NLO) = "+samples[i][l][0].replace("QCDNLOCI","")+" GeV","l")
+	 elif "QCDDNLOCI" in samples[i][l][0]:
+             legends[j].AddEntry(ci,"#Lambda_{LL}^{+} (NLO) = "+samples[i][l][0].replace("QCDDNLOCI","")+" GeV","l")
 
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.pdf')
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.eps')
+        if l==len(samples[i])-1:
+         legends[j].SetTextSize(0.04)
+         legends[j].SetFillStyle(0)
+         legends[j].Draw("same")
+
+     canvas.SaveAs("chi_signal_"+samples[i][l][0].replace("QCD","") + '_sys.pdf')
+     canvas.SaveAs("chi_signal_"+samples[i][l][0].replace("QCD","") + '_sys.eps')

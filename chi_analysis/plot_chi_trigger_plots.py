@@ -16,18 +16,17 @@ gStyle.SetHistLineWidth(1)
 gStyle.SetStatFontSize(0.020)
 gStyle.SetTitleSize(0.06, "XYZ")
 gStyle.SetLabelSize(0.05, "XYZ")
-gStyle.SetNdivisions(510, "XYZ")
+gStyle.SetNdivisions(506, "XYZ")
 gStyle.SetLegendBorderSize(0)
 
 if __name__ == '__main__':
 
-   colors=[1,2,3,4,6,7,8,9,10,11,12,13]
-   styles=[1,2,3,4,5,6,7,8,9,11,12,13]
+  colors=[1,2,3,4,6,7,8,9,10,11,12,13]
+  styles=[1,2,3,4,5,6,7,8,9,11,12,13]
 
-   #data="5fb_5TeV"
-   #data="8fb_5TeV"
-   data="Moriond"
-   f=TFile.Open("chi_Moriond.root")
+  samples=["ReRun2012A","ReRun2012B","ReRun2012C","ReRun2012D"]
+  for sample in samples:
+   f=TFile.Open("chi_"+sample+".root")
 
    canvas = TCanvas("","",0,0,200,200)
    legend=TLegend(0.5,0.7,0.95,0.90,"")
@@ -55,5 +54,5 @@ if __name__ == '__main__':
    legend.SetFillStyle(0)
    legend.Draw("same")
 
-   canvas.SaveAs("chi_trigger_plots_"+data+".root")
-   canvas.SaveAs("chi_trigger_plots_"+data+".pdf")
+   canvas.SaveAs("chi_trigger_plots_"+sample+".root")
+   canvas.SaveAs("chi_trigger_plots_"+sample+".pdf")
