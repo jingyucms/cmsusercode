@@ -33,6 +33,9 @@ def rebin(h1,nbins,binning):
 
 if __name__ == '__main__':
 
+    useLensData=False
+    useUnfoldedData=True
+
     prefixs=["datacard_shapelimit"]
  
     chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -218,6 +221,11 @@ if __name__ == '__main__':
       print insample
       infile=TFile(insample,'READ')
 
+      # unfolded data file
+      unfoldsample='datacards/Unfolded_data_Run2012All_20131001_fromCBalltruncSmeared.root'
+      print unfoldsample
+      unfoldfile=TFile(unfoldsample,'READ')
+
       # NLO correction
       filename1nu="fastnlo/fnl3622g_ct10-nlo_aspdf.root"
       print filename1nu
@@ -240,9 +248,24 @@ if __name__ == '__main__':
 
       for j in range(len(massbins)):
         # data
-        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
-        print histname
-        data = TH1F(infile.Get(histname))
+	if useLensData:
+  	  if "8000" in str(massbins[j]):
+            histname="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+          else:
+	    histname="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+          print histname
+          data = TH1D(unfoldfile.Get(histname))
+	elif useUnfoldedData:
+  	  if "8000" in str(massbins[j]):
+            histname="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+          else:
+	    histname="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+          print histname
+          data = TH1F(unfoldfile.Get(histname))
+	else:
+          histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
+          print histname
+          data = TH1F(infile.Get(histname))
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
 	out.cd()
