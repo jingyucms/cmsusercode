@@ -58,7 +58,7 @@ for model in models:
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 2 number of backgrounds
-kmax 3 number of nuisance parameters
+kmax 4 number of nuisance parameters
 -----------
 """)
     for i in range(len(massbins)):
@@ -98,6 +98,9 @@ kmax 3 number of nuisance parameters
 -----------
 """)
     text=""
+    text+="jer shape "
+    for i in range(len(massbins)):
+       text+="1 1 - "
     text+="jes shape "
     for i in range(len(massbins)):
        text+="1 1 - "
