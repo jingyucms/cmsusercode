@@ -373,6 +373,46 @@ if __name__ == '__main__':
             out.Delete(histname+";"+str(k))
         alt.Write(histname)
 	
+        # JER uncertainty
+        histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	if "LOCI" in samples[i][0]:
+    	    clone=ci.Clone(histname)
+	else:
+            clone=out.Get(histname)
+	jerup=clone.Clone(histname+"_jerUp")
+        jerdown=clone.Clone(histname+"_jerDown")
+	slopes={}
+	slopes[1900]=0.05
+	slopes[2400]=0.05
+	slopes[3000]=0.05
+	slopes[3600]=0.05
+	slopes[4200]=0.05
+	for b in range(clone.GetNbinsX()):
+	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+            jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+	out.cd()
+	for k in range(0,200):
+            out.Delete(histname+"_jerUp"+";"+str(k))
+            out.Delete(histname+"_jerDown"+";"+str(k))
+        jerup.Write()
+        jerdown.Write()
+        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	if "LOCI" in samples[i][0]:
+    	    clone=alt.Clone(histname)
+	else:
+            clone=out.Get(histname)
+        jerup=clone.Clone(histname+"_jerUp")
+        jerdown=clone.Clone(histname+"_jerDown")
+	for b in range(clone.GetNbinsX()):
+	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+            jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+	out.cd()
+	for k in range(0,200):
+            out.Delete(histname+"_jerUp"+";"+str(k))
+            out.Delete(histname+"_jerDown"+";"+str(k))
+        jerup.Write()
+        jerdown.Write()
+
         # jes uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
 	if "LOCI" in samples[i][0]:
@@ -537,24 +577,34 @@ if __name__ == '__main__':
         alt.Draw("he")
 	alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*2)
         legend1.AddEntry(alt,"QCD","l")
+	plots+=[jerup]
+	jerup.SetLineColor(3)
+	jerup.SetLineStyle(2)
+        jerup.Draw("hesame")
+        legend1.AddEntry(jerup,"JER up","l")
+	plots+=[jerdown]
+	jerdown.SetLineColor(3)
+	jerdown.SetLineStyle(3)
+        jerdown.Draw("hesame")
+        legend1.AddEntry(jerdown,"JER down","l")
 	plots+=[jesup]
-	jesup.SetLineColor(3)
+	jesup.SetLineColor(4)
 	jesup.SetLineStyle(2)
         jesup.Draw("hesame")
         legend1.AddEntry(jesup,"JES up","l")
 	plots+=[jesdown]
 	jesdown.SetLineColor(4)
-	jesdown.SetLineStyle(2)
+	jesdown.SetLineStyle(3)
         jesdown.Draw("hesame")
         legend1.AddEntry(jesdown,"JES down","l")
 	plots+=[pdfup]
-	pdfup.SetLineColor(5)
+	pdfup.SetLineColor(6)
 	pdfup.SetLineStyle(2)
         pdfup.Draw("hesame")
         legend1.AddEntry(pdfup,"PDF up","l")
 	plots+=[pdfdown]
 	pdfdown.SetLineColor(6)
-	pdfdown.SetLineStyle(2)
+	pdfdown.SetLineStyle(3)
         pdfdown.Draw("hesame")
         legend1.AddEntry(pdfdown,"PDF down","l")
 	plots+=[scaleup]
@@ -563,8 +613,8 @@ if __name__ == '__main__':
         scaleup.Draw("hesame")
         legend1.AddEntry(scaleup,"scale up","l")
 	plots+=[scaledown]
-	scaledown.SetLineColor(8)
-	scaledown.SetLineStyle(2)
+	scaledown.SetLineColor(7)
+	scaledown.SetLineStyle(3)
         scaledown.Draw("hesame")
         legend1.AddEntry(scaledown,"scale down","l")
 	plots+=[ci]

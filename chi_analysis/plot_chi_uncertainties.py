@@ -220,7 +220,7 @@ if __name__ == '__main__':
             out.Delete(histname+";"+str(k))
         alt.Write(histname)
 	
-        # Unfold uncertainty
+        # JER uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
 	if "LOCI" in samples[i][0]:
     	    clone=ci.Clone(histname)
@@ -228,20 +228,37 @@ if __name__ == '__main__':
             clone=out.Get(histname)
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
+	slopes={}
 	slopes[1900]=0.05
 	slopes[2400]=0.05
 	slopes[3000]=0.05
 	slopes[3600]=0.05
 	slopes[4200]=0.05
 	for b in range(clone.GetNbinsX()):
-	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slope[massbins[j][0]]))
-            jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slope[massbins[j][0]]))
+	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+            jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
 	out.cd()
 	for k in range(0,200):
             out.Delete(histname+"_jerUp"+";"+str(k))
             out.Delete(histname+"_jerDown"+";"+str(k))
         jerup.Write()
         jerdown.Write()
+        #histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	#if "LOCI" in samples[i][0]:
+    	#    clone=alt.Clone(histname)
+	#else:
+        #    clone=out.Get(histname)
+        #jerup=clone.Clone(histname+"_jerUp")
+        #jerdown=clone.Clone(histname+"_jerDown")
+	#for b in range(clone.GetNbinsX()):
+	#    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+        #    jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+	#out.cd()
+	#for k in range(0,200):
+        #    out.Delete(histname+"_jerUp"+";"+str(k))
+        #    out.Delete(histname+"_jerDown"+";"+str(k))
+        #jerup.Write()
+        #jerdown.Write()
 
         # jes uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
@@ -438,22 +455,22 @@ if __name__ == '__main__':
         jesdown.Draw("hesame")
         legend1.AddEntry(jesdown,"JES down","l")
 	plots+=[pdfup]
-	pdfup.SetLineColor(5)
+	pdfup.SetLineColor(6)
 	pdfup.SetLineStyle(2)
         pdfup.Draw("hesame")
         legend1.AddEntry(pdfup,"PDF up","l")
 	plots+=[pdfdown]
-	pdfdown.SetLineColor(5)
+	pdfdown.SetLineColor(6)
 	pdfdown.SetLineStyle(3)
         pdfdown.Draw("hesame")
         legend1.AddEntry(pdfdown,"PDF down","l")
 	plots+=[scaleup]
-	scaleup.SetLineColor(6)
+	scaleup.SetLineColor(7)
 	scaleup.SetLineStyle(2)
         scaleup.Draw("hesame")
         legend1.AddEntry(scaleup,"scale up","l")
 	plots+=[scaledown]
-	scaledown.SetLineColor(6)
+	scaledown.SetLineColor(7)
 	scaledown.SetLineStyle(3)
         scaledown.Draw("hesame")
         legend1.AddEntry(scaledown,"scale down","l")
