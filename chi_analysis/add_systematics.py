@@ -248,23 +248,25 @@ if __name__ == '__main__':
 
       for j in range(len(massbins)):
         # data
+        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
+        print histname
 	if useLensData:
   	  if "8000" in str(massbins[j]):
-            histname="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
           else:
-	    histname="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
-          print histname
-          data = TH1D(unfoldfile.Get(histname))
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+          print histname2
+          data = TH1D(unfoldfile.Get(histname2))
+	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "8000" in str(massbins[j]):
-            histname="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
           else:
-	    histname="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
-          print histname
-          data = TH1F(unfoldfile.Get(histname))
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+          print histname2
+          data = TH1F(unfoldfile.Get(histname2))
+	  data.SetName(histname)
 	else:
-          histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
-          print histname
           data = TH1F(infile.Get(histname))
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
