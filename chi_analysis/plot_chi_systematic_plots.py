@@ -158,6 +158,10 @@ if __name__ == '__main__':
 	        hist2b.SetBinContent(chi_bin+1,1.0-sum_in_quadrature_up[mass][chi_bin])
               hist2b.SetLineColor(colors[i+1])
     	      hists+=[hist2b]
+	      fit=TF1(hist2b.GetName()+"smooth","pol3",1,16)
+	      hist2b.Fit(fit,"NQ")
+              for chi_bin in range(len(chi_binnings[mass])):
+	        hist2b.SetBinContent(chi_bin+1,fit.Eval(hist2b.GetBinCenter(chi_bin+1)))
               hist2b.Draw("histsame")
               legend.AddEntry(hist2b,"JEC Total sum in quadrature","l")
 
@@ -194,6 +198,10 @@ if __name__ == '__main__':
 	        hist3b.SetBinContent(chi_bin+1,1.0+sum_in_quadrature_down[mass][chi_bin])
               hist3b.SetLineColor(colors[i+1])
     	      hists+=[hist3b]
+	      fit=TF1(hist3b.GetName()+"smooth","pol3",1,16)
+	      hist3b.Fit(fit,"NQ")
+              for chi_bin in range(len(chi_binnings[mass])):
+	        hist3b.SetBinContent(chi_bin+1,fit.Eval(hist3b.GetBinCenter(chi_bin+1)))
               hist3b.Draw("histsame")
 
         legend.SetTextSize(0.04)
