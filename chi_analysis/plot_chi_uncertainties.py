@@ -229,11 +229,11 @@ if __name__ == '__main__':
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
-	slopes[1900]=0.05
-	slopes[2400]=0.05
-	slopes[3000]=0.05
-	slopes[3600]=0.05
-	slopes[4200]=0.05
+	slopes[1900]=0.01
+	slopes[2400]=0.01
+	slopes[3000]=0.015
+	slopes[3600]=0.025
+	slopes[4200]=0.1
 	for b in range(clone.GetNbinsX()):
 	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
             jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
