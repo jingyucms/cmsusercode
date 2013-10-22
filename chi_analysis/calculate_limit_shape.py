@@ -1,6 +1,7 @@
 import os
 from ROOT import *
 import array
+import ROOT
 
 massbins=[(4200,8000),
 	      (3600,4200),
@@ -9,8 +10,8 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
-models=[-1,0,1,2,3,4,5,6,7,8]
-#models=[6]
+models=[2,3,4,5,6]
+models=[7,8,9,10,11,17,18,19,20,21,22,23,12,13,]
 
 for model in models:
 
@@ -25,31 +26,84 @@ for model in models:
     signalMasses=[4000,5000,6000,7000,8000]
  if model==2:
     signal="ADD_4_0_1_"
-    signalMasses=[4000,5000,6000,7000,8000,9000,10000]
+    signalMasses=[4000,5000,6000,7000,8000,9000]
  if model==3:
     signal="LOCI"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000]
  if model==4:
     signal="NLOCI"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000]
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000]
  if model==5:
     signal="DLOCI"    
-    signalMasses=[6000,7000,8000,9000,10000,11000,12000,13000]
+    signalMasses=[6000,7000,8000,9000,10000,11000,12000]
  if model==6:
     signal="DNLOCI"    
-    signalMasses=[5000,6000,7000,8000,9000,10000,11000,12000]
+    signalMasses=[5000,6000,7000,8000,9000,10000,11000]
+ 
  if model==7:
     signal="ADLOCI"    
     signalMasses=[11000]
-    massbins=[(3600,4200),]
     massbins=[(4200,8000),]
  if model==8:
-    signal="DLOCI"    
+    signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(3600,4200),]
+ if model==9:
+    signal="ADLOCI"    
+    signalMasses=[11000]
+    massbins=[(3000,3600),]
+ if model==10:
+    signal="ADLOCI"    
+    signalMasses=[11000]
+    massbins=[(2400,3000),]
+ if model==11:
+    signal="ADLOCI"    
+    signalMasses=[11000]
+    massbins=[(1900,2400),]
+ if model==12:
+    signal="ADLOCI"    
+    signalMasses=[11000]
+    massbins=[(3600,4200),(4200,8000),]
+ if model==13:
+    signal="ADLOCI"    
+    signalMasses=[11000]
+    massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
+
+ if model==17:
+    signal="DLOCI"    
+    signalMasses=[10000]
     massbins=[(4200,8000),]
+ if model==18:
+    signal="DLOCI"    
+    signalMasses=[10000]
+    massbins=[(3600,4200),]
+ if model==19:
+    signal="DLOCI"    
+    signalMasses=[10000]
+    massbins=[(3000,3600),]
+ if model==20:
+    signal="DLOCI"    
+    signalMasses=[10000]
+    massbins=[(2400,3000),]
+ if model==21:
+    signal="DLOCI"    
+    signalMasses=[10000]
+    massbins=[(1900,2400),]
+ if model==22:
+    signal="DLOCI"    
+    signalMasses=[10000]
+    massbins=[(3600,4200),(4200,8000),]
+ if model==23:
+    signal="DLOCI"    
+    signalMasses=[10000]
+    massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
 
  prefix="datacard_shapelimit"
+
+ if model<=6:
+    name="limits_"+signal
+ else:
+    name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
 
  limits={}
  for signalMass in signalMasses:
@@ -58,7 +112,7 @@ for model in models:
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 2 number of backgrounds
-kmax 4 number of nuisance parameters
+kmax 3 number of nuisance parameters
 -----------
 """)
     for i in range(len(massbins)):
@@ -101,12 +155,12 @@ kmax 4 number of nuisance parameters
     text+="jer shape "
     for i in range(len(massbins)):
        text+="1 1 - "
-    text+="jes shape "
+    text+="\njes shape "
     for i in range(len(massbins)):
        text+="1 1 - "
-    text+="\npdf shape "
-    for i in range(len(massbins)):
-       text+="- 1 - "
+    #text+="\npdf shape "
+    #for i in range(len(massbins)):
+    #   text+="- 1 - "
     text+="\nscale shape "
     for i in range(len(massbins)):
        text+="- 1 - "
@@ -117,19 +171,21 @@ kmax 4 number of nuisance parameters
     cfg.close()
     os.system("cp HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
     os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard_"+signal+"_"+str(signalMass)+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signal+"_"+str(signalMass)+".root")
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+" fixedMu_"+signal+"_"+str(signalMass)+".root > limits"+signal+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
+    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+" fixedMu_"+signal+"_"+str(signalMass)+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
     os.system('root -q -b higgsCombine'+signal+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    os.system('root -q -b "./extractSignificanceStats.C(\\"'+signal+str(signalMass)+'\\")" > limits'+signal+'_exp_'+str(signalMass)+'.txt')
+    os.system('root -q -b "./extractSignificanceStats.C(\\"'+signal+str(signalMass)+'\\")" > '+name+'_exp_'+str(signalMass)+'.txt')
 
+ for signalMass in signalMasses:
     limits[signalMass]=[]
-    f=file("limits"+signal+"_"+str(signalMass)+".txt")
+    f=file(name+"_"+str(signalMass)+".txt")
     for line in f.readlines():
         if "CLs = " in line:
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
-	   break
+        if "CLb      = " in line:
+           print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
     if len(limits[signalMass])==0:
          limits[signalMass]+=[signalMass]
-    f=file("limits"+signal+"_exp_"+str(signalMass)+".txt")
+    f=file(name+"_exp_"+str(signalMass)+".txt")
     for line in f.readlines():
         if "Expected CLs" in line:
            limits[signalMass]+=[float(line.strip().split(" ")[-1])]
@@ -137,6 +193,8 @@ kmax 4 number of nuisance parameters
          limits[signalMass]+=[0]
 
  print limits
- f=file("limits"+signal+".txt","w")
+ if model<=6:
+    name=name+".txt"
+ f=file(name,"w")
  f.write(str([limits[signalMass] for signalMass in signalMasses]))
  f.close()

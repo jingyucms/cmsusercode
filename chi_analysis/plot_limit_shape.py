@@ -21,7 +21,7 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- models=[-1,0,1,2,3,4,5,6]
+ models=[2,3,4,5,6]
 
  for model in models:
 
