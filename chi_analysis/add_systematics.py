@@ -38,45 +38,39 @@ if __name__ == '__main__':
 
     prefixs=["datacard_shapelimit"]
  
-    chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
-               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
-               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,3,5,7,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,3,6,9,12,16),
               ]
-          
-    #chi_bins=[(1,2,3,4,5,6,7),
-    #           (1,2,3,4,5,6,7),
-    #           (1,2,3,4,5,6,7),
-    #           (1,3,5,7),
-    #          ]
     chi_binnings=[]
     for mass_bin in chi_bins:
         chi_binnings+=[array.array('d')]
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
-    #massbins=[(1900,2400),
-    #          (2400,3000),
-	#      (3000,4000),
-	#      (4000,8000)]
-    massbins=[#(1900,2400),
-              #(2400,3000),
-	      #(3000,3600),
+    massbins=[(1900,2400),
+              (2400,3000),
+	      (3000,3600),
 	      (3600,4200),
 	      (4200,8000)]
     mass_bins_nlo={}
-    #mass_bins_nlo[4]=3000
+    mass_bins_nlo[2]=1900
+    mass_bins_nlo[3]=2400
+    mass_bins_nlo[4]=3000
     mass_bins_nlo[5]=3600
     mass_bins_nlo[6]=4000
     mass_bins_nlo[7]=4200
     mass_bins_nlo[8]=8000
-    mass_bins_nlo2=[#(4,),
+    mass_bins_nlo2=[(2,),
+    	      (3,),
+    	      (4,),
     	      (5,6,),
     	      (7,),
     	     ]
     mass_bins_nlo_max=7
 
-
+    
     samples=[("QCDCI4000",[("fileList_pythia8_ci_m2500_4000_1_0_0_May27_grid.txt",[(3600,4200)]),
 		        ("fileList_pythia8_ci_m3700_4000_1_0_0_May27_grid.txt",[(4200,8000)])]),
              ("QCDCI6000",[("fileList_pythia8_ci_m2500_6000_1_0_0_May27_grid.txt",[(3600,4200)]),
@@ -198,18 +192,13 @@ if __name__ == '__main__':
              ("QCDDNLOCI13000",[]),
              ("QCDDNLOCI14000",[]),
              ("QCDDNLOCI15000",[]),
-
+    
              ("QCDADLOCI11000",[]),
              ]
  
     dataevents={}
     data={}
     for prefix in prefixs: 
-     ## data cards
-     #sample=prefix + '_data_obs_chi.root'
-     #print sample
-     #out=TFile(sample,'RECREATE')
-
      # signal cards
      for i in range(len(samples)):
       sample=prefix + "_"+samples[i][0].replace("QCD","") + '_chi.root'
@@ -222,9 +211,12 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_data_Run2012All_20131001_fromCBalltruncSmeared.root'
+      unfoldsample='datacards/Unfolded_data_Run2012All_20131015_fromCBalltruncSmeared_Pythia_MASS_GEN.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
+      unfoldsample2='datacards/Unfolded_data_Run2012All_20131001_fromCBalltruncSmeared.root'
+      print unfoldsample2
+      unfoldfile2=TFile(unfoldsample2,'READ')
 
       # NLO correction
       filename1nu="fastnlo/fnl3622g_ct10-nlo_aspdf.root"
@@ -247,6 +239,8 @@ if __name__ == '__main__':
       legends=[]
 
       for j in range(len(massbins)):
+        if not "LO" in sample and j<3:
+	   continue
         # data
         histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
         print histname
@@ -256,7 +250,10 @@ if __name__ == '__main__':
           else:
 	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
           print histname2
-          data = TH1D(unfoldfile.Get(histname2))
+  	  if "1900" in str(massbins[j]):
+             data = TH1D(unfoldfile2.Get(histname2))
+	  else:   
+             data = TH1D(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "8000" in str(massbins[j]):
@@ -264,7 +261,10 @@ if __name__ == '__main__':
           else:
 	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
           print histname2
-          data = TH1F(unfoldfile.Get(histname2))
+  	  if "1900" in str(massbins[j]):
+             data = TH1F(unfoldfile2.Get(histname2))
+	  else:   
+             data = TH1F(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	else:
           data = TH1F(infile.Get(histname))
@@ -274,7 +274,7 @@ if __name__ == '__main__':
 	histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
 	for k in range(0,200):
             out.Delete(histname+";"+str(k))
-	data.Write(histname)
+        data.Write(histname)
 
         # NLO
         nloqcd=None
@@ -299,6 +299,7 @@ if __name__ == '__main__':
         histname='QCD#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
         qcd=out.Get(histname)
+        qcd=qcd.Rebin(len(chi_binnings[j])-1,qcd.GetName(),chi_binnings[j])
         f=file("xsecs.txt")
         crosssections=eval(f.readline())
         xsec_qcd=1
@@ -309,6 +310,10 @@ if __name__ == '__main__':
 	print "k-factor", nloqcdbackup.Integral()/qcd.Integral()
 
         # CI (=LO CI+NLO QCD)
+	if j>=3:
+           massbinsci=massbins[j]
+	else:
+           massbinsci=massbins[3]
 	histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
         print histname
 	if "LOCI" in samples[i][0]:
@@ -325,68 +330,73 @@ if __name__ == '__main__':
 	    filenamecinlo="fastnlo/cidijet_DijetChi_CILHC_2012_Lambda-"+lambdamass+"_Order-0_xmu-1.root"
           print filenamecinlo
           cinlofile = TFile.Open(filenamecinlo)
-          histname2="chi-"+str(massbins[j][0])+"-"+str(massbins[j][1])
+          histname2="chi-"+str(massbinsci[0])+"-"+str(massbinsci[1])
           print histname2
   	  histname=histname.replace("_backup","")
           ci = TH1F(cinlofile.Get(histname2))
-          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName()+"_rebin1",chi_binnings[j]).Clone(histname)
-	  ci.Scale(1./nloqcdbackup.Integral())
+          ci=ci.Rebin(len(chi_binnings[j])-1,histname.replace("_backup",""),chi_binnings[j])
 	  if "QCDADLO" in samples[i][0]:
 	    ci.Scale(-1)
+          if j>=3:
+	     ci.Scale(1./nloqcdbackup.Integral())
+	  else:
+	     ci.Scale(nloqcd.Integral()/ci.Integral()/5.) # fake signal size for lower mass bins
           ci.Add(nloqcd)
 	else:
           cibackup=out.Get(histname)
   	  histname=cibackup.GetName().replace("_backup","")
           ci=cibackup.Clone(histname)
+          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
 	  # properly normalize LO QCD+CI and LO QCD before substracting LO QCD
 	  xsec_ci=0
 	  for xsec in crosssections:
-	    if xsec[0]==samples[i][0] and massbins[j] in xsec[1]:
+	    if xsec[0]==samples[i][0] and massbinsci in xsec[1]:
 	        xsec_ci=float(xsec[2])
 	  ci.Scale(xsec_ci)
           ci.Add(qcd,-1)
 	  ci.Scale(1./qcd.Integral())
           ci.Add(nloqcd)
-	if ci.Integral()>0:
+	if ci.Integral()!=0:
           ci.Scale(dataevents[j]/ci.Integral())
         for b in range(ci.GetXaxis().GetNbins()):
             ci.SetBinError(b+1,0)
         out.cd()
 	for k in range(0,200):
             out.Delete(histname+";"+str(k))
-        ci.Write()
+        ci.Write(histname)
 
         # ALT (=NLO QCD)
-        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+        histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
 	if "LOCI" in samples[i][0]:
     	    alt=nloqcd.Clone(histname)
 	else:
             alt=out.Get(histname)
+        alt=alt.Rebin(len(chi_binnings[j])-1,alt.GetName(),chi_binnings[j])
         alt.Add(alt,-1)
         alt.Add(nloqcd)
         alt.Scale(dataevents[j]/alt.Integral())
         for b in range(alt.GetXaxis().GetNbins()):
             alt.SetBinError(b+1,0)
         out.cd()
+        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	alt.SetName(histname)
 	for k in range(0,200):
             out.Delete(histname+";"+str(k))
         alt.Write(histname)
 	
         # JER uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	if "LOCI" in samples[i][0]:
-    	    clone=ci.Clone(histname)
-	else:
-            clone=out.Get(histname)
+        clone=ci.Clone(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
 	slopes[1900]=0.01
 	slopes[2400]=0.01
 	slopes[3000]=0.015
-	slopes[3600]=0.025
-	slopes[4200]=0.1
+	slopes[3600]=0.1
+	slopes[4200]=0.15
 	for b in range(clone.GetNbinsX()):
 	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
             jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
@@ -397,10 +407,8 @@ if __name__ == '__main__':
         jerup.Write()
         jerdown.Write()
         histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	if "LOCI" in samples[i][0]:
-    	    clone=alt.Clone(histname)
-	else:
-            clone=out.Get(histname)
+        clone=alt.Clone(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
         jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	for b in range(clone.GetNbinsX()):
@@ -415,15 +423,13 @@ if __name__ == '__main__':
 
         # jes uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	if "LOCI" in samples[i][0]:
-    	    clone=ci.Clone(histname)
-	else:
-            clone=out.Get(histname)
+        clone=ci.Clone(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
 	jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
-	for b in range(clone.GetNbinsX()):
+        for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
 	out.cd()
@@ -433,10 +439,8 @@ if __name__ == '__main__':
         jesup.Write()
         jesdown.Write()
         histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	if "LOCI" in samples[i][0]:
-    	    clone=alt.Clone(histname)
-	else:
-            clone=out.Get(histname)
+        clone=alt.Clone(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jesfile.Get("jes")
@@ -567,7 +571,9 @@ if __name__ == '__main__':
 	#ci.Write(samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
         # PLOTS
-        canvas.cd(j+1)
+	if j<3:
+	   continue
+        canvas.cd(j-2)
         legend1=TLegend(0.2,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
         legends+=[legend1]
         legend1.AddEntry(data,"data","lpe")
@@ -581,42 +587,38 @@ if __name__ == '__main__':
 	jerup.SetLineColor(3)
 	jerup.SetLineStyle(2)
         jerup.Draw("hesame")
-        legend1.AddEntry(jerup,"JER up","l")
+        legend1.AddEntry(jerup,"JER","l")
 	plots+=[jerdown]
 	jerdown.SetLineColor(3)
 	jerdown.SetLineStyle(3)
         jerdown.Draw("hesame")
-        legend1.AddEntry(jerdown,"JER down","l")
 	plots+=[jesup]
 	jesup.SetLineColor(4)
 	jesup.SetLineStyle(2)
         jesup.Draw("hesame")
-        legend1.AddEntry(jesup,"JES up","l")
+        legend1.AddEntry(jesup,"JES","l")
 	plots+=[jesdown]
 	jesdown.SetLineColor(4)
 	jesdown.SetLineStyle(3)
         jesdown.Draw("hesame")
-        legend1.AddEntry(jesdown,"JES down","l")
 	plots+=[pdfup]
 	pdfup.SetLineColor(6)
 	pdfup.SetLineStyle(2)
         pdfup.Draw("hesame")
-        legend1.AddEntry(pdfup,"PDF up","l")
+        legend1.AddEntry(pdfup,"PDF","l")
 	plots+=[pdfdown]
 	pdfdown.SetLineColor(6)
 	pdfdown.SetLineStyle(3)
         pdfdown.Draw("hesame")
-        legend1.AddEntry(pdfdown,"PDF down","l")
 	plots+=[scaleup]
 	scaleup.SetLineColor(7)
 	scaleup.SetLineStyle(2)
         scaleup.Draw("hesame")
-        legend1.AddEntry(scaleup,"scale up","l")
+        legend1.AddEntry(scaleup,"scale","l")
 	plots+=[scaledown]
 	scaledown.SetLineColor(7)
 	scaledown.SetLineStyle(3)
         scaledown.Draw("hesame")
-        legend1.AddEntry(scaledown,"scale down","l")
 	plots+=[ci]
         ci.Draw("hesame")
         legend1.AddEntry(ci,"CI","l")

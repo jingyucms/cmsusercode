@@ -41,8 +41,9 @@ if __name__ == '__main__':
     chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
                #(1,2,3,4,5,6,7,8,9,10,12,14,16),
                #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,3,5,7,10,12,14,16),
+               (1,3,6,9,12,16),
               ]
           
     #chi_bins=[(1,2,3,4,5,6,7),
@@ -251,10 +252,6 @@ if __name__ == '__main__':
         data = TH1F(infile.Get(histname))
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
-	out.cd()
-	histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	for k in range(0,200):
-            out.Delete(histname+";"+str(k))
 
         # NLO
         nloqcd=None
@@ -279,6 +276,7 @@ if __name__ == '__main__':
         histname='QCD#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
         qcd=out.Get(histname)
+        qcd=qcd.Rebin(len(chi_binnings[j])-1,qcd.GetName(),chi_binnings[j])
         f=file("xsecs.txt")
         crosssections=eval(f.readline())
         xsec_qcd=1
@@ -318,6 +316,7 @@ if __name__ == '__main__':
           cibackup=out.Get(histname)
   	  histname=cibackup.GetName().replace("_backup","")
           ci=cibackup.Clone(histname)
+          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
 	  # properly normalize LO QCD+CI and LO QCD before substracting LO QCD
 	  xsec_ci=0
 	  for xsec in crosssections:
@@ -331,9 +330,6 @@ if __name__ == '__main__':
           ci.Scale(dataevents[j]/ci.Integral())
         for b in range(ci.GetXaxis().GetNbins()):
             ci.SetBinError(b+1,0)
-        out.cd()
-	for k in range(0,200):
-            out.Delete(histname+";"+str(k))
 
         # ALT (=NLO QCD)
         histname=samples[i][l][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
@@ -342,14 +338,12 @@ if __name__ == '__main__':
     	    alt=nloqcd.Clone(histname)
 	else:
             alt=out.Get(histname)
+        alt=alt.Rebin(len(chi_binnings[j])-1,alt.GetName(),chi_binnings[j])
         alt.Add(alt,-1)
         alt.Add(nloqcd)
         alt.Scale(dataevents[j]/alt.Integral())
         for b in range(alt.GetXaxis().GetNbins()):
             alt.SetBinError(b+1,0)
-        out.cd()
-	for k in range(0,200):
-            out.Delete(histname+";"+str(k))
 	
         # jes uncertainty
         histname=samples[i][l][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
@@ -357,6 +351,7 @@ if __name__ == '__main__':
     	    clone=ci.Clone(histname)
 	else:
             clone=out.Get(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
@@ -364,15 +359,12 @@ if __name__ == '__main__':
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
-	out.cd()
-	for k in range(0,200):
-            out.Delete(histname+"_jesUp"+";"+str(k))
-            out.Delete(histname+"_jesDown"+";"+str(k))
         histname=samples[i][l][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
 	if "LOCI" in samples[i][l][0]:
     	    clone=alt.Clone(histname)
 	else:
             clone=out.Get(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jesfile.Get("jes")
@@ -380,10 +372,6 @@ if __name__ == '__main__':
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
-	out.cd()
-	for k in range(0,200):
-            out.Delete(histname+"_jesUp"+";"+str(k))
-            out.Delete(histname+"_jesDown"+";"+str(k))
 
         # NLO PDFup/down
         nloPDFupqcd=None
@@ -427,10 +415,6 @@ if __name__ == '__main__':
 	       tmp=pdfup.GetBinContent(b+1)
 	       pdfup.SetBinContent(b+1,pdfdown.GetBinContent(b+1))
 	       pdfdown.SetBinContent(b+1,tmp)
-	out.cd()
-	for k in range(0,200):
-            out.Delete(alt.GetName()+"_pdfUp"+";"+str(k))
-            out.Delete(alt.GetName()+"_pdfDown"+";"+str(k))
 
         # NLO Scaleup/down
         nloScaleupqcd=None
@@ -475,24 +459,21 @@ if __name__ == '__main__':
 	       tmp=scaleup.GetBinContent(b+1)
 	       scaleup.SetBinContent(b+1,scaledown.GetBinContent(b+1))
 	       scaledown.SetBinContent(b+1,tmp)
-	out.cd()
-	for k in range(0,200):
-            out.Delete(alt.GetName()+"_scaleUp"+";"+str(k))
-            out.Delete(alt.GetName()+"_scaleDown"+";"+str(k))
 
 	# DATA BLINDED
 	#data=alt.Clone("data_blinded")
         #for b in range(data.GetXaxis().GetNbins()):
         #    data.SetBinError(b+1,sqrt(data.GetBinContent(b+1)))
         #out.cd()
-	#for k in range(0,200):
-        #    out.Delete('data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
       
 	# FAKE SIGNAL
 	#ci=alt.Clone("fake_signal")
         #out.cd()
-	#for k in range(0,200):
-        #    out.Delete(samples[i][l][0]+'chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"+";"+str(k))
+
+        for p in [alt,ci]:
+	   for b in range(p.GetNbinsX()):
+	       p.SetBinContent(b+1,p.GetBinContent(b+1)/p.GetBinWidth(b+1))
+	       p.SetBinError(b+1,p.GetBinError(b+1)/p.GetBinWidth(b+1))
       
         # PLOTS
         canvas.cd(j+1)
@@ -503,7 +484,7 @@ if __name__ == '__main__':
          alt.Draw("he")
 	 alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*2)
          alt.GetXaxis().SetTitle("\chi")
-         alt.GetYaxis().SetTitle("N")
+ 	 alt.GetYaxis().SetTitle("d#sigma / d#chi_{dijet}")
          alt.GetYaxis().SetTitleOffset(1.1)
          alt.GetXaxis().SetLabelSize(0.05)
          alt.GetYaxis().SetLabelSize(0.05)
