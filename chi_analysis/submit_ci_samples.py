@@ -4,8 +4,8 @@ import os
 minMasses=[3700]
 signalMasses=[8000,9000,10000,11000,12000,14000,15000,16000,18000,20000]
 #couplings=[(1,1,1),]
-couplings=[(-1,-1,-1),]
-#couplings=[(0,0,1),]
+#couplings=[(-1,-1,-1),]
+couplings=[(0,0,1),]
 samples=[]
 
 for minMass in minMasses:
