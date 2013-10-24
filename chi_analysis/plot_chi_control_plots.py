@@ -271,6 +271,7 @@ if __name__ == '__main__':
         hist2.SetStats(False)
         #hist2.Draw("lesame")
         #legend.AddEntry(hist2,"2012D","l")
+	print "mass bin",mass,"data integral",hist.Integral()
 
      	hist_mc=f_mc[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
      	for i in range(1,len(mc)):

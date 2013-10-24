@@ -2,15 +2,24 @@ import os
 import subprocess
 
 samples = [
+('/pythia8_qcd_m900_1400___Oct23',True,True, 'cmsBatchFastsim'),
+#('/pythia8_qcd_m1400_2500___Oct23',True,True, 'cmsBatchFastsim'),
+#('/pythia8_qcd_m2500_3700___Oct23',True,True, 'cmsBatchFastsim'),
+#('/pythia8_qcd_m3700_8000___Oct23',True,True, 'cmsBatchFastsim'),
+('/herwigpp_qcd_m900_1400___Oct23',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcd_m1400_2500___Oct23',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcd_m2500_3700___Oct23',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcd_m3700_8000___Oct23',True,True, 'cmsBatchFastsim'),
+
 #('/pythia8_qcd_m1400___Sep4',True,True, 'cmsBatchFastsim'),
-('/pythia8_qcd_m2500___Sep4',True,True, 'cmsBatchFastsim'),
-('/pythia8_qcd_m3700___Sep4',True,True, 'cmsBatchFastsim'),
+#('/pythia8_qcd_m2500___Sep4',True,True, 'cmsBatchFastsim'),
+#('/pythia8_qcd_m3700___Sep4',True,True, 'cmsBatchFastsim'),
 #('/pythia8_qcdNonPert_m1400___Sep4',True,True, 'cmsBatchFastsim'),
 #('/pythia8_qcdNonPert_m2500___Sep4',True,True, 'cmsBatchFastsim'),
 #('/pythia8_qcdNonPert_m3700___Sep4',True,True, 'cmsBatchFastsim'),
 #('/herwigpp_qcd_m1400___Sep4',True,True, 'cmsBatchFastsim'),
-('/herwigpp_qcd_m2500___Sep4',True,True, 'cmsBatchFastsim'),
-('/herwigpp_qcd_m3700___Sep4',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcd_m2500___Sep4',True,True, 'cmsBatchFastsim'),
+#('/herwigpp_qcd_m3700___Sep4',True,True, 'cmsBatchFastsim'),
 #('/herwigpp_qcdNonPert_m1400___Sep5',True,True, 'cmsBatchFastsim'),
 #('/herwigpp_qcdNonPert_m2500___Sep5',True,True, 'cmsBatchFastsim'),
 #('/herwigpp_qcdNonPert_m3700___Sep5',True,True, 'cmsBatchFastsim'),

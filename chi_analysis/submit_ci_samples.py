@@ -1,20 +1,23 @@
 import os
 
-minMasses=[1400,2500,3700]
-signalMasses=[6000,8000,9000,10000,12000,14000,15000,16000,18000,20000]
-couplings=[(1,0,0),]
+#minMasses=[1400,2500,3700]
+minMasses=[3700]
+signalMasses=[8000,9000,10000,11000,12000,14000,15000,16000,18000,20000]
+#couplings=[(1,1,1),]
+couplings=[(-1,-1,-1),]
+#couplings=[(0,0,1),]
 samples=[]
 
 for minMass in minMasses:
-    samples+=[('pythia8_qcd',minMass,"",""),]
+    #samples+=[('pythia8_qcd',minMass,"",""),]
     
-    #for signalMass in signalMasses:
-    #    for coupling in couplings:
-    #         samples+=[('pythia8_ci',minMass,signalMass,coupling),]
+    for signalMass in signalMasses:
+        for coupling in couplings:
+             samples+=[('pythia8_ci',minMass,signalMass,coupling),]
 
-    samples+=[('pythia8_qcdNonPert',minMass,"",""),]
+    #samples+=[('pythia8_qcdNonPert',minMass,"",""),]
 
-version="Sep4"
+version="Oct23"
 
 for sample,minMass,signalMass,coupling in samples:
     samplename=sample+"_m"+str(minMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version
@@ -25,7 +28,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("PFAOD")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(300000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
