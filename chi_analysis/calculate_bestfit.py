@@ -26,7 +26,7 @@ for massbins in massbinssets:
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 1 number of backgrounds
-kmax 4 number of nuisance parameters
+kmax 1 number of nuisance parameters
 -----------
 """)
     for i in range(len(massbins)):
@@ -69,15 +69,15 @@ kmax 4 number of nuisance parameters
     text+="jer shape "
     for i in range(len(massbins)):
        text+="1 1 "
-    text+="\njes shape "
-    for i in range(len(massbins)):
-       text+="1 1 "
-    text+="\npdf shape "
-    for i in range(len(massbins)):
-       text+="- 1 "
-    text+="\nscale shape "
-    for i in range(len(massbins)):
-       text+="- 1 "
+    #text+="\njes shape "
+    #for i in range(len(massbins)):
+    #   text+="1 1 "
+    #text+="\npdf shape "
+    #for i in range(len(massbins)):
+    #   text+="- 1 "
+    #text+="\nscale shape "
+    #for i in range(len(massbins)):
+    #   text+="- 1 "
     cfg.writelines(text+"""
 -----------
 """)
