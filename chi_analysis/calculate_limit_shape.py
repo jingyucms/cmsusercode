@@ -10,8 +10,16 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
-models=[2,3,4,5,6]
-models=[7,8,9,10,11,17,18,19,20,21,22,23,12,13,]
+#models=[2]
+#models=[3]
+#models=[4]
+#models=[5]
+#models=[6]
+#models=[7]
+#models=[8]
+models=[9]
+#models=[37,38,39,40,41,42,43,44,]
+#models=[17,18,19,20,21,22,23,24,]
 
 for model in models:
 
@@ -39,32 +47,45 @@ for model in models:
  if model==6:
     signal="DNLOCI"    
     signalMasses=[5000,6000,7000,8000,9000,10000,11000]
- 
  if model==7:
+    signal="CI_0_0_1_"    
+    signalMasses=[8000,9000,10000,11000,12000,14000,16000,18000,20000]
+ if model==8:
+    signal="CI_1_1_1_"    
+    signalMasses=[8000,9000,10000,11000,12000,14000,16000,18000,20000]
+ if model==9:
+    signal="CI_-1_-1_-1_"    
+    signalMasses=[8000,9000,10000,11000,12000,14000,16000,18000,20000]
+ 
+ if model==37:
     signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(4200,8000),]
- if model==8:
+ if model==38:
     signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(3600,4200),]
- if model==9:
+ if model==39:
     signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(3000,3600),]
- if model==10:
+ if model==40:
     signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(2400,3000),]
- if model==11:
+ if model==41:
     signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(1900,2400),]
- if model==12:
+ if model==42:
     signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(3600,4200),(4200,8000),]
- if model==13:
+ if model==43:
+    signal="ADLOCI"    
+    signalMasses=[11000]
+    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
+ if model==44:
     signal="ADLOCI"    
     signalMasses=[11000]
     massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
@@ -96,11 +117,15 @@ for model in models:
  if model==23:
     signal="DLOCI"    
     signalMasses=[10000]
+    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
+ if model==24:
+    signal="DLOCI"    
+    signalMasses=[10000]
     massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
 
  prefix="datacard_shapelimit"
 
- if model<=6:
+ if model<10:
     name="limits_"+signal
  else:
     name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
@@ -193,8 +218,8 @@ kmax 3 number of nuisance parameters
          limits[signalMass]+=[0]
 
  print limits
- if model<=6:
+ if model<10:
     name=name+".txt"
- f=file(name,"w")
- f.write(str([limits[signalMass] for signalMass in signalMasses]))
- f.close()
+    f=file(name,"w")
+    f.write(str([limits[signalMass] for signalMass in signalMasses]))
+    f.close()

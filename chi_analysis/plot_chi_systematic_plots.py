@@ -35,8 +35,9 @@ if __name__ == '__main__':
    "RelativePtBB", "RelativePtEC1", "RelativePtEC2", "RelativePtHF",
    "RelativeStatEC2", "RelativeStatHF", "RelativeFSR", 
    "PileUpDataMC",  "PileUpBias",
-   "PileUpPtBB", "PileUpPtEC", "PileUpPtHF", "Total"]
-   sourcesets=[[0,1,2,3,4,5],[6,7,8,13,14,15],[9,10,11,12],[16,17,18,19,20],[21]]
+   "PileUpPtBB", "PileUpPtEC", "PileUpPtHF", "Total",
+   "RelativePtBB0_10", "RelativePtBB10_15", "RelativePtBB15_25", ]
+   sourcesets=[[0,1,2,3,4,5],[6,7,8,13,14,15],[9,10,11,12],[16,17,18,19,20],[21],[22,23,24]]
 
    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -50,7 +51,7 @@ if __name__ == '__main__':
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
    
-   for prefix in ["QCD","CI"]:
+   for prefix in ["CI","QCD"]:
 
      sum_in_quadrature_up=[]
      sum_in_quadrature_down=[]
@@ -132,6 +133,12 @@ if __name__ == '__main__':
             hist2.SetLineColor(colors[i])
             hist2.SetLineStyle(2)
             hist2.Divide(hist2,histref)
+            if sourceset[i]==23:
+              for chi_bin in range(len(chi_binnings[mass])):
+	        hist2.SetBinContent(chi_bin+1,(hist2.GetBinContent(chi_bin+1)-1.)*10+1.)
+            if sourceset[i]==24:
+              for chi_bin in range(len(chi_binnings[mass])):
+	        hist2.SetBinContent(chi_bin+1,(hist2.GetBinContent(chi_bin+1)-1.)*100+1.)
             miny=0
             if hist2.Integral()>0:
                 miny=log*0.1
@@ -143,7 +150,7 @@ if __name__ == '__main__':
               legend.AddEntry(hist2,"JEC Single overall variation","l")
             else:
 	      legend.AddEntry(hist2,"JEC "+sources[sourceset[i]],"l")
-	    if sourceset!=sourcesets[-1]:
+	    if sourceset!=[21]:
               for chi_bin in range(len(chi_binnings[mass])):
 	       if (hist2.GetBinContent(chi_bin+1)-1.0)*(hist2.GetBinCenter(chi_bin+1)-8.5)>0:
 	        sum_in_quadrature_up[mass][chi_bin]=sqrt(pow(sum_in_quadrature_up[mass][chi_bin],2)+pow(hist2.GetBinContent(chi_bin+1)-1.0,2))
@@ -176,6 +183,12 @@ if __name__ == '__main__':
             hist3.SetLineColor(colors[i])
             hist3.SetLineStyle(3)
             hist3.Divide(hist3,histref)
+            if sourceset[i]==23:
+              for chi_bin in range(len(chi_binnings[mass])):
+	        hist3.SetBinContent(chi_bin+1,(hist3.GetBinContent(chi_bin+1)-1.)*10+1.)
+            if sourceset[i]==24:
+              for chi_bin in range(len(chi_binnings[mass])):
+	        hist3.SetBinContent(chi_bin+1,(hist3.GetBinContent(chi_bin+1)-1.)*100+1.)
             miny=0
             if hist3.Integral()>0:
                 miny=log*0.1
@@ -183,7 +196,7 @@ if __name__ == '__main__':
             hist3.SetStats(False)
 	    hists+=[hist3]
             hist3.Draw("histsame")
-	    if sourceset!=sourcesets[-1]:
+	    if sourceset!=[21]:
               for chi_bin in range(len(chi_binnings[mass])):
 	       if (hist3.GetBinContent(chi_bin+1)-1.0)*(hist3.GetBinCenter(chi_bin+1)-8.5)>0:
 	        sum_in_quadrature_up[mass][chi_bin]=sqrt(pow(sum_in_quadrature_up[mass][chi_bin],2)+pow(hist3.GetBinContent(chi_bin+1)-1.0,2))

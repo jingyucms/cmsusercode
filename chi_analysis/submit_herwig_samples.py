@@ -1,7 +1,7 @@
 import os
 
-minMasses=[900]#,1400,2500,3700
-maxMasses=[1400]#,2500,3700,8000
+minMasses=[900,1400,2500,3700]
+maxMasses=[1400,2500,3700,8000]
 samples=[]
 
 for minMass in minMasses:
@@ -19,7 +19,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("PFAOD")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(300000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -145,4 +145,4 @@ process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles_*_*','drop *_genParticlesForJets_*_*')
 """)
     cfg.close()
-    os.system("cmsBatch.py 600 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")
+    os.system("cmsBatch.py 600 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 2nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")

@@ -21,7 +21,7 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- models=[2,3,4,5,6]
+ models=[2,3,4,5,6,7,8,9]
 
  for model in models:
 
@@ -31,20 +31,26 @@ if __name__=="__main__":
        signal="CI"    
     if model==1:
        signal="ADD_4_0_0_"
-    if model==2:
+    if model==9:
        signal="ADD_4_0_1_"
-    if model==3:
-       signal="LOCI"    
-    if model==4:
-       signal="NLOCI"    
     if model==5:
+       signal="LOCI"    
+    if model==3:
+       signal="NLOCI"    
+    if model==4:
        signal="DLOCI"    
-    if model==6:
+    if model==2:
        signal="DNLOCI"    
+    if model==8:
+       signal="CI_0_0_1_"    
+    if model==6:
+       signal="CI_1_1_1_"    
+    if model==7:
+       signal="CI_-1_-1_-1_"    
 
     print signal
 
-    f=file("limits"+signal+".txt")
+    f=file("limits_"+signal+".txt")
     limits=eval(f.readline())
     #print limits
 
@@ -119,7 +125,9 @@ if __name__=="__main__":
 	if exp1p==0 and g_exp1p.Eval(mass,0)<log10(0.05):
 	    exp1p=mass
 
-    print "limit",limit,"exp",exp,"-",exp-exp1m,"+",exp1p-exp
+    print "limit: %.1f" % (limit/1000.), "& %.1f" % (exp/1000.), "$\pm$ %.1f" % (max(exp-exp1m,exp1p-exp)/1000.)
+
+    print "limit: %.2f," % (limit/1000.), "%.2f," % (exp/1000.), "%.2f, %.2f, 0, 0" % ((max(exp-exp1m,exp1p-exp)+exp)/1000.,(exp-max(exp-exp1m,exp1p-exp))/1000.)
     
     l2=TLine(limit,-3,limit,log10(0.05))
     l2.SetLineColor(1)

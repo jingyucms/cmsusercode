@@ -33,6 +33,9 @@ def rebin(h1,nbins,binning):
 
 if __name__ == '__main__':
 
+    useLensData=False
+    useUnfoldedData=True
+
     prefixs=["datacard_shapelimit"]
  
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -85,6 +88,14 @@ if __name__ == '__main__':
       print insample
       infile=TFile(insample,'READ')
 
+      # unfolded data file
+      unfoldsample='datacards/Unfolded_data_Run2012All_20131024_1200M8000_fromCBalltrunc2.5Smeared_Herwig_MASSBINNED.root'
+      print unfoldsample
+      unfoldfile=TFile(unfoldsample,'READ')
+      unfoldsample2='datacards/Unfolded_data_Run2012All_20131024_1200M8000_fromCBalltrunc2.5Smeared_Herwig_MASSBINNED.root'
+      print unfoldsample2
+      unfoldfile2=TFile(unfoldsample2,'READ')
+
       # NLO correction
       filename1nu="fastnlo/fnl3622g_ct10-nlo_aspdf.root"
       print filename1nu
@@ -109,7 +120,30 @@ if __name__ == '__main__':
         # data
         histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
         print histname
-        data = TH1F(infile.Get(histname))
+	if useLensData:
+  	  if "8000" in str(massbins[j]):
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+          else:
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+          print histname2
+  	  if "1900" in str(massbins[j]):
+             data = TH1D(unfoldfile2.Get(histname2))
+	  else:   
+             data = TH1D(unfoldfile.Get(histname2))
+	  data.SetName(histname)
+	elif useUnfoldedData:
+  	  if "8000" in str(massbins[j]):
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+          else:
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+          print histname2
+  	  if "1900" in str(massbins[j]):
+             data = TH1F(unfoldfile2.Get(histname2))
+	  else:   
+             data = TH1F(unfoldfile.Get(histname2))
+	  data.SetName(histname)
+	else:
+          data = TH1F(infile.Get(histname))
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
 	out.cd()
@@ -218,6 +252,42 @@ if __name__ == '__main__':
             out.Delete(histname+"_jerDown"+";"+str(k))
         jerup.Write()
         jerdown.Write()
+
+        # Unfold uncertainty
+        histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+        clone=alt.Clone(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
+	unfoldup=clone.Clone(histname+"_unfoldUp")
+        unfolddown=clone.Clone(histname+"_unfoldDown")
+	slopes={}
+	slopes[1900]=0.08
+	slopes[2400]=0.08
+	slopes[3000]=0.08
+	slopes[3600]=0.08
+	slopes[4200]=0.08
+	for b in range(clone.GetNbinsX()):
+	    unfoldup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-slopes[massbins[j][0]]/2.+abs(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+            unfolddown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+slopes[massbins[j][0]]/2.-abs(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+	out.cd()
+	for k in range(0,200):
+            out.Delete(histname+"_unfoldUp"+";"+str(k))
+            out.Delete(histname+"_unfoldDown"+";"+str(k))
+        unfoldup.Write()
+        unfolddown.Write()
+        histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+        clone=alt.Clone(histname)
+        clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
+        unfoldup=clone.Clone(histname+"_unfoldUp")
+        unfolddown=clone.Clone(histname+"_unfoldDown")
+	for b in range(clone.GetNbinsX()):
+	    unfoldup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-slopes[massbins[j][0]]/2.+abs(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+            unfolddown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+slopes[massbins[j][0]]/2.-abs(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+	out.cd()
+	for k in range(0,200):
+            out.Delete(histname+"_unfoldUp"+";"+str(k))
+            out.Delete(histname+"_unfoldDown"+";"+str(k))
+        unfoldup.Write()
+        unfolddown.Write()
 
         # jes uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
@@ -364,6 +434,8 @@ if __name__ == '__main__':
       
         jerup.Divide(jerup,alt)
         jerdown.Divide(jerdown,alt)
+        unfoldup.Divide(unfoldup,alt)
+        unfolddown.Divide(unfolddown,alt)
         jesup.Divide(jesup,alt)
         jesdown.Divide(jesdown,alt)
         pdfup.Divide(pdfup,alt)
@@ -392,6 +464,15 @@ if __name__ == '__main__':
 	jerdown.SetLineColor(3)
 	jerdown.SetLineStyle(3)
         jerdown.Draw("hesame")
+	plots+=[unfoldup]
+	unfoldup.SetLineColor(8)
+	unfoldup.SetLineStyle(2)
+        unfoldup.Draw("hesame")
+        legend1.AddEntry(unfoldup,"Unfold","l")
+	plots+=[unfolddown]
+	unfolddown.SetLineColor(8)
+	unfolddown.SetLineStyle(3)
+        unfolddown.Draw("hesame")
 	plots+=[jesup]
 	jesup.SetLineColor(4)
 	jesup.SetLineStyle(2)

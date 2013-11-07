@@ -85,3 +85,5 @@ kmax 1 number of nuisance parameters
     cfg.close()
     os.system("combine chi_datacard_"+name+"_bestfit.txt -M MaxLikelihoodFit -n "+name+"bestfit > bestfit"+name+".txt")
     os.system("python diffNuisances.py -a mlfit"+name+"bestfit.root > bestfit"+name+"_nuisances.txt")
+    #os.system("combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -n "+name+"goodnessfit > goodnessfit"+name+".txt")
+    #os.system("combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -t 450 -n "+name+"goodnessfittoys > goodnessfittoys"+name+".txt")

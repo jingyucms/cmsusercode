@@ -37,3 +37,36 @@
 #python plotSignal.py QCDADD_4_0_1_10000 &
 
 #python plotSignal.py QCDNonPert QCDHpp QCDHppNonPert  &
+
+python plotSignal.py QCDCI_0_0_1_8000 &
+python plotSignal.py QCDCI_0_0_1_9000 &
+python plotSignal.py QCDCI_0_0_1_10000 &
+python plotSignal.py QCDCI_0_0_1_11000 &
+python plotSignal.py QCDCI_0_0_1_12000 &
+python plotSignal.py QCDCI_0_0_1_14000 &
+python plotSignal.py QCDCI_0_0_1_15000 &
+python plotSignal.py QCDCI_0_0_1_16000 &
+python plotSignal.py QCDCI_0_0_1_18000 &
+python plotSignal.py QCDCI_0_0_1_20000 &
+
+python plotSignal.py QCDCI_1_1_1_8000 &
+python plotSignal.py QCDCI_1_1_1_9000 &
+python plotSignal.py QCDCI_1_1_1_10000 &
+python plotSignal.py QCDCI_1_1_1_11000 &
+python plotSignal.py QCDCI_1_1_1_12000 &
+python plotSignal.py QCDCI_1_1_1_14000 &
+python plotSignal.py QCDCI_1_1_1_15000 &
+python plotSignal.py QCDCI_1_1_1_16000 &
+python plotSignal.py QCDCI_1_1_1_18000 &
+python plotSignal.py QCDCI_1_1_1_20000 &
+
+python plotSignal.py QCDCI_-1_-1_-1_8000 &
+python plotSignal.py QCDCI_-1_-1_-1_9000 &
+python plotSignal.py QCDCI_-1_-1_-1_10000 &
+python plotSignal.py QCDCI_-1_-1_-1_11000 &
+python plotSignal.py QCDCI_-1_-1_-1_12000 &
+python plotSignal.py QCDCI_-1_-1_-1_14000 &
+python plotSignal.py QCDCI_-1_-1_-1_15000 &
+python plotSignal.py QCDCI_-1_-1_-1_16000 &
+python plotSignal.py QCDCI_-1_-1_-1_18000 &
+python plotSignal.py QCDCI_-1_-1_-1_20000 &

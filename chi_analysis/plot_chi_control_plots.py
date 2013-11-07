@@ -21,8 +21,8 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__ == '__main__':
 
-   variables=["chi","pt1","pt2","y1","y2","yboost","metsumet","mptsumpt","dphi","dpt"]
-   label=["#chi","p_{T1}","p_{T2}","y_{1}","y_{2}","y_{boost}","missing E_{T} / #sum E_{T}","#sum #vec p_{T} / #sum |p_{T}|","#Delta #phi","#Delta p_{T} / #sum p_T"]
+   variables=["chi","pt1","pt2","y1","y2","y1chi1_6","y2chi1_6","y1chi6_11","y2chi6_11","y1chi11_16","y2chi11_16","yboost","metsumet","mptsumpt","dphi","dpt"]
+   label=["#chi","p_{T1}","p_{T2}","y_{1}","y_{2}","y_{1}","y_{2}","y_{1}","y_{2}","y_{1}","y_{2}","y_{boost}","missing E_{T} / #sum E_{T}","#sum #vec p_{T} / #sum |p_{T}|","#Delta #phi","#Delta p_{T} / #sum p_T"]
 
    masses=[1900,2400,3000,3600,4200,7000]
 
@@ -226,6 +226,7 @@ if __name__ == '__main__':
         legend=TLegend(0.45,0.7,0.95,0.90,(str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
 	legends+=[legend]
     
+        print "dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var
         hist=f_data[0].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var)
         for i in range(1,len(data)):
             hist.Add(f_data[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
@@ -322,6 +323,22 @@ if __name__ == '__main__':
         legend.SetFillStyle(0)
         legend.Draw("same")
 
+        if "chi1_6" in var:
+     	  legend2=TLegend(0.15,0.7,0.95,0.90,"1<#Chi<6")
+          legend2.SetTextSize(0.04)
+          legend2.SetFillStyle(0)
+          legend2.Draw("same")
+        if "chi6_11" in var:
+     	  legend2=TLegend(0.15,0.7,0.95,0.90,"6<#Chi<11")
+          legend2.SetTextSize(0.04)
+          legend2.SetFillStyle(0)
+          legend2.Draw("same")
+        if "chi11_16" in var:
+     	  legend2=TLegend(0.15,0.7,0.95,0.90,"11<#Chi<16")
+          legend2.SetTextSize(0.04)
+          legend2.SetFillStyle(0)
+          legend2.Draw("same")
+ 
         canvas.cd(2)
         ratio=hist.Clone(hist.GetName()+"clone")
         ratio.Divide(hist,hist)

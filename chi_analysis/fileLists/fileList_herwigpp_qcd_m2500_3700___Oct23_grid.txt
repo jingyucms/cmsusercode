@@ -568,6 +568,7 @@ root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700
 root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700___Oct23/PFAOD_7.root
 root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700___Oct23/PFAOD_70.root
 root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700___Oct23/PFAOD_71.root
+root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700___Oct23/PFAOD_72.root
 root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700___Oct23/PFAOD_73.root
 root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700___Oct23/PFAOD_74.root
 root://eoscms//eos/cms/store/cmst3/user/hinzmann/fastsim/herwigpp_qcd_m2500_3700___Oct23/PFAOD_75.root
