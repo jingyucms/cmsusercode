@@ -29,11 +29,11 @@ if __name__ == "__main__":
     gStyle.SetErrorX(1)
 
     results=[
-            ("ADD M_{S} (HLZ) n_{ED}=2", 6.97*7.2/7.0, 6.99*7.2/7.0, 7.67*7.2/7.0, 6.32*7.2/7.0, 0, 0),
-            ("ADD M_{S} (HLZ) n_{ED}=3", 6.97*5.9/7.0, 6.99*5.9/7.0, 7.67*5.9/7.0, 6.32*5.9/7.0, 0, 0),
-            ("ADD M_{S} (HLZ) n_{ED}=4", 6.97, 6.99, 7.67, 6.32, 0, 0),
-            ("ADD M_{S} (HLZ) n_{ED}=5", 6.97*7.7/7.0, 6.99*7.7/7.0, 7.67*7.7/7.0, 6.32*7.7/7.0, 0, 0),
             ("ADD M_{S} (HLZ) n_{ED}=6", 6.97*8.3/7.0, 6.99*8.3/7.0, 7.67*8.3/7.0, 6.32*8.3/7.0, 0, 0),
+            ("ADD M_{S} (HLZ) n_{ED}=5", 6.97*7.7/7.0, 6.99*7.7/7.0, 7.67*7.7/7.0, 6.32*7.7/7.0, 0, 0),
+            ("ADD M_{S} (HLZ) n_{ED}=4", 6.97, 6.99, 7.67, 6.32, 0, 0),
+            ("ADD M_{S} (HLZ) n_{ED}=3", 6.97*5.9/7.0, 6.99*5.9/7.0, 7.67*5.9/7.0, 6.32*5.9/7.0, 0, 0),
+            ("ADD M_{S} (HLZ) n_{ED}=2", 6.97*7.2/7.0, 6.99*7.2/7.0, 7.67*7.2/7.0, 6.32*7.2/7.0, 0, 0),
             ("ADD #Lambda_{T} (GRW)", 6.97, 6.99, 7.67, 6.32, 0, 0),
             ("", 0,0,0,0, 0, 0),
             ("#Lambda_{(V-A)}^{#pm} (LO)", 8.64, 8.96, 8.96+0.8, 8.96-0.8, 0, 0),
@@ -43,18 +43,19 @@ if __name__ == "__main__":
             ("#Lambda_{LL/RR}^{+} (LO)", 9.80, 9.83, 10.71, 8.95, 0, 0),
             ("#Lambda_{LL/RR}^{-} (NLO)", 10.87, 11.37, 13.21, 9.53, 0, 0),
             ("#Lambda_{LL/RR}^{+} (NLO)", 8.76, 8.83, 9.64, 8.03, 0, 0),
+            ("", 0,0,0,0, 0, 0),
             ]
 
     graphs=[]
 
-    xmin=3
-    xmax=20
+    xmin=2
+    xmax=22
 
     c1 = TCanvas("Limit summary","Limit summary",0,0,300,300)
      
     g1 = TH2F("grid", "", 20, xmin, xmax, 20, 0, len(results)+0.8)
     g1.GetXaxis().SetTitle("Lower limit on energy scale [TeV]")
-    g1.GetXaxis().SetNdivisions(xmax-xmin)
+    g1.GetXaxis().SetNdivisions((xmax-xmin)/2)
     g1.GetYaxis().SetLabelColor(0)
     g1.GetYaxis().SetNdivisions(1)
     g1.Draw()
@@ -105,6 +106,30 @@ if __name__ == "__main__":
         l1.Draw("same")
         graphs+=[l1]
     
+    l5=TLegend(0.74,0.92,1.0,0.92,"CMS")
+    l5.SetTextSize(0.04)
+    l5.SetFillStyle(0)
+    l5.Draw("same")
+     
+    l3=TLegend(0.7,0.88,1.0,0.88,"#sqrt{s} = 8 TeV")
+    l3.SetTextSize(0.04)
+    l3.SetFillStyle(0)
+    l3.Draw("same")
+     
+    l=TLegend(0.7,0.84,1.0,0.84,"L = 19.7 fb^{-1}")
+    l.SetTextSize(0.04)
+    l.SetFillStyle(0)
+    l.Draw("same")
+    
+    l2=TLegend(0.64,0.68,0.98,0.82,"")
+    l2.SetTextSize(0.04)
+    l2.AddEntry(g2,"Observed","l")
+    l2.AddEntry(g3,"Expected","l")
+    l2.AddEntry(g5,"Expected #pm 1#sigma","f")
+    #l2.AddEntry(g4,"Expected #pm 2#sigma","f")
+    l2.SetFillStyle(0)
+    l2.Draw("same")
+
     c1.Print("limits_summary.ps")
     os.system("ps2pdf limits_summary.ps limits_summary.pdf")
     c1.WaitPrimitive()

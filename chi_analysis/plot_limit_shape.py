@@ -16,7 +16,7 @@ gStyle.SetHistLineWidth(1)
 gStyle.SetStatFontSize(0.020)
 gStyle.SetTitleSize(0.06, "XYZ")
 gStyle.SetLabelSize(0.05, "XYZ")
-gStyle.SetNdivisions(510, "XYZ")
+gStyle.SetNdivisions(505, "XYZ")
 gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
@@ -58,7 +58,7 @@ if __name__=="__main__":
     #canvas.GetPad(0).SetLogy()
     mg=TMultiGraph()
 
-    min_x=0
+    min_x=5000
     max_x=20000
     g0=TGraph(0)
     g0.SetPoint(0,min_x,0)
@@ -109,6 +109,9 @@ if __name__=="__main__":
     l.SetLineColor(2)
     l.SetLineStyle(2)
     l.Draw("same")
+    
+    l1=TLatex((max_x-min_x)*0.75+min_x,log10(0.05)*1.15,"CL_{S}=0.05")
+    l1.Draw("same")
     
     limit=0
     exp=0

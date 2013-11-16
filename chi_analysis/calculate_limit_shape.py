@@ -10,14 +10,14 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
-#models=[2]
+models=[2]
 #models=[3]
 #models=[4]
 #models=[5]
 #models=[6]
 #models=[7]
 #models=[8]
-models=[9]
+#models=[9]
 #models=[37,38,39,40,41,42,43,44,]
 #models=[17,18,19,20,21,22,23,24,]
 
@@ -34,7 +34,7 @@ for model in models:
     signalMasses=[4000,5000,6000,7000,8000]
  if model==2:
     signal="ADD_4_0_1_"
-    signalMasses=[4000,5000,6000,7000,8000,9000]
+    signalMasses=[6000,6500,7000,7500,8000,9000]
  if model==3:
     signal="LOCI"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000]
@@ -43,19 +43,19 @@ for model in models:
     signalMasses=[8000,9000,10000,11000,12000,13000,14000]
  if model==5:
     signal="DLOCI"    
-    signalMasses=[6000,7000,8000,9000,10000,11000,12000]
+    signalMasses=[8000,9000,10000,11000,12000]
  if model==6:
     signal="DNLOCI"    
-    signalMasses=[5000,6000,7000,8000,9000,10000,11000]
+    signalMasses=[7000,8000,9000,10000,11000]
  if model==7:
     signal="CI_0_0_1_"    
-    signalMasses=[8000,9000,10000,11000,12000,14000,16000,18000,20000]
+    signalMasses=[6000,7000,8000,9000,10000,11000,12000]
  if model==8:
     signal="CI_1_1_1_"    
-    signalMasses=[8000,9000,10000,11000,12000,14000,16000,18000,20000]
+    signalMasses=[9000,10000,11000,12000,14000]
  if model==9:
     signal="CI_-1_-1_-1_"    
-    signalMasses=[8000,9000,10000,11000,12000,14000,16000,18000,20000]
+    signalMasses=[11000,12000,14000,16000,18000,20000]
  
  if model==37:
     signal="ADLOCI"    
