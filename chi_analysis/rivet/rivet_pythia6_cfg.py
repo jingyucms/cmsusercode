@@ -1,8 +1,8 @@
 # Auto generated configuration file
 # using: 
-# Revision: 1.303.2.7 
-# Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v 
-# with command line options: Configuration/GenProduction/python/QCD_Pt_15to3000_TuneZ2_Flat_7TeV_pythia6_cff.py -s GEN --datatier=GEN-SIM-RAW --conditions auto:mc --eventcontent RAWSIM --no_exec -n 10000 --python_filename=rivet_pythia6_cfg.py --customise=Configuration/GenProduction/rivet_customize.py
+# Revision: 1.20 
+# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
+# with command line options: Configuration/GenProduction/python/QCD_Pt_15to3000_TuneZ2_Flat_7TeV_pythia6_cff.py -s GEN --datatier=GEN-SIM-RAW --conditions auto:mc --eventcontent RAWSIM --no_exec -n 10000 --python_filename=rivet_cfg.py --customise=Configuration/GenProduction/rivet_customize.py
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process('GEN')
@@ -13,16 +13,16 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
-process.load('Configuration.StandardSequences.GeometryDB_cff')
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
-process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic7TeV2011Collision_cfi')
+process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic8TeVCollision_cfi')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000000)
+    input = cms.untracked.int32(10000)
 )
 
 # Input source
@@ -36,7 +36,7 @@ process.options = cms.untracked.PSet(
 process.configurationMetadata = cms.untracked.PSet(
     version = cms.untracked.string('\\$Revision: 1.8 $'),
     annotation = cms.untracked.string('Summer2011 sample with PYTHIA6: QCD dijet production, pThat = 15 .. 3000 GeV, weighted, TuneZ2'),
-    name = cms.untracked.string('\\$Source: /cvs/CMSSW/CMSSW/Configuration/GenProduction/python/Attic/QCD_Pt_15to3000_TuneZ2_Flat_7TeV_pythia6_cff.py,v $')
+    name = cms.untracked.string('\\$Source: /local/reps/CMSSW/CMSSW/Configuration/GenProduction/python/Attic/QCD_Pt_15to3000_TuneZ2_Flat_7TeV_pythia6_cff.py,v $')
 )
 
 # Output definition
@@ -58,7 +58,9 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
-process.GlobalTag.globaltag = 'MC_42_V12::All'
+process.genstepfilter.triggerConditions=cms.vstring("generation_step")
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:mc', '')
 
 process.generator = cms.EDFilter("Pythia6GeneratorFilter",
     pythiaPylistVerbosity = cms.untracked.int32(0),

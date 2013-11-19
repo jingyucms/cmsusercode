@@ -35,6 +35,7 @@ namespace Rivet {
       double y0 = j0.rapidity();
       double y1 = j1.rapidity();
       if (fabs(y0+y1)/2. > 1.11) vetoEvent;
+      if (exp(fabs(y0-y1)) > 16.) vetoEvent;
       double mjj = FourMomentum(j0+j1).mass();
       double chi = exp(fabs(y0-y1));
       _h_chi_dijet.fill(mjj, chi, weight);
