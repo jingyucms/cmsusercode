@@ -33,7 +33,7 @@ if __name__ == '__main__':
              (1,2,3,4,5,6,7,8,9,10,12,14,16),
              (1,2,3,4,5,6,7,8,9,10,12,14,16),
              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-             (1,3,5,7,10,12,14,16),
+             (1,3,6,9,12,16),
              ]
    chi_binnings=[]
    for mass_bin in chi_bins:
@@ -167,7 +167,7 @@ if __name__ == '__main__':
      if hist.GetBinContent(b+1)>0:
        ratio.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
    ratio.SetTitle("")
-   ratio.GetYaxis().SetTitle("Data / Sim")
+   ratio.GetYaxis().SetTitle("Sim / Data")
    ratio.GetYaxis().SetTitleSize(0.13)
    ratio.GetYaxis().SetTitleOffset(0.5)
    ratio.SetMarkerSize(0.1)
@@ -232,6 +232,9 @@ if __name__ == '__main__':
             hist.Add(f_data[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
 	if var=="chi":
             hist=hist.Rebin(len(chi_binnings[mass])-1,hist.GetName()+"_rebin1",chi_binnings[mass])
+ 	    for b in range(hist.GetNbinsX()):
+	       hist.SetBinContent(b+1,hist.GetBinContent(b+1)/hist.GetBinWidth(b+1))
+	       hist.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinWidth(b+1))
       	hist.SetLineColor(1)
         hist.SetMarkerStyle(24)
         hist.SetMarkerSize(0.2)
@@ -260,6 +263,9 @@ if __name__ == '__main__':
             hist2.Add(f_data2[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var))
 	if var=="chi":
             hist2=hist2.Rebin(len(chi_binnings[mass])-1,hist2.GetName()+"_rebin1",chi_binnings[mass])
+ 	    for b in range(hist2.GetNbinsX()):
+	       hist2.SetBinContent(b+1,hist2.GetBinContent(b+1)/hist2.GetBinWidth(b+1))
+	       hist2.SetBinError(b+1,hist2.GetBinError(b+1)/hist2.GetBinWidth(b+1))
       	hist2.SetLineColor(4)
         hist2.SetMarkerStyle(25)
         hist2.SetMarkerSize(0.2)
@@ -279,6 +285,9 @@ if __name__ == '__main__':
      	    hist_mc.Add(f_mc[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var),mc[i][1]/mc[0][1])
 	if var=="chi":
             hist_mc=hist_mc.Rebin(len(chi_binnings[mass])-1,hist_mc.GetName()+"_rebin1",chi_binnings[mass])
+ 	    for b in range(hist_mc.GetNbinsX()):
+	       hist_mc.SetBinContent(b+1,hist_mc.GetBinContent(b+1)/hist_mc.GetBinWidth(b+1))
+	       hist_mc.SetBinError(b+1,hist_mc.GetBinError(b+1)/hist_mc.GetBinWidth(b+1))
 	if hist_mc.Integral()>0:
             hist_mc.Scale(hist.Integral()/hist_mc.Integral())
       	hist_mc.SetLineColor(2)
@@ -293,6 +302,9 @@ if __name__ == '__main__':
      	    hist_mc3.Add(f_mc3[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var),mc3[i][1]/mc3[0][1])
 	if var=="chi":
             hist_mc3=hist_mc3.Rebin(len(chi_binnings[mass])-1,hist_mc3.GetName()+"_rebin1",chi_binnings[mass])
+ 	    for b in range(hist_mc3.GetNbinsX()):
+	       hist_mc3.SetBinContent(b+1,hist_mc3.GetBinContent(b+1)/hist_mc3.GetBinWidth(b+1))
+	       hist_mc3.SetBinError(b+1,hist_mc3.GetBinError(b+1)/hist_mc3.GetBinWidth(b+1))
 	if hist_mc3.Integral()>0:
             hist_mc3.Scale(hist.Integral()/hist_mc3.Integral())
       	hist_mc3.SetLineColor(4)
@@ -307,6 +319,9 @@ if __name__ == '__main__':
      	    hist_mc2.Add(f_mc2[i].Get("dijet_"+str(masses[mass])+"_"+str(masses[mass+1])+"_"+var),mc2[i][1]/mc2[0][1])
 	if var=="chi":
             hist_mc2=hist_mc2.Rebin(len(chi_binnings[mass])-1,hist_mc2.GetName()+"_rebin1",chi_binnings[mass])
+ 	    for b in range(hist_mc2.GetNbinsX()):
+	       hist_mc2.SetBinContent(b+1,hist_mc2.GetBinContent(b+1)/hist_mc2.GetBinWidth(b+1))
+	       hist_mc2.SetBinError(b+1,hist_mc2.GetBinError(b+1)/hist_mc2.GetBinWidth(b+1))
 	if hist_mc2.Integral()>0:
             hist_mc2.Scale(hist.Integral()/hist_mc2.Integral())
       	hist_mc2.SetLineColor(6)
@@ -346,7 +361,7 @@ if __name__ == '__main__':
           if hist.GetBinContent(b+1)>0:
             ratio.SetBinError(b+1,hist.GetBinError(b+1)/hist.GetBinContent(b+1))
         ratio.SetTitle("")
-        ratio.GetYaxis().SetTitle("Data / Sim")
+        ratio.GetYaxis().SetTitle("Sim / Data")
         ratio.GetYaxis().SetTitleSize(0.13)
         ratio.GetYaxis().SetTitleOffset(0.5)
         ratio.SetMarkerSize(0.1)

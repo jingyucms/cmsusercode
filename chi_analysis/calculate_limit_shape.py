@@ -32,28 +32,28 @@ for model in models:
  if model==1:
     signal="ADD_4_0_0_"
     signalMasses=[4000,5000,6000,7000,8000]
- if model==2:
+ if model==9:
     signal="ADD_4_0_1_"
     signalMasses=[6000,6500,7000,7500,8000,9000]
- if model==3:
+ if model==5:
     signal="LOCI"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000]
- if model==4:
+ if model==3:
     signal="NLOCI"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000]
- if model==5:
+ if model==4:
     signal="DLOCI"    
     signalMasses=[8000,9000,10000,11000,12000]
- if model==6:
+ if model==2:
     signal="DNLOCI"    
     signalMasses=[7000,8000,9000,10000,11000]
- if model==7:
+ if model==8:
     signal="CI_0_0_1_"    
     signalMasses=[6000,7000,8000,9000,10000,11000,12000]
- if model==8:
+ if model==6:
     signal="CI_1_1_1_"    
     signalMasses=[9000,10000,11000,12000,14000]
- if model==9:
+ if model==7:
     signal="CI_-1_-1_-1_"    
     signalMasses=[11000,12000,14000,16000,18000,20000]
  

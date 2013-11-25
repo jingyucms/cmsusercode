@@ -446,10 +446,19 @@ if __name__ == '__main__':
       
         # PLOTS
         canvas.cd(j+1)
-        legend1=TLegend(0.5,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
+        legend1=TLegend(0.5,0.6,0.9,0.90,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<8000","m_{jj}>4200"))
         legends+=[legend1]
         #legend1.AddEntry(data,"data","lpe")
 	plots+=[alt]
+        alt.GetXaxis().SetTitle("#chi_{dijet}")
+        alt.GetYaxis().SetTitle("variation")
+        alt.GetYaxis().SetTitleOffset(1.4)
+        alt.GetXaxis().SetTitleOffset(0.8)
+        alt.GetYaxis().SetTitleSize(0.05)
+        alt.GetYaxis().SetLabelSize(0.04)
+        alt.GetXaxis().SetTitleSize(0.05)
+        alt.GetXaxis().SetLabelSize(0.04)
+        alt.GetXaxis().SetTickLength(0.02)
 	alt.SetLineColor(1)
 	alt.SetTitle("")
         alt.Draw("he")
@@ -462,7 +471,7 @@ if __name__ == '__main__':
         legend1.AddEntry(jerup,"JER","l")
 	plots+=[jerdown]
 	jerdown.SetLineColor(3)
-	jerdown.SetLineStyle(3)
+	jerdown.SetLineStyle(2)
         jerdown.Draw("hesame")
 	#plots+=[unfoldup]
 	#unfoldup.SetLineColor(8)
@@ -475,7 +484,7 @@ if __name__ == '__main__':
         #unfolddown.Draw("hesame")
 	plots+=[jesup]
 	jesup.SetLineColor(4)
-	jesup.SetLineStyle(2)
+	jesup.SetLineStyle(3)
         jesup.Draw("hesame")
         legend1.AddEntry(jesup,"JES","l")
 	plots+=[jesdown]
@@ -484,21 +493,21 @@ if __name__ == '__main__':
         jesdown.Draw("hesame")
 	plots+=[pdfup]
 	pdfup.SetLineColor(6)
-	pdfup.SetLineStyle(2)
+	pdfup.SetLineStyle(4)
         pdfup.Draw("hesame")
         legend1.AddEntry(pdfup,"PDF","l")
 	plots+=[pdfdown]
 	pdfdown.SetLineColor(6)
-	pdfdown.SetLineStyle(3)
+	pdfdown.SetLineStyle(4)
         pdfdown.Draw("hesame")
 	plots+=[scaleup]
 	scaleup.SetLineColor(2)
-	scaleup.SetLineStyle(2)
+	scaleup.SetLineStyle(5)
         scaleup.Draw("hesame")
         legend1.AddEntry(scaleup,"#mu scale","l")
 	plots+=[scaledown]
 	scaledown.SetLineColor(2)
-	scaledown.SetLineStyle(3)
+	scaledown.SetLineStyle(5)
         scaledown.Draw("hesame")
 	#plots+=[ci]
         #ci.Draw("hesame")
@@ -519,6 +528,12 @@ if __name__ == '__main__':
         data.SetMarkerSize(0.5)
         #data.Draw("pe0zsame")
 	
+    	l5=TLegend(0.5,0.9,0.9,0.95,"CMS Simulation")
+    	l5.SetTextSize(0.04)
+    	l5.SetFillStyle(0)
+    	l5.Draw("same")
+	plots+=[l5]
+    	 
         legend1.SetTextSize(0.04)
         legend1.SetFillStyle(0)
         legend1.Draw("same")
