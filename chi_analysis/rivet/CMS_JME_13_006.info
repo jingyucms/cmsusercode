@@ -1,0 +1,13 @@
+Name: CMS_JME_13_006
+Year: 2013
+Summary: W-tagging variable, BIN-BY-BIN-UNFOLDING
+Experiment: CMS
+Collider: CERN LHC
+SpiresID: no yet
+Status: CMS INTERNAL Rivet Routine
+Authors:
+ - A. Hinzmann
+ 
+References:
+ - not yet
+ 
