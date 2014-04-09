@@ -40,9 +40,18 @@ for massbins in massbinssets:
             expected68down=float(l.strip(" ").split(" ")[-1])
         if "Expected + 1sigma" in l:
             expected68up=float(l.strip(" ").split(" ")[-1])
+        if "Expected - 2sigma" in l:
+            expected95down=float(l.strip(" ").split(" ")[-1])
+        if "Expected + 2sigma" in l:
+            expected95up=float(l.strip(" ").split(" ")[-1])
     sigma=0
     if observed>=expected:
        sigma=(observed-expected)/max((expected68up-expected),(expected-expected68down))
     else:
        sigma=(observed-expected)/(expected68down-expected)
+    if sigma>=2:
+      if observed>=expected:
+       sigma=2.*((observed-expected)/max((expected95up-expected),(expected-expected95down)))
+      else:
+       sigma=2.*((observed-expected)/(expected95down-expected))
     print observed, expected, expected68down, expected68up, sigma
