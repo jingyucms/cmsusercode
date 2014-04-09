@@ -101,6 +101,11 @@ if __name__ == '__main__':
       print filename1nu
       nlofile = TFile.Open(filename1nu)
 
+      # EWK correction
+      filename1ewk="fastnlo/DijetAngularCMS-CT10nlo-8TeV_R0.5_MassBin_AllChiBins.root"
+      print filename1ewk
+      ewkfile = TFile.Open(filename1ewk)
+
       # JES uncertainty QCD
       filename1jes="chi_systematic_plotschi_QCD4.root"
       print filename1jes
@@ -169,7 +174,18 @@ if __name__ == '__main__':
         for b in range(nloqcd.GetXaxis().GetNbins()):
             nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*nloqcd.GetBinWidth(b+1))
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
+
+        # EWK corrections
+        histname='chi-'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace('_',"-")
+        print histname
+        ewk=ewkfile.Get(histname)
+	for b in range(nloqcd.GetXaxis().GetNbins()):
+	    low_bin=ewk.FindBin(nloqcd.GetXaxis().GetBinLowEdge(b+1))
+	    up_bin=ewk.FindBin(nloqcd.GetXaxis().GetBinUpEdge(b+1))
+	    correction=ewk.Integral(low_bin,up_bin-1)/(up_bin-low_bin)
+	    nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*correction)
 	nloqcd.Scale(1./nloqcd.Integral())
+        ewk.SetName("ewk-"+histname)
 
         # QCD (empty background, not used in limit)
         histname='QCD#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
@@ -226,7 +242,7 @@ if __name__ == '__main__':
 	slopes={}
 	slopes[1900]=0.01
 	slopes[2400]=0.01
-	slopes[3000]=0.015
+	slopes[3000]=0.05 #0.015
 	slopes[3600]=0.1
 	slopes[4200]=0.15
 	for b in range(clone.GetNbinsX()):
@@ -421,7 +437,13 @@ if __name__ == '__main__':
             out.Delete(alt.GetName()+"_scaleDown"+";"+str(k))
         scaleup.Write()
         scaledown.Write()
-
+        if samples[i][0]=="QCD":
+	  for k in range(0,200):
+            out.Delete(qcd.GetName()+"_scaleUp"+";"+str(k))
+            out.Delete(qcd.GetName()+"_scaleDown"+";"+str(k))
+          scaleup.Write(qcd.GetName()+"_scaleUp")
+          scaledown.Write(qcd.GetName()+"_scaleDown")
+	
 	# DATA BLINDED
 	#data=alt.Clone("data_blinded")
         #for b in range(data.GetXaxis().GetNbins()):

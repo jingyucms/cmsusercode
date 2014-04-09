@@ -21,7 +21,13 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- models=[2,3,4,5,6,7,8,9]
+ models=[2,3,4,5,9]
+ models+=[100,101,102,103,104,105,106,107,108,109]
+ models+=[300,301]
+
+ #models=[2,3,4,5,6,7,8,9]
+ #models+=[200,201,202,203,204,205,206,207,208,209]
+ #models+=[300,301,302,303,304,305,306,307,308,309]
 
  for model in models:
 
@@ -47,6 +53,69 @@ if __name__=="__main__":
        signal="CI_1_1_1_"    
     if model==7:
        signal="CI_-1_-1_-1_"    
+
+    if model==100:
+       signal="CT10nlo_LL+"
+    if model==101:
+       signal="CT10nlo_LL-"
+    if model==102:
+       signal="CT10nlo_RR+"
+    if model==103:
+       signal="CT10nlo_RR-"
+    if model==104:
+       signal="CT10nlo_VV+"
+    if model==105:
+       signal="CT10nlo_VV-"
+    if model==106:
+       signal="CT10nlo_AA+"
+    if model==107:
+       signal="CT10nlo_AA-"
+    if model==108:
+       signal="CT10nlo_V-A+"
+    if model==109:
+       signal="CT10nlo_V-A-"
+
+    if model==200:
+       signal="cteq66_LL+"
+    if model==201:
+       signal="cteq66_LL-"
+    if model==202:
+       signal="cteq66_RR+"
+    if model==203:
+       signal="cteq66_RR-"
+    if model==204:
+       signal="cteq66_VV+"
+    if model==205:
+       signal="cteq66_VV-"
+    if model==206:
+       signal="cteq66_AA+"
+    if model==207:
+       signal="cteq66_AA-"
+    if model==208:
+       signal="cteq66_V-A+"
+    if model==209:
+       signal="cteq66_V-A-"
+
+    if model==300:
+       signal="cteq6ll_LL+"
+    if model==301:
+       signal="cteq6ll_LL-"
+    if model==302:
+       signal="cteq6ll_RR+"
+    if model==303:
+       signal="cteq6ll_RR-"
+    if model==304:
+       signal="cteq6ll_VV+"
+    if model==305:
+       signal="cteq6ll_VV-"
+    if model==306:
+       signal="cteq6ll_AA+"
+    if model==307:
+       signal="cteq6ll_AA-"
+    if model==308:
+       signal="cteq6ll_V-A+"
+    if model==309:
+       signal="cteq6ll_V-A-"
 
     print signal
 

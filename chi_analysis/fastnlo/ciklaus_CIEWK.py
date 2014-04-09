@@ -14,7 +14,7 @@ def writeHistogram(name,points):
    histogram.Write()
 
 if __name__=="__main__":
-    paths=[("DijetAngularCMS-CT10nlo-8TeV_MassBin","AllChiBins"),
+    paths=[("DijetAngularCMS-CT10nlo-8TeV_R0.5_MassBin","AllChiBins"),
            ]
     for path in paths:
      rootfile=TFile("_".join(path)+".root","RECREATE")

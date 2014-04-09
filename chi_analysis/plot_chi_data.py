@@ -106,6 +106,11 @@ if __name__ == '__main__':
       print filename1nu
       nlofile = TFile.Open(filename1nu)
 
+      # EWK correction
+      filename1ewk="fastnlo/DijetAngularCMS-CT10nlo-8TeV_R0.5_MassBin_AllChiBins.root"
+      print filename1ewk
+      ewkfile = TFile.Open(filename1ewk)
+
       # JES uncertainty QCD
       filename1jes="chi_systematic_plotschi_QCD4.root"
       print filename1jes
@@ -171,7 +176,18 @@ if __name__ == '__main__':
         for b in range(nloqcd.GetXaxis().GetNbins()):
             nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*nloqcd.GetBinWidth(b+1))
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
+
+        # EWK corrections
+        histname='chi-'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace('_',"-")
+        print histname
+        ewk=ewkfile.Get(histname)
+	for b in range(nloqcd.GetXaxis().GetNbins()):
+	    low_bin=ewk.FindBin(nloqcd.GetXaxis().GetBinLowEdge(b+1))
+	    up_bin=ewk.FindBin(nloqcd.GetXaxis().GetBinUpEdge(b+1))
+	    correction=ewk.Integral(low_bin,up_bin-1)/(up_bin-low_bin)
+	    nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*correction)
 	nloqcd.Scale(1./nloqcd.Integral())
+        ewk.SetName("ewk-"+histname)
 
         # QCD (empty background, not used in limit)
         histname='QCD#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
@@ -471,7 +487,7 @@ if __name__ == '__main__':
         legend1.Draw("same")
 	
 	outhistos.cd()
-        for p in [alt,jerup,jerdown,jesup,jesdown,pdfup,pdfdown,scaleup,scaledown,data]:
+        for p in [alt,jerup,jerdown,jesup,jesdown,pdfup,pdfdown,scaleup,scaledown,data,ewk]:
 	    p.Clone().Write()
 
       canvas.SaveAs(prefix + "_data_sys.pdf")

@@ -26,16 +26,20 @@ for massbins in massbinssets:
     for l in f1.readlines():
         if "Best fit test statistic: " in l:
             observed=float(l.strip(" ").split(" ")[-1])
-    f2=open("goodnessfittoys"+name+".txt")
+    f2=open("goodnessfittoysmulti"+name+".txt")
     expected=0
     expected68up=0
     expected68down=0
     for l in f2.readlines():
-        if "Best fit test statistic: " in l:
+        if "Best fit test statistic: " in l or "Expected median" in l:
             expected=float(l.strip(" ").split(" ")[-1])
         if "68%" in l:
             expected68up=float(l.strip(" ").split(" ")[-1])
             expected68down=float(l.strip(" ").split(" ")[-5])
+        if "Expected - 1sigma" in l:
+            expected68down=float(l.strip(" ").split(" ")[-1])
+        if "Expected + 1sigma" in l:
+            expected68up=float(l.strip(" ").split(" ")[-1])
     sigma=0
     if observed>=expected:
        sigma=(observed-expected)/max((expected68up-expected),(expected-expected68down))

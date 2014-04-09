@@ -7,9 +7,9 @@ massbinssets=[[(4200,8000)],
 	      [(3000,3600)],
 	      [(2400,3000)],
 	      [(1900,2400)],
-              [(3600,4200),(4200,8000)],
-	      [(2400,3000),(3000,3600),(3600,4200),(4200,8000)],
-	      [(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000)],
+              #[(3600,4200),(4200,8000)],
+	      #[(2400,3000),(3000,3600),(3600,4200),(4200,8000)],
+	      #[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000)],
 	      ]
 
 signal="QCD"    
@@ -80,7 +80,7 @@ kmax 3 number of nuisance parameters
     #   text+="- 1 "
     text+="\nscale shape "
     for i in range(len(massbins)):
-       text+="- 1 "
+       text+="1 1 "
     cfg.writelines(text+"""
 -----------
 """)
@@ -89,4 +89,10 @@ kmax 3 number of nuisance parameters
     #os.system("combine chi_datacard_"+name+"_bestfit.txt -M MaxLikelihoodFit -n "+name+"bestfit > bestfit"+name+".txt")
     #os.system("python diffNuisances.py -a mlfit"+name+"bestfit.root > bestfit"+name+"_nuisances.txt")
     os.system("combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -n "+name+"goodnessfit > goodnessfit"+name+".txt")
-    os.system("combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -t 450 -n "+name+"goodnessfittoys > goodnessfittoys"+name+".txt")
+    for toy in range(0,20):
+       command="combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -t 450 --saveToys -n "+name+"goodnessfittoys_toy"+str(toy)+" > goodnessfittoys"+name+"_toy"+str(toy)+".txt"
+       if toy!=9 and toy!=18 and toy!=19:
+          command+="&"
+       os.system(command)
+    os.system('hadd -f higgsCombine'+name+'goodnessfittoys.GoodnessOfFit.mH120.123456.root higgsCombine'+name+'goodnessfittoys_toy*.GoodnessOfFit.mH120.123456.root')
+    os.system('root -q -b "./extractGoodnessStats.C(\\"'+name+'\\")" > goodnessfittoysmulti'+name+'.txt')
