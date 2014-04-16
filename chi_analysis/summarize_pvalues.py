@@ -14,7 +14,7 @@ massbinssets=[[(4200,8000)],
 	      [(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000)],
 	      ]
 
-for signal,signalMass in [("ADLOCI","11000"),("DLOCI","10000")]:
+for signal,signalMass in [("ADLOCI","11000"),("DLOCI","10000"),("EWK","0")]:
   for massbins in massbinssets:
     limits={}
     name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")+"_"+signalMass

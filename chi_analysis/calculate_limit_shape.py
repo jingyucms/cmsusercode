@@ -10,10 +10,11 @@ massbins=[(4200,8000),
 #	      (1900,2400),
               ]
 
+models=[47,48,49,50,51,52,53,54,]
 #models=[37,38,39,40,41,42,43,44,]
 #models=[17,18,19,20,21,22,23,24,]
 
-models=[9]
+#models=[9]
 #models=[2,3,4,5]
 #models=[100,101]
 #models=[102,103,104]
@@ -156,6 +157,39 @@ for model in models:
     signalMasses=[5000,6000,7000,8000,9000,10000,12000,13000,14000,15000]
 
 
+ if model==47:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(4200,8000),]
+ if model==48:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(3600,4200),]
+ if model==49:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(3000,3600),]
+ if model==50:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(2400,3000),]
+ if model==51:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(1900,2400),]
+ if model==52:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(3600,4200),(4200,8000),]
+ if model==53:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
+ if model==54:
+    signal="EWK"    
+    signalMasses=[0]
+    massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,8000),]
+
  if model==37:
     signal="ADLOCI"    
     signalMasses=[11000]
@@ -233,6 +267,8 @@ for model in models:
  for signalMass in signalMasses:
     if model>=100:
       signalWithMass=signal.split("_")[0]+"_"+str(signalMass)+"_"+signal.split("_")[1]
+    elif signalMass<100:
+      signalWithMass=signal
     else:
       signalWithMass=signal+str(signalMass)
     print signalWithMass

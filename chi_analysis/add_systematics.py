@@ -640,6 +640,10 @@ if __name__ == '__main__':
 
              ]
  
+    samples=[
+             ("QCDEWK",[]),
+             ]
+ 
     dataevents={}
     data={}
     qcdnorm={}
@@ -694,7 +698,7 @@ if __name__ == '__main__':
       legends=[]
 
       for j in range(len(massbins)):
-        if not "LO" in sample and j<2:
+        if not "LO" in sample and j<2 and not "EWK" in sample:
 	   continue
         # data
         histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi"
@@ -757,7 +761,8 @@ if __name__ == '__main__':
 	    low_bin=ewk.FindBin(nloqcd.GetXaxis().GetBinLowEdge(b+1))
 	    up_bin=ewk.FindBin(nloqcd.GetXaxis().GetBinUpEdge(b+1))
 	    correction=ewk.Integral(low_bin,up_bin-1)/(up_bin-low_bin)
-	    nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*correction)
+            if not "EWK" in samples[i][0]:
+	       nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*correction)
 	nloqcd.Scale(1./nloqcd.Integral())
         ewk.SetName("ewk-"+histname)
 
@@ -791,7 +796,16 @@ if __name__ == '__main__':
            massbinsci=massbins[3]
 	histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
         print histname
-	if "CT10nlo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
+	if "EWK" in samples[i][0]:
+  	  histname=histname.replace("_backup","")
+          ci=nloqcdbackup.Clone(histname)
+	  for b in range(ci.GetXaxis().GetNbins()):
+	    low_bin=ewk.FindBin(ci.GetXaxis().GetBinLowEdge(b+1))
+	    up_bin=ewk.FindBin(ci.GetXaxis().GetBinUpEdge(b+1))
+	    correction=ewk.Integral(low_bin,up_bin-1)/(up_bin-low_bin)
+            ci.SetBinContent(b+1,ci.GetBinContent(b+1)*correction)
+          ci.Scale(1./ci.Integral())
+	elif "CT10nlo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
           filenamecinlo="fastnlo/CIJET_MassBin_AllChiBins_"+samples[i][0].replace("QCD","")+".root"
           print filenamecinlo
           cinlofile = TFile.Open(filenamecinlo)
@@ -862,7 +876,7 @@ if __name__ == '__main__':
         # ALT (=NLO QCD)
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
-	if "LOCI" in samples[i][0] or "CT10" in samples[i][0] or "cteq" in samples[i][0]:
+	if "LOCI" in samples[i][0] or "CT10" in samples[i][0] or "cteq" in samples[i][0] or "EWK" in samples[i][0]:
     	    alt=nloqcd.Clone(histname)
 	else:
             alt=out.Get(histname)
