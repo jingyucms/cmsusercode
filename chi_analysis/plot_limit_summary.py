@@ -15,7 +15,7 @@ if __name__ == "__main__":
     gStyle.SetTitleOffset(1.3,"Y")
     gStyle.SetPadLeftMargin(0.05)
     gStyle.SetPadBottomMargin(0.10)
-    gStyle.SetPadTopMargin(0.05)
+    gStyle.SetPadTopMargin(0.06)
     gStyle.SetPadRightMargin(0.05)
     gStyle.SetMarkerSize(1.5)
     gStyle.SetHistLineWidth(1)
@@ -27,15 +27,31 @@ if __name__ == "__main__":
     gStyle.SetNdivisions(503, "Y")
     gStyle.SetLegendBorderSize(0)
     gStyle.SetErrorX(1)
+    #gStyle.SetPadTickX(1)
+    #gStyle.SetPadTickY(1)
+    #gStyle.SetTickLength(0.02,"XYZ")
+
+    gROOT.LoadMacro("CMS_lumi.C");
+    writeExtraText = true;	 #// if extra text
+    extraText  = "";  #// default extra text is "Preliminary"
+    lumi_13TeV  = ""; #// default is "19.7 fb^{-1}"
+    iPeriod = 2;	#// 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
+    iPos = 11;
+    #// second parameter in example_plot is iPos, which drives the position of the CMS logo in the plot
+    #// iPos=11 : top-left, left-aligned
+    #// iPos=33 : top-right, right-aligned
+    #// iPos=22 : center, centered
+    #// mode generally : 
+    #//   iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
 
     add=(7.05, 6.77, 7.22, 6.32, 0, 0)
 
     results=[
-            ("M_{S} (HLZ) n_{ED}=6", add[0]*8.3/7.0, add[1]*8.3/7.0, add[2]*8.3/7.0, add[3]*8.3/7.0, 0, 0),
-            ("M_{S} (HLZ) n_{ED}=5", add[0]*7.7/7.0, add[1]*7.7/7.0, add[2]*7.7/7.0, add[3]*7.7/7.0, 0, 0),
+            ("M_{S} (HLZ) n_{ED}=6", add[0]*0.840, add[1]*0.840, add[2]*0.840, add[3]*0.840, 0, 0),
+            ("M_{S} (HLZ) n_{ED}=5", add[0]*0.903, add[1]*0.903, add[2]*0.903, add[3]*0.903, 0, 0),
             ("M_{S} (HLZ) n_{ED}=4", add[0], add[1], add[2], add[3], 0, 0),
-            ("M_{S} (HLZ) n_{ED}=3", add[0]*5.9/7.0, add[1]*5.9/7.0, add[2]*5.9/7.0, add[3]*5.9/7.0, 0, 0),
-            ("M_{S} (HLZ) n_{ED}=2", add[0]*7.2/7.0, add[1]*7.2/7.0, add[2]*7.2/7.0, add[3]*7.2/7.0, 0, 0),
+            ("M_{S} (HLZ) n_{ED}=3", add[0]*1.189, add[1]*1.189, add[2]*1.189, add[3]*1.189, 0, 0),
+            ("M_{S} (HLZ) n_{ED}=2", add[0]/7.2*7.0, add[1]/7.2*7.0, add[2]/7.2*7.0, add[3]/7.2*7.0, 0, 0),
             ("#Lambda_{T} (GRW)", add[0], add[1], add[2], add[3], 0, 0),
             ("ADD", 0,0,0,0, 0, 0),
             ("#Lambda_{(V-A)}^{-}", 8.89, 8.63, 9.81, 7.45, 0, 0),
@@ -60,7 +76,7 @@ if __name__ == "__main__":
 
     c1 = TCanvas("Limit summary","Limit summary",0,0,300,320)
      
-    g1 = TH2F("grid", "", 20, xmin, xmax, 20, 0, len(results)+0.8)
+    g1 = TH2F("grid", "", 20, xmin, xmax, 20, 0, len(results)+2.5)
     g1.GetXaxis().SetTitle("Lower limit [TeV]")
     g1.GetXaxis().SetNdivisions((xmax-xmin)/2)
     g1.GetXaxis().SetLabelSize(0.038)
@@ -71,7 +87,7 @@ if __name__ == "__main__":
     graphs+=[g1]
 
     for x in range(xmin+1,xmax):
-      l4 = TLine(x,0.2,x,len(results)+0.8)
+      l4 = TLine(x,0.2,x,len(results)+2.5)
       l4.SetLineColor(16)
       l4.SetLineWidth(1)
       l4.SetLineStyle(3)
@@ -87,6 +103,7 @@ if __name__ == "__main__":
     for i in range(len(results)):
         g5 = TPave(results[i][3],i+0.85,results[i][4],i+1.15)
         g5.SetFillColor(15)
+        g5.SetLineColor(15)
         g5.Draw("same")
         graphs+=[g5]
     
@@ -133,16 +150,19 @@ if __name__ == "__main__":
     banner=TLatex(0.3,0.96,"CMS,   L = 19.7 fb^{-1},   #sqrt{s} = 8 TeV")
     banner.SetNDC()
     banner.SetTextSize(0.035)
-    banner.Draw()
+    #banner.Draw()
 
-    l2=TLegend(0.64,0.8,0.98,0.94,"")
+    l2=TLegend(0.64,0.77,0.98,0.91,"")
     l2.SetTextSize(0.038)
     l2.AddEntry(g2,"Observed","l")
     l2.AddEntry(g3,"Expected","l")
-    l2.AddEntry(g5,"Expected #pm 1#sigma","f")
-    #l2.AddEntry(g4,"Expected #pm 2#sigma","f")
+    l2.AddEntry(g5,"Expected #pm1#sigma","f")
+    #l2.AddEntry(g4,"Expected #pm2#sigma","f")
     l2.SetFillStyle(0)
     l2.Draw("same")
+
+    #// writing the lumi information and the CMS "logo"
+    CMS_lumi( c1, iPeriod, iPos );
 
     c1.Print("limits_summary.ps")
     c1.Print("limits_summary.pdf")
