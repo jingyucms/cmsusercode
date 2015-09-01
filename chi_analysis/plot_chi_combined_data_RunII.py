@@ -15,6 +15,14 @@ def rebin(h1,nbins,binning):
         h1.SetBinError(b+1,h1.GetBinError(b+1)/h1.GetBinWidth(b+1))
     return h1
 
+def rebin2(h1,nbins,binning):
+    h1=h1.Rebin(nbins,h1.GetName()+"_rebin",binning)
+    h1.Scale(1./h1.Integral())
+    for b in range(h1.GetXaxis().GetNbins()):
+        h1.SetBinContent(b+1,h1.GetBinContent(b+1)/h1.GetBinWidth(b+1))
+        h1.SetBinError(b+1,h1.GetBinError(b+1)/h1.GetBinWidth(b+1))
+    return h1
+
 if __name__=="__main__":
     gROOT.Reset()
     gROOT.SetStyle("Plain")
@@ -38,7 +46,7 @@ if __name__=="__main__":
     gROOT.LoadMacro("CMS_lumi.C");
     writeExtraText = True;	 #// if extra text
     extraText  = "Preliminary";  #// default extra text is "Preliminary"
-    lumi_13TeV  = "1 pb^{-1}"; #// default is "19.7 fb^{-1}"
+    lumi_13TeV  = "40 pb^{-1}"; #// default is "19.7 fb^{-1}"
     iPeriod = 4;	#// 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
     iPos = 33;
     #// second parameter in example_plot is iPos, which drives the position of the CMS logo in the plot
@@ -272,16 +280,22 @@ if __name__=="__main__":
             h13.Draw("histsame")
         h13.Draw("axissame")
 
-      if massbin==0:
+      if massbin<2:
         filename="datacard_shapelimit13TeV_chi.root"
+	if massbin==0:
+	   masstext="1400_2400"
+	elif massbin==1:
+	   masstext="2400_8000"
+        else:
+           masstext=str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")
         print filename
         f13 = TFile.Open(filename)
         new_hists+=[f13]
-        histname='data_obs#chi200_8000_rebin1'
+        histname='data_obs#chi'+masstext+'_rebin1'
         print histname
         h14=f13.Get(histname)
 	print h14
-	h14=rebin(h14,len(chi_binnings[massbin])-1,chi_binnings[massbin])
+	h14=rebin2(h14,len(chi_binnings[massbin+5])-1,chi_binnings[massbin+5])
         h14.SetMarkerStyle(21)
         h14.SetMarkerSize(0.4)
         h14.SetMarkerColor(4)
@@ -290,12 +304,31 @@ if __name__=="__main__":
 
         h14.Draw("pzesame")
 
+        histname='QCD#chi'+masstext+'_rebin1'
+        print histname
+        h15=f13.Get(histname)
+	print h15
+	h15=rebin2(h15,len(chi_binnings[massbin+5])-1,chi_binnings[massbin+5])
+        h15.SetLineColor(2)
+        h15.Add(TF1("offset",str(offsets[massbin]),1,16))
+
+        h15.Draw("histsame")
+	
+        #histname='QCD#genchi'+masstext+'_rebin1'
+        #print histname
+        #h16=f13.Get(histname)
+	#print h16
+	#h16=rebin2(h16,len(chi_binnings[massbin+5])-1,chi_binnings[massbin+5])
+        #h16.SetLineColor(7)
+        #h16.Add(TF1("offset",str(offsets[massbin]),1,16))
+
+        #h16.Draw("histsame")
 	
       if True:
 
         ylabel=offsets[massbin]*1.063+0.2
         
-        if massbin==0: title="0.2 < #font[72]{M_{jj}} < 2.4"
+        if massbin==0: title="1.4 < #font[72]{M_{jj}} < 2.4"
         if massbin==1: title="2.4 < #font[72]{M_{jj}} < 3.0"
         if massbin==2: title="3.0 < #font[72]{M_{jj}} < 3.6"
         if massbin==3: title="3.6 < #font[72]{M_{jj}} < 4.2"
@@ -322,9 +355,11 @@ if __name__=="__main__":
 
     l2=TLegend(0.23,0.72,0.76,0.93,"")
     l2.SetTextSize(0.035)
-    l2.AddEntry(h14,"13 TeV Data","ple")
+    l2.AddEntry(h14,"13 TeV Data detector-level","ple")
+    l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
+    #l2.AddEntry(h16,"13 TeV LO QCD particle-level","l")
     l2.AddEntry(h13,"13 TeV NLO QCD prediction","l")
-    l2.AddEntry(h1,"8 TeV Data","ple")
+    l2.AddEntry(h1,"8 TeV Data particle-level","ple")
     l2.AddEntry(h3,"8 TeV NLO QCD+EW prediction","f")
     l2.AddEntry(h6,"8 TeV NLO QCD prediction","l")
     #l2.AddEntry(h4,"8 TeV #Lambda_{LL}^{#font[122]{+}} (NLO) = 10 TeV","l")
@@ -335,12 +370,14 @@ if __name__=="__main__":
     l2b=TLegend(0.23,0.72,0.76,0.93,"")
     l2b.SetTextSize(0.035)
     l2b.AddEntry(h14," ","")
+    l2b.AddEntry(h15," ","")
+    #l2b.AddEntry(h16," ","")
     l2b.AddEntry(h13," ","")
     l2b.AddEntry(h1," ","")
     l2b.AddEntry(h0," ","l")
     l2b.AddEntry(h6," ","")
-    l2b.AddEntry(h4," ","")
-    l2b.AddEntry(h5," ","")
+    #l2b.AddEntry(h4," ","")
+    #l2b.AddEntry(h5," ","")
     l2b.SetFillStyle(0)
     l2b.Draw("same")
     
