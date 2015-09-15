@@ -33,6 +33,7 @@ def createPlots(sample,prefix,massbins,factor):
 
     plots=[]
     genplots=[]
+    variables=["#chi","p_{T1}","p_{T2}","y_{1}","y_{2}","y_{1}","y_{2}","y_{1}","y_{2}","y_{1}","y_{2}","y_{boost}","missing E_{T} / #sum E_{T}","#sum #vec p_{T} / #sum |p_{T}|","#Delta #phi","#Delta p_{T} / #sum p_T"]
     for massbin in massbins:
       plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';#chi;N',15,1,16)]
       genplots += [TH1F(prefix+'#genchi'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';#genchi;N',15,1,16)]
@@ -53,8 +54,10 @@ def createPlots(sample,prefix,massbins,factor):
      nevents=events.GetEntries()
      print sample,nevents
      for event in events:
-       #if event_count>2000:break
+       if event_count>2000:break
        if not "data" in sample and event_count>50000:break
+       
+       if not event.passFilter_HBHE or not event.passFilter_CSCHalo or not event.passFilter_GoodVtx or not event.passFilter_EEBadSc: continue
  
        event_count+=1
        if event_count%10000==1: print "event",event_count
@@ -78,13 +81,14 @@ def createPlots(sample,prefix,massbins,factor):
        for massbin in massbins:
          if len(event.jetAK4_pt)>=2 and yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
 	   plots[i].Fill(chi)
-         if not "data" in sample and len(event.genJetAK4_pt)>=2 and genyboost<1.11 and genmjj>=genmassbin[0] and genmjj<genmassbin[1]:
+         if not "data" in sample and len(event.genJetAK4_pt)>=2 and genyboost<1.11 and genmjj>=massbin[0] and genmjj<massbin[1]:
 	   genplots[i].Fill(genchi)
 	 i+=1
        if len(event.jetAK4_pt)>=2 and yboost<1.11 and chi<16:
          plots[i].Fill(mjj)
        if not "data" in sample and len(event.genJetAK4_pt)>=2 and genyboost<1.11 and genchi<16:
-         genplots[i].Fill(genbmjj)
+         genplots[i].Fill(genmjj)
+    print "analyzed",event_count,"events"
     if event_count>0:
       for plot in plots:
         plot.Scale(factor/event_count)
@@ -99,8 +103,10 @@ if __name__ == '__main__':
     prefix="datacard_shapelimit13TeV"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
               ]
-    massbins=[(1400,2400),
+    massbins=[(1000,1400),
+	      (1400,2400),
 	      (2400,8000),
 	      ]
  
