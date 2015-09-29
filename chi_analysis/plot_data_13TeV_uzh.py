@@ -54,13 +54,16 @@ def createPlots(sample,prefix,massbins,factor):
      nevents=events.GetEntries()
      print sample,nevents
      for event in events:
-       if event_count>2000:break
-       if not "data" in sample and event_count>50000:break
+       #if event_count>2000:break
+       if not "data" in sample and event_count>100000:break
        
-       if not event.passFilter_HBHE or not event.passFilter_CSCHalo or not event.passFilter_GoodVtx or not event.passFilter_EEBadSc: continue
- 
        event_count+=1
        if event_count%10000==1: print "event",event_count
+
+       if not event.passFilter_HBHE or not event.passFilter_CSCHalo or not event.passFilter_GoodVtx or not event.passFilter_EEBadSc: continue
+       if len(event.jetAK4_pt)<2 or event.jetAK4_pt[0]<100 or event.jetAK4_pt[1]<100 or abs(event.jetAK4_eta[0])>3 or abs(event.jetAK4_eta[1])>3: continue
+       if not bool(event.jetAK4_IDTight[0]) or not bool(event.jetAK4_IDTight[1]): continue
+ 
        jet1=TLorentzVector()
        jet2=TLorentzVector()
        if len(event.jetAK4_pt)>=2:
@@ -100,17 +103,29 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV"
+    prefix="datacard_shapelimit13TeV_25nsMC"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
               ]
-    massbins=[(1000,1400),
-	      (1400,2400),
+    massbins=[(1900,2400),
+              (2400,3000),
+              (3000,3600),
+              (3600,4200),
+              (4200,4800),
+              (4800,5400),
+              (5400,6000),
 	      (2400,8000),
-	      ]
+              ]
  
-    samples=[("data_obs",[("JetHT_50ns_data.txt",1.)]),
+    samples=[#("data_obs",[("JetHT_50ns_data.txt",1.)]),
+             #("data_obs",[("JetHT_25ns_data.txt",1.)]),
+             #("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
              ("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
                ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
                ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),

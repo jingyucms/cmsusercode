@@ -46,9 +46,9 @@ if __name__=="__main__":
     gROOT.LoadMacro("CMS_lumi.C");
     writeExtraText = True;	 #// if extra text
     extraText  = "Preliminary";  #// default extra text is "Preliminary"
-    lumi_13TeV  = "40 pb^{-1}"; #// default is "19.7 fb^{-1}"
+    lumi_13TeV  = "150 pb^{-1}"; #// default is "19.7 fb^{-1}"
     iPeriod = 4;	#// 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
-    iPos = 33;
+    iPos = 1;
     #// second parameter in example_plot is iPos, which drives the position of the CMS logo in the plot
     #// iPos=11 : top-left, left-aligned
     #// iPos=33 : top-right, right-aligned
@@ -67,15 +67,16 @@ if __name__=="__main__":
               (3000,3600),
               (3600,4200),
               (4200,4800),
-              (4800,5400),
-              (5400,6000)]
+              #(4800,5400),
+              #(5400,6000)
+	      ]
 
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,3,6,9,12,16),
+               (1,3,6,9,12,16),
                (1,3,6,9,12,16),
               ]
     chi_binnings=[]
@@ -232,8 +233,26 @@ if __name__=="__main__":
             h5.Add(TF1("offset",str(offsets[massbin]),1,16))
 
       if massbin<5:
+
+        h0.SetTitle("")
+	h0.GetYaxis().SetRangeUser(0,0.8)
+	if len(massbins13)==5:
+	  h0.GetYaxis().SetRangeUser(0,0.6)
+        h0.GetXaxis().SetTitle("#chi_{dijet}")
+        h0.GetYaxis().SetTitle("1/#sigma_{dijet} d#sigma_{dijet}/d#chi_{dijet}")
+        h0.GetYaxis().SetTitleOffset(1.4)
+        h0.GetXaxis().SetTitleOffset(0.8)
+        h0.GetYaxis().SetTitleSize(0.05)
+        h0.GetYaxis().SetLabelSize(0.04)
+        h0.GetXaxis().SetTitleSize(0.05)
+        h0.GetXaxis().SetLabelSize(0.04)
+        h0.GetXaxis().SetTickLength(0.02)
+        c.cd(1)
         
-        h0.Draw("axissame")
+        if massbin==4 and len(massbins13)==5:
+          h0.Draw("axis")
+        else:
+	  h0.Draw("axissame")
         h3.Draw("histsame")
         h2.Draw("histsame")
         h6.Draw("histsame")
@@ -263,6 +282,8 @@ if __name__=="__main__":
 
         h13.SetTitle("")
 	h13.GetYaxis().SetRangeUser(0,0.8)
+	if len(massbins13)==5:
+	  h13.GetYaxis().SetRangeUser(0,0.6)
         h13.GetXaxis().SetTitle("#chi_{dijet}")
         h13.GetYaxis().SetTitle("1/#sigma_{dijet} d#sigma_{dijet}/d#chi_{dijet}")
         h13.GetYaxis().SetTitleOffset(1.4)
@@ -281,21 +302,19 @@ if __name__=="__main__":
         h13.Draw("axissame")
 
       if massbin<2:
-        filename="datacard_shapelimit13TeV_chi.root"
-	if massbin==0:
-	   masstext="1400_2400"
-	elif massbin==1:
-	   masstext="2400_8000"
-        else:
-           masstext=str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")
+        filename="datacard_shapelimit13TeV_25nsNoJEC_chi.root"
         print filename
         f13 = TFile.Open(filename)
         new_hists+=[f13]
+	if massbin==1:
+	   masstext="2400_8000"
+        else:
+           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
         histname='data_obs#chi'+masstext+'_rebin1'
         print histname
         h14=f13.Get(histname)
 	print h14
-	h14=rebin2(h14,len(chi_binnings[massbin+5])-1,chi_binnings[massbin+5])
+	h14=rebin2(h14,len(chi_binnings[massbin])-1,chi_binnings[massbin])
         h14.SetMarkerStyle(21)
         h14.SetMarkerSize(0.4)
         h14.SetMarkerColor(4)
@@ -304,32 +323,44 @@ if __name__=="__main__":
 
         h14.Draw("pzesame")
 
+      if True:
+        filename="datacard_shapelimit13TeV_25nsMC_chi.root"
+        print filename
+        f13a = TFile.Open(filename)
+        new_hists+=[f13a]
+        masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
         histname='QCD#chi'+masstext+'_rebin1'
         print histname
-        h15=f13.Get(histname)
+        h15=f13a.Get(histname)
 	print h15
-	h15=rebin2(h15,len(chi_binnings[massbin+5])-1,chi_binnings[massbin+5])
+	h15=rebin2(h15,len(chi_binnings[massbin])-1,chi_binnings[massbin])
         h15.SetLineColor(2)
         h15.Add(TF1("offset",str(offsets[massbin]),1,16))
 
         h15.Draw("histsame")
 	
-        #histname='QCD#genchi'+masstext+'_rebin1'
-        #print histname
-        #h16=f13.Get(histname)
-	#print h16
-	#h16=rebin2(h16,len(chi_binnings[massbin+5])-1,chi_binnings[massbin+5])
-        #h16.SetLineColor(7)
-        #h16.Add(TF1("offset",str(offsets[massbin]),1,16))
+        histname='QCD#genchi'+masstext+'_rebin1'
+        print histname
+        h16=f13a.Get(histname)
+	print h16
+	h16=rebin2(h16,len(chi_binnings[massbin])-1,chi_binnings[massbin])
+        h16.SetLineColor(7)
+	h16.SetLineStyle(2)
+        h16.Add(TF1("offset",str(offsets[massbin]),1,16))
 
-        #h16.Draw("histsame")
+        h16.Draw("histsame")
 	
       if True:
 
-        ylabel=offsets[massbin]*1.063+0.2
+	if len(massbins13)==5:
+  	  ylabel=offsets[massbin]*1.415+0.222
+          if massbin==3: ylabel+=0.055
+          if massbin==4: ylabel+=0.04
+        else:
+  	  ylabel=offsets[massbin]*1.063+0.2
         
-        if massbin==0: title="1.4 < #font[72]{M_{jj}} < 2.4"
-        if massbin==1: title="2.4 < #font[72]{M_{jj}} < 3.0"
+        if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4"
+        if massbin==1: title="2.4 < #font[72]{M_{jj}} (< 3.0)"
         if massbin==2: title="3.0 < #font[72]{M_{jj}} < 3.6"
         if massbin==3: title="3.6 < #font[72]{M_{jj}} < 4.2"
         if massbin==4: title="4.2 < #font[72]{M_{jj}} < 4.8"
@@ -357,7 +388,7 @@ if __name__=="__main__":
     l2.SetTextSize(0.035)
     l2.AddEntry(h14,"13 TeV Data detector-level","ple")
     l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
-    #l2.AddEntry(h16,"13 TeV LO QCD particle-level","l")
+    l2.AddEntry(h16,"13 TeV LO QCD particle-level","l")
     l2.AddEntry(h13,"13 TeV NLO QCD prediction","l")
     l2.AddEntry(h1,"8 TeV Data particle-level","ple")
     l2.AddEntry(h3,"8 TeV NLO QCD+EW prediction","f")
@@ -371,7 +402,7 @@ if __name__=="__main__":
     l2b.SetTextSize(0.035)
     l2b.AddEntry(h14," ","")
     l2b.AddEntry(h15," ","")
-    #l2b.AddEntry(h16," ","")
+    l2b.AddEntry(h16," ","")
     l2b.AddEntry(h13," ","")
     l2b.AddEntry(h1," ","")
     l2b.AddEntry(h0," ","l")
@@ -390,5 +421,5 @@ if __name__=="__main__":
     #// writing the lumi information and the CMS "logo"
     CMS_lumi( c, iPeriod, iPos );
 
-    c.SaveAs(prefix + "_combined_RunII.pdf")
-    c.SaveAs(prefix + "_combined_RunII.eps")
+    c.SaveAs(prefix + "_combined_RunII_25ns.pdf")
+    c.SaveAs(prefix + "_combined_RunII_25ns.eps")
