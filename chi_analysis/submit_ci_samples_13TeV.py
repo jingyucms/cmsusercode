@@ -1,34 +1,37 @@
 import os
 
 cm="13"
-if cm=="13":
-  minMasses=[4500]
-  signalMasses=[12000,13000,14000,16000,18000,50000]
-  #signalMasses=[20000,22000]
-else:
-  minMasses=[3500]
-  signalMasses=[8000,10000,12000,14000,50000]
+minMasses=[1500,1900,2400,2800,3300,3800,4300] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
+maxMasses=[1900,2400,2800,3300,3800,4300,13000] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
+#signalMasses=[50000,8000,9000,10000,11000,12000,13000,14000,16000,18000]
+signalMasses=[50000]
 couplings=[(1,0,0),]
 samples=[]
 
 for minMass in minMasses:
-    #samples+=[('pythia8_qcd',minMass,"",""),]
-    
     for signalMass in signalMasses:
         for coupling in couplings:
-             samples+=[('pythia8_ci',minMass,signalMass,coupling),]
+            samples+=[('pythia8_ci',minMass,maxMasses[minMasses.index(minMass)],signalMass,coupling),]
 
-    #samples+=[('pythia8_qcdNonPert',minMass,"",""),]
+samples+=[('pythia8_ci',1000,1500,50000,(1,0,0)),]
 
-version=cm+"TeV_Nov7"
+print samples
 
-for sample,minMass,signalMass,coupling in samples:
-    samplename=sample+"_m"+str(minMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version
+version=cm+"TeV_Oct1"
+
+for sample,minMass,maxMass,signalMass,coupling in samples:
+  
+    if signalMass==50000:
+       numjobs=100
+    else:
+       numjobs=1
+
+    samplename=sample+"_m"+str(minMass)+"_"+str(maxMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version
     cfg=open(samplename+".py","w")
     cfg.writelines("""
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process("PFAOD")
+process = cms.Process("GEN")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(300000) )
@@ -37,7 +40,7 @@ process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
     "PoolOutputModule",
     process.AODSIMEventContent,
-    fileName = cms.untracked.string('/opt2/chi_analysis/"""+samplename+""".root'),
+    fileName = cms.untracked.string('GEN.root'),
     )
 
 process.load("CommonTools.ParticleFlow.PF2PAT_EventContent_cff")
@@ -47,6 +50,10 @@ process.out.outputCommands.extend( process.prunedAODForPF2PATEventContent.output
 process.out.outputCommands.extend(
     [
       'keep GenEventInfoProduct_*_*_*',
+      'keep *_ak4GenJets_*_*',
+      'keep *_ak4CaloJets_*_*',
+      'keep *_ak4JetID_*_*',
+      'keep *_ak4JetExtender_*_*',
       'keep *_ak5GenJets_*_*',
       'keep *_ak5CaloJets_*_*',
       'keep *_ak5JetID_*_*',
@@ -78,28 +85,13 @@ process.out.outputCommands.extend(
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load("FWCore.MessageService.MessageLogger_cfi")
-#process.load('FastSimulation.Configuration.EventContent_cff')
-#process.load('FastSimulation.PileUpProducer.PileUpSimulator_NoPileUp_cff')
-#process.load('FastSimulation.Configuration.Geometries_START_cff')
-#process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
-#process.load('GeneratorInterface.Core.genFilterSummary_cff')
-#process.load('FastSimulation.Configuration.FamosSequences_cff')
-#process.load('IOMC.EventVertexGenerators.VtxSmearedParameters_cfi')
-#process.load('FastSimulation.Configuration.HLT_GRun_cff')
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.configurationMetadata = cms.untracked.PSet(
     version = cms.untracked.string('PRIVAT'),
     annotation = cms.untracked.string('PRIVAT'),
     name = cms.untracked.string('PRIVAT')
 )
-
-#process.famosSimHits.SimulateCalorimetry = True
-#process.famosSimHits.SimulateTracking = True
-#process.Realistic7TeV2011CollisionVtxSmearingParameters.type = cms.string("BetaFunc")
-#process.famosSimHits.VertexGenerator = process.Realistic7TeV2011CollisionVtxSmearingParameters
-#process.famosPileUp.VertexGenerator = process.Realistic7TeV2011CollisionVtxSmearingParameters
 
 # Input source
 process.source = cms.Source("EmptySource")
@@ -111,6 +103,9 @@ process.MessageLogger=cms.Service("MessageLogger",
     logs = cms.untracked.PSet(threshold=cms.untracked.string('WARNING'))
 )
 
+from Configuration.Generator.Pythia8CommonSettings_cfi import *
+from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *
+
 process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 	comEnergy = cms.double("""+cm+"""000.0),
 	crossSection = cms.untracked.double(1e10),
@@ -121,14 +116,13 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 	#useUserHook = cms.bool(True),
 	
 	PythiaParameters = cms.PSet(
+                pythia8CommonSettingsBlock,
+                pythia8CUEP8M1SettingsBlock,
 		processParameters = cms.vstring(
 			'Main:timesAllowErrors    = 10000',
-			'ParticleDecays:limitTau0 = on',
-			'ParticleDecays:tauMax = 10',
 			'PhaseSpace:mHatMin = """+str(minMass)+""" ',
+			'PhaseSpace:mHatMax = """+str(maxMass)+""" ',
 			'PhaseSpace:pTHatMin = """+str(minMass/10)+""" ',
-			'Tune:pp 5',
-			'Tune:ee 3',
 """)
     if signalMass=="" and "NonPert" in sample:
         cfg.writelines("""			'HardQCD:all = on ',
@@ -159,23 +153,24 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 """)
     cfg.writelines("""
 		),
-		parameterSets = cms.vstring('processParameters')
+		parameterSets = cms.vstring('pythia8CommonSettings',
+                                            'pythia8CUEP8M1Settings',
+                                            'processParameters')
 	)
 )
 
-#process.pfPileUp.PFCandidates=cms.InputTag("particleFlow")
-#process.pfNoPileUp.bottomCollection=cms.InputTag("particleFlow")
-#process.pfPileUpCandidates.bottomCollection=cms.InputTag("particleFlow")
-
 process.load("RecoJets.Configuration.GenJetParticles_cff")
 process.load("RecoJets.Configuration.RecoGenJets_cff")
+process.ak4GenJets.jetPtMin="""+str(minMass/10)+"""
 process.ak5GenJets.jetPtMin="""+str(minMass/10)+"""
 
-process.p = cms.Path(process.generator*process.genParticles*process.genJetParticles*process.ak5GenJets)#*process.ca08PrunedGenJets
+process.p = cms.Path(process.generator*process.genParticles*process.genJetParticles*process.ak4GenJets*process.ak5GenJets)#*process.ca08PrunedGenJets
 process.endpath = cms.EndPath(process.out)
 process.schedule = cms.Schedule(process.p,process.endpath)
-process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles_*_*','drop *_genParticlesForJets_*_*')
+process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles*_*_*','drop *_genParticlesForJets*_*_*')
 """)
     cfg.close()
     #os.system("cmsBatch.py 200 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")
-    os.system("cmsRun "+samplename+".py > "+samplename+".log &")
+    #os.system("cmsRun "+samplename+".py > "+samplename+".log &")
+    for jobnum in range(numjobs):
+      os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")

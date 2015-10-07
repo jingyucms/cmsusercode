@@ -66,7 +66,7 @@ if __name__=="__main__":
               (2400,3000),
               (3000,3600),
               (3600,4200),
-              (4200,4800),
+              (4200,13000),
               #(4800,5400),
               #(5400,6000)
 	      ]
@@ -195,15 +195,15 @@ if __name__=="__main__":
         h3.SetLineColor(15)
         h3.SetFillColor(15)
 
-        if massbin>2:
-          filename="datacard_shapelimit_DNLOCI10000_chi.root"
+        if massbin>1:
+          filename="datacard_shapelimit13TeV_GEN_chi.root"
           print filename
           f = TFile.Open(filename)
           new_hists+=[f]
-          histname='QCDDNLOCI10000#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+          histname='QCDCIplusLL10000#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
           print histname
           h4=f.Get(histname)
-          h4.SetLineColor(2)
+          h4.SetLineColor(8)
 	  h4.Scale(1./h4.Integral())
 	  for b in range(h4.GetNbinsX()):
 	       h4.SetBinContent(b+1,h4.GetBinContent(b+1)/h4.GetBinWidth(b+1))
@@ -228,7 +228,7 @@ if __name__=="__main__":
         h1sysstat.Apply(TF2("offset",str(offsets[massbin])+"+y",1,16))
         h2.Add(TF1("offset",str(offsets[massbin]),1,16))
         h3.Add(TF1("offset",str(offsets[massbin]),1,16))
-        if massbin>2:
+        if massbin>1:
             h4.Add(TF1("offset",str(offsets[massbin]),1,16))
             h5.Add(TF1("offset",str(offsets[massbin]),1,16))
 
@@ -257,8 +257,8 @@ if __name__=="__main__":
         h2.Draw("histsame")
         h6.Draw("histsame")
         h0.Draw("histsame")
-        #if massbin>2:
-             #h4.Draw("histsame")
+        if massbin>1:
+             h4.Draw("histsame")
              #h5.Draw("histsame")
         h1.Draw("pzesame")
         h1sys.Draw("||same")
@@ -270,7 +270,7 @@ if __name__=="__main__":
         print filename
         f13 = TFile.Open(filename)
         new_hists+=[f13]
-        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"")
+        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("13000","4800")
         print histname
         h13=f13.Get(histname)
 	print h13
@@ -328,7 +328,7 @@ if __name__=="__main__":
         print filename
         f13a = TFile.Open(filename)
         new_hists+=[f13a]
-        masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
+        masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("13000","4800")
         histname='QCD#chi'+masstext+'_rebin1'
         print histname
         h15=f13a.Get(histname)
@@ -390,10 +390,10 @@ if __name__=="__main__":
     l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
     l2.AddEntry(h16,"13 TeV LO QCD particle-level","l")
     l2.AddEntry(h13,"13 TeV NLO QCD prediction","l")
+    l2.AddEntry(h4,"13 TeV #Lambda_{LL}^{#font[122]{+}} (NLO) = 10 TeV","l")
     l2.AddEntry(h1,"8 TeV Data particle-level","ple")
     l2.AddEntry(h3,"8 TeV NLO QCD+EW prediction","f")
     l2.AddEntry(h6,"8 TeV NLO QCD prediction","l")
-    #l2.AddEntry(h4,"8 TeV #Lambda_{LL}^{#font[122]{+}} (NLO) = 10 TeV","l")
     #l2.AddEntry(h5,"8 TeV #Lambda_{T} (GRW) = 7 TeV","l")
     l2.SetFillStyle(0)
     l2.Draw("same")
@@ -404,10 +404,10 @@ if __name__=="__main__":
     l2b.AddEntry(h15," ","")
     l2b.AddEntry(h16," ","")
     l2b.AddEntry(h13," ","")
+    l2b.AddEntry(h4," ","")
     l2b.AddEntry(h1," ","")
     l2b.AddEntry(h0," ","l")
     l2b.AddEntry(h6," ","")
-    #l2b.AddEntry(h4," ","")
     #l2b.AddEntry(h5," ","")
     l2b.SetFillStyle(0)
     l2b.Draw("same")
