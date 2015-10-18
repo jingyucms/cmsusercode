@@ -50,7 +50,7 @@ if __name__ == '__main__':
   ndata=15000
   sets=[""]
 
-  selection = "weight*vertexWeight*((deta<1.3)&&(abs(Jet1eta)<2.4)&&(Jet1pt>800)&&(Jet1pt<7000)&&(Jet1MassDrop<0.5))"
+  selection = "weight*vertexWeight*((deta<1.3)&&(abs(Jet1eta)<1.0)&&(Jet1pt>500)&&(Jet1pt<7000)&&(Jet1MassDrop<0.3))"
   names = [#"npv",
 	   #"pt",
 	   #"eta",
@@ -547,7 +547,7 @@ if __name__ == '__main__':
   legend4.Draw("same")
 
   if runSet!=3:
-    legend2=TLegend(0.17,0.8,0.5,0.85,"p_{T} > 600 GeV")
+    legend2=TLegend(0.17,0.8,0.5,0.85,"p_{T} > 500 GeV")
     legend2.SetTextSize(0.03)
     legend2.SetFillStyle(0)
     legend2.Draw("same")
@@ -558,7 +558,7 @@ if __name__ == '__main__':
   #  legend2.SetFillStyle(0)
   #  legend2.Draw("same")
 
-  legend2a=TLegend(0.24,0.75,0.5,0.8,"|#eta|<2.4")
+  legend2a=TLegend(0.24,0.75,0.5,0.8,"|#eta|<1.0")
   legend2a.SetTextSize(0.03)
   legend2a.SetFillStyle(0)
   legend2a.Draw("same")
@@ -575,13 +575,14 @@ if __name__ == '__main__':
 
   #if "aftermass" in names[plots.index(plot)]:
   if True:
-     legend3=TLegend(0.17,0.7,0.5,0.75,"#tau_{2}/#tau_{1}<0.4")
+     #legend3=TLegend(0.17,0.7,0.5,0.75,"#tau_{2}/#tau_{1}<0.25")
+     legend3=TLegend(0.17,0.7,0.5,0.75,"massdrop < 0.2")
      legend3.SetTextSize(0.03)
      legend3.SetFillStyle(0)
      legend3.Draw("same")
 
-  canvas.SaveAs("w_jet_mass3_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".png")
-  canvas.SaveAs("w_jet_mass3_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".pdf")
-  canvas.SaveAs("w_jet_mass3_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".root")
-  canvas.SaveAs("w_jet_mass3_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".C")
-  canvas.SaveAs("w_jet_mass3_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".eps")
+  canvas.SaveAs("w_jet_mass4_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".png")
+  canvas.SaveAs("w_jet_mass4_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".pdf")
+  canvas.SaveAs("w_jet_mass4_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".root")
+  canvas.SaveAs("w_jet_mass4_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".C")
+  canvas.SaveAs("w_jet_mass4_"+names[plots.index(plot)]+"_"+str(runSet+100*theory)+".eps")
