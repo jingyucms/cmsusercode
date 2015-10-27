@@ -14,15 +14,37 @@ def writeHistogram(name,points):
    histogram.Write()
 
 if __name__=="__main__":
-    paths=[("fnl5622i_v23"),
+    uncpaths=[("6P"),
+           ("HC"),
+          ]
+    uncpoints={}
+    for path in uncpaths:
+     for filename in os.listdir("."):
+        skip=False
+        if not ".log" in filename: skip=True
+	if not path.replace("_ak4","").replace("_ak5","") in filename: skip=True
+        if skip: continue
+        print filename
+        f=file(filename)
+        pointsNLO=[]
+        name=""
+	previousBin=None
+        for line in f.readlines():
+            split=line.replace("D","e").strip(" ").replace("  "," ").replace("  "," ").replace("  "," ").replace("  "," ").split(" ")
+	    print split
+            if len(split)==4 and "E-02" in split[1]:
+	       uncpoints[path+split[0]]=(float(split[2]),float(split[3]))
+
+    paths=[("fnl5622i_v23_ak5"),
+           ("fnl5662i_v23_fix_CT14_ak4"),
           ]
     for path in paths:
      rootfile=TFile(path+".root","RECREATE")
      for filename in os.listdir("."):
         skip=False
         if not ".log" in filename: skip=True
-	for s in path:
-	  if not s in filename: skip=True
+	if not path.replace("_ak4","").replace("_ak5","") in filename: skip=True
+	if "6P" in filename or "HC" in filename: skip=True
         if skip: continue
         print filename
         f=file(filename)
@@ -37,8 +59,32 @@ if __name__=="__main__":
     	       if previousBin!=name:
 	          if previousBin!=None:
                       writeHistogram(previousBin,pointsNLO)
+        	      # scale Down
+        	      pointsScaleDown=[(chimin,chimax,value*(1+uncpoints["6P"+index][0])) for chimin,chimax,value,index in pointsNLO]
+        	      writeHistogram(previousBin+"scaleDown",pointsScaleDown)
+        	      # scale up
+        	      pointsScaleUp=[(chimin,chimax,value*(1+uncpoints["6P"+index][1])) for chimin,chimax,value,index in pointsNLO]
+        	      writeHistogram(previousBin+"scaleUp",pointsScaleUp)
+        	      # PDF Down
+        	      pointsPDFDown=[(chimin,chimax,value*(1+uncpoints["HC"+index][0])) for chimin,chimax,value,index in pointsNLO]
+        	      writeHistogram(previousBin+"PDFDown",pointsPDFDown)
+        	      # PDF up
+        	      pointsPDFUp=[(chimin,chimax,value*(1+uncpoints["HC"+index][1])) for chimin,chimax,value,index in pointsNLO]
+        	      writeHistogram(previousBin+"PDFUp",pointsPDFUp)
 		  pointsNLO=[]
 		  previousBin=name
-               pointsNLO+=[(float(split[6]),float(split[7]),float(split[10]))]
+               pointsNLO+=[(float(split[6]),float(split[7]),float(split[10]),split[0])]
         writeHistogram(previousBin,pointsNLO)
+	# scale Down
+	pointsScaleDown=[(chimin,chimax,value*(1+uncpoints["6P"+index][0])) for chimin,chimax,value,index in pointsNLO]
+        writeHistogram(previousBin+"scaleDown",pointsScaleDown)
+	# scale up
+	pointsScaleUp=[(chimin,chimax,value*(1+uncpoints["6P"+index][1])) for chimin,chimax,value,index in pointsNLO]
+        writeHistogram(previousBin+"scaleUp",pointsScaleUp)
+	# PDF Down
+	pointsPDFDown=[(chimin,chimax,value*(1+uncpoints["HC"+index][0])) for chimin,chimax,value,index in pointsNLO]
+        writeHistogram(previousBin+"PDFDown",pointsPDFDown)
+	# PDF up
+	pointsPDFUp=[(chimin,chimax,value*(1+uncpoints["HC"+index][1])) for chimin,chimax,value,index in pointsNLO]
+        writeHistogram(previousBin+"PDFUp",pointsPDFUp)
      rootfile.Close()

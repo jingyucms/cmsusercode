@@ -42,6 +42,8 @@ if __name__ == '__main__':
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,6,9,12,16),
               ]
     chi_binnings=[]
@@ -51,9 +53,11 @@ if __name__ == '__main__':
             chi_binnings[-1].append(chi_bin)
     massbins=[(1900,2400),
               (2400,3000),
-	      (3000,3600),
-	      (3600,4200),
-	      (4200,13000)]
+              (3000,3600),
+              (3600,4200),
+              (4200,4800),
+              (4800,5400),
+              (5400,13000)]
     mass_bins_nlo3={}
     mass_bins_nlo3[2]=1900
     mass_bins_nlo3[3]=2400
@@ -67,23 +71,10 @@ if __name__ == '__main__':
     	      (3,),
     	      (4,),
     	      (5,),
-    	      (6,7,8,),
+    	      (6,),
+	      (7,),
+	      (8,),
     	     ]
-    mass_bins_nlo={}
-    mass_bins_nlo[2]=1900
-    mass_bins_nlo[3]=2400
-    mass_bins_nlo[4]=3000
-    mass_bins_nlo[5]=3600
-    mass_bins_nlo[6]=4000
-    mass_bins_nlo[7]=4200
-    mass_bins_nlo[8]=8000
-    mass_bins_nlo2=[(2,),
-    	      (3,),
-    	      (4,),
-    	      (5,6,),
-    	      (7,),
-    	     ]
-    mass_bins_nlo_max=7
 
     
     samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Oct1",3.307e-06),
@@ -159,6 +150,79 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Oct1",3.507e-09),
 		       ]),
              ]
+    samples=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_6000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_6000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_6000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD7000",[("pythia8_add_m1500_1900_7000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_7000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_7000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_7000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_7000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_7000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_7000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD8000",[("pythia8_add_m1500_1900_8000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_8000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_8000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_8000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_8000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_8000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_8000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD9000",[("pythia8_add_m1500_1900_9000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_9000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_9000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_9000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_9000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_9000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_9000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD10000",[("pythia8_add_m1500_1900_10000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_10000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_10000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_10000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_10000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_10000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_10000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD11000",[("pythia8_add_m1500_1900_11000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_11000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_11000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_11000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_11000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_11000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_11000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD12000",[("pythia8_add_m1500_1900_12000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_12000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_12000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_12000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_12000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_12000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_12000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD13000",[("pythia8_add_m1500_1900_13000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_13000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_13000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_13000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_13000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_13000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_13000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ("QCDADD14000",[("pythia8_add_m1500_1900_14000_0_0_0_1_13TeV_Oct1",3.307e-06),
+		       ("pythia8_add_m1900_2400_14000_0_0_0_1_13TeV_Oct1",8.836e-07),
+		       ("pythia8_add_m2400_2800_14000_0_0_0_1_13TeV_Oct1",1.649e-07),
+		       ("pythia8_add_m2800_3300_14000_0_0_0_1_13TeV_Oct1",6.446e-08),
+		       ("pythia8_add_m3300_3800_14000_0_0_0_1_13TeV_Oct1",1.863e-08),
+		       ("pythia8_add_m3800_4300_14000_0_0_0_1_13TeV_Oct1",5.867e-09),
+		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Oct1",3.507e-09),
+		       ]),
+             ]
  
     dataevents={}
     data={}
@@ -166,10 +230,15 @@ if __name__ == '__main__':
     for prefix in prefixs: 
      # signal cards
      for i in range(len(samples)):
-      sample=prefix + '_GEN_chi.root'
+      sample=prefix + '_GENaddv2_chi.root'
       print sample
       out=TFile(sample,'UPDATE')
       closefiles=[]
+ 
+      # LO QCD file
+      sample2=prefix + '_GENv2_chi.root'
+      print sample2
+      in2=TFile(sample2,'READ')
 
       # data file
       insample='datacards/chi_EPS2.root'
@@ -185,14 +254,10 @@ if __name__ == '__main__':
       unfoldfile2=TFile(unfoldsample2,'READ')
 
       # NLO correction
-      filename1nu2="fastnlo/RunII/fnl5622i_v23.root"
+      filename1nu2="fastnlo/RunII/fnl5662i_v23_fix_CT14_ak4.root"
       print filename1nu2
       nlofile2 = TFile.Open(filename1nu2)
       closefiles+=[nlofile2]
-      filename1nu="fastnlo/fnl3622g_ct10-nlo_aspdf.root"
-      print filename1nu
-      nlofile = TFile.Open(filename1nu)
-      closefiles+=[nlofile]
 
       # EWK correction
       filename1ewk="fastnlo/DijetAngularCMS-CT10nlo-8TeV_R0.5_MassBin_AllChiBins.root"
@@ -221,13 +286,13 @@ if __name__ == '__main__':
         if not "LO" in sample and j<2 and not "EWK" in sample:
 	   continue
         # data
-        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("13000","7000")+"_chi"
+        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("5400_13000","4200_13000").replace("13000","7000")+"_chi"
         print histname
 	if useLensData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","4200-13000").replace("13000","7000")
           else:
-	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","7000")
           print histname2
   	  if "1900" in str(massbins[j]):
              data = TH1D(unfoldfile2.Get(histname2))
@@ -236,9 +301,9 @@ if __name__ == '__main__':
 	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("13000","8000")+"_unfolded"
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","4200-13000").replace("13000","8000")+"_unfolded"
           else:
-	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","8000")+"_unfolded"
           print histname2
   	  if "1900" in str(massbins[j]):
              data = TH1F(unfoldfile2.Get(histname2))
@@ -271,7 +336,7 @@ if __name__ == '__main__':
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
 
         # EWK corrections
-        histname='chi-'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace('_',"-").replace("13000","8000")
+        histname='chi-'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace('_',"-").replace("4200-4800","4200-13000").replace("4800-5400","4200-13000").replace("5400-13000","4200-13000").replace("13000","8000")
         print histname
         ewk=ewkfile.Get(histname)
 	for b in range(nloqcd.GetXaxis().GetNbins()):
@@ -286,7 +351,7 @@ if __name__ == '__main__':
         # QCD (empty background, not used in limit)
         histname='QCD#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
         print histname
-        qcd=out.Get(histname)
+        qcd=in2.Get(histname)
         out.cd()
 	for k in range(0,200):
             out.Delete(histname.replace("_backup","")+";"+str(k))
@@ -401,11 +466,13 @@ if __name__ == '__main__':
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
-	slopes[1900]=0.01
-	slopes[2400]=0.01
-	slopes[3000]=0.05
-	slopes[3600]=0.1
-	slopes[4200]=0.15
+	slopes[1900]=0.1 #0.01
+	slopes[2400]=0.1 #0.01
+	slopes[3000]=0.1 #0.05
+	slopes[3600]=0.1  #0.1
+	slopes[4200]=0.15 #0.15
+	slopes[4800]=0.15 #0.15
+	slopes[5400]=0.15 #0.15
 	for b in range(clone.GetNbinsX()):
 	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
             jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
@@ -437,7 +504,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
+	jes=jespad.GetListOfPrimitives()[min(j,4)]
         for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
@@ -453,7 +520,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jesfile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[-len(massbins)-1+j]
+	jes=jespad.GetListOfPrimitives()[min(j,4)]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
@@ -466,34 +533,34 @@ if __name__ == '__main__':
 
         # NLO PDFup/down
         nloPDFupqcd=None
-        for k in mass_bins_nlo2[j]:
-         histname="h10"
-         if k+mass_bins_nlo_max<10: histname+="0"
-         histname+=str(k+mass_bins_nlo_max)+"01"
+        for k in mass_bins_nlo_list[j]:
+         histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFUp"
          print histname
-         hnloPDFup = TH1F(nlofile.Get(histname))
+         hnloPDFup = TH1F(nlofile2.Get(histname))
          hnloPDFup=rebin(hnloPDFup,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloPDFupqcd:
 	    nloPDFupqcd.Add(hnloPDFup)
 	 else:
 	    nloPDFupqcd=hnloPDFup
-        nloPDFupqcd.Scale(1./len(mass_bins_nlo2[j])) # average uncertainty when merging bins from Klaus
-	nloPDFupqcd.Multiply(nloqcd)
+        for b in range(nloPDFupqcd.GetXaxis().GetNbins()):
+           nloPDFupqcd.SetBinContent(b+1,nloPDFupqcd.GetBinContent(b+1)*nloPDFupqcd.GetBinWidth(b+1))
+	nloPDFupqcd.Add(nloqcdbackup,-1)
+	nloPDFupqcd.Scale(1./nloqcdbackup.Integral())
 
         nloPDFdownqcd=None
-        for k in mass_bins_nlo2[j]:
-         histname="h10"
-         if k+mass_bins_nlo_max<10: histname+="0"
-         histname+=str(k+mass_bins_nlo_max)+"02"
+        for k in mass_bins_nlo_list[j]:
+         histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFDown"
          print histname
-         hnloPDFdown = TH1F(nlofile.Get(histname))
+         hnloPDFdown = TH1F(nlofile2.Get(histname))
          hnloPDFdown=rebin(hnloPDFdown,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloPDFdownqcd:
 	    nloPDFdownqcd.Add(hnloPDFdown)
 	 else:
 	    nloPDFdownqcd=hnloPDFdown
-        nloPDFdownqcd.Scale(1./len(mass_bins_nlo2[j])) # average uncertainty when merging bins from Klaus
-	nloPDFdownqcd.Multiply(nloqcd)
+        for b in range(nloPDFdownqcd.GetXaxis().GetNbins()):
+           nloPDFdownqcd.SetBinContent(b+1,nloPDFdownqcd.GetBinContent(b+1)*nloPDFdownqcd.GetBinWidth(b+1))
+	nloPDFdownqcd.Add(nloqcdbackup,-1)
+	nloPDFdownqcd.Scale(1./nloqcdbackup.Integral())
 
         pdfup=alt.Clone(alt.GetName()+"_pdfUp")
         pdfdown=alt.Clone(alt.GetName()+"_pdfDown")
@@ -515,35 +582,34 @@ if __name__ == '__main__':
 
         # NLO Scaleup/down
         nloScaleupqcd=None
-        for k in mass_bins_nlo2[j]:
-         histname="h10"
-         if k+mass_bins_nlo_max<10: histname+="0"
-         histname+=str(k+mass_bins_nlo_max)+"08"
+        for k in mass_bins_nlo_list[j]:
+         histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleUp"
          print histname
-         hnloScaleup = TH1F(nlofile.Get(histname))
+         hnloScaleup = TH1F(nlofile2.Get(histname))
          hnloScaleup=rebin(hnloScaleup,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloScaleupqcd:
 	    nloScaleupqcd.Add(hnloScaleup)
 	 else:
 	    nloScaleupqcd=hnloScaleup
-        nloScaleupqcd.Scale(1./len(mass_bins_nlo2[j])) # average uncertainty when merging bins from Klaus
-	#print [nloScaleupqcd.GetBinContent(b+1) for b in range(nloScaleupqcd.GetNbinsX())]
-	nloScaleupqcd.Multiply(nloqcd)
+        for b in range(nloScaleupqcd.GetXaxis().GetNbins()):
+           nloScaleupqcd.SetBinContent(b+1,nloScaleupqcd.GetBinContent(b+1)*nloScaleupqcd.GetBinWidth(b+1))
+	nloScaleupqcd.Add(nloqcdbackup,-1)
+	nloScaleupqcd.Scale(1./nloqcdbackup.Integral())
 
         nloScaledownqcd=None
-        for k in mass_bins_nlo2[j]:
-         histname="h10"
-         if k+mass_bins_nlo_max<10: histname+="0"
-         histname+=str(k+mass_bins_nlo_max)+"09"
+        for k in mass_bins_nlo_list[j]:
+         histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleDown"
          print histname
-         hnloScaledown = TH1F(nlofile.Get(histname))
+         hnloScaledown = TH1F(nlofile2.Get(histname))
          hnloScaledown=rebin(hnloScaledown,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloScaledownqcd:
 	    nloScaledownqcd.Add(hnloScaledown)
 	 else:
 	    nloScaledownqcd=hnloScaledown
-        nloScaledownqcd.Scale(1./len(mass_bins_nlo2[j])) # average uncertainty when merging bins from Klaus
-	nloScaledownqcd.Multiply(nloqcd)
+        for b in range(nloScaledownqcd.GetXaxis().GetNbins()):
+           nloScaledownqcd.SetBinContent(b+1,nloScaledownqcd.GetBinContent(b+1)*nloScaledownqcd.GetBinWidth(b+1))
+	nloScaledownqcd.Add(nloqcdbackup,-1)
+	nloScaledownqcd.Scale(1./nloqcdbackup.Integral())
 
         scaleup=alt.Clone(alt.GetName()+"_scaleUp")
         scaledown=alt.Clone(alt.GetName()+"_scaleDown")
@@ -562,7 +628,7 @@ if __name__ == '__main__':
             out.Delete(alt.GetName()+"_scaleDown"+";"+str(k))
         scaleup.Write()
         scaledown.Write()
-
+	
 	# DATA BLINDED
 	#data=alt.Clone("data_blinded")
         #for b in range(data.GetXaxis().GetNbins()):

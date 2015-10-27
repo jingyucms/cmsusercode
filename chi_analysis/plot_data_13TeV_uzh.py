@@ -21,6 +21,36 @@ gStyle.SetLabelSize(0.05, "XYZ")
 gStyle.SetNdivisions(506, "XYZ")
 gStyle.SetLegendBorderSize(0)
 
+doJES=True
+
+if doJES:
+  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/Utilities.cc+");
+  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/JetCorrectorParameters.cc+");
+  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/SimpleJetCorrectionUncertainty.cc+");
+  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/JetCorrectionUncertainty.cc+");
+
+  JECsources = ["AbsoluteScale", "AbsoluteFlavMap", "AbsoluteMPFBias", "Fragmentation",
+"SinglePionECAL", "SinglePionHCAL",
+"FlavorQCD", "TimeEta", "TimePt",
+"RelativeJEREC1", "RelativeJEREC2", "RelativeJERHF",
+"RelativePtBB","RelativePtEC1", "RelativePtEC2", "RelativePtHF", "RelativeFSR",
+"RelativeStatFSR", "RelativeStatEC", "RelativeStatHF",
+"PileUpDataMC", 
+"PileUpPtRef", "PileUpPtBB", "PileUpPtEC1", "PileUpPtEC2", "PileUpPtHF","PileUpMuZero", "PileUpEnvelope",
+#"TimeRunA", "TimeRunB", "TimeRunC",
+"TimeRunD",
+#"SubTotalPileUp","SubTotalRelative","SubTotalPt","SubTotalScale","SubTotalAbsolute","SubTotalMC",
+"Total",
+#"TotalNoFlavor","TotalNoTime","TotalNoFlavorNoTime",
+#"FlavorZJet","FlavorPhotonJet","FlavorPureGluon","FlavorPureQuark","FlavorPureCharm","FlavorPureBottom"
+  ]
+
+  JESuncertainties={}
+  for source in JECsources:
+    p = JetCorrectorParameters("../../EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer15_25nsV5_DATA_UncertaintySources_AK4PFchs.txt", source)
+    JESuncertainties[source]=JetCorrectionUncertainty(p)
+
+
 def createPlots(sample,prefix,massbins,factor):
     if sample.endswith(".txt"):
         files=[]
@@ -40,11 +70,17 @@ def createPlots(sample,prefix,massbins,factor):
       #plots += [TH1F(prefix+'y_{boost}'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';y_{boost};N',20,0,2)]
     plots += [TH1F(prefix+'mass',';dijet mass;N events',1300,0,13000)]
     genplots += [TH1F(prefix+'genmass',';dijet mass;N events',1300,0,13000)]
+    for massbin in massbins:
+      if doJES:
+       for source in JECsources:
+        plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',"")+source+"Up",';#chi;N',15,1,16)]
+        plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',"")+source+"Down",';#chi;N',15,1,16)]
     
     for plot in plots:
         plot.Sumw2()
     for plot in genplots:
         plot.Sumw2()
+    print len(plots),"plots to fill"
 
     event_count=0
     for f in files[:]:
@@ -54,8 +90,8 @@ def createPlots(sample,prefix,massbins,factor):
      nevents=events.GetEntries()
      print sample,nevents
      for event in events:
-       #if event_count>2000:break
-       if not "data" in sample and event_count>100000:break
+       #if event_count>200:break
+       if sample!="data_obs" and event_count>3000000:break
        
        event_count+=1
        if event_count%10000==1: print "event",event_count
@@ -63,34 +99,60 @@ def createPlots(sample,prefix,massbins,factor):
        if not event.passFilter_HBHE or not event.passFilter_CSCHalo or not event.passFilter_GoodVtx or not event.passFilter_EEBadSc: continue
        if len(event.jetAK4_pt)<2 or event.jetAK4_pt[0]<100 or event.jetAK4_pt[1]<100 or abs(event.jetAK4_eta[0])>3 or abs(event.jetAK4_eta[1])>3: continue
        if not bool(event.jetAK4_IDTight[0]) or not bool(event.jetAK4_IDTight[1]): continue
- 
-       jet1=TLorentzVector()
-       jet2=TLorentzVector()
-       if len(event.jetAK4_pt)>=2:
+
+       scales=[1]
+       if doJES:
+          scales+=[s+"_Up" for s in JECsources]
+          scales+=[s for s in JECsources]
+       irec=0
+       for scale in scales:
+         jet1=TLorentzVector()
+         jet2=TLorentzVector()
          jet1.SetPtEtaPhiM(event.jetAK4_pt[0],event.jetAK4_eta[0],event.jetAK4_phi[0],event.jetAK4_mass[0])
          jet2.SetPtEtaPhiM(event.jetAK4_pt[1],event.jetAK4_eta[1],event.jetAK4_phi[1],event.jetAK4_mass[1])
-       mjj=(jet1+jet2).M()
-       chi=exp(abs(jet1.Rapidity()-jet2.Rapidity()))
-       yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
-       genJet1=TLorentzVector()
-       genJet2=TLorentzVector()
-       if not "data" in sample and len(event.genJetAK4_pt)>=2:
+         if scale!=1:
+           jes=JESuncertainties[scale.replace("_Up","")]
+           jes.setJetPt(jet1.Pt())
+           jes.setJetEta(jet1.Eta())
+	   if scale[-1]=="p":
+             jet1*=1.+jes.getUncertainty(True)
+	   else:
+             jet1*=1.-jes.getUncertainty(False)
+           jes.setJetPt(jet2.Pt())
+           jes.setJetEta(jet2.Eta())
+	   if scale[-1]=="p":
+             jet2*=1.+jes.getUncertainty(True)
+	   else:
+             jet2*=1.-jes.getUncertainty(False)
+         mjj=(jet1+jet2).M()
+         chi=exp(abs(jet1.Rapidity()-jet2.Rapidity()))
+         yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
+         for massbin in massbins:
+           if yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
+             plots[irec].Fill(chi)
+           irec+=1
+         if scale==1:
+           if yboost<1.11 and chi<16:
+             plots[irec].Fill(mjj)
+           irec+=1
+
+       if sample!="data_obs" and len(event.genJetAK4_pt)>=2:
+         genJet1=TLorentzVector()
+         genJet2=TLorentzVector()
          genJet1.SetPtEtaPhiM(event.genJetAK4_pt[0],event.genJetAK4_eta[0],event.genJetAK4_phi[0],event.genJetAK4_mass[0])
          genJet2.SetPtEtaPhiM(event.genJetAK4_pt[1],event.genJetAK4_eta[1],event.genJetAK4_phi[1],event.genJetAK4_mass[1])
-       genmjj=(genJet1+genJet2).M()
-       genchi=exp(abs(genJet1.Rapidity()-genJet2.Rapidity()))
-       genyboost=abs(genJet1.Rapidity()+genJet2.Rapidity())/2.
-       i=0
-       for massbin in massbins:
-         if len(event.jetAK4_pt)>=2 and yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
-	   plots[i].Fill(chi)
-         if not "data" in sample and len(event.genJetAK4_pt)>=2 and genyboost<1.11 and genmjj>=massbin[0] and genmjj<massbin[1]:
-	   genplots[i].Fill(genchi)
-	 i+=1
-       if len(event.jetAK4_pt)>=2 and yboost<1.11 and chi<16:
-         plots[i].Fill(mjj)
-       if not "data" in sample and len(event.genJetAK4_pt)>=2 and genyboost<1.11 and genchi<16:
-         genplots[i].Fill(genmjj)
+         genmjj=(genJet1+genJet2).M()
+         genchi=exp(abs(genJet1.Rapidity()-genJet2.Rapidity()))
+         genyboost=abs(genJet1.Rapidity()+genJet2.Rapidity())/2.
+         igen=0
+         for massbin in massbins:
+           if genyboost<1.11 and genmjj>=massbin[0] and genmjj<massbin[1]:
+	     genplots[igen].Fill(genchi)
+  	   igen+=1
+         if genyboost<1.11 and genchi<16:
+           genplots[igen].Fill(genmjj)
+         igen+=1
+
     print "analyzed",event_count,"events"
     if event_count>0:
       for plot in plots:
@@ -103,8 +165,21 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_25nsMC"
+    prefix="datacard_shapelimit13TeV_25nsMCJESflat3"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -120,21 +195,26 @@ if __name__ == '__main__':
               (4200,4800),
               (4800,5400),
               (5400,6000),
-	      (2400,8000),
+	      (2400,13000),
+	      (3000,13000),
+	      (3600,13000),
+	      (4200,13000),
+	      (4800,13000),
+	      (5400,13000),
+	      (6000,13000),
               ]
  
-    samples=[#("data_obs",[("JetHT_50ns_data.txt",1.)]),
-             #("data_obs",[("JetHT_25ns_data.txt",1.)]),
-             #("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
-             ("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
-               ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
-               ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
-               ("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
-               ("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
-               ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
-               ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
-               ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
-               ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0)],)
+    samples=[#("data_obs",[("JetHT_25ns_data5.txt",1.)]),
+             ("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
+             #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
+             #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
+             #  ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
+             #  ("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
+             #  ("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
+             #  ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
+             #  ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
+             #  ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
+             #  ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0)],)
             ]
  
     chi_binnings=[]
@@ -179,6 +259,12 @@ if __name__ == '__main__':
           genplots[i][j]=genplots[i][j].Rebin(len(chi_binnings[j])-1,genplots[i][j].GetName()+"_rebin1",chi_binnings[j])
 	  clone=genplots[i][j]
 	  clone.Write()
+      if doJES:
+       for j in range(len(massbins)+1,len(massbins)+1+2*len(massbins)*len(JECsources)):
+	if "chi" in plots[i][j].GetName():
+          plots[i][j]=plots[i][j].Rebin(len(chi_binnings[(j-1)%len(chi_binnings)])-1,plots[i][j].GetName()+"_rebin1",chi_binnings[(j-1)%len(chi_binnings)])
+	  clone=plots[i][j]
+	  clone.Write()
 
     for i in range(len(samples)):
       for j in range(len(massbins)):
@@ -194,6 +280,14 @@ if __name__ == '__main__':
           genplots[i][j].SetBinContent(b+1,genplots[i][j].GetBinContent(b+1)/genplots[i][j].GetBinWidth(b+1))
           genplots[i][j].SetBinError(b+1,genplots[i][j].GetBinError(b+1)/genplots[i][j].GetBinWidth(b+1))
         genplots[i][j].GetYaxis().SetRangeUser(0,0.2)
+      if doJES:
+       for j in range(len(massbins)+1,len(massbins)+1+2*len(massbins)*len(JECsources)):
+        if plots[i][j].Integral()>0:
+          plots[i][j].Scale(1./plots[i][j].Integral())
+        for b in range(plots[i][j].GetXaxis().GetNbins()):
+          plots[i][j].SetBinContent(b+1,plots[i][j].GetBinContent(b+1)/plots[i][j].GetBinWidth(b+1))
+          plots[i][j].SetBinError(b+1,plots[i][j].GetBinError(b+1)/plots[i][j].GetBinWidth(b+1))
+        plots[i][j].GetYaxis().SetRangeUser(0,0.2)
 
     canvas = TCanvas("","",0,0,400,200)
     canvas.Divide(2,1)

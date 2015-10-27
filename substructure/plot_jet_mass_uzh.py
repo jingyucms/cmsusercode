@@ -422,7 +422,7 @@ if __name__ == '__main__':
      	  print sample,nevents
      	  for event in events:
      	    event_count+=1
-	    #if event_count>1000: break
+	    if event_count>10000: break
      	    if event_count%10000==1: print "event",event_count
      	    if len(event.jetAK8_pt)<1 or not event.jetAK8_IDTight[0]: continue
             for j in range(len(ptbins)):
@@ -526,3 +526,4 @@ if __name__ == '__main__':
 
         canvas.SaveAs(prefix + variables[i] + '.pdf')
         canvas.SaveAs(prefix + variables[i] + '.eps')
+        canvas.SaveAs(prefix + variables[i] + '.root')
