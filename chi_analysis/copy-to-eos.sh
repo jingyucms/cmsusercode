@@ -1,0 +1,1 @@
+gfal-copy -r srm://t3se01.psi.ch:8443/srm/managerv2?SFN=/pnfs/psi.ch/cms/trivcat/store/t3groups/uniz-higgs/Data_25ns/JetHT srm://srm-eoscms.cern.ch//eos/cms/store/cmst3/user/hinzmann/dijet_angular/25ns12/

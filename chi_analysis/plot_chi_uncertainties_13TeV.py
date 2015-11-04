@@ -122,13 +122,13 @@ if __name__ == '__main__':
       closefiles+=[ewkfile]
 
       # JES uncertainty QCD
-      filename1jes="datacards/chi_systematic_plotschi_QCD4.root"
+      filename1jes="chi_systematic_plotschi_QCD4_13TeV.root"
       print filename1jes
       jesfile = TFile.Open(filename1jes)
       closefiles+=[jesfile]
 
       # JES uncertainty CI
-      filename1jesci="datacards/chi_systematic_plotschi_CI4.root"
+      filename1jesci="chi_systematic_plotschi_QCD4_13TeV.root"
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
@@ -254,9 +254,9 @@ if __name__ == '__main__':
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
-	slopes[1900]=0.1   #0.01
-	slopes[2400]=0.1   #0.01
-	slopes[3000]=0.1   #0.05
+	slopes[1900]=0.01   #0.01
+	slopes[2400]=0.01   #0.01
+	slopes[3000]=0.05   #0.05
 	slopes[3600]=0.1
 	slopes[4200]=0.15
 	slopes[4800]=0.15

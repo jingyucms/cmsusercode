@@ -70,10 +70,11 @@ def createPlots(sample,prefix,massbins,factor):
       #plots += [TH1F(prefix+'y_{boost}'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';y_{boost};N',20,0,2)]
     plots += [TH1F(prefix+'mass',';dijet mass;N events',1300,0,13000)]
     genplots += [TH1F(prefix+'genmass',';dijet mass;N events',1300,0,13000)]
-    for massbin in massbins:
-      if doJES:
-       for source in JECsources:
+    if doJES:
+     for source in JECsources:
+       for massbin in massbins:
         plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',"")+source+"Up",';#chi;N',15,1,16)]
+       for massbin in massbins:
         plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',"")+source+"Down",';#chi;N',15,1,16)]
     
     for plot in plots:
@@ -91,7 +92,7 @@ def createPlots(sample,prefix,massbins,factor):
      print sample,nevents
      for event in events:
        #if event_count>200:break
-       if sample!="data_obs" and event_count>3000000:break
+       #if sample!="data_obs" and event_count>3000000:break
        
        event_count+=1
        if event_count%10000==1: print "event",event_count
@@ -110,6 +111,10 @@ def createPlots(sample,prefix,massbins,factor):
          jet2=TLorentzVector()
          jet1.SetPtEtaPhiM(event.jetAK4_pt[0],event.jetAK4_eta[0],event.jetAK4_phi[0],event.jetAK4_mass[0])
          jet2.SetPtEtaPhiM(event.jetAK4_pt[1],event.jetAK4_eta[1],event.jetAK4_phi[1],event.jetAK4_mass[1])
+         mjj=(jet1+jet2).M()
+         chi=exp(abs(jet1.Rapidity()-jet2.Rapidity()))
+         yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
+         if mjj<1500 or chi>16. or yboost>1.11: continue
          if scale!=1:
            jes=JESuncertainties[scale.replace("_Up","")]
            jes.setJetPt(jet1.Pt())
@@ -124,9 +129,7 @@ def createPlots(sample,prefix,massbins,factor):
              jet2*=1.+jes.getUncertainty(True)
 	   else:
              jet2*=1.-jes.getUncertainty(False)
-         mjj=(jet1+jet2).M()
-         chi=exp(abs(jet1.Rapidity()-jet2.Rapidity()))
-         yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
+           mjj=(jet1+jet2).M()
          for massbin in massbins:
            if yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
              plots[irec].Fill(chi)
@@ -165,7 +168,7 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_25nsMCJESflat3"
+    prefix="datacard_shapelimit13TeV_25nsMCJESv7"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -205,16 +208,16 @@ if __name__ == '__main__':
               ]
  
     samples=[#("data_obs",[("JetHT_25ns_data5.txt",1.)]),
-             ("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
-             #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
-             #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
-             #  ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
-             #  ("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
-             #  ("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
-             #  ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
-             #  ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
-             #  ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
-             #  ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0)],)
+             #("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
+             ("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
+               ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
+               ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
+               ("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
+               ("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
+               ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
+               ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
+               ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
+               ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0)],)
             ]
  
     chi_binnings=[]

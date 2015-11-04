@@ -27,9 +27,9 @@ if __name__=="__main__":
 
     showData=True
     binByBinCorrect=True
-    showRunI=False
+    showRunI=True
     ak5Compare=False
-    showSignal=True
+    showSignal=False
 
     print "start ROOT"
     gROOT.Reset()
@@ -262,6 +262,32 @@ if __name__=="__main__":
         h13.SetLineColor(4)
         h13.SetLineStyle(3)
         h13.SetLineWidth(3)
+	h13noewk=h13.Clone(h13.GetName()+"noewk")
+	new_hists+=[h13noewk]
+        h13noewk.Add(TF1("offset",str(offsets[massbin]),1,16))
+  	h13noewk.SetLineColor(6)
+	h13noewk.SetLineStyle(5)
+	h13noewk.SetLineWidth(2)
+    
+        filename="fastnlo/RunII/DijetAngularCMS13_ewk.root"
+        print filename
+        f13ewk = TFile.Open(filename)
+        new_hists+=[f13ewk]
+        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400")
+        print histname
+        h13ewk=f13ewk.Get(histname)
+	print h13ewk
+	if not ak5Compare:
+          for b in range(h13.GetXaxis().GetNbins()):
+	    low_bin=h13ewk.FindBin(h13.GetXaxis().GetBinLowEdge(b+1))
+	    up_bin=h13ewk.FindBin(h13.GetXaxis().GetBinUpEdge(b+1))
+	    correction=h13ewk.Integral(low_bin,up_bin-1)/(up_bin-low_bin)
+	    print correction
+	    h13.SetBinContent(b+1,h13.GetBinContent(b+1)*correction*h13.GetBinWidth(b+1))
+          h13.Scale(1./h13.Integral())
+          for b in range(h13.GetXaxis().GetNbins()):
+	    h13.SetBinContent(b+1,h13.GetBinContent(b+1)/h13.GetBinWidth(b+1))
+
 	h13backup=h13.Clone(h13.GetName()+"backup")
         h13.Add(TF1("offset",str(offsets[massbin]),1,16))
 
@@ -285,6 +311,7 @@ if __name__=="__main__":
         else:
             h13.Draw("histsame")
         h13.Draw("axissame")
+
 
       if massbin>3:
         filename="datacard_shapelimit13TeV_GENv2_chi.root"
@@ -502,10 +529,13 @@ if __name__=="__main__":
         h3new.Add(TF1("offset",str(offsets[massbin]),1,16))
         
 	if showData:
-  	  h3new.Draw("histsame")
-          h2new.Draw("histsame")
+	  if not showRunI:
+            h3new.Draw("histsame")
+            h2new.Draw("histsame")
 	  h13.Draw("histsame")
 	  h13.Draw("axissame")
+          if not ak5Compare:
+            h13noewk.Draw("histsame")
           h14G.Draw("pzesame")
           h14Gsys.Draw("||same")
           h14Gsysstat.Draw("zesame")
@@ -560,7 +590,8 @@ if __name__=="__main__":
       l2.AddEntry(h13,"13 TeV NLO AK4 QCD prediction","l")
       l2.AddEntry(h13b,"13 TeV NLO AK5 QCD prediction","l")
     else:
-      l2.AddEntry(h3new,"13 TeV NLO QCD prediction","f")
+      l2.AddEntry(h3new,"13 TeV NLO QCD+EW prediction","f")
+      l2.AddEntry(h13noewk,"13 TeV NLO QCD prediction","l")
     if showSignal:
       l2.AddEntry(h4,"13 TeV #Lambda_{LL}^{#font[122]{+}} (LO) = 14 TeV","l")
       l2.AddEntry(h5,"13 TeV #Lambda_{T} (GRW) = 10 TeV","l")
@@ -581,8 +612,7 @@ if __name__=="__main__":
     if not binByBinCorrect and not ak5Compare and not showData:
       l2b.AddEntry(h16," ","")
     l2b.AddEntry(h13," ","l")
-    if ak5Compare:
-      l2b.AddEntry(h13b," ","")
+    l2b.AddEntry(h13noewk," ","")
     if showSignal:
       l2b.AddEntry(h4," ","")
       l2b.AddEntry(h5," ","")

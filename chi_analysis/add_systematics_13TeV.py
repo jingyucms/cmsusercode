@@ -266,13 +266,13 @@ if __name__ == '__main__':
       closefiles+=[ewkfile]
 
       # JES uncertainty QCD
-      filename1jes="datacards/chi_systematic_plotschi_QCD4.root"
+      filename1jes="chi_systematic_plotschi_QCD4_13TeV.root"
       print filename1jes
       jesfile = TFile.Open(filename1jes)
       closefiles+=[jesfile]
 
       # JES uncertainty CI
-      filename1jesci="datacards/chi_systematic_plotschi_CI4.root"
+      filename1jesci="chi_systematic_plotschi_QCD4_13TeV.root"
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
@@ -466,9 +466,9 @@ if __name__ == '__main__':
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
-	slopes[1900]=0.1 #0.01
-	slopes[2400]=0.1 #0.01
-	slopes[3000]=0.1 #0.05
+	slopes[1900]=0.01 #0.01
+	slopes[2400]=0.01 #0.01
+	slopes[3000]=0.05 #0.05
 	slopes[3600]=0.1  #0.1
 	slopes[4200]=0.15 #0.15
 	slopes[4800]=0.15 #0.15
@@ -646,9 +646,9 @@ if __name__ == '__main__':
 	#ci.Write(samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
         # PLOTS
-	if j<2:
+	if j<4:
 	   continue
-        canvas.cd(j-1)
+        canvas.cd(j-3)
         legend1=TLegend(0.2,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<13000","m_{jj}>4200"))
         legends+=[legend1]
         legend1.AddEntry(data,"data","lpe")

@@ -75,10 +75,17 @@ if __name__ == '__main__':
       log=False
       legends=[]
       hists=[]
-      f_refmc=TFile.Open("datacard_shapelimit13TeV_25nsMCJESflat2_chi.root")
-      f_mc=TFile.Open("datacard_shapelimit13TeV_25nsMCJESflat2_chi.root")
+      files=[]
       for mass in range(len(masses)-1):
-
+        b="1"
+	if mass==3: b="2"
+        if mass==2: b="3"
+        if mass==1: b="4"
+        if mass==0: b="6"
+	print "datacard_shapelimit13TeV_GENJESb"+b+"_chi.root"
+        f_refmc=TFile.Open("datacard_shapelimit13TeV_GENJESb"+b+"_chi.root")
+	files+=[f_refmc]
+        f_mc=f_refmc
         canvas.cd(mass+1)
         canvas.GetPad(mass+1).SetLogy(log)
         legend=TLegend(0.2,0.55,0.95,0.90,(str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV").replace("5400<m_{jj}<13000","m_{jj}>5400"))
@@ -87,7 +94,7 @@ if __name__ == '__main__':
         hist=f_refmc.Get(prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+"_rebin1")
 	hist=hist.Clone(hist.GetName()+"main"+str(sourcesets.index(sourceset)))
 	hists+=[hist]
-        #hist=hist.Rebin(len(chi_binnings[mass])-1,hist.GetName()+"_rebin1",chi_binnings[mass])
+        hist=hist.Rebin(len(chi_binnings[mass])-1,hist.GetName()+"_rebin1",chi_binnings[mass])
         hist.SetLineWidth(2)
       	hist.SetLineColor(1)
 	miny=0
@@ -100,7 +107,7 @@ if __name__ == '__main__':
 	    hist.SetBinContent(b+1,1)
 	hist.GetXaxis().SetTitle(label)
 	hist.GetYaxis().SetTitle("N")
-	hist.GetYaxis().SetRangeUser(0.5,2.0)
+	hist.GetYaxis().SetRangeUser(0.9,1.3)
         hist.GetXaxis().SetTitleOffset(1.1)
         hist.GetYaxis().SetTitleOffset(1.1)
         hist.GetXaxis().SetLabelSize(0.05)
@@ -113,9 +120,11 @@ if __name__ == '__main__':
         legend.AddEntry(hist,"central","l")
 	
 	for i in range(len(sourceset)):
-	    print prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+"Up_rebin1"
-            hist2=f_mc.Get(prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+"Up_rebin1")
-            #hist2=hist2.Rebin(len(chi_binnings[mass])-1,hist2.GetName()+"_rebin1",chi_binnings[mass])
+	    if sources[sourceset[i]]=="Total": updown="Down"
+	    else: updown="Up"
+	    print prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+updown+"_rebin1"
+            hist2=f_mc.Get(prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+updown+"_rebin1")
+            hist2=hist2.Rebin(len(chi_binnings[mass])-1,hist2.GetName()+"_rebin1",chi_binnings[mass])
 	    if hist2.Integral()>0:
                 hist2.Scale(histref.Integral()/hist2.Integral())
             hist2.SetLineWidth(1)
@@ -162,15 +171,17 @@ if __name__ == '__main__':
               legend.AddEntry(hist2b,"JEC Total sum in quadrature","l")
 
 	for i in range(len(sourceset)):
-	    print prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+"Down_rebin1"
-            hist3=f_mc.Get(prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+"Down_rebin1")
-            #hist3=hist3.Rebin(len(chi_binnings[mass])-1,hist3.GetName()+"_rebin1",chi_binnings[mass])
+	    if sources[sourceset[i]]=="Total": updown="Down"
+	    else: updown="Up"
+	    print prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+updown+"_rebin1_backup"
+            hist3=f_mc.Get(prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+str(sources[sourceset[i]])+updown+"_rebin1_backup")
+            hist3=hist3.Rebin(len(chi_binnings[mass])-1,hist3.GetName()+"_rebin1",chi_binnings[mass])
             if hist3.Integral()>0:
                 hist3.Scale(histref.Integral()/hist3.Integral())
             hist3.SetLineWidth(1)
             hist3.SetLineColor(colors[i])
             hist3.SetLineStyle(3)
-            hist3.Divide(hist3,histref)
+            hist3.Divide(histref,hist3)
             #if sourceset[i]==23:
             #  for chi_bin in range(len(chi_binnings[mass])):
 	    #    hist3.SetBinContent(chi_bin+1,(hist3.GetBinContent(chi_bin+1)-1.)*10+1.)
