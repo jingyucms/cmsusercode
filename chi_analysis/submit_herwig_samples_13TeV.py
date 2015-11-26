@@ -9,7 +9,7 @@ for minMass in minMasses:
     samples+=[('herwigpp_qcd',minMass,maxMasses[minMasses.index(minMass)],"",""),]
     #samples+=[('herwigpp_qcdNonPert',minMass,maxMasses[minMasses.index(minMass)],"",""),]
 
-version="Oct1"
+version="Nov14"
 
 numjobs=100
 
@@ -93,9 +93,9 @@ process.MessageLogger=cms.Service("MessageLogger",
 
 from Configuration.Generator.HerwigppDefaults_cfi import *
 from Configuration.Generator.HerwigppUE_EE_5C_cfi import *
-from HerwigppPDF_CTEQ6_LO_cfi import *									# Import CTEQ6L PDF as shower pdf
-from HerwigppEnergy_13TeV_cfi import *
-from HerwigppMECorrections_cfi import *
+from Configuration.Generator.HerwigppPDF_CTEQ6_LO_cfi import *									# Import CTEQ6L PDF as shower pdf
+from Configuration.Generator.HerwigppEnergy_13TeV_cfi import *
+from Configuration.Generator.HerwigppMECorrections_cfi import *
 
 process.generator = cms.EDFilter("ThePEGGeneratorFilter",
 	herwigDefaultsBlock,
@@ -142,5 +142,5 @@ process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles*_*_*','drop *_genParticlesForJets*_*_*')
 """)
     cfg.close()
-    #for jobnum in range(numjobs):
-    #  os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
+    for jobnum in range(numjobs):
+      os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_1_20_patch2 cmsusercode/chi_analysis/"+samplename+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")

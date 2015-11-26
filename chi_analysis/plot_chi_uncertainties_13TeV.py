@@ -116,7 +116,7 @@ if __name__ == '__main__':
       closefiles+=[nlofile2]
 
       # EWK correction
-      filename1ewk="fastnlo/DijetAngularCMS-CT10nlo-8TeV_R0.5_MassBin_AllChiBins.root"
+      filename1ewk="fastnlo/RunII/DijetAngularCMS13_ewk.root"
       print filename1ewk
       ewkfile = TFile.Open(filename1ewk)
       closefiles+=[ewkfile]
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
 
         # EWK corrections
-        histname='chi-'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace('_',"-").replace("4200-4800","4200-13000").replace("4800-5400","4200-13000").replace("5400-13000","4200-13000").replace("13000","8000")
+        histname='chi-'+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400")
         print histname
         ewk=ewkfile.Get(histname)
 	for b in range(nloqcd.GetXaxis().GetNbins()):

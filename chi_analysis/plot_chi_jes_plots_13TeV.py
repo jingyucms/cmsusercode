@@ -25,7 +25,7 @@ if __name__ == '__main__':
    var="chi"
    label="#chi"
 
-   masses=[1900,2400,3000,3600,4200,4800,5400,13000]
+   masses=[1900,2400,3000,3600,4200,4800,13000]#5400
 
    colors=[1,2,3,4,6,7,8,9,10,11,12,13]
    styles=[1,2,3,4,5,6,7,8,9,11,12,13]
@@ -52,7 +52,7 @@ if __name__ == '__main__':
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,6,9,12,16),
               ]
    chi_binnings=[]
@@ -61,7 +61,7 @@ if __name__ == '__main__':
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
    
-   for prefix in ["QCD"]:
+   for prefix in ["QCD","QCDCIplusLL10000"]:
 
      sum_in_quadrature_up=[]
      sum_in_quadrature_down=[]
@@ -82,13 +82,13 @@ if __name__ == '__main__':
         if mass==2: b="3"
         if mass==1: b="4"
         if mass==0: b="6"
-	print "datacard_shapelimit13TeV_GENJESb"+b+"_chi.root"
-        f_refmc=TFile.Open("datacard_shapelimit13TeV_GENJESb"+b+"_chi.root")
+	print "datacard_shapelimit13TeV_"+prefix+"_JESv6b"+b+"_chi.root"
+        f_refmc=TFile.Open("datacard_shapelimit13TeV_"+prefix+"_JESv6b"+b+"_chi.root")
 	files+=[f_refmc]
         f_mc=f_refmc
         canvas.cd(mass+1)
         canvas.GetPad(mass+1).SetLogy(log)
-        legend=TLegend(0.2,0.55,0.95,0.90,(str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV").replace("5400<m_{jj}<13000","m_{jj}>5400"))
+        legend=TLegend(0.2,0.55,0.95,0.90,(str(masses[mass])+"<m_{jj}<"+str(masses[mass+1])+" GeV").replace("5400<m_{jj}<13000","m_{jj}>5400").replace("4800<m_{jj}<13000","m_{jj}>4800"))
 	legends+=[legend]
     
         hist=f_refmc.Get(prefix+"#chi"+str(masses[mass])+"_"+str(masses[mass+1])+"_rebin1")

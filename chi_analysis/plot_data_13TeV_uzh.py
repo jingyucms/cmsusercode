@@ -21,7 +21,7 @@ gStyle.SetLabelSize(0.05, "XYZ")
 gStyle.SetNdivisions(506, "XYZ")
 gStyle.SetLegendBorderSize(0)
 
-doJES=True
+doJES=False
 
 if doJES:
   gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/Utilities.cc+");
@@ -86,13 +86,17 @@ def createPlots(sample,prefix,massbins,factor):
     event_count=0
     for f in files[:]:
      print f
-     fil=TFile.Open(f)
-     events=fil.Get("ntuplizer/tree")
-     nevents=events.GetEntries()
+     try:
+       fil=TFile.Open(f)
+       events=fil.Get("ntuplizer/tree")
+       nevents=events.GetEntries()
+     except:
+       print "error opening", f
+       continue
      print sample,nevents
      for event in events:
        #if event_count>200:break
-       #if sample!="data_obs" and event_count>3000000:break
+       #if not "data" in sample and event_count>3000000:break
        
        event_count+=1
        if event_count%10000==1: print "event",event_count
@@ -138,8 +142,7 @@ def createPlots(sample,prefix,massbins,factor):
            if yboost<1.11 and chi<16:
              plots[irec].Fill(mjj)
            irec+=1
-
-       if sample!="data_obs" and len(event.genJetAK4_pt)>=2:
+       if not "data" in sample and len(event.genJetAK4_pt)>=2:
          genJet1=TLorentzVector()
          genJet2=TLorentzVector()
          genJet1.SetPtEtaPhiM(event.genJetAK4_pt[0],event.genJetAK4_eta[0],event.genJetAK4_phi[0],event.genJetAK4_mass[0])
@@ -168,7 +171,7 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_25nsMCJESv7"
+    prefix="datacard_shapelimit13TeV_25nsData6"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -207,17 +210,17 @@ if __name__ == '__main__':
 	      (6000,13000),
               ]
  
-    samples=[#("data_obs",[("JetHT_25ns_data5.txt",1.)]),
+    samples=[("data_obs",[("JetHT_25ns_data6.txt",1.)]),
              #("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
-             ("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
-               ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
-               ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
-               ("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
-               ("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
-               ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
-               ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
-               ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
-               ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0)],)
+             #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
+             #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
+             #  ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
+             #  ("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
+             #  ("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
+             #  ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
+             #  ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
+             #  ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
+             #  ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0)],)
             ]
  
     chi_binnings=[]

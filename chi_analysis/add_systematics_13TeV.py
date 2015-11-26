@@ -31,6 +31,13 @@ def rebin(h1,nbins,binning):
         h1.SetBinError(b+1,h1.GetBinError(b+1)/h1.GetBinWidth(b+1))
     return h1
 
+def cloneNormalize(h1):
+    h1=h1.Clone(h1.GetName()+"clone")
+    for b in range(h1.GetXaxis().GetNbins()):
+        h1.SetBinContent(b+1,h1.GetBinContent(b+1)/h1.GetBinWidth(b+1))
+        h1.SetBinError(b+1,h1.GetBinError(b+1)/h1.GetBinWidth(b+1))
+    return h1
+
 if __name__ == '__main__':
 
     useLensData=False
@@ -43,7 +50,7 @@ if __name__ == '__main__':
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,6,9,12,16),
               ]
     chi_binnings=[]
@@ -56,8 +63,9 @@ if __name__ == '__main__':
               (3000,3600),
               (3600,4200),
               (4200,4800),
-              (4800,5400),
-              (5400,13000)]
+              #(4800,5400),
+              #(5400,13000),
+	      (4800,13000)]
     mass_bins_nlo3={}
     mass_bins_nlo3[2]=1900
     mass_bins_nlo3[3]=2400
@@ -72,8 +80,8 @@ if __name__ == '__main__':
     	      (4,),
     	      (5,),
     	      (6,),
-	      (7,),
-	      (8,),
+	      (7,8),
+	      #(8,),
     	     ]
 
     
@@ -150,7 +158,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Oct1",3.507e-09),
 		       ]),
              ]
-    samples=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Oct1",3.307e-06),
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Oct1",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Oct1",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Oct1",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Oct1",6.446e-08),
@@ -223,6 +231,16 @@ if __name__ == '__main__':
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Oct1",3.507e-09),
 		       ]),
              ]
+    samples=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Oct1",3.769e-05),
+		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Oct1",3.307e-06),
+		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Oct1",8.836e-07),
+		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Oct1",1.649e-07),
+		       ("pythia8_ci_m2800_3300_50000_1_0_0_13TeV_Oct1",6.446e-08),
+		       ("pythia8_ci_m3300_3800_50000_1_0_0_13TeV_Oct1",1.863e-08),
+		       ("pythia8_ci_m3800_4300_50000_1_0_0_13TeV_Oct1",5.867e-09),
+		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Oct1",3.507e-09),
+		       ]),
+	    ]
  
     dataevents={}
     data={}
@@ -230,10 +248,15 @@ if __name__ == '__main__':
     for prefix in prefixs: 
      # signal cards
      for i in range(len(samples)):
-      sample=prefix + '_GENaddv2_chi.root'
+      if "ADD" in samples[i][0]:
+        sample=prefix + '_GENaddv2_chi.root'
+      elif "CI" in samples[i][0]:
+        sample=prefix + '_GENciv2_chi.root'
+      else:
+        sample=prefix + '_GENv2_chi.root'
       print sample
       out=TFile(sample,'UPDATE')
-      closefiles=[]
+      closefiles=[out]
  
       # LO QCD file
       sample2=prefix + '_GENv2_chi.root'
@@ -246,12 +269,9 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_data_Run2012All_20131024_1200M8000_fromCBalltrunc2.5Smeared_Herwig_MASSBINNED_BigStat.root'
+      unfoldsample='Unfolded_chiNtuple_data_25nsData5_fromGaussSB_Pythia_PTBINNED.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
-      unfoldsample2='datacards/Unfolded_data_Run2012All_20131024_1200M8000_fromCBalltrunc2.5Smeared_Herwig_MASSBINNED_BigStat.root'
-      print unfoldsample2
-      unfoldfile2=TFile(unfoldsample2,'READ')
 
       # NLO correction
       filename1nu2="fastnlo/RunII/fnl5662i_v23_fix_CT14_ak4.root"
@@ -260,7 +280,7 @@ if __name__ == '__main__':
       closefiles+=[nlofile2]
 
       # EWK correction
-      filename1ewk="fastnlo/DijetAngularCMS-CT10nlo-8TeV_R0.5_MassBin_AllChiBins.root"
+      filename1ewk="fastnlo/RunII/DijetAngularCMS13_ewk.root"
       print filename1ewk
       ewkfile = TFile.Open(filename1ewk)
       closefiles+=[ewkfile]
@@ -286,24 +306,21 @@ if __name__ == '__main__':
         if not "LO" in sample and j<2 and not "EWK" in sample:
 	   continue
         # data
-        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("5400_13000","4200_13000").replace("13000","7000")+"_chi"
+        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("4800_13000","4200_13000").replace("5400_13000","4200_13000").replace("13000","7000")+"_chi"
         print histname
 	if useLensData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","4200-13000").replace("13000","7000")
+            histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
           else:
-	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","7000")
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
           print histname2
-  	  if "1900" in str(massbins[j]):
-             data = TH1D(unfoldfile2.Get(histname2))
-	  else:   
-             data = TH1D(unfoldfile.Get(histname2))
+          data = TH1D(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","4200-13000").replace("13000","8000")+"_unfolded"
+            histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
           else:
-	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","8000")+"_unfolded"
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
           print histname2
   	  if "1900" in str(massbins[j]):
              data = TH1F(unfoldfile2.Get(histname2))
@@ -336,7 +353,7 @@ if __name__ == '__main__':
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
 
         # EWK corrections
-        histname='chi-'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace('_',"-").replace("4200-4800","4200-13000").replace("4800-5400","4200-13000").replace("5400-13000","4200-13000").replace("13000","8000")
+        histname='chi-'+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400")
         print histname
         ewk=ewkfile.Get(histname)
 	for b in range(nloqcd.GetXaxis().GetNbins()):
@@ -646,68 +663,80 @@ if __name__ == '__main__':
 	#ci.Write(samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
         # PLOTS
-	if j<4:
+	if j<3:
 	   continue
-        canvas.cd(j-3)
-        legend1=TLegend(0.2,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<7000","m_{jj}>4200").replace("4200<m_{jj}<13000","m_{jj}>4200"))
+        canvas.cd(j-2)
+        legend1=TLegend(0.2,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4800<m_{jj}<7000","m_{jj}>4800").replace("4800<m_{jj}<13000","m_{jj}>4800"))
         legends+=[legend1]
         legend1.AddEntry(data,"data","lpe")
+	alt=cloneNormalize(alt)
 	plots+=[alt]
 	alt.SetLineColor(2)
 	alt.SetTitle("")
+	alt.GetYaxis().SetTitle("dN/d#chi")
         alt.Draw("he")
-	alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*2)
+	alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*3)
         legend1.AddEntry(alt,"QCD","l")
+	jerup=cloneNormalize(jerup)
 	plots+=[jerup]
 	jerup.SetLineColor(3)
 	jerup.SetLineStyle(2)
         jerup.Draw("hesame")
         legend1.AddEntry(jerup,"JER","l")
+	jerdown=cloneNormalize(jerdown)
 	plots+=[jerdown]
 	jerdown.SetLineColor(3)
 	jerdown.SetLineStyle(3)
         jerdown.Draw("hesame")
+	jesup=cloneNormalize(jesup)
 	plots+=[jesup]
 	jesup.SetLineColor(4)
 	jesup.SetLineStyle(2)
         jesup.Draw("hesame")
         legend1.AddEntry(jesup,"JES","l")
+	jesdown=cloneNormalize(jesdown)
 	plots+=[jesdown]
 	jesdown.SetLineColor(4)
 	jesdown.SetLineStyle(3)
         jesdown.Draw("hesame")
+	pdfup=cloneNormalize(pdfup)
 	plots+=[pdfup]
 	pdfup.SetLineColor(6)
 	pdfup.SetLineStyle(2)
         pdfup.Draw("hesame")
         legend1.AddEntry(pdfup,"PDF","l")
+	pdfdown=cloneNormalize(pdfdown)
 	plots+=[pdfdown]
 	pdfdown.SetLineColor(6)
 	pdfdown.SetLineStyle(3)
         pdfdown.Draw("hesame")
+	scaleup=cloneNormalize(scaleup)
 	plots+=[scaleup]
 	scaleup.SetLineColor(7)
 	scaleup.SetLineStyle(2)
         scaleup.Draw("hesame")
         legend1.AddEntry(scaleup,"scale","l")
+	scaledown=cloneNormalize(scaledown)
 	plots+=[scaledown]
 	scaledown.SetLineColor(7)
 	scaledown.SetLineStyle(3)
         scaledown.Draw("hesame")
+	ci=cloneNormalize(ci)
 	plots+=[ci]
         ci.Draw("hesame")
-        legend1.AddEntry(ci,"CI","l")
-	data=TGraphAsymmErrors(data)
+        legend1.AddEntry(ci,"New Physics","l")
+	origdata=data
+	data=TGraphAsymmErrors(cloneNormalize(data))
 	plots+=[data]
 	alpha=1.-0.6827
 	for b in range(data.GetN()):
-	    N=data.GetY()[b]
+	    N=N=1./pow(origdata.GetBinError(b+1)/origdata.GetBinContent(b+1),2)
 	    L=0
 	    if N>0:
 	      L=ROOT.Math.gamma_quantile(alpha/2.,N,1.)
             U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
-            data.SetPointEYlow(b,N-L)
-            data.SetPointEYhigh(b,U-N)
+            data.SetPointEYlow(b,(N-L)/origdata.GetBinWidth(b+1))
+            data.SetPointEYhigh(b,(U-N)/origdata.GetBinWidth(b+1))
 	data.SetLineColor(1)
 	data.SetMarkerStyle(24)
         data.SetMarkerSize(0.5)

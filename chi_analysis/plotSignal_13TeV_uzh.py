@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_GENaddv2"
+    prefix="datacard_shapelimit13TeV_GENciv2"
  
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -193,7 +193,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Oct1",3.507e-09),
 		       ]),
              ]
-    samples=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Oct1",3.307e-06),
+    samples2=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Oct1",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Oct1",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Oct1",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Oct1",6.446e-08),

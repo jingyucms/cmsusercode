@@ -4,8 +4,11 @@ cm="13"
 minMasses=[1500,1900,2400,2800,3300,3800,4300] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
 maxMasses=[1900,2400,2800,3300,3800,4300,13000] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
 #signalMasses=[50000,8000,9000,10000,11000,12000,13000,14000,16000,18000]
-signalMasses=[50000]
-couplings=[(1,0,0),]
+signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+#signalMasses=[50000]
+couplings=[(1,0,0)
+,(-1,0,0)
+]
 samples=[]
 
 for minMass in minMasses:
@@ -13,21 +16,24 @@ for minMass in minMasses:
         for coupling in couplings:
             samples+=[('pythia8_ci',minMass,maxMasses[minMasses.index(minMass)],signalMass,coupling),]
 
-samples+=[('pythia8_ci',1000,1500,50000,(1,0,0)),]
+if 50000 in signalMasses:
+  samples+=[('pythia8_ci',1000,1500,50000,(1,0,0)),]
 
 print samples
 
-version=cm+"TeV_Oct1"
+version=cm+"TeV_Nov14"
 
 for sample,minMass,maxMass,signalMass,coupling in samples:
   
-    if signalMass==50000:
+  if signalMass==50000:
        numjobs=100
-    else:
-       numjobs=1
+  else:
+       numjobs=30
+
+  for jobnum in range(numjobs):
 
     samplename=sample+"_m"+str(minMass)+"_"+str(maxMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version
-    cfg=open(samplename+".py","w")
+    cfg=open(samplename+str(jobnum)+".py","w")
     cfg.writelines("""
 import FWCore.ParameterSet.Config as cms
 
@@ -164,13 +170,12 @@ process.load("RecoJets.Configuration.RecoGenJets_cff")
 process.ak4GenJets.jetPtMin="""+str(minMass/10)+"""
 process.ak5GenJets.jetPtMin="""+str(minMass/10)+"""
 
+process.RandomNumberGeneratorService.generator.initialSeed="""+str(jobnum)+"""
+
 process.p = cms.Path(process.generator*process.genParticles*process.genJetParticles*process.ak4GenJets*process.ak5GenJets)#*process.ca08PrunedGenJets
 process.endpath = cms.EndPath(process.out)
 process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles*_*_*','drop *_genParticlesForJets*_*_*')
 """)
     cfg.close()
-    #os.system("cmsBatch.py 200 "+samplename+".py -o "+samplename+"_jobs -b 'bsub -G u_zh -q 1nd < ./batchScript.sh' -f -r /store/cmst3/user/hinzmann/fastsim/"+samplename+"/")
-    #os.system("cmsRun "+samplename+".py > "+samplename+".log &")
-    for jobnum in range(numjobs):
-      os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
+    os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+str(jobnum)+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
