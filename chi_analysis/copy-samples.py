@@ -5,7 +5,7 @@ samples=os.listdir(di)
 i=0
 
 for sample in samples:
- if "Nov14" in sample and "herwig" in sample:
+ if "Nov28" in sample and "herwig" in sample:
   command="gfal-copy srm://t3se01.psi.ch"+di+"/"+sample+"/GEN.root srm://srm-eoscms.cern.ch//eos/cms/store/cmst3/user/hinzmann/dijet_angular/"+sample+".root"
   if i%4!=3:command+="&"
   print command

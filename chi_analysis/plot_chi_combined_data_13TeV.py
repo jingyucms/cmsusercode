@@ -28,7 +28,7 @@ if __name__=="__main__":
     showData=True
     binByBinCorrect=False
     unfoldedData=True
-    showRunI=False
+    showRunI=True
     ak5Compare=False
     showSignal=True
 
@@ -316,7 +316,7 @@ if __name__=="__main__":
 
 
       if massbin>3:
-        filename="datacard_shapelimit13TeV_GENciv2_chi.root"
+        filename="datacard_shapelimit13TeV_GENnp-4-v4_chi.root"
         print filename
         f = TFile.Open(filename)
         new_hists+=[f]
@@ -329,7 +329,7 @@ if __name__=="__main__":
         for b in range(h4.GetNbinsX()):
              h4.SetBinContent(b+1,h4.GetBinContent(b+1)/h4.GetBinWidth(b+1))
 
-        filename="datacard_shapelimit13TeV_GENaddv2_chi.root"
+        filename="datacard_shapelimit13TeV_GENnp-21-v4_chi.root"
         print filename
         f = TFile.Open(filename)
         new_hists+=[f]
@@ -415,9 +415,9 @@ if __name__=="__main__":
 
       if True:
         if unfoldedData:
-          filename="datacards/Unfolded_chiNtuple_data_25nsData5_fromGaussSB_Pythia_PTBINNED.root"
+          filename="datacards/Unfolded_chiNtuple_data_2pt4invfb_teff_fromCB2_AK4SF_DataToMCSF_Pythia_M_1000to13000.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"")
-          histname='dijet_m_chi_2__projY_'+masstext+'_unfolded'
+          histname='dijet_mass1_chi2__projY_'+masstext+'_unfolded'
 	else:
           filename="datacards/datacard_shapelimit13TeV_25nsData6_chi.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
@@ -470,11 +470,11 @@ if __name__=="__main__":
         uncertaintynames=["jer","jes","pdf","scale"]
         uncertainties=[]
         for u in uncertaintynames:
-            histname1='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800_13000","4800_5400")+"_rebin1_"+u+"Up"
+            histname1='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Up"
             print histname1
-            histname2='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800_13000","4800_5400")+"_rebin1_"+u+"Down"
+            histname2='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Down"
             print histname2
-            histname3='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800_13000","4800_5400")+"_rebin1"
+            histname3='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
             print histname3
             up=fsys.Get(histname1)
             down=fsys.Get(histname2)

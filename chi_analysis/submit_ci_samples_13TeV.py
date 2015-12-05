@@ -19,6 +19,10 @@ for minMass in minMasses:
 if 50000 in signalMasses:
   samples+=[('pythia8_ci',1000,1500,50000,(1,0,0)),]
 
+samples=[('pythia8_ciNonPert',1000,1500,50000,(1,0,0)),]
+for minMass in minMasses:
+  samples+=[('pythia8_ciNonPert',minMass,maxMasses[minMasses.index(minMass)],50000,(1,0,0)),]
+
 print samples
 
 version=cm+"TeV_Nov14"
@@ -130,7 +134,7 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 			'PhaseSpace:mHatMax = """+str(maxMass)+""" ',
 			'PhaseSpace:pTHatMin = """+str(minMass/10)+""" ',
 """)
-    if signalMass=="" and "NonPert" in sample:
+    if "NonPert" in sample:
         cfg.writelines("""			'HardQCD:all = on ',
 			'PartonLevel:MPI = off',
 			'HadronLevel:Hadronize = off',

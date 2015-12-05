@@ -22,7 +22,7 @@ for massbins in massbinssets:
     name=("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
     print name
     cfg=open("chi_datacard_"+name+"_bestfit.txt","w")
-    f=TFile(prefix+"_GENv2_chi.root")
+    f=TFile(prefix+"_GENv3_chi.root")
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 0 number of backgrounds
@@ -30,7 +30,7 @@ kmax 3 number of nuisance parameters
 -----------
 """)
     for i in range(len(massbins)):
-        cfg.writelines("""shapes * bin"""+str(i)+""" """+prefix+"""_GENv2_chi.root $PROCESS#chi"""+str(massbins[i][0])+"""_"""+str(massbins[i][1])+"""_rebin1_$SYSTEMATIC
+        cfg.writelines("""shapes * bin"""+str(i)+""" """+prefix+"""_GENv3_chi.root $PROCESS#chi"""+str(massbins[i][0])+"""_"""+str(massbins[i][1])+"""_rebin1_$SYSTEMATIC
 """)
     cfg.writelines("""-----------
 """)

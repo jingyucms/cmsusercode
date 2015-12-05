@@ -85,181 +85,311 @@ if __name__ == '__main__':
     	     ]
 
     
-    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_8000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_8000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_8000_1_0_0_13TeV_Oct1",3.507e-09),
+    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_8000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_8000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_8000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL9000",[("pythia8_ci_m1500_1900_9000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_9000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_9000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_9000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_9000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_9000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_9000_1_0_0_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL9000",[("pythia8_ci_m1500_1900_9000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_9000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_9000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_9000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_9000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_9000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_9000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL10000",[("pythia8_ci_m1500_1900_10000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_10000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_10000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_10000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_10000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_10000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_10000_1_0_0_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL10000",[("pythia8_ci_m1500_1900_10000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_10000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_10000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_10000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_10000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_10000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_10000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL11000",[("pythia8_ci_m1500_1900_11000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_11000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_11000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_11000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_11000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_11000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_11000_1_0_0_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL11000",[("pythia8_ci_m1500_1900_11000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_11000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_11000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_11000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_11000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_11000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_11000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_12000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_12000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_12000_1_0_0_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_12000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_12000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_12000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL13000",[("pythia8_ci_m1500_1900_13000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_13000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_13000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_13000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_13000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_13000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_13000_1_0_0_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL13000",[("pythia8_ci_m1500_1900_13000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_13000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_13000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_13000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_13000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_13000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_13000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL14000",[("pythia8_ci_m1500_1900_14000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_14000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_14000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_14000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_14000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_14000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_14000_1_0_0_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL14000",[("pythia8_ci_m1500_1900_14000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_14000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_14000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_14000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_14000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_14000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_14000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL16000",[("pythia8_ci_m1500_1900_16000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_16000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_16000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_16000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_16000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_16000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_16000_1_0_0_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL16000",[("pythia8_ci_m1500_1900_16000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_16000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_16000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_16000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_16000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_16000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_16000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-             ("QCDCIplusLL18000",[("pythia8_ci_m1500_1900_18000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_18000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_18000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_18000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_18000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_18000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Oct1",3.507e-09),
-		       ]),
-             ]
-    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_6000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_6000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_6000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD7000",[("pythia8_add_m1500_1900_7000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_7000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_7000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_7000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_7000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_7000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_7000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD8000",[("pythia8_add_m1500_1900_8000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_8000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_8000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_8000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_8000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_8000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_8000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD9000",[("pythia8_add_m1500_1900_9000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_9000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_9000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_9000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_9000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_9000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_9000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD10000",[("pythia8_add_m1500_1900_10000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_10000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_10000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_10000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_10000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_10000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_10000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD11000",[("pythia8_add_m1500_1900_11000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_11000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_11000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_11000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_11000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_11000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_11000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD12000",[("pythia8_add_m1500_1900_12000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_12000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_12000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_12000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_12000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_12000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_12000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD13000",[("pythia8_add_m1500_1900_13000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_13000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_13000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_13000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_13000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_13000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_13000_0_0_0_1_13TeV_Oct1",3.507e-09),
-		       ]),
-             ("QCDADD14000",[("pythia8_add_m1500_1900_14000_0_0_0_1_13TeV_Oct1",3.307e-06),
-		       ("pythia8_add_m1900_2400_14000_0_0_0_1_13TeV_Oct1",8.836e-07),
-		       ("pythia8_add_m2400_2800_14000_0_0_0_1_13TeV_Oct1",1.649e-07),
-		       ("pythia8_add_m2800_3300_14000_0_0_0_1_13TeV_Oct1",6.446e-08),
-		       ("pythia8_add_m3300_3800_14000_0_0_0_1_13TeV_Oct1",1.863e-08),
-		       ("pythia8_add_m3800_4300_14000_0_0_0_1_13TeV_Oct1",5.867e-09),
-		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Oct1",3.507e-09),
+             ("QCDCIplusLL18000",[("pythia8_ci_m1500_1900_18000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_18000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_18000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_18000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_18000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_18000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Oct1",3.769e-05),
-		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Oct1",3.307e-06),
-		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Oct1",8.836e-07),
-		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Oct1",1.649e-07),
-		       ("pythia8_ci_m2800_3300_50000_1_0_0_13TeV_Oct1",6.446e-08),
-		       ("pythia8_ci_m3300_3800_50000_1_0_0_13TeV_Oct1",1.863e-08),
-		       ("pythia8_ci_m3800_4300_50000_1_0_0_13TeV_Oct1",5.867e-09),
-		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Oct1",3.507e-09),
+    samples+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_8000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_8000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_8000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_8000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_8000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_8000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL9000",[("pythia8_ci_m1500_1900_9000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_9000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_9000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_9000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_9000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_9000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_9000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL10000",[("pythia8_ci_m1500_1900_10000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_10000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_10000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_10000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_10000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_10000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_10000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL11000",[("pythia8_ci_m1500_1900_11000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_11000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_11000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_11000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_11000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_11000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_11000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL12000",[("pythia8_ci_m1500_1900_12000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_12000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_12000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_12000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_12000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_12000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_12000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL13000",[("pythia8_ci_m1500_1900_13000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_13000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_13000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_13000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_13000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_13000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_13000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL14000",[("pythia8_ci_m1500_1900_14000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_14000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_14000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_14000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_14000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_14000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_14000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL16000",[("pythia8_ci_m1500_1900_16000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_16000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_16000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_16000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_16000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_16000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_16000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDCIminusLL18000",[("pythia8_ci_m1500_1900_18000_-1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_18000_-1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_18000_-1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_18000_-1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_18000_-1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_18000_-1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ]
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_6000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_6000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_6000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD7000",[("pythia8_add_m1500_1900_7000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_7000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_7000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_7000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_7000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_7000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_7000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD8000",[("pythia8_add_m1500_1900_8000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_8000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_8000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_8000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_8000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_8000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_8000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD9000",[("pythia8_add_m1500_1900_9000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_9000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_9000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_9000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_9000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_9000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_9000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD10000",[("pythia8_add_m1500_1900_10000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_10000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_10000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_10000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_10000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_10000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_10000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD11000",[("pythia8_add_m1500_1900_11000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_11000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_11000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_11000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_11000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_11000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_11000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD12000",[("pythia8_add_m1500_1900_12000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_12000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_12000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_12000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_12000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_12000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_12000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD13000",[("pythia8_add_m1500_1900_13000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_13000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_13000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_13000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_13000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_13000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_13000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ("QCDADD14000",[("pythia8_add_m1500_1900_14000_0_0_0_1_13TeV_Nov14",3.307e-06),
+		       ("pythia8_add_m1900_2400_14000_0_0_0_1_13TeV_Nov14",8.836e-07),
+		       ("pythia8_add_m2400_2800_14000_0_0_0_1_13TeV_Nov14",1.649e-07),
+		       ("pythia8_add_m2800_3300_14000_0_0_0_1_13TeV_Nov14",6.446e-08),
+		       ("pythia8_add_m3300_3800_14000_0_0_0_1_13TeV_Nov14",1.863e-08),
+		       ("pythia8_add_m3800_4300_14000_0_0_0_1_13TeV_Nov14",5.867e-09),
+		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
+		       ]),
+             ]
+    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_50000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_50000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_50000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
  
     dataevents={}
     data={}
     qcdnorm={}
+    cinorm={}
     for prefix in prefixs: 
      # signal cards
      for i in range(len(samples)):
-      if "ADD" in samples[i][0]:
-        sample=prefix + '_GENaddv2_chi.root'
-      elif "CI" in samples[i][0]:
-        sample=prefix + '_GENciv2_chi.root'
+      if samples[i][0]=="QCDCIplusLL8000":
+        sample=prefix + '_GENnp-0-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL9000":
+        sample=prefix + '_GENnp-1-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL10000":
+        sample=prefix + '_GENnp-2-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL11000":
+        sample=prefix + '_GENnp-3-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL12000":
+        sample=prefix + '_GENnp-4-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL13000":
+        sample=prefix + '_GENnp-5-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL14000":
+        sample=prefix + '_GENnp-6-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL16000":
+        sample=prefix + '_GENnp-7-v4_chi.root'
+      elif samples[i][0]=="QCDCIplusLL18000":
+        sample=prefix + '_GENnp-8-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL8000":
+        sample=prefix + '_GENnp-9-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL9000":
+        sample=prefix + '_GENnp-10-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL10000":
+        sample=prefix + '_GENnp-11-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL11000":
+        sample=prefix + '_GENnp-12-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL12000":
+        sample=prefix + '_GENnp-13-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL13000":
+        sample=prefix + '_GENnp-14-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL14000":
+        sample=prefix + '_GENnp-15-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL16000":
+        sample=prefix + '_GENnp-16-v4_chi.root'
+      elif samples[i][0]=="QCDCIminusLL18000":
+        sample=prefix + '_GENnp-17-v4_chi.root'
+      elif samples[i][0]=="QCDADD6000":
+        sample=prefix + '_GENnp-18-v4_chi.root'
+      elif samples[i][0]=="QCDADD7000":
+        sample=prefix + '_GENnp-19-v4_chi.root'
+      elif samples[i][0]=="QCDADD8000":
+        sample=prefix + '_GENnp-20-v4_chi.root'
+      elif samples[i][0]=="QCDADD9000":
+        sample=prefix + '_GENnp-21-v4_chi.root'
+      elif samples[i][0]=="QCDADD10000":
+        sample=prefix + '_GENnp-22-v4_chi.root'
+      elif samples[i][0]=="QCDADD11000":
+        sample=prefix + '_GENnp-23-v4_chi.root'
+      elif samples[i][0]=="QCDADD12000":
+        sample=prefix + '_GENnp-24-v4_chi.root'
+      elif samples[i][0]=="QCDADD13000":
+        sample=prefix + '_GENnp-25-v4_chi.root'
+      elif samples[i][0]=="QCDADD14000":
+        sample=prefix + '_GENnp-26-v4_chi.root'
+      #if "ADD" in samples[i][0]:
+      #  sample=prefix + '_GENaddv3_chi.root'
+      #elif "CIplus" in samples[i][0]:
+      #  sample=prefix + '_GENciv3_chi.root'
+      #elif "CIminus" in samples[i][0]:
+      #  sample=prefix + '_GENciminusv3_chi.root'
       else:
-        sample=prefix + '_GENv2_chi.root'
+        sample=prefix + '_GENv4_chi.root'
       print sample
       out=TFile(sample,'UPDATE')
       closefiles=[out]
  
       # LO QCD file
-      sample2=prefix + '_GENv2_chi.root'
+      sample2=prefix + '_GENv4_chi.root'
       print sample2
       in2=TFile(sample2,'READ')
 
@@ -269,7 +399,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='Unfolded_chiNtuple_data_25nsData5_fromGaussSB_Pythia_PTBINNED.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_data_2pt4invfb_teff_fromCB2_AK4SF_DataToMCSF_Pythia_M_1000to13000.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
@@ -303,8 +433,8 @@ if __name__ == '__main__':
       legends=[]
 
       for j in range(len(massbins)):
-        if not "LO" in sample and j<2 and not "EWK" in sample:
-	   continue
+        #if not "LO" in sample and j<2 and not "EWK" in sample:
+	#   continue
         # data
         histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("4800_13000","4200_13000").replace("5400_13000","4200_13000").replace("13000","7000")+"_chi"
         print histname
@@ -318,14 +448,14 @@ if __name__ == '__main__':
 	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+            histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
           else:
-	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+	    histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
           print histname2
-  	  if "1900" in str(massbins[j]):
-             data = TH1F(unfoldfile2.Get(histname2))
-	  else:   
-             data = TH1F(unfoldfile.Get(histname2))
+  	  #if "1900" in str(massbins[j]):
+          #   data = TH1F(unfoldfile2.Get(histname2))
+	  #else:   
+          data = TH1F(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	else:
           data = TH1F(infile.Get(histname))
@@ -444,8 +574,14 @@ if __name__ == '__main__':
   	  histname=cibackup.GetName().replace("_backup","")
           ci=cibackup.Clone(histname)
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
-          ci.Add(qcd,-1)
-	  ci.Scale(1./qcd.Integral())
+          cinorm[j]=ci.Integral()
+	  print "CHECK THIS", cinorm[0], ci.Integral(), qcd.Integral(), qcdnorm[0],nloqcdbackup.Integral()
+	  ci.Scale(qcdnorm[0]/cinorm[0])
+          ci.Add(qcd,-1.)
+	  if j>=2:
+	    ci.Scale(1./qcdnorm[j])
+	  else:
+	    ci.Scale(nloqcd.Integral()/qcdnorm[j]/5.)
           ci.Add(nloqcd)
 	if ci.Integral()!=0:
           ci.Scale(dataevents[j]/ci.Integral())
@@ -483,13 +619,13 @@ if __name__ == '__main__':
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
-	slopes[1900]=0.01 #0.01
-	slopes[2400]=0.01 #0.01
-	slopes[3000]=0.05 #0.05
-	slopes[3600]=0.1  #0.1
-	slopes[4200]=0.15 #0.15
-	slopes[4800]=0.15 #0.15
-	slopes[5400]=0.15 #0.15
+	slopes[1900]=0.01 
+	slopes[2400]=0.01 
+	slopes[3000]=0.02 
+	slopes[3600]=0.03
+	slopes[4200]=0.04
+	slopes[4800]=0.05
+	#slopes[5400]=0.15
 	for b in range(clone.GetNbinsX()):
 	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
             jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
@@ -521,7 +657,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[min(j,4)]
+	jes=jespad.GetListOfPrimitives()[j]
         for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
@@ -537,7 +673,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jesfile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[min(j,4)]
+	jes=jespad.GetListOfPrimitives()[j]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))

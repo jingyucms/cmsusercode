@@ -43,7 +43,7 @@ if __name__ == '__main__':
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,2,3,4,5,6,7,8,9,10,12,14,16),
+               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,6,9,12,16),
               ]
     chi_binnings=[]
@@ -56,8 +56,9 @@ if __name__ == '__main__':
 	      (3000,3600),
 	      (3600,4200),
 	      (4200,4800),
-	      (4800,5400),
-	      (5400,13000)]
+	      (4800,13000),
+	      #(5400,13000)
+	      ]
     mass_bins_nlo3={}
     mass_bins_nlo3[2]=1900
     mass_bins_nlo3[3]=2400
@@ -92,7 +93,7 @@ if __name__ == '__main__':
       closefiles=[]
 
       # LO QCD file
-      sample2=prefix + '_GENv2_chi.root'
+      sample2=prefix + '_GENv3_chi.root'
       print sample2
       in2=TFile(sample2,'READ')
 
@@ -133,18 +134,18 @@ if __name__ == '__main__':
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
 
-      canvas = TCanvas("","",0,0,600,600)
-      canvas.Divide(3,3)
+      canvas = TCanvas("","",0,0,600,400)
+      canvas.Divide(3,2)
       plots=[]
       legends=[]
 
       for j in range(len(massbins)):
         # data
-        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("5400_13000","4200_13000").replace("13000","7000")+"_chi"
+        histname="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("4800_13000","4200_13000").replace("13000","7000")+"_chi"
         print histname
 	if useLensData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","4200-13000").replace("13000","7000")
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4800-13000","4200-13000").replace("13000","7000")
           else:
 	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","7000")
           print histname2
@@ -155,7 +156,7 @@ if __name__ == '__main__':
 	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","4200-13000").replace("13000","8000")+"_unfolded"
+            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4800-13000","4200-13000").replace("13000","8000")+"_unfolded"
           else:
 	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","8000")+"_unfolded"
           print histname2
@@ -190,7 +191,7 @@ if __name__ == '__main__':
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
 
         # EWK corrections
-        histname='chi-'+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400")
+        histname='chi-'+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4800-13000","4800-5400").replace("4800-13000","4800-5400")
         print histname
         ewk=ewkfile.Get(histname)
 	for b in range(nloqcd.GetXaxis().GetNbins()):
@@ -254,13 +255,13 @@ if __name__ == '__main__':
 	jerup=clone.Clone(histname+"_jerUp")
         jerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
-	slopes[1900]=0.01   #0.01
-	slopes[2400]=0.01   #0.01
-	slopes[3000]=0.05   #0.05
-	slopes[3600]=0.1
-	slopes[4200]=0.15
-	slopes[4800]=0.15
-	slopes[5400]=0.15
+	slopes[1900]=0.01 
+	slopes[2400]=0.01 
+	slopes[3000]=0.02 
+	slopes[3600]=0.03
+	slopes[4200]=0.04
+	slopes[4800]=0.05
+	#slopes[5400]=0.15
 	for b in range(clone.GetNbinsX()):
 	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
             jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
@@ -330,7 +331,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[min(j,4)]
+	jes=jespad.GetListOfPrimitives()[j]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
@@ -346,7 +347,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jesfile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[min(j,4)]
+	jes=jespad.GetListOfPrimitives()[j]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))

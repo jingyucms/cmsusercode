@@ -21,18 +21,24 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- models=[1,2]
+ models=[1,2,3,4,5,6,7]
 
  for model in models:
 
     if model==1:
        signal="CIplusLL"    
     if model==2:
+       signal="CIminusLL"    
+    if model==3:
        signal="ADD"    
+    if model==4:
+       signal="CIplusLL"    
+    if model==5:
+       signal="CIplusLL"    
 
     print signal
 
-    f=file("limits_"+signal+".txt")
+    f=file("limits"+str(model)+"_"+signal+".txt")
     limits=eval(f.readline())
     #print limits
 
@@ -135,6 +141,6 @@ if __name__=="__main__":
     l2c.SetLineStyle(2)
     l2c.Draw("same")
     
-    canvas.SaveAs('limits'+signal+'.pdf')
-    canvas.SaveAs('limits'+signal+'.eps')
+    canvas.SaveAs('limits'+str(model)+signal+'.pdf')
+    canvas.SaveAs('limits'+str(model)+signal+'.eps')
     

@@ -1,7 +1,133 @@
-import os
+import os, sys
+from ROOT import * 
+from DataFormats.FWLite import Events,Handle
+import array, math
+
+#gROOT.Macro( os.path.expanduser( '~/rootlogon.C' ) )
+gROOT.Reset()
+gROOT.SetStyle("Plain")
+gStyle.SetOptStat(0)
+gStyle.SetOptFit(0)
+gStyle.SetTitleOffset(1.2,"Y")
+gStyle.SetPadLeftMargin(0.18)
+gStyle.SetPadBottomMargin(0.15)
+gStyle.SetPadTopMargin(0.03)
+gStyle.SetPadRightMargin(0.05)
+gStyle.SetMarkerSize(1.5)
+gStyle.SetHistLineWidth(1)
+gStyle.SetStatFontSize(0.020)
+gStyle.SetTitleSize(0.06, "XYZ")
+gStyle.SetLabelSize(0.05, "XYZ")
+gStyle.SetNdivisions(510, "XYZ")
+gStyle.SetLegendBorderSize(0)
+
+def createPlots(sample,prefix,xsec,massbins):
+    files=[]
+    print "list files"
+    if sample.endswith(".txt"):
+        filelist=open(sample)
+	for line in filelist.readlines():
+	    if ".root" in line:
+	        files+=[line.strip()]
+    else:
+        folders=os.listdir("/pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/")
+	for folder in folders:
+	  if sample in folder:
+            files+=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+folder+"/GEN.root"]
+	    #break
+#        files=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/jobtmp_"+sample+"-0/GEN.root"]
+
+    print files
+    prunedgenjets_handle=Handle("std::vector<reco::GenJet>")
+    prunedgenjets_label="ak4GenJets"
+
+    plots=[]
+    for massbin in massbins:
+      plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';#chi;N',15,1,16)]
+      #plots += [TH1F(prefix+'y_{boost}'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';y_{boost};N',20,0,2)]
+    
+    for plot in plots:
+        plot.Sumw2()
+
+    event_count=0
+    print "open chain"
+    events=TChain('Events')
+    for f in files[:]:
+      events.Add(f)
+    
+    nevents=events.GetEntries()
+    print sample,nevents,xsec
+    event_count=0
+    for event in events:
+         event_count+=1
+	 if event_count>10000000: break
+         if event_count%10000==1: print "event",event_count
+         jet1=TLorentzVector()
+         jet2=TLorentzVector()
+	 jets=event.recoGenJets_ak4GenJets__GEN.product()
+	 if len(jets)<2: continue
+	 j1=jets[0]
+	 j2=jets[1]
+         jet1.SetPtEtaPhiM(j1.pt(),j1.eta(),j1.phi(),j1.mass())
+         jet2.SetPtEtaPhiM(j2.pt(),j2.eta(),j2.phi(),j2.mass())
+         mjj=(jet1+jet2).M()
+         chi=math.exp(abs(jet1.Rapidity()-jet2.Rapidity()))
+         yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
+         if mjj<1500 or chi>16. or yboost>1.11: continue
+         irec=0
+	 for massbin in massbins:
+            if yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
+               plots[irec].Fill(chi)
+	    irec+=1
+    for plot in plots:
+      if nevents>0:
+        plot.Scale(xsec/nevents)
+    return plots
 
 if __name__ == '__main__':
 
+    wait=False
+ 
+    prefix="datacard_shapelimit13TeV_GENnp-27-v4"
+ 
+    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              (1,2,3,4,5,6,7,8,9,10,12,14,16),
+              ]
+    massbins=[(1900,2400),
+              (2400,3000),
+              (3000,3600),
+              (3600,4200),
+              (4200,4800),
+              (4800,5400),
+              (5400,6000),
+	      (2400,13000),
+	      (3000,13000),
+	      (3600,13000),
+	      (4200,13000),
+	      (4800,13000),
+	      (5400,13000),
+	      (6000,13000),
+              ]
+ 
     samples2=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
@@ -11,8 +137,38 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m3800_4300_50000_1_0_0_13TeV_Nov14",5.867e-09),
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-            ]
-    samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+	    ]
+    samples2=[("QCDNonPert",[("pythia8_ciNonPert_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+		       ("pythia8_ciNonPert_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ciNonPert_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ciNonPert_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ciNonPert_m2800_3300_50000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ciNonPert_m3300_3800_50000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ciNonPert_m3800_4300_50000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ciNonPert_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+	    ]
+    samples2=[("QCDHerwig",[("herwigpp_qcd_m1000_1500___Nov28",3.769e-05),
+		       ("herwigpp_qcd_m1500_1900___Nov28",3.307e-06),
+		       ("herwigpp_qcd_m1900_2400___Nov28",8.836e-07),
+		       ("herwigpp_qcd_m2400_2800___Nov28",1.649e-07),
+		       ("herwigpp_qcd_m2800_3300___Nov28",6.446e-08),
+		       ("herwigpp_qcd_m3300_3800___Nov28",1.863e-08),
+		       ("herwigpp_qcd_m3800_4300___Nov28",5.867e-09),
+		       ("herwigpp_qcd_m4300_13000___Nov28",3.507e-09),
+		       ]),
+	    ]
+    samples2=[("QCDHerwigNonPert",[("herwigpp_qcdNonPert_m1000_1500___Nov28",3.769e-05),
+		       ("herwigpp_qcdNonPert_m1500_1900___Nov28",3.307e-06),
+		       ("herwigpp_qcdNonPert_m1900_2400___Nov28",8.836e-07),
+		       ("herwigpp_qcdNonPert_m2400_2800___Nov28",1.649e-07),
+		       ("herwigpp_qcdNonPert_m2800_3300___Nov28",6.446e-08),
+		       ("herwigpp_qcdNonPert_m3300_3800___Nov28",1.863e-08),
+		       ("herwigpp_qcdNonPert_m3800_4300___Nov28",5.867e-09),
+		       ("herwigpp_qcdNonPert_m4300_13000___Nov28",3.507e-09),
+		       ]),
+	    ]
+    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -84,8 +240,8 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m3800_4300_18000_1_0_0_13TeV_Nov14",5.867e-09),
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
-		  ]
-    samples2=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
+             ]
+    samples+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_-1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_-1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_-1_0_0_13TeV_Nov14",6.446e-08),
@@ -158,7 +314,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -231,43 +387,107 @@ if __name__ == '__main__':
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples=[("QCDHerwig",[("herwigpp_qcd_m1000_1500___Nov14",3.769e-05),
-		       ("herwigpp_qcd_m1500_1900___Nov14",3.307e-06),
-		       ("herwigpp_qcd_m1900_2400___Nov14",8.836e-07),
-		       ("herwigpp_qcd_m2400_2800___Nov14",1.649e-07),
-		       ("herwigpp_qcd_m2800_3300___Nov14",6.446e-08),
-		       ("herwigpp_qcd_m3300_3800___Nov14",1.863e-08),
-		       ("herwigpp_qcd_m3800_4300___Nov14",5.867e-09),
-		       ("herwigpp_qcd_m4300_13000___Nov14",3.507e-09),
-		       ]),
-            ]
+    
+    if "np" in prefix:
+       samples=[samples[int(prefix.split("-")[1])]]
+    
+    xsecs=eval(open("xsecs_13TeV.txt").readline())
+    print xsecs
 
-    crosssections={}
-    for i in range(len(samples)):
-      for j in range(len(samples[i][1])):
-       crosssections[samples[i][1][j][0]]=samples[i][1][j][1]
-       for k in range(200):
-         d="jobout_"+samples[i][1][j][0]+"/myout.txt"
-	 #try:
-	 #  files=os.listdir(d)
-	 #except:
-	 #  continue
-	 #for f in files:
-	 # if "LSFJOB" in f:
-	 #   d+=f+"/STDOUT"
-         print "logfile",d
-         break
-       try:
-         f=file(d)
-       except:
-         print "no cross section found for ",d
-	 continue
-       for l in f.readlines():
-	    if "| sum" in l:
-                crosssections[samples[i][1][j][0]]=l.strip().split(" ")[-4]
+    chi_binnings=[]
+    for mass_bin in chi_bins:
+        chi_binnings+=[array.array('d')]
+        for chi_bin in mass_bin:
+            chi_binnings[-1].append(chi_bin)
+        
+    if len(sys.argv)>1:
+        newsamples=[]
+        for sample in samples:
+          found=False
+	  for arg in sys.argv:
+	    if sample[0]==arg or sample[0]=="QCD":
+	        newsamples+=[sample]
 		break
+	samples=newsamples
+	if samples[-1][0]=="QCD":
+            prefix+="_"+samples[-1][0]
+        else:
+	    prefix+="_"+samples[-1][0].replace("QCD","")
+  
+    print prefix, samples
 
-print crosssections
-fout=file("xsecs_13TeV_herwig.txt","w")
-fout.write(str(crosssections))
-fout.close()
+    plots=[]
+    for name,files in samples:
+      plots+=[[]]
+      i=0
+      for filename,xsec in files:
+        i+=1
+        ps=createPlots(filename,name,float(xsecs[filename]),massbins)
+        if i==1:
+          plots[-1]+=ps
+	else:
+	  for i in range(len(plots[-1])):
+            plots[-1][i].Add(ps[i])
+
+    out=TFile(prefix + '_chi.root','RECREATE')
+    for j in range(len(massbins)):
+      for i in range(len(samples)):
+        #if plots[i][j].Integral()>0:
+        #  plots[i][j].Scale(expectedevents[j]/plots[i][j].Integral())
+        plots[i][j]=plots[i][j].Rebin(len(chi_binnings[j])-1,plots[i][j].GetName()+"_rebin1",chi_binnings[j])
+	if samples[i][0]=="QCD":
+	   # data
+	   plots[i][j].Write(plots[i][j].GetName().replace("QCD","data_obs"))
+	   # ALT
+	   clone=plots[i][j].Clone(plots[i][j].GetName().replace("QCD",samples[-1][0]+"_ALT"))
+	   clone.Write()
+	   # QCD
+           plots[i][j].Scale(1e-10)
+           plots[i][j].Write()
+	   # QCD backup
+	   clonebackup=plots[i][j].Clone(plots[i][j].GetName()+"_backup")
+	   clonebackup.Write()
+	else:
+	   # signal
+	   clone=plots[i][j]
+	   clone.Write()
+	   # signal backup
+	   clonebackup=plots[i][j].Clone(plots[i][j].GetName()+"_backup")
+	   clonebackup.Write()
+
+    for j in range(len(massbins)):
+      for i in range(len(samples)):
+        if plots[i][j].Integral()>0:
+          plots[i][j].Scale(1./plots[i][j].Integral())
+        for b in range(plots[i][j].GetXaxis().GetNbins()):
+          plots[i][j].SetBinContent(b+1,plots[i][j].GetBinContent(b+1)/plots[i][j].GetBinWidth(b+1))
+          plots[i][j].SetBinError(b+1,plots[i][j].GetBinError(b+1)/plots[i][j].GetBinWidth(b+1))
+        plots[i][j].GetYaxis().SetRangeUser(0,0.2)
+
+    canvas = TCanvas("","",0,0,400,200)
+    canvas.Divide(2,1)
+    if len(massbins)>2:
+      canvas = TCanvas("","",0,0,600,400)
+      canvas.Divide(3,2)
+
+    legends=[]
+    for j in range(len(massbins)):
+      canvas.cd(j+1)
+      plots[0][j].Draw("he")
+      print "number of events passed:",plots[0][j].GetEntries()
+      legend1=TLegend(0.6,0.6,0.9,0.9,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4200<m_{jj}<13000","m_{jj}>4200"))
+      legends+=[legend1]
+      legend1.AddEntry(plots[0][j],samples[0][0],"l")
+      for i in range(1,len(samples)):
+        plots[i][j].SetLineColor(i+2)
+        plots[i][j].Draw("hesame")
+        legend1.AddEntry(plots[i][j],samples[i][0],"l")
+      legend1.SetTextSize(0.04)
+      legend1.SetFillStyle(0)
+      legend1.Draw("same")
+
+    canvas.SaveAs(prefix + '_chi.pdf')
+    canvas.SaveAs(prefix + '_chi.eps')
+    if wait:
+        os.system("ghostview "+prefix + '_chi.eps')
+
