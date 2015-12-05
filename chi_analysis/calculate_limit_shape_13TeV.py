@@ -8,11 +8,9 @@ massbins=[(4800,13000),
 	      #(3600,4200),
               ]
 
-#models=[1,2]
-#models=[36,37,38,39,40,41,42,43]
 models=[1,2,3,4,5,6,7]
-#models=[7]
-models+=[36,37,38,42]
+models+=[30,31,32,33,34,35,36,37]
+models=[40,41,42,43,44,45,46,47]
 
 for model in models:
 
@@ -42,36 +40,69 @@ for model in models:
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
     massbins=[(3600,4200)]
 
- if model==36:
+ if model==30:
     signal="CIplusLL"    
     signalMasses=[12000]
     massbins=[(4800,13000),]
- if model==37:
+ if model==31:
     signal="CIplusLL"    
     signalMasses=[12000]
     massbins=[(4200,4800),]
- if model==38:
+ if model==32:
     signal="CIplusLL"    
     signalMasses=[12000]
     massbins=[(3600,4200),]
- if model==39:
+ if model==33:
     signal="CIplusLL"    
     signalMasses=[12000]
     massbins=[(3000,3600),]
- if model==40:
+ if model==34:
     signal="CIplusLL"    
     signalMasses=[12000]
     massbins=[(2400,3000),]
- if model==41:
+ if model==35:
     signal="CIplusLL"    
     signalMasses=[12000]
     massbins=[(1900,2400),]
- if model==42:
+ if model==36:
     signal="CIplusLL"    
     signalMasses=[12000]
-    massbins=[(3600,4200),(4200,4800),(4800,13000)]
- if model==43:
+    massbins=[(4200,4800),(4800,13000)]
+ if model==37:
     signal="CIplusLL"    
+    signalMasses=[12000]
+    massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
+
+ if model==40:
+    signal="AntiCIplusLL"    
+    signalMasses=[12000]
+    massbins=[(4800,13000),]
+ if model==41:
+    signal="AntiCIplusLL"    
+    signalMasses=[12000]
+    massbins=[(4200,4800),]
+ if model==42:
+    signal="AntiCIplusLL"    
+    signalMasses=[12000]
+    massbins=[(3600,4200),]
+ if model==43:
+    signal="AntiCIplusLL"    
+    signalMasses=[12000]
+    massbins=[(3000,3600),]
+ if model==44:
+    signal="AntiCIplusLL"    
+    signalMasses=[12000]
+    massbins=[(2400,3000),]
+ if model==45:
+    signal="AntiCIplusLL"    
+    signalMasses=[12000]
+    massbins=[(1900,2400),]
+ if model==46:
+    signal="AntiCIplusLL"    
+    signalMasses=[12000]
+    massbins=[(4200,4800),(4800,13000)]
+ if model==47:
+    signal="AntiCIplusLL"    
     signalMasses=[12000]
     massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
 
@@ -149,6 +180,8 @@ for model in models:
         fname=prefix + '_GENnp-25-v4_chi.root'
     elif signalWithMass=="ADD14000":
         fname=prefix + '_GENnp-26-v4_chi.root'
+    elif signalWithMass=="AntiCIplusLL12000":
+        fname=prefix + '_GENnp-antici-v4_chi.root'
     print fname
     f=TFile(fname)
     cfg.writelines("""

@@ -28,7 +28,7 @@ if __name__=="__main__":
     showData=True
     binByBinCorrect=False
     unfoldedData=True
-    showRunI=True
+    showRunI=False
     ak5Compare=False
     showSignal=True
 
@@ -160,15 +160,15 @@ if __name__=="__main__":
         h3=h0.Clone("up"+str(massbins[massbin]))
 	chi2=0
         for b in range(h0.GetXaxis().GetNbins()):
-            if b==0:# or b==h0.GetXaxis().GetNbins()-1:
-                print massbins[massbin],b,"stat",h1.GetErrorYlow(b)/h1.GetY()[b],h1.GetErrorYhigh(b)/h1.GetY()[b]
+            #if b==0:# or b==h0.GetXaxis().GetNbins()-1:
+            #    print massbins[massbin],b,"stat",h1.GetErrorYlow(b)/h1.GetY()[b],h1.GetErrorYhigh(b)/h1.GetY()[b]
 	    exp_sumdown=0
 	    exp_sumup=0
             theory_sumdown=0
             theory_sumup=0
             for up,down in uncertainties:
-	        if b==0:# or b==h0.GetXaxis().GetNbins()-1:
-                    print massbins[massbin],b,uncertaintynames[uncertainties.index([up,down])],abs(up.GetBinContent(b+1)-h0.GetBinContent(b+1))/h0.GetBinContent(b+1),abs(down.GetBinContent(b+1)-h0.GetBinContent(b+1))/h0.GetBinContent(b+1)
+	        #if b==0:# or b==h0.GetXaxis().GetNbins()-1:
+                #    print massbins[massbin],b,uncertaintynames[uncertainties.index([up,down])],abs(up.GetBinContent(b+1)-h0.GetBinContent(b+1))/h0.GetBinContent(b+1),abs(down.GetBinContent(b+1)-h0.GetBinContent(b+1))/h0.GetBinContent(b+1)
                 addup=pow(max(0,up.GetBinContent(b+1)-h0.GetBinContent(b+1),down.GetBinContent(b+1)-h0.GetBinContent(b+1)),2)
 		adddown=pow(max(0,h0.GetBinContent(b+1)-up.GetBinContent(b+1),h0.GetBinContent(b+1)-down.GetBinContent(b+1)),2)
                 if uncertaintynames[uncertainties.index([up,down])]=="jer" or uncertaintynames[uncertainties.index([up,down])]=="jes":
@@ -200,8 +200,8 @@ if __name__=="__main__":
             h2.SetBinContent(b+1,h0.GetBinContent(b+1)-theory_sumdown)
             h3.SetBinContent(b+1,h0.GetBinContent(b+1)+theory_sumup)
 	    #print h2.GetXaxis().GetBinLowEdge(b+1),h2.GetXaxis().GetBinUpEdge(b+1),h1.GetY()[b],sqrt(pow(exp_sumdown,2)+pow(stat_down,2)),sqrt(pow(exp_sumup,2)+pow(stat_up,2))
-	    print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2.GetXaxis().GetBinLowEdge(b+1),h2.GetXaxis().GetBinUpEdge(b+1),h1.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup,2)),sqrt(pow(exp_sumdown,2)))
-        print "chi2/ndof",chi2/h0.GetXaxis().GetNbins()
+	    #print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2.GetXaxis().GetBinLowEdge(b+1),h2.GetXaxis().GetBinUpEdge(b+1),h1.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup,2)),sqrt(pow(exp_sumdown,2)))
+        #print "chi2/ndof",chi2/h0.GetXaxis().GetNbins()
 	new_hists+=[h2]
         new_hists+=[h3]
         h2.SetLineStyle(1)
@@ -525,7 +525,10 @@ if __name__=="__main__":
             h3new.SetBinContent(b+1,h13backup.GetBinContent(b+1)+theory_sumup*h13backup.GetBinContent(b+1))
 	    #print h2.GetXaxis().GetBinLowEdge(b+1),h2.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(exp_sumdown,2)+pow(stat_down,2)),sqrt(pow(exp_sumup,2)+pow(stat_up,2))
 	    print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup*h14G.GetY()[b],2)),sqrt(pow(exp_sumdown*h14G.GetY()[b],2)))
-        print "chi2/ndof",chi2/h14G.GetXaxis().GetNbins()
+	from scipy import stats
+	pvalue=stats.chisqprob(chi2, h14.GetXaxis().GetNbins())
+	sign=stats.norm.ppf(pvalue)
+        print "sign",sign,"chi2/ndof",chi2/h14.GetXaxis().GetNbins()
 	new_hists+=[h2new]
         new_hists+=[h3new]
         h2new.SetLineStyle(1)

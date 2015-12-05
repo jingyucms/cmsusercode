@@ -314,6 +314,15 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
+    samples=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_12000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_12000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_12000_1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ]
  
     dataevents={}
     data={}
@@ -376,6 +385,8 @@ if __name__ == '__main__':
         sample=prefix + '_GENnp-25-v4_chi.root'
       elif samples[i][0]=="QCDADD14000":
         sample=prefix + '_GENnp-26-v4_chi.root'
+      elif samples[i][0]=="QCDAntiCIplusLL12000":
+        sample=prefix + '_GENnp-antici-v4_chi.root'
       #if "ADD" in samples[i][0]:
       #  sample=prefix + '_GENaddv3_chi.root'
       #elif "CIplus" in samples[i][0]:
@@ -516,7 +527,7 @@ if __name__ == '__main__':
            massbinsci=massbins[j]
 	else:
            massbinsci=massbins[3]
-	histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
+	histname=samples[i][0].replace("Anti","")+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
         print histname
 	if "EWK" in samples[i][0]:
   	  histname=histname.replace("_backup","")
@@ -575,9 +586,14 @@ if __name__ == '__main__':
           ci=cibackup.Clone(histname)
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
           cinorm[j]=ci.Integral()
-	  print "CHECK THIS", cinorm[0], ci.Integral(), qcd.Integral(), qcdnorm[0],nloqcdbackup.Integral()
-	  ci.Scale(qcdnorm[0]/cinorm[0])
-          ci.Add(qcd,-1.)
+	  # CORRECT FORMULAT
+	  #ci.Scale(qcdnorm[0]/cinorm[0])
+	  # APPROXIMATE FORMULAT
+	  ci.Scale(qcdnorm[j]/cinorm[j])
+	  ci.Add(qcd,-1.)
+	  if "Anti" in samples[i][0]:
+	    ci.Scale(-1.)
+	    histname=histname.replace("CI","AntiCI")
 	  if j>=2:
 	    ci.Scale(1./qcdnorm[j])
 	  else:
@@ -593,7 +609,7 @@ if __name__ == '__main__':
         ci.Write(histname)
 
         # ALT (=NLO QCD)
-        histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+        histname=samples[i][0].replace("Anti","")+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
 	if "LOCI" in samples[i][0] or "CT10" in samples[i][0] or "cteq" in samples[i][0] or "EWK" in samples[i][0]:
     	    alt=nloqcd.Clone(histname)
