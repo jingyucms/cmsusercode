@@ -11,6 +11,7 @@ massbins=[(4800,13000),
 models=[1,2,3,4,5,6,7]
 models+=[30,31,32,33,34,35,36,37]
 models=[40,41,42,43,44,45,46,47]
+models=[8,9]
 
 for model in models:
 
@@ -39,6 +40,14 @@ for model in models:
     signal="CIplusLL"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
     massbins=[(3600,4200)]
+ if model==8:
+    signal="CIminusLL"    
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+ if model==9:
+    signal="CIminusLL"    
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    massbins=[(4800,13000)]
 
  if model==30:
     signal="CIplusLL"    

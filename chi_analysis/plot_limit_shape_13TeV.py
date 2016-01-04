@@ -21,7 +21,7 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- models=[1,2,3,4,5,6,7]
+ models=[1,2,3,4,5,6,7,8,9]
 
  for model in models:
 
@@ -35,6 +35,14 @@ if __name__=="__main__":
        signal="CIplusLL"    
     if model==5:
        signal="CIplusLL"    
+    if model==6:
+       signal="CIplusLL"    
+    if model==7:
+       signal="CIplusLL"    
+    if model==8:
+       signal="CIminusLL"    
+    if model==9:
+       signal="CIminusLL"    
 
     print signal
 
