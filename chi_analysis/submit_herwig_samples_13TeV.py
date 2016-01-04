@@ -1,21 +1,24 @@
 import os
 
-minMasses=[1500,1900,2400,2800,3300,3800,4300] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
-maxMasses=[1900,2400,2800,3300,3800,4300,13000] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
+minMasses=[1000,1500,1900,2400,2800,3300,3800,4300] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
+maxMasses=[1500,1900,2400,2800,3300,3800,4300,13000] # for mass bins 1.9, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4
 
 samples=[]
 
 for minMass in minMasses:
-    samples+=[('herwigpp_qcd',minMass,maxMasses[minMasses.index(minMass)],"",""),]
-    #samples+=[('herwigpp_qcdNonPert',minMass,maxMasses[minMasses.index(minMass)],"",""),]
+    #samples+=[('herwigpp_qcd',minMass,maxMasses[minMasses.index(minMass)],"",""),]
+    samples+=[('herwigpp_qcdNonPert',minMass,maxMasses[minMasses.index(minMass)],"",""),]
 
-version="Oct1"
+version="Nov28"
 
 numjobs=100
 
 for sample,minMass,maxMass,signalMass,coupling in samples:
+
+  for jobnum in range(numjobs):
+
     samplename=sample+"_m"+str(minMass)+"_"+str(maxMass)+"_"+str(signalMass)+"_"+str(coupling).strip("()").replace(" ","").replace(",","_")+"_"+version
-    cfg=open(samplename+".py","w")
+    cfg=open(samplename+str(jobnum)+".py","w")
     cfg.writelines("""
 import FWCore.ParameterSet.Config as cms
 
@@ -93,9 +96,9 @@ process.MessageLogger=cms.Service("MessageLogger",
 
 from Configuration.Generator.HerwigppDefaults_cfi import *
 from Configuration.Generator.HerwigppUE_EE_5C_cfi import *
-from HerwigppPDF_CTEQ6_LO_cfi import *									# Import CTEQ6L PDF as shower pdf
-from HerwigppEnergy_13TeV_cfi import *
-from HerwigppMECorrections_cfi import *
+from Configuration.Generator.HerwigppPDF_CTEQ6_LO_cfi import *									# Import CTEQ6L PDF as shower pdf
+from Configuration.Generator.HerwigppEnergy_13TeV_cfi import *
+from Configuration.Generator.HerwigppMECorrections_cfi import *
 
 process.generator = cms.EDFilter("ThePEGGeneratorFilter",
 	herwigDefaultsBlock,
@@ -136,11 +139,12 @@ process.load("RecoJets.Configuration.RecoGenJets_cff")
 process.ak4GenJets.jetPtMin="""+str(minMass/10)+"""
 process.ak5GenJets.jetPtMin="""+str(minMass/10)+"""
 
+process.RandomNumberGeneratorService.generator.initialSeed="""+str(jobnum)+"""
+
 process.p = cms.Path(process.generator*process.genParticles*process.genJetParticles*process.ak4GenJets*process.ak5GenJets)#*process.ca08PrunedGenJets
 process.endpath = cms.EndPath(process.out)
 process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles*_*_*','drop *_genParticlesForJets*_*_*')
 """)
     cfg.close()
-    #for jobnum in range(numjobs):
-    #  os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
+    os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_1_20_patch2 cmsusercode/chi_analysis/"+samplename+str(jobnum)+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
