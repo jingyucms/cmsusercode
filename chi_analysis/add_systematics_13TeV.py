@@ -304,7 +304,7 @@ if __name__ == '__main__':
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -314,7 +314,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
-    samples=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples2=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -394,13 +394,13 @@ if __name__ == '__main__':
       #elif "CIminus" in samples[i][0]:
       #  sample=prefix + '_GENciminusv3_chi.root'
       else:
-        sample=prefix + '_GENv4_chi.root'
+        sample="datacards/"+prefix + '_GENv4_chi.root'
       print sample
       out=TFile(sample,'UPDATE')
       closefiles=[out]
  
       # LO QCD file
-      sample2=prefix + '_GENv4_chi.root'
+      sample2="datacards/"+prefix + '_GENv4_chi.root'
       print sample2
       in2=TFile(sample2,'READ')
 
@@ -427,13 +427,13 @@ if __name__ == '__main__':
       closefiles+=[ewkfile]
 
       # JES uncertainty QCD
-      filename1jes="chi_systematic_plotschi_QCD4_13TeV.root"
+      filename1jes="datacards/chi_systematic_plotschi_QCD4_13TeV.root"
       print filename1jes
       jesfile = TFile.Open(filename1jes)
       closefiles+=[jesfile]
 
       # JES uncertainty CI
-      filename1jesci="chi_systematic_plotschi_QCD4_13TeV.root"
+      filename1jesci="datacards/chi_systematic_plotschi_QCD4_13TeV.root"
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
