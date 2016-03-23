@@ -22,6 +22,7 @@ gStyle.SetLegendBorderSize(0)
 if __name__=="__main__":
 
  models=[1,2,3,4,5,6,7,8,9]
+ models=[10]
 
  for model in models:
 
@@ -43,6 +44,8 @@ if __name__=="__main__":
        signal="CIminusLL"    
     if model==9:
        signal="CIminusLL"    
+    if model==10:
+       signal="QBH"    
 
     print signal
 
@@ -54,7 +57,7 @@ if __name__=="__main__":
     #canvas.GetPad(0).SetLogy()
     mg=TMultiGraph()
 
-    min_x=7000
+    min_x=6000
     max_x=20000
     g0=TGraph(0)
     g0.SetPoint(0,min_x,0)
