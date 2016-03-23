@@ -82,8 +82,8 @@ if __name__ == '__main__':
         if mass==2: b="3"
         if mass==1: b="4"
         if mass==0: b="6"
-	print "datacard_shapelimit13TeV_"+prefix+"_JESv6b"+b+"_chi.root"
-        f_refmc=TFile.Open("datacard_shapelimit13TeV_"+prefix+"_JESv6b"+b+"_chi.root")
+	print "datacard_shapelimit13TeV_"+prefix+"_JESv7b"+b+"_chi.root"
+        f_refmc=TFile.Open("datacard_shapelimit13TeV_"+prefix+"_JESv7b"+b+"_chi.root")
 	files+=[f_refmc]
         f_mc=f_refmc
         canvas.cd(mass+1)
@@ -220,5 +220,5 @@ if __name__ == '__main__':
         legend.SetFillStyle(0)
         legend.Draw("same")
 
-      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"_13TeV.root")
-      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"_13TeV.pdf")
+      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"v7_13TeV.root")
+      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"v7_13TeV.pdf")

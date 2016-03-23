@@ -6,6 +6,7 @@ from math import *
 #gROOT.Macro( os.path.expanduser( '~/rootlogon.C' ) )
 gROOT.Reset()
 gROOT.SetStyle("Plain")
+gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
 gStyle.SetOptFit(0)
 gStyle.SetTitleOffset(1.2,"Y")
@@ -47,7 +48,7 @@ if doJES:
 
   JESuncertainties={}
   for source in JECsources:
-    p = JetCorrectorParameters("../../EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer15_25nsV5_DATA_UncertaintySources_AK4PFchs.txt", source)
+    p = JetCorrectorParameters("../../EXOVVNtuplizerRunII/Ntuplizer/JEC/Fall15_25nsV2_DATA_UncertaintySources_AK4PFchs.txt", source)
     JESuncertainties[source]=JetCorrectionUncertainty(p)
 
 
@@ -171,7 +172,7 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_25nsData6"
+    prefix="datacard_shapelimit13TeV_25nsData7"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -210,7 +211,7 @@ if __name__ == '__main__':
 	      (6000,13000),
               ]
  
-    samples=[("data_obs",[("JetHT_25ns_data6.txt",1.)]),
+    samples=[("data_obs",[("JetHT_25ns_data7.txt",1.)]),
              #("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
              #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
              #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),

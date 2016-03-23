@@ -48,7 +48,7 @@ if doJES:
 
   JESuncertainties={}
   for source in JECsources:
-    p = JetCorrectorParameters("/shome/hinzmann/CMSSW_7_4_12/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer15_25nsV6_DATA_UncertaintySources_AK4PFchs.txt", source)
+    p = JetCorrectorParameters("/shome/hinzmann/Fall15/CMSSW_7_6_3_patch2/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer15_25nsV7_DATA_UncertaintySources_AK4PFchs.txt", source)
     JESuncertainties[source]=JetCorrectionUncertainty(p)
 
 
@@ -64,7 +64,7 @@ def createPlots(sample,prefix,xsec,massbins):
 	for folder in folders:
 	  if sample in folder:
             files+=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+folder+"/GEN.root"]
-	    break
+	    #break
 #        files=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/jobtmp_"+sample+"-0/GEN.root"]
 
     prunedgenjets_handle=Handle("std::vector<reco::GenJet>")
@@ -151,8 +151,8 @@ if __name__ == '__main__':
     wait=False
     #name="QCD"
     name="QCDCIplusLL10000"
-    bin=5
-    prefix="datacard_shapelimit13TeV_"+name+"_JESv6b"+str(bin)
+    bin=6 #1-6
+    prefix="datacard_shapelimit13TeV_"+name+"_JESv74b"+str(bin)
  
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -193,60 +193,60 @@ if __name__ == '__main__':
               ]
 
     if bin==1 and name=="QCD": 
-      samples=[("QCD",[("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Oct1",3.507e-09),
+      samples=[("QCD",[("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
     if bin==2 and name=="QCD":
-      samples=[("QCD",[("pythia8_ci_m3800_4300_50000_1_0_0_13TeV_Oct1",5.867e-09),
+      samples=[("QCD",[("pythia8_ci_m3800_4300_50000_1_0_0_13TeV_Nov14",5.867e-09),
 		       ]),
 	    ]
     if bin==3 and name=="QCD":
-      samples=[("QCD",[("pythia8_ci_m3300_3800_50000_1_0_0_13TeV_Oct1",1.863e-08),
+      samples=[("QCD",[("pythia8_ci_m3300_3800_50000_1_0_0_13TeV_Nov14",1.863e-08),
 		       ]),
 	    ]
     if bin==4 and name=="QCD":
-      samples=[("QCD",[("pythia8_ci_m2800_3300_50000_1_0_0_13TeV_Oct1",6.446e-08),
+      samples=[("QCD",[("pythia8_ci_m2800_3300_50000_1_0_0_13TeV_Nov14",6.446e-08),
 		       ]),
 	    ]
     if bin==5 and name=="QCD":
-      samples=[("QCD",[("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Oct1",1.649e-07),
+      samples=[("QCD",[("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ]),
 	    ]
     if bin==6 and name=="QCD":
-      samples=[("QCD",[("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Oct1",8.836e-07),
+      samples=[("QCD",[("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ]),
 	    ]
     if bin==7 and name=="QCD": 
-      samples=[("QCD",[("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Oct1",3.307e-06),
+      samples=[("QCD",[("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ]),
 	    ]
 
     if bin==1 and name=="QCDCIplusLL10000": 
-      samples=[("QCDCIplusLL10000",[("pythia8_ci_m4300_13000_10000_1_0_0_13TeV_Oct1",3.507e-09),
+      samples=[("QCDCIplusLL10000",[("pythia8_ci_m4300_13000_10000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
     if bin==2 and name=="QCDCIplusLL10000":
-      samples=[("QCDCIplusLL10000",[("pythia8_ci_m3800_4300_10000_1_0_0_13TeV_Oct1",5.867e-09),
+      samples=[("QCDCIplusLL10000",[("pythia8_ci_m3800_4300_10000_1_0_0_13TeV_Nov14",5.867e-09),
 		       ]),
 	    ]
     if bin==3 and name=="QCDCIplusLL10000":
-      samples=[("QCDCIplusLL10000",[("pythia8_ci_m3300_3800_10000_1_0_0_13TeV_Oct1",1.863e-08),
+      samples=[("QCDCIplusLL10000",[("pythia8_ci_m3300_3800_10000_1_0_0_13TeV_Nov14",1.863e-08),
 		       ]),
 	    ]
     if bin==4 and name=="QCDCIplusLL10000":
-      samples=[("QCDCIplusLL10000",[("pythia8_ci_m2800_3300_10000_1_0_0_13TeV_Oct1",6.446e-08),
+      samples=[("QCDCIplusLL10000",[("pythia8_ci_m2800_3300_10000_1_0_0_13TeV_Nov14",6.446e-08),
 		       ]),
 	    ]
     if bin==5 and name=="QCDCIplusLL10000":
-      samples=[("QCDCIplusLL10000",[("pythia8_ci_m2400_2800_10000_1_0_0_13TeV_Oct1",1.649e-07),
+      samples=[("QCDCIplusLL10000",[("pythia8_ci_m2400_2800_10000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ]),
 	    ]
     if bin==6 and name=="QCDCIplusLL10000":
-      samples=[("QCDCIplusLL10000",[("pythia8_ci_m1900_2400_10000_1_0_0_13TeV_Oct1",8.836e-07),
+      samples=[("QCDCIplusLL10000",[("pythia8_ci_m1900_2400_10000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ]),
 	    ]
     if bin==7 and name=="QCDCIplusLL10000": 
-      samples=[("QCDCIplusLL10000",[("pythia8_ci_m1500_1900_10000_1_0_0_13TeV_Oct1",3.307e-06),
+      samples=[("QCDCIplusLL10000",[("pythia8_ci_m1500_1900_10000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ]),
 	    ]
     xsecs=eval(open("xsecs_13TeV.txt").readline())
