@@ -28,6 +28,14 @@ maxNevents=sys.argv[2]
 isLoop=False
 
 crossSectionMap=[[4000,28.65327],[4500,10.28881],[5000,3.728508],[5500,1.343979],[6000,0.4758148],[6500,0.1634881],[7000,0.05385596],[7500,0.01678352],[8000,0.004871688],[8500,0.001292072],[9000,0.0003054339],[9500,0.00006221544],[10000,0.00001040396],[10500,0.000001327101],[11000,0.0000001145733]]
+totNEvents={}
+totNEvents[6500]=999977
+totNEvents[7000]=999973
+totNEvents[7500]=999970
+totNEvents[8000]=999964
+totNEvents[8500]=999962
+totNEvents[9000]=999957
+totNEvents[9500]=999936
 
 massbins=[[4200,4800],[4800,13000]]
 slopes=[0.04,0.05]
@@ -108,10 +116,10 @@ if isLoop==True:
     prunedgenjets_label="ak4GenJets"
     qbhEvents=qbhfile.Get("Events")
     if int(maxNevents)==-1:
-        totNEvents=qbhEvents.GetEntries()
+        totNEvents[energy]=qbhEvents.GetEntries()
     else:
-        totNEvents=int(maxNevents)
-    print "Running on:",totNEvents
+        totNEvents[energy]=int(maxNevents)
+    print "Running on:",totNEvents[energy]
 
     for massbin in massbins:
         plot = TH1F('qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1]),';#chi;N',15,1,16)
@@ -142,7 +150,7 @@ if isLoop==True:
         for massbin in massbins:
             if mjj>=massbin[0] and mjj<massbin[1]:
                 plots[massbins.index(massbin)].Fill(chi)
-        if int(event_count)>=int(totNEvents): break
+        if int(event_count)>=int(totNEvents[energy]): break
     print "Selection efficiency for all massbins: ",str(event_pass/float(event_count))
 else:
     qbhHistFile=TFile.Open("qbh/qbh_"+str(energy)+"_6_chi_v1.root")
@@ -154,17 +162,17 @@ else:
 print plots
         
 for massbin in massbins:            
-    plots[massbins.index(massbin)]=plots[massbins.index(massbin)].Rebin(len(chi_binnings[massbins.index(massbin)])-1,'qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1])+"_rebin1",chi_binnings[massbins.index(massbin)])
+    plots[massbins.index(massbin)]=plots[massbins.index(massbin)].Rebin(len(chi_binnings[massbins.index(massbin)])-1,'QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+"_rebin1",chi_binnings[massbins.index(massbin)])
     plots[massbins.index(massbin)].Sumw2()
-    plots[massbins.index(massbin)].Scale(1./totNEvents)
+    plots[massbins.index(massbin)].Scale(1./totNEvents[int(energy)])
     plots[massbins.index(massbin)].Scale(xsec)
-    plotsSave=plots[massbins.index(massbin)].Clone('qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1])+"_rebin1_backup")
+    plotsSave=plots[massbins.index(massbin)].Clone('QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+"_rebin1_backup")
     plotsBackup.append(plotsSave)
 
     # save(copy) qcd and data
     qcdPlot=qcdfile.Get("QCDCIplusLL8000_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1")
     qcdPlot.Sumw2()
-    qcdPlotSave=qcdPlot.Clone("qbh_"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1")
+    qcdPlotSave=qcdPlot.Clone("QCDQBH"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1")
     plotsALT.append(qcdPlotSave)
     dataPlot=qcdfile.Get("data_obs#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1")
     dataPlot.Sumw2()
@@ -175,7 +183,7 @@ for massbin in massbins:
     # add qbh on top of qcd and norm to data
     fastNloFinalPlots[massbins.index(massbin)].Scale(1000.)
     plots[massbins.index(massbin)].Add(fastNloFinalPlots[massbins.index(massbin)])
-    plotsAddSave=plots[massbins.index(massbin)].Clone('qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1])+"_rebin1_add_backup")
+    plotsAddSave=plots[massbins.index(massbin)].Clone('QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+"_rebin1_add_backup")
     plotsAddBackup.append(plotsAddSave)
     plots[massbins.index(massbin)].Scale(normfactor/plots[massbins.index(massbin)].Integral())
 
@@ -186,22 +194,22 @@ for massbin in massbins:
 
     # write(copy) qcd uncertainties to new file
     qcdJerUp=qcdfile.Get("QCDCIplusLL8000_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jerUp")
-    qcdJerUpSave=qcdJerUp.Clone("qbh_"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jerUp")
+    qcdJerUpSave=qcdJerUp.Clone("QCDQBH"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jerUp")
     jerPlotsALTUp.append(qcdJerUpSave)
     qcdJesUp=qcdfile.Get("QCDCIplusLL8000_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jesUp")
-    qcdJesUpSave=qcdJesUp.Clone("qbh_"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jesUp")
+    qcdJesUpSave=qcdJesUp.Clone("QCDQBH"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jesUp")
     jesPlotsALTUp.append(qcdJesUpSave)
     qcdScaleUp=qcdfile.Get("QCDCIplusLL8000_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_scaleUp")
-    qcdScaleUpSave=qcdScaleUp.Clone("qbh_"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_scaleUp")
+    qcdScaleUpSave=qcdScaleUp.Clone("QCDQBH"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_scaleUp")
     scalePlotsALTUp.append(qcdScaleUpSave)
     qcdJerDown=qcdfile.Get("QCDCIplusLL8000_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jerDown")
-    qcdJerDownSave=qcdJerDown.Clone("qbh_"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jerDown")
+    qcdJerDownSave=qcdJerDown.Clone("QCDQBH"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jerDown")
     jerPlotsALTDown.append(qcdJerDownSave)
     qcdJesDown=qcdfile.Get("QCDCIplusLL8000_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jesDown")
-    qcdJesDownSave=qcdJesDown.Clone("qbh_"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jesDown")
+    qcdJesDownSave=qcdJesDown.Clone("QCDQBH"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_jesDown")
     jesPlotsALTDown.append(qcdJesDownSave)
     qcdScaleDown=qcdfile.Get("QCDCIplusLL8000_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_scaleDown")
-    qcdScaleDownSave=qcdScaleDown.Clone("qbh_"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_scaleDown")
+    qcdScaleDownSave=qcdScaleDown.Clone("QCDQBH"+energy+"_6_ALT#chi"+str(massbin[0])+"_"+str(massbin[1])+"_rebin1_scaleDown")
     scalePlotsALTDown.append(qcdScaleDownSave)
 
     # write(copy) dummy background
@@ -210,8 +218,8 @@ for massbin in massbins:
     bgPlots.append(bgPlotSave)
     
     # jer uncertainty
-    jerPlotUp=plots[massbins.index(massbin)].Clone('qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jerUp')
-    jerPlotDown=plots[massbins.index(massbin)].Clone('qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jerDown')
+    jerPlotUp=plots[massbins.index(massbin)].Clone('QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jerUp')
+    jerPlotDown=plots[massbins.index(massbin)].Clone('QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jerDown')
     for b in range(plots[massbins.index(massbin)].GetNbinsX()):
         jerPlotUp.SetBinContent(b+1,plots[massbins.index(massbin)].GetBinContent(b+1)*(1.+(plots[massbins.index(massbin)].GetBinCenter(b+1)-8.5)/7.5*slopes[massbins.index(massbin)]))
         jerPlotDown.SetBinContent(b+1,plots[massbins.index(massbin)].GetBinContent(b+1)*(1.-(plots[massbins.index(massbin)].GetBinCenter(b+1)-8.5)/7.5*slopes[massbins.index(massbin)]))
@@ -219,8 +227,8 @@ for massbin in massbins:
     jerPlotsDown.append(jerPlotDown)
     
     # jes uncertainty
-    jesPlotUp=plots[massbins.index(massbin)].Clone('qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jesUp')
-    jesPlotDown=plots[massbins.index(massbin)].Clone('qbh_'+energy+'_6_#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jesDown')    
+    jesPlotUp=plots[massbins.index(massbin)].Clone('QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jesUp')
+    jesPlotDown=plots[massbins.index(massbin)].Clone('QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+'_rebin1_jesDown')    
     jespad=jesfile.Get("jes")
     jes=jespad.GetListOfPrimitives()[4+massbins.index(massbin)]
     for b in range(plots[massbins.index(massbin)].GetNbinsX()):

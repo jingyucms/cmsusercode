@@ -12,6 +12,9 @@ models=[1,2,3,4,5,6,7]
 models+=[30,31,32,33,34,35,36,37]
 models=[40,41,42,43,44,45,46,47]
 models=[8,9]
+models=[10]
+
+signalExtra=""
 
 for model in models:
 
@@ -48,6 +51,10 @@ for model in models:
     signal="CIminusLL"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
     massbins=[(4800,13000)]
+ if model==10:
+    signal="QBH"    
+    signalExtra="_6"
+    signalMasses=[6500,7000,7500,8000,8500,9000,9500]
 
  if model==30:
     signal="CIplusLL"    
@@ -126,7 +133,7 @@ for model in models:
 
  limits={}
  for signalMass in signalMasses:
-    signalWithMass=signal+str(signalMass)
+    signalWithMass=signal+str(signalMass)+signalExtra
     print signalWithMass
     cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass+".txt","w")
     #if signal=="ADD":
@@ -191,6 +198,8 @@ for model in models:
         fname=prefix + '_GENnp-26-v4_chi.root'
     elif signalWithMass=="AntiCIplusLL12000":
         fname=prefix + '_GENnp-antici-v4_chi.root'
+    elif "QBH" in signal:
+        fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
     print fname
     f=TFile(fname)
     cfg.writelines("""
