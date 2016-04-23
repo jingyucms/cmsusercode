@@ -142,8 +142,11 @@ for model in models:
     signalMasses=[1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]
     massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
     if signalExtra=="_1_2.5_800": signalMasses.remove(1250)
-    if signalExtra=="_1_0.05_800": signalMasses.remove(2000)
+    if signalExtra=="_1_0.05_800":
+      signalMasses.remove(2000)
+      signalMasses.remove(3000)
     if signalExtra=="_1_3.0_801": signalMasses.remove(2500)
+    if signalExtra=="_1_4.0_801": signalMasses.remove(4000)
 
  dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
  dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
@@ -292,9 +295,9 @@ kmax 3 number of nuisance parameters
     cfg.close()
     os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
     os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
-    os.system('root -q -b higgsCombine'+signal+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    os.system('root -q -b '+dire+'"extractSignificanceStats.C(\\"'+signal+str(signalMass)+'\\")" > '+name+'_exp_'+str(signalMass)+'.txt')
+    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
+    os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
+    os.system('root -q -b '+dire+'"extractSignificanceStats.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" > '+name+'_exp_'+str(signalMass)+'.txt')
 
  for signalMass in signalMasses:
     limits[signalMass]=[]
