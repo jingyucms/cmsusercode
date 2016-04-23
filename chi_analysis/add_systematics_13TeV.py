@@ -84,6 +84,7 @@ if __name__ == '__main__':
 	      #(8,),
     	     ]
 
+    samples=[]
     
     samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
@@ -323,7 +324,13 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_12000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
- 
+    for mass in [1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]:
+     for gq in ["0.05","0.1","0.25","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
+      for vector in ["800","801"]:
+       if not str(mass)+"_1_"+gq+"_"+vector in ["1250_1_2.5_800","2000_1_0.05_800","2500_1_3.0_801"]:
+         samples+=[("DM"+str(mass)+"_1_"+gq+"_"+vector,[("dijet_"+str(mass)+"_1_"+gq+"_"+vector,0)]),
+             ]
+
     dataevents={}
     data={}
     qcdnorm={}
@@ -387,6 +394,8 @@ if __name__ == '__main__':
         sample=prefix + '_GENnp-26-v4_chi.root'
       elif samples[i][0]=="QCDAntiCIplusLL12000":
         sample=prefix + '_GENnp-antici-v4_chi.root'
+      elif "DM" in samples[i][0]:
+        sample=prefix + "_" + samples[i][0] + '_chi.root'
       #if "ADD" in samples[i][0]:
       #  sample=prefix + '_GENaddv3_chi.root'
       #elif "CIplus" in samples[i][0]:
@@ -579,6 +588,13 @@ if __name__ == '__main__':
 	     ci.Scale(1./nloqcdbackup.Integral())
 	  else:
 	     ci.Scale(nloqcd.Integral()/ci.Integral()/5.) # fake signal size for lower mass bins
+          ci.Add(nloqcd)
+	elif "DM" in samples[i][0]:
+          cibackup=out.Get(histname)
+  	  histname=cibackup.GetName().replace("_backup","")
+          ci=cibackup.Clone(histname)
+          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
+          ci.Scale(1./nloqcdbackup.Integral())
           ci.Add(nloqcd)
 	else:
           cibackup=out.Get(histname)

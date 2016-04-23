@@ -1,4 +1,4 @@
-import os
+import os,sys
 from ROOT import *
 import array
 import ROOT
@@ -13,8 +13,22 @@ models+=[30,31,32,33,34,35,36,37]
 models=[40,41,42,43,44,45,46,47]
 models=[8,9]
 models=[10]
+models=[]
+
+counter=100
+signalName={}
+signalExtraName={}
+for gq in ["0.05","0.1","0.25","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
+   for vector in ["800","801"]:
+     models+=[counter]
+     signalName[counter]="DM"
+     signalExtraName[counter]="_1_"+gq+"_"+vector
+     counter+=1
 
 signalExtra=""
+
+if len(sys.argv)>1:
+   models=[int(sys.argv[1])]
 
 for model in models:
 
@@ -122,8 +136,17 @@ for model in models:
     signalMasses=[12000]
     massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
 
+ if model>=100:
+    signal=signalName[model]
+    signalExtra=signalExtraName[model]
+    signalMasses=[1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]
+    massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
+    if signalExtra=="_1_2.5_800": signalMasses.remove(1250)
+    if signalExtra=="_1_0.05_800": signalMasses.remove(2000)
+    if signalExtra=="_1_3.0_801": signalMasses.remove(2500)
 
  dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
+ dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
  prefix=dire+"datacard_shapelimit13TeV"
 
  if model>10 and model<100:
@@ -134,6 +157,8 @@ for model in models:
  limits={}
  for signalMass in signalMasses:
     signalWithMass=signal+str(signalMass)+signalExtra
+    if not "DM" in signal:
+        signalWithMass="QCD"+signalWithMass
     print signalWithMass
     cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass+".txt","w")
     #if signal=="ADD":
@@ -200,6 +225,8 @@ for model in models:
         fname=prefix + '_GENnp-antici-v4_chi.root'
     elif "QBH" in signal:
         fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
+    elif "DM" in signal:
+        fname=prefix+"_"+str(signalWithMass)+"_chi.root"
     print fname
     f=TFile(fname)
     cfg.writelines("""
@@ -229,18 +256,18 @@ kmax 3 number of nuisance parameters
        text+=str(i)+" "+str(i)+" "+str(i)+" "
     text+="\nprocess "
     for i in range(len(massbins)):
-       text+="QCD"+signalWithMass+" QCD"+signalWithMass+"_ALT QCD "
+       text+=signalWithMass+" "+signalWithMass+"_ALT QCD "
     text+="\nprocess "
     for i in range(len(massbins)):
        text+="-1 0 1 "
     text+="\nrate "
     for i in range(len(massbins)):
        hQCD=f.Get("QCD#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
-       hALT=f.Get("QCD"+signalWithMass+"_ALT#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
-       h=f.Get("QCD"+signalWithMass+"#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
+       hALT=f.Get(signalWithMass+"_ALT#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
+       h=f.Get(signalWithMass+"#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1")
        print "QCD#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1",hQCD.Integral()
-       print "QCD"+signalWithMass+"_ALT#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1",hALT.Integral()
-       print "QCD"+signalWithMass+"#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1",h.Integral()
+       print signalWithMass+"_ALT#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1",hALT.Integral()
+       print signalWithMass+"#chi"+str(massbins[i][0])+"_"+str(massbins[i][1])+"_rebin1",h.Integral()
        text+=str(h.Integral())+" "+str(hALT.Integral())+" "+str(hQCD.Integral())+" "
     cfg.writelines(text+"""
 -----------
@@ -264,8 +291,8 @@ kmax 3 number of nuisance parameters
 
     cfg.close()
     os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
-    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass+".root")
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+" fixedMu_"+signalWithMass+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
+    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
+    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
     os.system('root -q -b higgsCombine'+signal+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
     os.system('root -q -b '+dire+'"extractSignificanceStats.C(\\"'+signal+str(signalMass)+'\\")" > '+name+'_exp_'+str(signalMass)+'.txt')
 
