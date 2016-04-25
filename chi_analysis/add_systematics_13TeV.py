@@ -447,8 +447,8 @@ if __name__ == '__main__':
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
 
-      canvas = TCanvas("","",0,0,600,200)
-      canvas.Divide(3,1)
+      canvas = TCanvas("","",0,0,600,400)
+      canvas.Divide(3,2)
       plots=[]
       legends=[]
 
@@ -831,9 +831,9 @@ if __name__ == '__main__':
 	#ci.Write(samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
       
         # PLOTS
-	if j<3:
-	   continue
-        canvas.cd(j-2)
+	#if j<3:
+	#   continue
+        canvas.cd(j+1)#j-2
         legend1=TLegend(0.2,0.6,0.9,0.95,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4800<m_{jj}<7000","m_{jj}>4800").replace("4800<m_{jj}<13000","m_{jj}>4800"))
         legends+=[legend1]
         legend1.AddEntry(data,"data","lpe")
