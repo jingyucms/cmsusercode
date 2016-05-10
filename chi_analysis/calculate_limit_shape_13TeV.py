@@ -143,7 +143,12 @@ for model in models:
  if model>=100:
     signal=signalName[model]
     signalExtra=signalExtraName[model]
-    signalMasses=[1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]
+    if float(signalExtraName[model].split("_")[2])<0.13:
+       signalMasses=[2000,2500,3000,3500,4000,5000,6000]
+    elif float(signalExtraName[model].split("_")[2])<=0.15:
+       signalMasses=[1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]
+    else:
+       signalMasses=[1000,1250,1500,5000,6000,7000]
 
  dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
  dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
