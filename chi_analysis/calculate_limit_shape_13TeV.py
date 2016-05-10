@@ -15,10 +15,14 @@ models=[8,9]
 models=[10]
 models=[]
 
+xsecs={}
+for l in open("xsecs_13TeV_dm.txt").readlines():
+  xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
+
 counter=100
 signalName={}
 signalExtraName={}
-for gq in ["0.05","0.1","0.25","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
+for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
    for vector in ["800","801"]:
      models+=[counter]
      signalName[counter]="DM"
@@ -140,13 +144,6 @@ for model in models:
     signal=signalName[model]
     signalExtra=signalExtraName[model]
     signalMasses=[1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]
-    massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
-    if signalExtra=="_1_2.5_800": signalMasses.remove(1250)
-    if signalExtra=="_1_0.05_800":
-      signalMasses.remove(2000)
-      signalMasses.remove(3000)
-    if signalExtra=="_1_3.0_801": signalMasses.remove(2500)
-    if signalExtra=="_1_4.0_801": signalMasses.remove(4000)
 
  dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
  dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
@@ -230,6 +227,20 @@ for model in models:
         fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
     elif "DM" in signal:
         fname=prefix+"_"+str(signalWithMass)+"_chi.root"
+	if not signalWithMass in xsecs.keys():
+	  continue
+	if signalMass<=2000:
+            massbins=[(1900,2400),(2400,3000)]
+	if signalMass==2500:
+            massbins=[(1900,2400),(2400,3000)]
+	if signalMass==3000:
+            massbins=[(2400,3000),(3000,3600)]
+	if signalMass==3500:
+            massbins=[(3000,3600),(3600,4200)]
+	if signalMass==4000:
+            massbins=[(3600,4200),(4200,4800)]
+	if signalMass>=5000:
+            massbins=[(4200,4800),(4800,13000)]
     print fname
     f=TFile(fname)
     cfg.writelines("""

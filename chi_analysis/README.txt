@@ -17,6 +17,8 @@ copy-to-eos.sh # copy data and full simulation QCD from PSI to CERN
 
 plotSignal_13TeV_uzh2.py # produce dijet angular histograms from GEN samples for QCD, CI and ADD samples
 
+plotSignal_13TeV_lxplus_loop.py # produce dijet angular histograms from GEN samples for DM samples
+
 plotSignal_jes_13TeV_uzh.py # produce JES uncertainty histograms from CI and QCD GEN samples
 plot_chi_jes_plots_13TeV.py # plot JES uncertainty histograms
 
