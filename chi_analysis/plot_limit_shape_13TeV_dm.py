@@ -32,6 +32,7 @@ if __name__=="__main__":
  for vector in ["800","801"]:
   g_q=TGraph(0)
   g_q_exp=TGraph(0)
+  g_q_band=TGraphAsymmErrors(0)
   for signalMass in [1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]:
     signal="DM"+str(signalMass)+"_1_"+vector
     limits=[]
@@ -45,6 +46,8 @@ if __name__=="__main__":
       for line in f.readlines():
         if "CLs = " in line:
            limits[-1]=[float(gq),float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
+	   if limits[-1][-1]==0:
+	     limits[-1][-2]=1e-5
         if "CLb      = " in line:
            print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
       if len(limits[-1])==0:
@@ -58,6 +61,8 @@ if __name__=="__main__":
       for line in f.readlines():
         if "Expected CLs" in line:
            limits[-1]+=[float(line.strip().split(" ")[-1])]
+	   if limits[-1][-1]>=1:
+	     limits[-1][-1]=1e-5
       for i in range(len(limits[-1]),8):
          limits[-1]+=[0]
 
@@ -78,15 +83,23 @@ if __name__=="__main__":
     g_exp=TGraph(0)
     g_exp1m=TGraph(0)
     g_exp1p=TGraph(0)
+    max_mass=0
+    max_mass_exp=0
+    max_mass_exp1m=0
+    max_mass_exp1p=0
     for mass,limit,error,exp,exp1m,exp1p,exp2m,exp2p in limits:
       if limit>0:
         g.SetPoint(g.GetN(),mass,log10(limit))
+	max_mass=mass
       if exp>0:
         g_exp.SetPoint(g_exp.GetN(),mass,log10(exp))
+	max_mass_exp=mass
       if exp1m>0:
         g_exp1m.SetPoint(g_exp1m.GetN(),mass,log10(exp1m))
+	max_mass_exp1m=mass
       if exp1p>0:
         g_exp1p.SetPoint(g_exp1p.GetN(),mass,log10(exp1p))
+	max_mass_exp1p=mass
     g.SetMarkerStyle(24)
     g.SetMarkerSize(0.5)
     g.SetLineColor(1)
@@ -112,7 +125,7 @@ if __name__=="__main__":
     mg.SetTitle("")
     mg.GetXaxis().SetTitle("coupling")
     mg.GetYaxis().SetTitle("log_{10}(CL_{S})")
-    mg.GetYaxis().SetRangeUser(-3,0)
+    mg.GetYaxis().SetRangeUser(-6,0)
     
     l=TLine(min_x,log10(0.05),max_x,log10(0.05))
     l.SetLineColor(2)
@@ -129,21 +142,23 @@ if __name__=="__main__":
     for i in reversed(range(20000)):
         mass=i*(limits[-1][0]-limits[0][0])/20000.+limits[0][0]
         if mass<min_x or mass>max_x: continue
-	if limit==0 and g.Eval(mass,0)>log10(0.05):
+	if limit==0 and g.Eval(mass,0)>log10(0.05) and mass<=max_mass:
 	    limit=mass
-	if exp==0 and g_exp.Eval(mass,0)>log10(0.05):
+	if exp==0 and g_exp.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp:
 	    exp=mass
-	if exp1m==0 and g_exp1m.Eval(mass,0)>log10(0.05):
+	if exp1m==0 and g_exp1m.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp1m:
 	    exp1m=mass
-	if exp1p==0 and g_exp1p.Eval(mass,0)>log10(0.05):
+	if exp1p==0 and g_exp1p.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp1p:
 	    exp1p=mass
 
-    print "limit: %.2f" % (limit), "& %.2f" % (exp), "$\pm$ %.2f" % (max(exp-exp1m,exp1p-exp))
+    print "limit: %.2f" % (limit), "& %.2f" % (exp), "$\pm$ %.2f" % (-max(exp-exp1m,exp1p-exp))
 
-    print "limit: %.3f," % (limit), "%.3f," % (exp), "%.3f, %.3f, 0, 0" % ((max(exp-exp1m,exp1p-exp)+exp),(exp-max(exp-exp1m,exp1p-exp)))
+    print "limit: %.3f," % (limit), "%.3f," % (exp), "%.3f, %.3f, 0, 0" % ((-max(exp-exp1m,exp1p-exp)+exp),(exp+max(exp-exp1m,exp1p-exp)))
 
     g_q.SetPoint(g_q.GetN(),signalMass,limit*6.)
-    g_q_exp.SetPoint(g_q.GetN(),signalMass,exp*6.)
+    g_q_exp.SetPoint(g_q_exp.GetN(),signalMass,exp*6.)
+    g_q_band.SetPoint(g_q_band.GetN(),signalMass,exp*6.)
+    g_q_band.SetPointError(g_q_band.GetN()-1,0,0,-max(exp-exp1m,exp1p-exp)*6.,-max(exp-exp1m,exp1p-exp)*6.)
     
     l2=TLine(limit,-3,limit,log10(0.05))
     l2.SetLineColor(1)
@@ -177,24 +192,34 @@ if __name__=="__main__":
   g0=TGraph(0)
   g0.SetPoint(0,min_x,0)
   g0.SetPoint(1,max_x,0)
-  mg.Add(g0)
+  mg.Add(g0,"a")
     
+  g_q_band.SetFillStyle(1001)
+  g_q_band.SetFillColor(3)
+  g_q_band.SetLineColor(2)
+  g_q_band.SetLineWidth(3)
+  mg.Add(g_q_band,"3")
+  g_q_exp.SetLineColor(2)
+  g_q_exp.SetLineWidth(3)
+  mg.Add(g_q_exp,"l")
   g_q.SetMarkerStyle(24)
   g_q.SetMarkerSize(0.5)
   g_q.SetLineColor(1)
   g_q.SetLineWidth(3)
-  mg.Add(g_q)
-  g_q_exp.SetMarkerStyle(24)
-  g_q_exp.SetMarkerSize(0.5)
-  g_q_exp.SetLineColor(2)
-  g_q_exp.SetLineWidth(3)
-  mg.Add(g_q_exp)
+  mg.Add(g_q,"pl")
     
   mg.Draw("apl")
   mg.SetTitle("")
   mg.GetXaxis().SetTitle("mass [GeV]")
   mg.GetYaxis().SetTitle("6 #times g_{q}")
   mg.GetYaxis().SetRangeUser(0,3)
+  
+  l=TLegend(0.3,0.7,0.8,0.9)
+  l.SetFillColor(0)
+  l.SetShadowColor(0)
+  l.AddEntry(g_q,"CL_{S} Observed","LP")
+  l.AddEntry(g_q_band,"CL_{S} Expected #pm 1#sigma","LF")
+  l.Draw()
     
   canvas.SaveAs('limitsDM'+vector+'.pdf')
   canvas.SaveAs('limitsDM'+vector+'.eps')

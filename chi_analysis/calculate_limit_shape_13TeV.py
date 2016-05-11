@@ -150,8 +150,9 @@ for model in models:
     else:
        signalMasses=[1000,1250,1500,5000,6000,7000]
 
- dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
- dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
+ #dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
+ #dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
+ dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
  prefix=dire+"datacard_shapelimit13TeV"
 
  if model>10 and model<100:
