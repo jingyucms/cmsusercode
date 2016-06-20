@@ -305,7 +305,7 @@ if __name__ == '__main__':
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -315,7 +315,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
-    samples2=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -422,7 +422,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_data_2pt4invfb_teff_fromCB2_AK4SF_DataToMCSF_Pythia_M_1000to13000.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
@@ -439,13 +439,13 @@ if __name__ == '__main__':
       closefiles+=[ewkfile]
 
       # JES uncertainty QCD
-      filename1jes="datacards/chi_systematic_plotschi_QCD4_13TeV.root"
+      filename1jes="datacards/chi_systematic_plotschi_QCD4v7_13TeV.root"
       print filename1jes
       jesfile = TFile.Open(filename1jes)
       closefiles+=[jesfile]
 
       # JES uncertainty CI
-      filename1jesci="datacards/chi_systematic_plotschi_QCD4_13TeV.root"
+      filename1jesci="datacards/chi_systematic_plotschi_QCD4v7_13TeV.root"
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
@@ -471,9 +471,9 @@ if __name__ == '__main__':
 	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+            histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
           else:
-	    histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")+"_unfolded"
+	    histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
           print histname2
   	  #if "1900" in str(massbins[j]):
           #   data = TH1F(unfoldfile2.Get(histname2))

@@ -60,7 +60,7 @@ qbhfile=TFile.Open("root://eoscms//eos/cms/store/group/dpg_trigger/comm_trigger/
 print "root://eoscms//eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/Jingyu/samples/DiJet/pythia_qbh_"+energy+"_6_v1.root"
 
 qcdfile=TFile.Open("datacard_shapelimit13TeV_GENnp-0-v4_chi.root")
-jesfile=TFile.Open("datacards/chi_systematic_plotschi_QCD4_13TeV.root")
+jesfile=TFile.Open("datacards/chi_systematic_plotschi_QCD4v7_13TeV.root")
 
 plots=[]
 plotsBackup=[]

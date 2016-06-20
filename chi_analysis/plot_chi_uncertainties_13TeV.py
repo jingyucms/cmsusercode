@@ -103,10 +103,10 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_data_Run2012All_20131024_1200M8000_fromCBalltrunc2.5Smeared_Herwig_MASSBINNED_BigStat.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root '
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
-      unfoldsample2='datacards/Unfolded_data_Run2012All_20131024_1200M8000_fromCBalltrunc2.5Smeared_Herwig_MASSBINNED_BigStat.root'
+      unfoldsample2='datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root '
       print unfoldsample2
       unfoldfile2=TFile(unfoldsample2,'READ')
 
@@ -145,9 +145,9 @@ if __name__ == '__main__':
         print histname
 	if useLensData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4800-13000","4200-13000").replace("13000","7000")
+            histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
           else:
-	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","7000")
+	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"")
           print histname2
   	  if "1900" in str(massbins[j]):
              data = TH1D(unfoldfile2.Get(histname2))
@@ -156,9 +156,9 @@ if __name__ == '__main__':
 	  data.SetName(histname)
 	elif useUnfoldedData:
   	  if "13000" in str(massbins[j]):
-            histname2="dijet_m_chi_4__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4800-13000","4200-13000").replace("13000","8000")+"_unfolded"
+            histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
           else:
-	    histname2="dijet_m_chi_2__projY_"+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("4200-4800","3600-4200").replace("4800-5400","3600-4200").replace("13000","8000")+"_unfolded"
+	    histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
           print histname2
   	  if "1900" in str(massbins[j]):
              data = TH1F(unfoldfile2.Get(histname2))
