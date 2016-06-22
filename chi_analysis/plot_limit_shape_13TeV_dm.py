@@ -33,7 +33,7 @@ if __name__=="__main__":
   g_q=TGraph(0)
   g_q_exp=TGraph(0)
   g_q_band=TGraphAsymmErrors(0)
-  for signalMass in [1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]:
+  for signalMass in [1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]:
     signal="DM"+str(signalMass)+"_1_"+vector
     limits=[]
     for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
@@ -212,7 +212,7 @@ if __name__=="__main__":
   mg.SetTitle("")
   mg.GetXaxis().SetTitle("mass [GeV]")
   mg.GetYaxis().SetTitle("6 #times g_{q}")
-  mg.GetYaxis().SetRangeUser(0,3)
+  mg.GetYaxis().SetRangeUser(0,2)
   
   l=TLegend(0.3,0.7,0.8,0.9)
   l.SetFillColor(0)
