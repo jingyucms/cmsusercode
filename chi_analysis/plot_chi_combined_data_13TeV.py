@@ -27,10 +27,11 @@ if __name__=="__main__":
 
     showData=True
     binByBinCorrect=False
-    unfoldedData=True
-    showRunI=False
+    unfoldedData=False
+    showRun1=False
+    show2016=True
     ak5Compare=False
-    showSignal=True
+    showSignal=False
 
     print "start ROOT"
     gROOT.Reset()
@@ -102,7 +103,8 @@ if __name__=="__main__":
     if not showData: prefix+="_nodata"
     if binByBinCorrect: prefix+="_binbybin"
     if unfoldedData: prefix+="_unfolded"
-    if showRunI: prefix+="_withrun1"
+    if showRun1: prefix+="_withrun1"
+    if show2016: prefix+="_with2016"
     if ak5Compare: prefix+="_ak5"
 
     c = TCanvas("combined", "combined", 0, 0, 400, 600)
@@ -137,7 +139,7 @@ if __name__=="__main__":
         histname='Graph_from_dijet_'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("8000","7000")+"_chi_rebin1"
         print histname
         h1=f.Get(histname)
-        h1.SetMarkerStyle(20)
+        h1.SetMarkerStyle(24)
         h1.SetMarkerSize(0.4)
 	h1sys=h1.Clone(histname+"sys")
 	h1sys.SetMarkerSize(0)
@@ -240,12 +242,12 @@ if __name__=="__main__":
           h0.Draw("axis")
         else:
 	  h0.Draw("axissame")
-        if showRunI:
+        if showRun1:
   	  h3.Draw("histsame")
           h2.Draw("histsame")
           h6.Draw("histsame")
           h0.Draw("histsame")
-        if showRunI:
+        if showRun1:
 	  if showData:
             h1.Draw("pzesame")
             h1sys.Draw("||same")
@@ -543,9 +545,9 @@ if __name__=="__main__":
         h14Gsysstat.Apply(TF2("offset",str(offsets[massbin])+"+y",1,16))
         h2new.Add(TF1("offset",str(offsets[massbin]),1,16))
         h3new.Add(TF1("offset",str(offsets[massbin]),1,16))
-        
+
 	if showData:
-	  if not showRunI:
+	  if not showRun1:
             h3new.Draw("histsame")
             h2new.Draw("histsame")
 	  h13.Draw("histsame")
@@ -559,6 +561,24 @@ if __name__=="__main__":
           h14G.Draw("pzesame")
           h14Gsys.Draw("||same")
           h14Gsysstat.Draw("zesame")
+
+        if show2016:
+           filename="datacard_shapelimit13TeV_25nsData8_chi.root"
+           print filename
+           f = TFile.Open(filename)
+           new_hists+=[f]
+           histname='data_obs#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+           print histname
+           h2016=f.Get(histname)
+           h2016=h2016.Rebin(len(chi_binnings[massbin])-1,h2016.GetName()+"_rebin",chi_binnings[massbin])
+           h2016.SetLineColor(6)
+           h2016.SetMarkerStyle(25)
+           h2016.SetMarkerSize(0.4)
+           h2016.Scale(1./h2016.Integral())
+           for b in range(h2016.GetNbinsX()):
+          	h2016.SetBinContent(b+1,h2016.GetBinContent(b+1)/h2016.GetBinWidth(b+1))
+           h2016.Add(TF1("offset",str(offsets[massbin]),1,16))
+           h2016.Draw("pzesame")
 
       if True:
 
@@ -599,9 +619,11 @@ if __name__=="__main__":
     l2.SetTextSize(0.035)
     if showData:
      if not (binByBinCorrect or unfoldedData):
-      l2.AddEntry(h14,"13 TeV Data detector-level","ple")
+      l2.AddEntry(h14G,"2015 Data detector-level","ple")
      else:
-      l2.AddEntry(h14,"13 TeV Data particle-level","ple")
+      l2.AddEntry(h14G,"13 TeV Data particle-level","ple")
+    if show2016:
+      l2.AddEntry(h2016,"2016 Data detector-level","ple")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare:
       l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare and not showData:
@@ -611,11 +633,12 @@ if __name__=="__main__":
       l2.AddEntry(h13b,"13 TeV NLO AK5 QCD prediction","l")
     else:
       l2.AddEntry(h3new,"13 TeV NLO QCD+EW prediction","f")
-      l2.AddEntry(h13noewk,"13 TeV NLO QCD prediction","l")
+      if not show2016:
+        l2.AddEntry(h13noewk,"13 TeV NLO QCD prediction","l")
     if showSignal:
       l2.AddEntry(h4,"13 TeV #Lambda_{LL}^{#font[122]{+}} (LO) = 12 TeV","l")
       l2.AddEntry(h5,"13 TeV #Lambda_{T} (GRW) = 9 TeV","l")
-    if showRunI:
+    if showRun1:
       if showData:
         l2.AddEntry(h1,"8 TeV Data particle-level","ple")
       l2.AddEntry(h3,"8 TeV NLO QCD+EW prediction","f")
@@ -626,17 +649,20 @@ if __name__=="__main__":
     l2b=TLegend(0.23,0.72,0.76,0.93,"")
     l2b.SetTextSize(0.035)
     if showData:
-      l2b.AddEntry(h14," ","")
+      l2b.AddEntry(h14G," ","")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare:
       l2b.AddEntry(h15," ","")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare and not showData:
       l2b.AddEntry(h16," ","")
+    if show2016:
+      l2b.AddEntry(h2016," ","")
     l2b.AddEntry(h13," ","l")
-    l2b.AddEntry(h13noewk," ","")
+    if not show2016:
+      l2b.AddEntry(h13noewk," ","")
     if showSignal:
       l2b.AddEntry(h4," ","")
       l2b.AddEntry(h5," ","")
-    if showRunI:
+    if showRun1:
       if showData:
         l2b.AddEntry(h1," ","")
       l2b.AddEntry(h0," ","l")
