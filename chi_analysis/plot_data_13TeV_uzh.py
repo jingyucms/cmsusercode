@@ -159,6 +159,7 @@ def createPlots(sample,prefix,massbins,factor):
          if genyboost<1.11 and genchi<16:
            genplots[igen].Fill(genmjj)
          igen+=1
+     fil.Close()
 
     print "analyzed",event_count,"events"
     if event_count>0:
@@ -166,7 +167,7 @@ def createPlots(sample,prefix,massbins,factor):
         plot.Scale(factor/event_count)
       for plot in genplots:
         plot.Scale(factor/event_count)
-    return (plots,genplots,nevents)
+    return (plots,genplots,event_count)
 
 if __name__ == '__main__':
 

@@ -27,11 +27,11 @@ if __name__=="__main__":
 
     showData=True
     binByBinCorrect=False
-    unfoldedData=False
+    unfoldedData=True
     showRun1=False
-    show2016=True
+    show2016=False
     ak5Compare=False
-    showSignal=False
+    showSignal=True
 
     print "start ROOT"
     gROOT.Reset()
