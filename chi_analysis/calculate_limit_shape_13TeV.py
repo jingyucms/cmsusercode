@@ -13,7 +13,7 @@ models+=[30,31,32,33,34,35,36,37]
 models+=[40,41,42,43,44,45,46,47]
 models+=[8,9]
 models+=[10]
-models=[4,8,9]
+models=[4,8]
 
 xsecs={}
 for l in open("xsecs_13TeV_dm.txt").readlines():
@@ -101,7 +101,7 @@ for model in models:
  if model==36:
     signal="CIplusLL"    
     signalMasses=[12000]
-    massbins=[(4200,4800),(4800,13000)]
+    massbins=[(3600,4200),(4200,4800),(4800,13000)]
  if model==37:
     signal="CIplusLL"    
     signalMasses=[12000]
@@ -134,7 +134,7 @@ for model in models:
  if model==46:
     signal="AntiCIplusLL"    
     signalMasses=[12000]
-    massbins=[(4200,4800),(4800,13000)]
+    massbins=[(3600,4200),(4200,4800),(4800,13000)]
  if model==47:
     signal="AntiCIplusLL"    
     signalMasses=[12000]
