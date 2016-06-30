@@ -13,7 +13,7 @@ models+=[30,31,32,33,34,35,36,37]
 models+=[40,41,42,43,44,45,46,47]
 models+=[8,9]
 models+=[10]
-#models=[]
+models=[4,8]
 
 xsecs={}
 for l in open("xsecs_13TeV_dm.txt").readlines():
@@ -48,7 +48,7 @@ for model in models:
  if model==4:
     signal="CIplusLL"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
-    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+    massbins=[(4200,4800),(4800,13000)]
  if model==5:
     signal="CIplusLL"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
@@ -64,7 +64,7 @@ for model in models:
  if model==8:
     signal="CIminusLL"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
-    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+    massbins=[(4200,4800),(4800,13000)]
  if model==9:
     signal="CIminusLL"    
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
@@ -101,7 +101,7 @@ for model in models:
  if model==36:
     signal="CIplusLL"    
     signalMasses=[12000]
-    massbins=[(4200,4800),(4800,13000)]
+    massbins=[(3600,4200),(4200,4800),(4800,13000)]
  if model==37:
     signal="CIplusLL"    
     signalMasses=[12000]
@@ -134,7 +134,7 @@ for model in models:
  if model==46:
     signal="AntiCIplusLL"    
     signalMasses=[12000]
-    massbins=[(4200,4800),(4800,13000)]
+    massbins=[(3600,4200),(4200,4800),(4800,13000)]
  if model==47:
     signal="AntiCIplusLL"    
     signalMasses=[12000]
@@ -150,10 +150,10 @@ for model in models:
     else:
        signalMasses=[1000,1250,1500,5000,6000,7000]
 
- #dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
  #dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
+ #dire=""
  dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- prefix=dire+"datacard_shapelimit13TeV"
+ prefix="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
  if model>10 and model<100:
     name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")

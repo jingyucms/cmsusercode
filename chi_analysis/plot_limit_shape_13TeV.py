@@ -22,7 +22,7 @@ gStyle.SetLegendBorderSize(0)
 if __name__=="__main__":
 
  models=[1,2,3,4,5,6,7,8,9]
- models=[10]
+ models+=[10]
 
  for model in models:
 
@@ -117,7 +117,7 @@ if __name__=="__main__":
     exp1m=0
     exp1p=0
     for i in range(20000):
-        mass=i*(limits[-1][0]-limits[0][0])/20000.+limits[0][0]
+        mass=i*(max_x-limits[0][0])/20000.+limits[0][0]
         if mass<min_x or mass>max_x: continue
 	if limit==0 and g.Eval(mass,0)>log10(0.05):
 	    limit=mass
