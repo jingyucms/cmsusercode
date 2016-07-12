@@ -181,7 +181,7 @@ for massbin in massbins:
     normfactor=dataPlot.Integral()
 
     # add qbh on top of qcd and norm to data
-    fastNloFinalPlots[massbins.index(massbin)].Scale(1000.)
+    fastNloFinalPlots[massbins.index(massbin)].Scale(1.) #all in pb, no need to scale
     plots[massbins.index(massbin)].Add(fastNloFinalPlots[massbins.index(massbin)])
     plotsAddSave=plots[massbins.index(massbin)].Clone('QCDQBH'+energy+'_6#chi'+str(massbin[0])+'_'+str(massbin[1])+"_rebin1_add_backup")
     plotsAddBackup.append(plotsAddSave)

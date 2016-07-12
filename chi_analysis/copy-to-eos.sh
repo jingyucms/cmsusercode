@@ -1,3 +1,6 @@
+gfal-copy -r srm://t3se01.psi.ch/pnfs/psi.ch/cms/trivcat/store/user/cgalloni/Ntuple_80_270516/JetHT/JetHT_Run2016B-PromptReco-v2_V3_2p6fb/160616_150148/0000 srm://srm-eoscms.cern.ch//eos/cms/store/cmst3/user/hinzmann/dijet_angular/data2016/2p6fb/ &
+gfal-copy -r srm://t3se01.psi.ch/pnfs/psi.ch/cms/trivcat/store/user/cgalloni/Ntuple_80_270516/JetHT/JetHT_Run2016B-PromptReco-v2_V3_2p6fb_4fb/160622_093624/0000 srm://srm-eoscms.cern.ch//eos/cms/store/cmst3/user/hinzmann/dijet_angular/data2016/2p6fb_4fb/ &
+
 gfal-copy -r srm://t3se01.psi.ch/pnfs/psi.ch/cms/trivcat/store/t3groups/uniz-higgs/Data_25ns/JetHT_Run2015D_16Dec2015-v1 srm://srm-eoscms.cern.ch//eos/cms/store/cmst3/user/hinzmann/dijet_angular/QCDv7/ &
 
 gfal-copy -r srm://t3se01.psi.ch/pnfs/psi.ch/cms/trivcat/store/t3groups/uniz-higgs/Fall15/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIIFall15MiniAODv2_PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1 srm://srm-eoscms.cern.ch//eos/cms/store/cmst3/user/hinzmann/dijet_angular/QCDv7/ &

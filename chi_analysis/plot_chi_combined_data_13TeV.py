@@ -27,11 +27,11 @@ if __name__=="__main__":
 
     showData=True
     binByBinCorrect=False
-    unfoldedData=True
+    unfoldedData=False
     showRun1=False
-    show2016=False
+    show2016=True
     ak5Compare=False
-    showSignal=True
+    showSignal=False
 
     print "start ROOT"
     gROOT.Reset()
@@ -421,7 +421,7 @@ if __name__=="__main__":
           masstext=str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"")
           histname='dijet_mass1_chi2__projY_'+masstext+'_unfolded'
 	else:
-          filename="datacards/datacard_shapelimit13TeV_25nsData6_chi.root"
+          filename="datacards/datacard_shapelimit13TeV_25nsData7_chi.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
           histname='data_obs#chi'+masstext+'_rebin1'
         print filename
@@ -552,7 +552,7 @@ if __name__=="__main__":
             h2new.Draw("histsame")
 	  h13.Draw("histsame")
 	  h13.Draw("axissame")
-          if not ak5Compare:
+          if not ak5Compare and not show2016:
             h13noewk.Draw("histsame")
         if showSignal:
                h4.Draw("histsame")
@@ -563,7 +563,7 @@ if __name__=="__main__":
           h14Gsysstat.Draw("zesame")
 
         if show2016:
-           filename="datacard_shapelimit13TeV_25nsData8_chi.root"
+           filename="datacard_shapelimit13TeV_25nsData9combi_chi.root"
            print filename
            f = TFile.Open(filename)
            new_hists+=[f]
@@ -577,8 +577,33 @@ if __name__=="__main__":
            h2016.Scale(1./h2016.Integral())
            for b in range(h2016.GetNbinsX()):
           	h2016.SetBinContent(b+1,h2016.GetBinContent(b+1)/h2016.GetBinWidth(b+1))
-           h2016.Add(TF1("offset",str(offsets[massbin]),1,16))
-           h2016.Draw("pzesame")
+          	h2016.SetBinError(b+1,h2016.GetBinError(b+1)/h2016.GetBinWidth(b+1))
+           #h2016.Add(TF1("offset",str(offsets[massbin]),1,16))
+
+	   h2016G=TGraphAsymmErrors(h2016.Clone(histname+"G"))
+	   new_hists+=[h2016G]
+           h2016G.SetMarkerStyle(25)
+           h2016G.SetMarkerSize(0.4)
+           h2016G.SetMarkerColor(6)
+           h2016G.SetLineColor(6)
+	   alpha=1.-0.6827
+	   nevents=0
+	   for b in range(h2016G.GetN()):
+	       if unfoldedData:
+	   	 N=origh2016.GetBinContent(b+1)
+	       else:
+	   	 N=1./pow(h2016.GetBinError(b+1)/h2016.GetBinContent(b+1),2)
+	       print N
+	       nevents+=N
+	       L=0
+	       if N>0:
+	   	 L=ROOT.Math.gamma_quantile(alpha/2.,N,1.)
+               U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
+               h2016G.SetPointEYlow(b,(N-L)/N*h2016.GetBinContent(b+1))
+               h2016G.SetPointEYhigh(b,(U-N)/N*h2016.GetBinContent(b+1))
+           h2016G.Apply(TF2("offset",str(offsets[massbin])+"+y",1,16))
+           print "2016 data events:", nevents
+           h2016G.Draw("pzesame")
 
       if True:
 
@@ -619,11 +644,11 @@ if __name__=="__main__":
     l2.SetTextSize(0.035)
     if showData:
      if not (binByBinCorrect or unfoldedData):
-      l2.AddEntry(h14G,"2015 Data detector-level","ple")
+      l2.AddEntry(h14G,"2015 Data detector-level (2.6/fb)","ple")
      else:
       l2.AddEntry(h14G,"13 TeV Data particle-level","ple")
     if show2016:
-      l2.AddEntry(h2016,"2016 Data detector-level","ple")
+      l2.AddEntry(h2016G,"2016 Data detector-level (4.0/fb)","ple")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare:
       l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare and not showData:
@@ -655,7 +680,7 @@ if __name__=="__main__":
     if not (binByBinCorrect or unfoldedData) and not ak5Compare and not showData:
       l2b.AddEntry(h16," ","")
     if show2016:
-      l2b.AddEntry(h2016," ","")
+      l2b.AddEntry(h2016G," ","")
     l2b.AddEntry(h13," ","l")
     if not show2016:
       l2b.AddEntry(h13noewk," ","")
