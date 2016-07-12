@@ -87,7 +87,7 @@ if __name__ == '__main__':
     samples=[]
     samples2=[]
 
-    samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -160,7 +160,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_-1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_-1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_-1_0_0_13TeV_Nov14",6.446e-08),
@@ -233,7 +233,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -306,7 +306,7 @@ if __name__ == '__main__':
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -316,7 +316,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
-    samples2+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -326,7 +326,7 @@ if __name__ == '__main__':
 		       ]),
              ]
 
-    samples2+=[
+    samples+=[
              ("ll_nn30lo_LL+_10000",[]),
              ("ll_nn30lo_LL-_10000",[]),
              ("ll_nn30nlo_LL+_10000",[]),
@@ -650,11 +650,13 @@ if __name__ == '__main__':
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
 	  ci.Scale(1e9) #mb -> pb
           cinorm[j]=ci.Integral()
+	  print "BBB", qcdnorm[0],cinorm[0],qcdnorm[j]/dataevents[j]*26000.,cinorm[j]/dataevents[j]*26000.,nloqcdbackup.Integral()/dataevents[j]*26000.
 	  # CORRECT FORMULAT
 	  ci.Scale(qcdnorm[0]/cinorm[0])
 	  # APPROXIMATE FORMULAT
 	  #ci.Scale(qcdnorm[j]/cinorm[j])
 	  ci.Add(qcd,-1.)
+	  ci.Scale(cinorm[0]/qcdnorm[0]) # trusting the QCD+CI LO prediction in mb (10^9) for the LO cross section
 	  #print "AAA",histname,ci.Integral()/qcdnorm[j], ci.Integral()/qcdnorm[0]*cinorm[0]/nloqcdbackup.Integral()*1e6, qcdnorm[j], nloqcdbackup.Integral()/1e6
 	  if "Anti" in samples[i][0]:
 	    ci.Scale(-1.)
@@ -663,12 +665,12 @@ if __name__ == '__main__':
 	    # APPROXIMATE FORMULA
 	    #ci.Scale(1./qcdnorm[j])
 	    # CORRECT FORMULA
-	    ci.Scale(1./nloqcdbackup.Integral()/qcdnorm[0]*cinorm[0]) # trusting the QCD+CI LO prediction in mb (10^9) for the LO cross section
+	    ci.Scale(1./nloqcdbackup.Integral())
 	  else:
 	    # APPROXIMATE FORMULA
 	    #ci.Scale(nloqcd.Integral()/qcdnorm[j]/5.)
 	    # CORRECT FORMULA
-	    ci.Scale(nloqcd.Integral()/nloqcdbackup.Integral()/qcdnorm[0]*cinorm[0]/5.)
+	    ci.Scale(nloqcd.Integral()/nloqcdbackup.Integral()/5.)
           ci.Add(nloqcd)
 	if ci.Integral()!=0:
           ci.Scale(dataevents[j]/ci.Integral())
@@ -777,6 +779,7 @@ if __name__ == '__main__':
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFUp"
          print histname
          hnloPDFup = TH1F(nlofile2.Get(histname))
+         hnloPDFup.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloPDFup=rebin(hnloPDFup,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloPDFupqcd:
 	    nloPDFupqcd.Add(hnloPDFup)
@@ -792,6 +795,7 @@ if __name__ == '__main__':
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFDown"
          print histname
          hnloPDFdown = TH1F(nlofile2.Get(histname))
+         hnloPDFdown.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloPDFdown=rebin(hnloPDFdown,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloPDFdownqcd:
 	    nloPDFdownqcd.Add(hnloPDFdown)
@@ -826,6 +830,7 @@ if __name__ == '__main__':
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleUp"
          print histname
          hnloScaleup = TH1F(nlofile2.Get(histname))
+         hnloScaleup.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloScaleup=rebin(hnloScaleup,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloScaleupqcd:
 	    nloScaleupqcd.Add(hnloScaleup)
@@ -841,6 +846,7 @@ if __name__ == '__main__':
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleDown"
          print histname
          hnloScaledown = TH1F(nlofile2.Get(histname))
+         hnloScaledown.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloScaledown=rebin(hnloScaledown,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloScaledownqcd:
 	    nloScaledownqcd.Add(hnloScaledown)
