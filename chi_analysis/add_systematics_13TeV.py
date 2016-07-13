@@ -326,7 +326,7 @@ if __name__ == '__main__':
 		       ]),
              ]
 
-    samples+=[
+    samples2+=[
              ("ll_nn30lo_LL+_10000",[]),
              ("ll_nn30lo_LL-_10000",[]),
              ("ll_nn30nlo_LL+_10000",[]),
@@ -334,7 +334,7 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples+=[("cs_nn30nlo_0_"+str(m*1000)+"_LL+",[]),
+       samples2+=[("cs_nn30nlo_0_"+str(m*1000)+"_LL+",[]),
                ("cs_nn30nlo_0_"+str(m*1000)+"_LL-",[]),
                ("cs_nn30nlo_0_"+str(m*1000)+"_RR+",[]),
                ("cs_nn30nlo_0_"+str(m*1000)+"_RR-",[]),
@@ -649,14 +649,14 @@ if __name__ == '__main__':
           ci=cibackup.Clone(histname)
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
 	  ci.Scale(1e9) #mb -> pb
-          cinorm[j]=ci.Integral()
-	  print "BBB", qcdnorm[0],cinorm[0],qcdnorm[j]/dataevents[j]*26000.,cinorm[j]/dataevents[j]*26000.,nloqcdbackup.Integral()/dataevents[j]*26000.
+          #cinorm[j]=ci.Integral()
+	  #print "BBB", qcdnorm[0],cinorm[0],qcdnorm[j]/dataevents[j]*26000.,cinorm[j]/dataevents[j]*26000.,nloqcdbackup.Integral()/dataevents[j]*26000.
 	  # CORRECT FORMULAT
-	  ci.Scale(qcdnorm[0]/cinorm[0])
+	  #ci.Scale(qcdnorm[0]/cinorm[0])
 	  # APPROXIMATE FORMULAT
 	  #ci.Scale(qcdnorm[j]/cinorm[j])
 	  ci.Add(qcd,-1.)
-	  ci.Scale(cinorm[0]/qcdnorm[0]) # trusting the QCD+CI LO prediction in mb (10^9) for the LO cross section
+	  #ci.Scale(cinorm[0]/qcdnorm[0]) # trusting the QCD+CI LO prediction in mb (10^9) for the LO cross section
 	  #print "AAA",histname,ci.Integral()/qcdnorm[j], ci.Integral()/qcdnorm[0]*cinorm[0]/nloqcdbackup.Integral()*1e6, qcdnorm[j], nloqcdbackup.Integral()/1e6
 	  if "Anti" in samples[i][0]:
 	    ci.Scale(-1.)

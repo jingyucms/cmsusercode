@@ -164,11 +164,11 @@ if __name__=="__main__":
 
         if massbin>2:
             #filename="datacard_shapelimit13TeV_GENnp-2-v4_chi.root"
-            filename="datacard_shapelimit13TeV_cs_nn30nlo_0_10000_LL+_chi.root"
+            filename="datacard_shapelimit13TeV_cs_nn30nlo_0_12000_LL+_chi.root"
             print filename
             f = TFile.Open(filename)
             new_hists+=[f]
-            histname='cs_nn30nlo_0_10000_LL+#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800-13000","4800-5400")+"_rebin1"
+            histname='cs_nn30nlo_0_12000_LL+#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800-13000","4800-5400")+"_rebin1"
             print histname
             h4=f.Get(histname)
             h4=h4.Rebin(len(chi_binnings[massbin])-1,h4.GetName()+"_rebin",chi_binnings[massbin])
@@ -454,7 +454,7 @@ if __name__=="__main__":
     l2.AddEntry(h14G,"Data","ple")
     l2.AddEntry(h3newnew,"NLO QCD+EWK prediction","fl")
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
-    l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} = 10 TeV","l")
+    l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} = 12 TeV","l")
     l2.AddEntry(h5,"#Lambda_{T} (GRW) = 9 TeV","l")
     l2.AddEntry(h6,"QBH (ADD6) = 7.5 TeV","l")
     l2.SetFillStyle(0)
