@@ -9,11 +9,12 @@ massbins=[(4800,13000),
               ]
 
 models=[1,2,3,4,5,6,7]
-models+=[30,31,32,33,34,35,36,37]
-models+=[40,41,42,43,44,45,46,47]
 models+=[8,9]
 models+=[10]
-models=[4,8]
+models=[20,21,22,23,24,25,26,27,28,29]
+models+=[30,31,32,33,34,35,36,37]
+models+=[40,41,42,43,44,45,46,47]
+#models=[1]
 
 xsecs={}
 for l in open("xsecs_13TeV_dm.txt").readlines():
@@ -46,64 +47,119 @@ for model in models:
     signal="ADD"
     signalMasses=[6000,7000,8000,9000,10000,11000,12000,13000,14000]
  if model==4:
-    signal="CIplusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
     massbins=[(4200,4800),(4800,13000)]
  if model==5:
-    signal="CIplusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
     massbins=[(4800,13000)]
  if model==6:
-    signal="CIplusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
     massbins=[(4200,4800)]
  if model==7:
-    signal="CIplusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
     massbins=[(3600,4200)]
  if model==8:
-    signal="CIminusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL-"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(4200,4800),(4800,13000)]
  if model==9:
-    signal="CIminusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL-"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(4800,13000)]
  if model==10:
     signal="QBH"    
     signalExtra="_6"
     signalMasses=[6500,7000,7500,8000,8500,9000,9500]
 
+ if model==20:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+ if model==21:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL-"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
+ if model==22:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_RR+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+ if model==23:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_RR-"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
+ if model==24:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_VV+"
+    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
+ if model==25:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_VV-"
+    signalMasses=[13000,14000,15000,16000,17000,18000,19000,20000,22000,24000,26000]
+ if model==26:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_AA+"
+    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
+ if model==27:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_AA-"
+    signalMasses=[13000,14000,15000,16000,17000,18000,19000,20000,22000,24000,26000]
+ if model==28:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_V-A+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+ if model==29:
+    signal="cs_nn30nlo_0_"
+    signalExtra="_V-A-"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+
  if model==30:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(4800,13000),]
  if model==31:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(4200,4800),]
  if model==32:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(3600,4200),]
  if model==33:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(3000,3600),]
  if model==34:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(2400,3000),]
  if model==35:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(1900,2400),]
  if model==36:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(3600,4200),(4200,4800),(4800,13000)]
  if model==37:
-    signal="CIplusLL"    
+    signal="cs_nn30nlo_0_"
+    signalExtra="_LL+"
     signalMasses=[12000]
     massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
 
@@ -155,7 +211,7 @@ for model in models:
  dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
  prefix="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
- if model>10 and model<100:
+ if model>=30 and model<100:
     name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
     name="limits"+str(model)+"_"+signal
@@ -229,6 +285,8 @@ for model in models:
         fname=prefix + '_GENnp-antici-v4_chi.root'
     elif "QBH" in signal:
         fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
+    elif "cs" in signal:
+        fname=prefix+"_"+str(signalWithMass)+"_chi.root"
     elif "DM" in signal:
         fname=prefix+"_"+str(signalWithMass)+"_chi.root"
 	if not signalWithMass in xsecs.keys():
@@ -246,7 +304,7 @@ for model in models:
 	if signalMass>=5000:
             massbins=[(4200,4800),(4800,13000)]
     print fname
-    if not "DM" in signal:
+    if not "DM" in signal and not "cs" in signal:
         signalWithMass="QCD"+signalWithMass
     f=TFile(fname)
     cfg.writelines("""
@@ -312,7 +370,7 @@ kmax 3 number of nuisance parameters
     cfg.close()
     os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
     os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
+    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
     os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
     os.system('root -q -b '+dire+'"extractSignificanceStats.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" > '+name+'_exp_'+str(signalMass)+'.txt')
 
@@ -325,11 +383,14 @@ kmax 3 number of nuisance parameters
         if "CLb      = " in line:
            print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
     if len(limits[signalMass])==0:
-         limits[signalMass]+=[signalMass]
+         limits[signalMass]+=[signalMass,0,0]
     f=file(name+"_exp_"+str(signalMass)+".txt")
     for line in f.readlines():
         if "Expected CLs" in line:
+	  try:
            limits[signalMass]+=[float(line.strip().split(" ")[-1])]
+	  except:
+           print "didn't find one point"
     for i in range(len(limits[signalMass]),8):
          limits[signalMass]+=[0]
 
