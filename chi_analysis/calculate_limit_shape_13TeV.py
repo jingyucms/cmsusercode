@@ -23,8 +23,9 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
 counter=100
 signalName={}
 signalExtraName={}
-for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
-   for vector in ["800","801"]:
+#for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
+for gq in ["0.1","0.15","0.2","0.25","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
+   for vector in ["800"]:#"801"
      models+=[counter]
      signalName[counter]="DM"
      signalExtraName[counter]="_1_"+gq+"_"+vector
@@ -376,7 +377,11 @@ kmax 3 number of nuisance parameters
 
  for signalMass in signalMasses:
     limits[signalMass]=[]
-    f=file(name+"_"+str(signalMass)+".txt")
+    try:
+      f=file(name+"_"+str(signalMass)+".txt")
+    except:
+      print "file not found", f
+      continue
     for line in f.readlines():
         if "CLs = " in line:
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
@@ -384,7 +389,11 @@ kmax 3 number of nuisance parameters
            print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
     if len(limits[signalMass])==0:
          limits[signalMass]+=[signalMass,0,0]
-    f=file(name+"_exp_"+str(signalMass)+".txt")
+    try:
+      f=file(name+"_exp_"+str(signalMass)+".txt")
+    except:
+      print "file not found", f
+      continue
     for line in f.readlines():
         if "Expected CLs" in line:
 	  try:

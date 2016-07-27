@@ -24,19 +24,21 @@ if __name__=="__main__":
 
  counter=100
  signalCounter={}
- for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
-   for vector in ["800","801"]:
+ #for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
+ for gq in ["0.1","0.15","0.2","0.25","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
+   for vector in ["800"]:#,"801"
      signalCounter["_1_"+gq+"_"+vector]=counter
      counter+=1
 
- for vector in ["800","801"]:
+ for vector in ["800"]:#,"801"
   g_q=TGraph(0)
   g_q_exp=TGraph(0)
   g_q_band=TGraphAsymmErrors(0)
-  for signalMass in [1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]:
+  for signalMass in [1500,2000,2500,3000,3500,4000,5000]:
     signal="DM"+str(signalMass)+"_1_"+vector
     limits=[]
-    for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
+    #for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
+    for gq in ["0.1","0.15","0.2","0.25","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
       try:
         f=file("limits"+str(signalCounter["_1_"+gq+"_"+vector])+"_DM_"+str(signalMass)+".txt")
       except:
@@ -60,7 +62,10 @@ if __name__=="__main__":
 	continue
       for line in f.readlines():
         if "Expected CLs" in line:
-           limits[-1]+=[float(line.strip().split(" ")[-1])]
+	   try:
+            limits[-1]+=[float(line.strip().split(" ")[-1])]
+	   except:
+            print "didn't find one point"
 	   if limits[-1][-1]>=1:
 	     limits[-1][-1]=1e-5
       for i in range(len(limits[-1]),8):
@@ -72,8 +77,8 @@ if __name__=="__main__":
     #canvas.GetPad(0).SetLogy()
     mg=TMultiGraph()
 
-    min_x=0.06
-    max_x=0.6
+    min_x=0
+    max_x=4
     g0=TGraph(0)
     g0.SetPoint(0,min_x,0)
     g0.SetPoint(1,max_x,0)
@@ -134,7 +139,7 @@ if __name__=="__main__":
     
     l1=TLatex((max_x-min_x)*0.75+min_x,log10(0.05)*1.15,"CL_{S}=0.05")
     l1.Draw("same")
-    
+
     limit=0
     exp=0
     exp1m=0
@@ -155,10 +160,10 @@ if __name__=="__main__":
 
     print "limit: %.3f," % (limit), "%.3f," % (exp), "%.3f, %.3f, 0, 0" % ((-max(exp-exp1m,exp1p-exp)+exp),(exp+max(exp-exp1m,exp1p-exp)))
 
-    g_q.SetPoint(g_q.GetN(),signalMass,limit*6.)
-    g_q_exp.SetPoint(g_q_exp.GetN(),signalMass,exp*6.)
-    g_q_band.SetPoint(g_q_band.GetN(),signalMass,exp*6.)
-    g_q_band.SetPointError(g_q_band.GetN()-1,0,0,-max(exp-exp1m,exp1p-exp)*6.,-max(exp-exp1m,exp1p-exp)*6.)
+    g_q.SetPoint(g_q.GetN(),signalMass,limit)
+    g_q_exp.SetPoint(g_q_exp.GetN(),signalMass,exp)
+    g_q_band.SetPoint(g_q_band.GetN(),signalMass,exp)
+    g_q_band.SetPointError(g_q_band.GetN()-1,0,0,-max(exp-exp1m,exp1p-exp),-max(exp-exp1m,exp1p-exp))
     
     l2=TLine(limit,-3,limit,log10(0.05))
     l2.SetLineColor(1)
@@ -187,11 +192,11 @@ if __name__=="__main__":
   #canvas.GetPad(0).SetLogy()
   mg=TMultiGraph()
 
-  min_x=0
-  max_x=7000
+  min_x=1500
+  max_x=5500
   g0=TGraph(0)
   g0.SetPoint(0,min_x,0)
-  g0.SetPoint(1,max_x,0)
+  g0.SetPoint(4,max_x,0)
   mg.Add(g0,"a")
     
   g_q_band.SetFillStyle(1001)
@@ -211,10 +216,10 @@ if __name__=="__main__":
   mg.Draw("apl")
   mg.SetTitle("")
   mg.GetXaxis().SetTitle("mass [GeV]")
-  mg.GetYaxis().SetTitle("6 #times g_{q}")
-  mg.GetYaxis().SetRangeUser(0,2)
+  mg.GetYaxis().SetTitle("g_{q}")
+  mg.GetYaxis().SetRangeUser(0,6)
   
-  l=TLegend(0.3,0.7,0.8,0.9)
+  l=TLegend(0.3,0.7,0.8,0.9,"m_{DM}=1 GeV, g_{DM}=1, Axial-Vector")
   l.SetFillColor(0)
   l.SetShadowColor(0)
   l.AddEntry(g_q,"CL_{S} Observed","LP")
