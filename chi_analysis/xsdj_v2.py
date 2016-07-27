@@ -17,7 +17,7 @@ basedir='eos/cms/store/cmst3/group/monojet/mc/model3_v2/gen'
 
 def computeXS(med,dm,gq,proc):
     global sumweights,sumxs,sumentries
-    infile='%s/dijet_%s_%s_%s_%s.root' % (basedir,med,dm,gq,proc)
+    infile='%s/dijet_%s_%s_%s_%s.root' % (basedir,med,dm,gq,proc) #_zprime
     #print "root://eoscms//%s" % (infile)
     lFile = r.TFile().Open("root://eoscms//%s" % (infile))
     events = lFile.Get("Runs") #"Events"

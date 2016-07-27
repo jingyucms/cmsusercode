@@ -78,9 +78,13 @@ for model in models:
     signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(4800,13000)]
  if model==10:
-    signal="QBH"    
-    signalExtra="_6"
-    signalMasses=[6500,7000,7500,8000,8500,9000,9500]
+    signal="ADD6QBH"    
+    signalMasses=[6500,7000,7500,8000,8500,9000]
+    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+ if model==11:
+    signal="RS1QBH"
+    signalMasses=[4000,4500,5000,5500,6000,6500]
+    massbins=[(3600,4200),(4200,4800),(4800,13000)]
 
  if model==20:
     signal="cs_nn30nlo_0_"
@@ -207,10 +211,8 @@ for model in models:
     else:
        signalMasses=[1000,1250,1500,5000,6000,7000]
 
- #dire="/afs/cern.ch/user/h/hinzmann/stable_13TeV/CMSSW_7_4_4/src/cmsusercode/chi_analysis/"
- #dire=""
- dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- prefix="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+ dire="/afs/cern.ch/work/z/zhangj/private/dirQBH13TeVnloCi/CMSSW_7_4_15/src/cmsusercode/chi_analysis/"
+ prefix="/afs/cern.ch/work/z/zhangj/private/dirQBH13TeVnloCi/CMSSW_7_4_15/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
  if model>=30 and model<100:
     name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
@@ -284,8 +286,10 @@ for model in models:
         fname=prefix + '_GENnp-26-v4_chi.root'
     elif signalWithMass=="AntiCIplusLL12000":
         fname=prefix + '_GENnp-antici-v4_chi.root'
-    elif "QBH" in signal:
+    elif signalWithMass=="ADD6QBH"+str(signalMass):
         fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
+    elif signalWithMass=="RS1QBH"+str(signalMass):
+        fname=prefix+"_QBH_"+str(signalMass)+"_RS1_chi_v1.root"
     elif "cs" in signal:
         fname=prefix+"_"+str(signalWithMass)+"_chi.root"
     elif "DM" in signal:
@@ -385,7 +389,7 @@ kmax 3 number of nuisance parameters
     for line in f.readlines():
         if "CLs = " in line:
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
-        if "CLb      = " in line:
+        if "CLb = " in line:
            print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
     if len(limits[signalMass])==0:
          limits[signalMass]+=[signalMass,0,0]

@@ -1,3 +1,5 @@
+#masspoint=2000
+
 import os, sys
 from ROOT import * 
 from DataFormats.FWLite import Events,Handle
@@ -44,7 +46,7 @@ def createPlots(sample,prefix,xsec,massbins):
     plots=[]
     for massbin in massbins:
       plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';#chi;N',15,1,16)]
-      #plots += [TH1F(prefix+'y_{boost}'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';y_{boost};N',20,0,2)]
+    #plots += [TH1F(prefix+'dijetmass',';test;N',20,masspoint-500,masspoint+500)]
     
     for plot in plots:
         plot.Sumw2()
@@ -73,15 +75,18 @@ def createPlots(sample,prefix,xsec,massbins):
          mjj=(jet1+jet2).M()
          chi=math.exp(abs(jet1.Rapidity()-jet2.Rapidity()))
          yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
+	 #if abs(jet1.Eta())<2.5 and abs(jet2.Eta())<2.5 and abs(jet1.Eta()-jet2.Eta())<1.3:
+	 #   plots[-1].Fill(mjj)
+	 irec=0
          if mjj<1500 or chi>16. or yboost>1.11: continue
-         irec=0
 	 for massbin in massbins:
             if yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
                plots[irec].Fill(chi)
 	    irec+=1
     for plot in plots:
       if nevents>0:
-        plot.Scale(xsec/nevents)
+        plot.Scale(xsec/event_count)
+    #print "Dijet mass integral", plots[-1].Integral()
     return plots
 
 if __name__ == '__main__':
@@ -89,6 +94,7 @@ if __name__ == '__main__':
     if len(sys.argv)<1:
        print "ERROR: need to provide sample name as argument"
     point=sys.argv[1]
+    #point=str(masspoint)+"_1_0.25_800"
     print point
  
     wait=False
@@ -167,6 +173,7 @@ if __name__ == '__main__':
       for i in range(len(samples)):
         #if plots[i][j].Integral()>0:
         #  plots[i][j].Scale(expectedevents[j]/plots[i][j].Integral())
+	#if j<len(massbins):
         plots[i][j]=plots[i][j].Rebin(len(chi_binnings[j])-1,plots[i][j].GetName()+"_rebin1",chi_binnings[j])
 	if samples[i][0]=="QCD":
 	   # data
@@ -190,12 +197,12 @@ if __name__ == '__main__':
 
      for j in range(len(massbins)):
       for i in range(len(samples)):
-        if plots[i][j].Integral()>0:
-          plots[i][j].Scale(1./plots[i][j].Integral())
+        #if plots[i][j].Integral()>0:
+        #  plots[i][j].Scale(1./plots[i][j].Integral())
         for b in range(plots[i][j].GetXaxis().GetNbins()):
           plots[i][j].SetBinContent(b+1,plots[i][j].GetBinContent(b+1)/plots[i][j].GetBinWidth(b+1))
           plots[i][j].SetBinError(b+1,plots[i][j].GetBinError(b+1)/plots[i][j].GetBinWidth(b+1))
-        plots[i][j].GetYaxis().SetRangeUser(0,0.2)
+        #plots[i][j].GetYaxis().SetRangeUser(0,0.2)
 
      canvas = TCanvas("","",0,0,400,200)
      canvas.Divide(2,1)
