@@ -1,5 +1,6 @@
 from ROOT import *
 import ROOT
+from math import log10
 
 #gROOT.Macro( os.path.expanduser( '~/rootlogon.C' ) )
 gROOT.Reset()
@@ -22,7 +23,8 @@ gStyle.SetLegendBorderSize(0)
 if __name__=="__main__":
 
  models=[1,2,3,4,5,6,7,8,9]
- models=[10]
+ models+=[20,21,22,23,24,25,26,27,28,29]
+ models+=[10]
 
  for model in models:
 
@@ -33,19 +35,22 @@ if __name__=="__main__":
     if model==3:
        signal="ADD"    
     if model==4:
-       signal="CIplusLL"    
+       signal="cs_nn30nlo_0_"    
     if model==5:
-       signal="CIplusLL"    
+       signal="cs_nn30nlo_0_"    
     if model==6:
-       signal="CIplusLL"    
+       signal="cs_nn30nlo_0_"    
     if model==7:
-       signal="CIplusLL"    
+       signal="cs_nn30nlo_0_"    
     if model==8:
-       signal="CIminusLL"    
+       signal="cs_nn30nlo_0_"    
     if model==9:
-       signal="CIminusLL"    
+       signal="cs_nn30nlo_0_"    
     if model==10:
        signal="QBH"    
+
+    if model>=20 and model<30:
+       signal="cs_nn30nlo_0_"
 
     print signal
 
@@ -58,7 +63,7 @@ if __name__=="__main__":
     mg=TMultiGraph()
 
     min_x=6000
-    max_x=20000
+    max_x=30000
     g0=TGraph(0)
     g0.SetPoint(0,min_x,0)
     g0.SetPoint(1,max_x,0)
@@ -69,6 +74,12 @@ if __name__=="__main__":
     g_exp1m=TGraph(0)
     g_exp1p=TGraph(0)
     for mass,limit,error,exp,exp1m,exp1p,exp2m,exp2p in limits:
+      if limit==0: limit=1e-5
+      if exp>=1: exp=1e-5
+      if exp1m>=1: exp1m=1e-5
+      if exp1p>=1: exp1p=1e-5
+      if exp2m>=1: exp2m=1e-5
+      if exp2p>=1: exp2p=1e-5
       if limit>0:
         g.SetPoint(g.GetN(),mass,log10(limit))
       if exp>0:
@@ -117,7 +128,7 @@ if __name__=="__main__":
     exp1m=0
     exp1p=0
     for i in range(20000):
-        mass=i*(limits[-1][0]-limits[0][0])/20000.+limits[0][0]
+        mass=i*(max_x-limits[0][0])/20000.+limits[0][0]
         if mass<min_x or mass>max_x: continue
 	if limit==0 and g.Eval(mass,0)>log10(0.05):
 	    limit=mass
@@ -128,9 +139,13 @@ if __name__=="__main__":
 	if exp1p==0 and g_exp1p.Eval(mass,0)>log10(0.05):
 	    exp1p=mass
 
-    print "limit: %.1f" % (limit/1000.), "& %.1f" % (exp/1000.), "$\pm$ %.1f" % (max(exp-exp1m,exp1p-exp)/1000.)
+    err=0
+    if exp1m>0: err=exp-exp1m
+    if exp1p>0 and exp1p-exp>exp-exp1m: err=exp1p-exp
 
-    print "limit: %.2f," % (limit/1000.), "%.2f," % (exp/1000.), "%.2f, %.2f, 0, 0" % ((max(exp-exp1m,exp1p-exp)+exp)/1000.,(exp-max(exp-exp1m,exp1p-exp))/1000.)
+    print "limit: %.1f" % (limit/1000.), "& %.1f" % (exp/1000.), "$\pm$ %.1f" % (err/1000.)
+
+    print "limit: %.2f," % (limit/1000.), "%.2f," % (exp/1000.), "%.2f, %.2f, 0, 0" % ((err+exp)/1000.,(exp-err)/1000.)
     
     l2=TLine(limit,-3,limit,log10(0.05))
     l2.SetLineColor(1)

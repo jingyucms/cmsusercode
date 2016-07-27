@@ -35,7 +35,9 @@ plot_chi_combined_data_13TeV_v2.py # final result plot
 -------- Limit calculation in CMSSW_7_1_X:
 
 calculate_limit_shape_13TeV.py # calculate CLS for each CI, ADD, DM and QBH model
-plot_limit_shape_13TeV.py # compute CLS limit for each CI, ADD, DM and QBH model
+calculate_limit_shape_13TeV_loop.py # calculate CLS for each DM model
+plot_limit_shape_13TeV.py # compute CLS limit for each CI, ADD and QBH model
+plot_limit_shape_13TeV_dm.py # compute CLS limit for each DM model
 plot_limit_summary.py #  summary of limits on various models (still 8 TeV version)
 
 summarize_pvalues_13TeV.py # make table of p-values of the data in each mass bin

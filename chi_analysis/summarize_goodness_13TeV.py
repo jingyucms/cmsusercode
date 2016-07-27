@@ -8,15 +8,15 @@ massbinssets=[[(4800,13000)],
 	      [(3000,3600)],
 	      [(2400,3000)],
 	      [(1900,2400)],
-              [(4200,4800),(4800,13000)],
+              [(3600,4200),(4200,4800),(4800,13000)],
 	      [(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)],
 	      ]
 
 signal="QCD"    
 signalMass=""
 
-dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
-prefix=dire+"datacard_shapelimit13TeV"
+dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
+prefix="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
 for massbins in massbinssets:
     limits={}
