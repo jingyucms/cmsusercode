@@ -354,6 +354,7 @@ if __name__ == '__main__':
       for vector in ["800"]:#,"801"
         if "DM"+str(mass)+"_1_"+gq+"_"+vector in xsecs.keys():
          samples+=[("DM"+str(mass)+"_1_"+gq+"_"+vector,[("dijet_"+str(mass)+"_1_"+gq+"_"+vector,0)]),
+         #samples+=[("DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime",[("dijet_"+str(mass)+"_1_"+gq+"_"+vector+"_zprime",0)]),
              ]
 
     dataevents={}
