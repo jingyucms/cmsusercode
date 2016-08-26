@@ -350,11 +350,16 @@ if __name__ == '__main__':
     for l in open("xsecs_13TeV_dm.txt").readlines():
       xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
     for mass in [1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]:
-     for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0","0.75", "1.25", "1.75", "2.25", "2.75", "6.0", "8.0", "10.0"]:
+     #for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
+     for gq in ["0.1","0.15","0.2","0.25","0.5","0.75","1.0","1.25","1.5","1.75","2.0","2.25","2.5","2.75","3.0","3.5","4.0","6.0","8.0", "10.0"]:
       for vector in ["800"]:#,"801"
         if "DM"+str(mass)+"_1_"+gq+"_"+vector in xsecs.keys():
          samples+=[("DM"+str(mass)+"_1_"+gq+"_"+vector,[("dijet_"+str(mass)+"_1_"+gq+"_"+vector,0)]),
-         #samples+=[("DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime",[("dijet_"+str(mass)+"_1_"+gq+"_"+vector+"_zprime",0)]),
+             ]
+     for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5", "6.0", "8.0", "10.0", "12.0", "15.0", "20.0"]:
+      for vector in ["800"]:#,"801"
+        if "DM"+str(mass)+"_1_"+gq+"_"+vector in xsecs.keys():
+         samples2+=[("DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",[("dijet_"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",0)]),
              ]
 
     dataevents={}
@@ -643,6 +648,8 @@ if __name__ == '__main__':
           ci=cibackup.Clone(histname)
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
           ci.Scale(1./nloqcdbackup.Integral())
+	  if not "zprime" in samples[i][0]:
+	    ci.Scale(5./4.) #to bug fix xsec from Phil
           ci.Add(nloqcd)
 	else:
           cibackup=out.Get(histname)

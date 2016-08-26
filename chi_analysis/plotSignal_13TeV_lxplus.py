@@ -1,4 +1,4 @@
-#masspoint=2000
+masspoint=2000
 
 import os, sys
 from ROOT import * 
@@ -46,7 +46,7 @@ def createPlots(sample,prefix,xsec,massbins):
     plots=[]
     for massbin in massbins:
       plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';#chi;N',15,1,16)]
-    #plots += [TH1F(prefix+'dijetmass',';test;N',20,masspoint-500,masspoint+500)]
+    plots += [TH1F(prefix+'dijetmass',';test;N',20,masspoint-500,masspoint+500)]
     
     for plot in plots:
         plot.Sumw2()
@@ -75,8 +75,8 @@ def createPlots(sample,prefix,xsec,massbins):
          mjj=(jet1+jet2).M()
          chi=math.exp(abs(jet1.Rapidity()-jet2.Rapidity()))
          yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
-	 #if abs(jet1.Eta())<2.5 and abs(jet2.Eta())<2.5 and abs(jet1.Eta()-jet2.Eta())<1.3:
-	 #   plots[-1].Fill(mjj)
+	 if abs(jet1.Eta())<2.5 and abs(jet2.Eta())<2.5 and abs(jet1.Eta()-jet2.Eta())<1.3:
+	    plots[-1].Fill(mjj)
 	 irec=0
          if mjj<1500 or chi>16. or yboost>1.11: continue
 	 for massbin in massbins:
@@ -86,7 +86,7 @@ def createPlots(sample,prefix,xsec,massbins):
     for plot in plots:
       if nevents>0:
         plot.Scale(xsec/event_count)
-    #print "Dijet mass integral", plots[-1].Integral()
+    print "Dijet mass integral", plots[-1].Integral()
     return plots
 
 if __name__ == '__main__':
@@ -169,12 +169,12 @@ if __name__ == '__main__':
             plots[-1][i].Add(ps[i])
     try:
      out=TFile(prefix + '_chi.root','RECREATE')
-     for j in range(len(massbins)):
+     for j in range(len(massbins)+1):#+1
       for i in range(len(samples)):
         #if plots[i][j].Integral()>0:
         #  plots[i][j].Scale(expectedevents[j]/plots[i][j].Integral())
-	#if j<len(massbins):
-        plots[i][j]=plots[i][j].Rebin(len(chi_binnings[j])-1,plots[i][j].GetName()+"_rebin1",chi_binnings[j])
+	if j<len(massbins):
+          plots[i][j]=plots[i][j].Rebin(len(chi_binnings[j])-1,plots[i][j].GetName()+"_rebin1",chi_binnings[j])
 	if samples[i][0]=="QCD":
 	   # data
 	   plots[i][j].Write(plots[i][j].GetName().replace("QCD","data_obs"))
