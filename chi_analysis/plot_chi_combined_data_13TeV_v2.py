@@ -412,7 +412,7 @@ if __name__=="__main__":
             h5.Draw("histsame")
             h6.Draw("histsame")
         h14G.Draw("pzesame")
-        h14Gsys.Draw("||same")
+        #h14Gsys.Draw("||same")
         h14Gsysstat.Draw("zesame")
               
         if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"

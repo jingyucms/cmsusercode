@@ -90,9 +90,9 @@ if __name__=="__main__":
 
         c.cd(massbin+1)
       
-        filename="datacards/Unfolded_chiNtuple_data_2pt4invfb_teff_fromCB2_AK4SF_DataToMCSF_Pythia_M_1000to13000.root"
-        masstext=str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"")
-        histname='dijet_mass1_chi2__projY_'+masstext+'_unfolded'
+        filename="datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root"
+        masstext=str(massbins13[massbin]).strip("()").replace(',',".0-").replace(' ',"")
+        histname='dijet_mass1_chi2__projY_'+masstext+'.0_unfolded'
         f13 = TFile.Open(filename)
         new_hists+=[f13]
         print histname
@@ -108,7 +108,7 @@ if __name__=="__main__":
             U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
             h0.SetBinContent(b+1,(U-N)/N)
 
-        filename="datacards/datacard_shapelimit13TeV_25nsData6_chi.root"
+        filename="datacards/datacard_shapelimit13TeV_25nsData7_chi.root"
         masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
         histname='data_obs#chi'+masstext+'_rebin1'
         print filename
