@@ -102,6 +102,8 @@ def createPlotsAndTree(sample,prefix,massbins,factor,tree,HLT_isFired):
        event_count+=1
        if event_count%10000==1: print "event",event_count
        
+       if not event.passFilter_GoodVtx or not event.passFilter_globalTightHalo2016 or not event.passFilter_HBHE or not event.passFilter_HBHEIso or not event.passFilter_ECALDeadCell or not event.passFilter_EEBadSc or not event.passFilter_muonBadTrack or not event.passFilter_chargedHadronTrackResolution: continue
+
        while len(event.jetAK4_pt)<3:
           event.jetAK4_pt.push_back(-1)
           event.jetAK4_eta.push_back(-1)
@@ -130,42 +132,65 @@ def createPlotsAndTree(sample,prefix,massbins,factor,tree,HLT_isFired):
           event.jetAK4_csv.push_back(-1)       
           event.jetAK4_IDTight.push_back(0)
        
-       values=[event.jetAK4_pt[0],event.jetAK4_eta[0],event.jetAK4_phi[0],event.jetAK4_mass[0],
+       jet1=TLorentzVector()
+       jet2=TLorentzVector()
+       jet3=TLorentzVector()
+       jet1.SetPtEtaPhiM(event.jetAK4_pt[0],event.jetAK4_eta[0],event.jetAK4_phi[0],event.jetAK4_mass[0])
+       jet2.SetPtEtaPhiM(event.jetAK4_pt[1],event.jetAK4_eta[1],event.jetAK4_phi[1],event.jetAK4_mass[1])
+       jet3.SetPtEtaPhiM(event.jetAK4_pt[2],event.jetAK4_eta[2],event.jetAK4_phi[2],event.jetAK4_mass[2])
+       mjj=(jet1+jet2).M()
+       chi=exp(abs(jet1.Rapidity()-jet2.Rapidity()))
+       yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
+
+       values=[event.jetAK4_pt[0],event.jetAK4_eta[0],max(min(jet1.Rapidity(),100000),-100000),event.jetAK4_phi[0],event.jetAK4_mass[0],
 	          event.jetAK4_jec[0],event.jetAK4_muf[0],event.jetAK4_phf[0],event.jetAK4_emf[0],event.jetAK4_nhf[0],event.jetAK4_chf[0],event.jetAK4_area[0],event.jetAK4_cm[0],event.jetAK4_nm[0],event.jetAK4_hof[0],event.jetAK4_chm[0],event.jetAK4_neHadMult[0],event.jetAK4_phoMult[0],event.jetAK4_nemf[0],event.jetAK4_cemf[0],event.jetAK4_csv[0],bool(event.jetAK4_IDTight[0]),
-	          event.jetAK4_pt[1],event.jetAK4_eta[1],event.jetAK4_phi[1],event.jetAK4_mass[1],
+	          event.jetAK4_pt[1],event.jetAK4_eta[1],max(min(jet2.Rapidity(),100000),-100000),event.jetAK4_phi[1],event.jetAK4_mass[1],
 	          event.jetAK4_jec[1],event.jetAK4_muf[1],event.jetAK4_phf[1],event.jetAK4_emf[1],event.jetAK4_nhf[1],event.jetAK4_chf[1],event.jetAK4_area[1],event.jetAK4_cm[1],event.jetAK4_nm[1],event.jetAK4_hof[1],event.jetAK4_chm[1],event.jetAK4_neHadMult[1],event.jetAK4_phoMult[1],event.jetAK4_nemf[1],event.jetAK4_cemf[1],event.jetAK4_csv[1],bool(event.jetAK4_IDTight[1]),
-	          event.jetAK4_pt[2],event.jetAK4_eta[2],event.jetAK4_phi[2],event.jetAK4_mass[2],
+	          event.jetAK4_pt[2],event.jetAK4_eta[2],max(min(jet3.Rapidity(),100000),-100000),event.jetAK4_phi[2],event.jetAK4_mass[2],
 	          event.jetAK4_jec[2],event.jetAK4_muf[2],event.jetAK4_phf[2],event.jetAK4_emf[2],event.jetAK4_nhf[2],event.jetAK4_chf[2],event.jetAK4_area[2],event.jetAK4_cm[2],event.jetAK4_nm[2],event.jetAK4_hof[2],event.jetAK4_chm[2],event.jetAK4_neHadMult[2],event.jetAK4_phoMult[2],event.jetAK4_nemf[2],event.jetAK4_cemf[2],event.jetAK4_csv[2],bool(event.jetAK4_IDTight[2]),
 		  event.MET_et[0],event.MET_sumEt[0],
-		  event.EVENT_event,event.EVENT_run,event.EVENT_lumiBlock,
-		  event.passFilter_HBHE,event.passFilter_HBHEIso,event.passFilter_EEBadSc,event.passFilter_globalTightHalo2016,event.passFilter_GoodVtx,event.passFilter_ECALDeadCell,event.passFilter_chargedHadronTrackResolution,event.passFilter_muonBadTrack,
+		  event.EVENT_event,event.EVENT_run,event.EVENT_lumiBlock,event.PV_N,
+		  mjj,min(chi,100000),min(yboost,100000)
+		  #event.passFilter_HBHE,event.passFilter_HBHEIso,event.passFilter_EEBadSc,event.passFilter_globalTightHalo2016,event.passFilter_GoodVtx,event.passFilter_ECALDeadCell,event.passFilter_chargedHadronTrackResolution,event.passFilter_muonBadTrack,
 	          ]
+
        if "QCD" in name:
          while len(event.genJetAK4_pt)<3:
            event.genJetAK4_pt.push_back(-1)
            event.genJetAK4_eta.push_back(-1)
            event.genJetAK4_phi.push_back(-1)
            event.genJetAK4_mass.push_back(-1)
-         while len(event.jetAK4_genParton_pdgID1)<3:
-           event.jetAK4_genParton_pdgID1.push_back(-1)
-           event.jetAK4_genParton_pdgID2.push_back(-1)
+         while len(event.jetAK4_genParton_pdgID)<3:
+           event.jetAK4_genParton_pdgID.push_back(-1)
+           event.jetAK4_genParton_pdgID.push_back(-1)
 
-         values+=[event.genJetAK4_pt[0],event.genJetAK4_eta[0],event.genJetAK4_phi[0],event.genJetAK4_mass[0],
-                  event.jetAK4_genParton_pdgID1[0],
-		  event.genJetAK4_pt[1],event.genJetAK4_eta[1],event.genJetAK4_phi[1],event.genJetAK4_mass[1],
-                  event.jetAK4_genParton_pdgID2[1],
-		  event.genJetAK4_pt[2],event.genJetAK4_eta[2],event.genJetAK4_phi[2],event.genJetAK4_mass[2],
-                  event.jetAK4_genParton_pdgID2[2],
-		  event.genWeight,
+         genjet1=TLorentzVector()
+         genjet2=TLorentzVector()
+         genjet3=TLorentzVector()
+         genjet1.SetPtEtaPhiM(event.genJetAK4_pt[0],event.genJetAK4_eta[0],event.genJetAK4_phi[0],event.genJetAK4_mass[0])
+         genjet2.SetPtEtaPhiM(event.genJetAK4_pt[1],event.genJetAK4_eta[1],event.genJetAK4_phi[1],event.genJetAK4_mass[1])
+         genjet3.SetPtEtaPhiM(event.genJetAK4_pt[2],event.genJetAK4_eta[2],event.genJetAK4_phi[2],event.genJetAK4_mass[2])
+         genmjj=(genjet1+genjet2).M()
+         genchi=exp(abs(genjet1.Rapidity()-genjet2.Rapidity()))
+         genyboost=abs(genjet1.Rapidity()+genjet2.Rapidity())/2.
+
+         values+=[event.genJetAK4_pt[0],event.genJetAK4_eta[0],max(min(genjet1.Rapidity(),100000),-100000),event.genJetAK4_phi[0],event.genJetAK4_mass[0],
+                  event.jetAK4_genParton_pdgID[0],
+		  event.genJetAK4_pt[1],event.genJetAK4_eta[1],max(min(genjet2.Rapidity(),100000),-100000),event.genJetAK4_phi[1],event.genJetAK4_mass[1],
+                  event.jetAK4_genParton_pdgID[1],
+		  event.genJetAK4_pt[2],event.genJetAK4_eta[2],max(min(genjet3.Rapidity(),100000),-100000),event.genJetAK4_phi[2],event.genJetAK4_mass[2],
+                  event.jetAK4_genParton_pdgID[2],
+		  event.genWeight,event.nPuVtxTrue[0],
+		  genmjj,min(genchi,100000),min(genyboost,100000)
                  ]
        #print "saving",len(values),"vars"
 
        HLT_isFired.clear()
        for pair in event.HLT_isFired:
           HLT_isFired.insert(pair)
+       #print array.array("f",[float(value) for value in values])
        tree.Fill(array.array("f",[float(value) for value in values]))
 
-       if not event.passFilter_HBHE or not event.passFilter_CSCHalo or not event.passFilter_GoodVtx or not event.passFilter_EEBadSc: continue
        if len(event.jetAK4_pt)<2 or event.jetAK4_pt[0]<100 or event.jetAK4_pt[1]<100 or abs(event.jetAK4_eta[0])>3 or abs(event.jetAK4_eta[1])>3: continue
        if not bool(event.jetAK4_IDTight[0]) or not bool(event.jetAK4_IDTight[1]): continue
 
@@ -175,15 +200,12 @@ def createPlotsAndTree(sample,prefix,massbins,factor,tree,HLT_isFired):
           scales+=[s for s in JECsources]
        irec=0
        for scale in scales:
-         jet1=TLorentzVector()
-         jet2=TLorentzVector()
-         jet1.SetPtEtaPhiM(event.jetAK4_pt[0],event.jetAK4_eta[0],event.jetAK4_phi[0],event.jetAK4_mass[0])
-         jet2.SetPtEtaPhiM(event.jetAK4_pt[1],event.jetAK4_eta[1],event.jetAK4_phi[1],event.jetAK4_mass[1])
-         mjj=(jet1+jet2).M()
-         chi=exp(abs(jet1.Rapidity()-jet2.Rapidity()))
-         yboost=abs(jet1.Rapidity()+jet2.Rapidity())/2.
          if mjj<1500 or chi>16. or yboost>1.11: continue
          if scale!=1:
+           jet1=TLorentzVector()
+           jet2=TLorentzVector()
+           jet1.SetPtEtaPhiM(event.jetAK4_pt[0],event.jetAK4_eta[0],event.jetAK4_phi[0],event.jetAK4_mass[0])
+           jet2.SetPtEtaPhiM(event.jetAK4_pt[1],event.jetAK4_eta[1],event.jetAK4_phi[1],event.jetAK4_mass[1])
            jes=JESuncertainties[scale.replace("_Up","")]
            jes.setJetPt(jet1.Pt())
            jes.setJetEta(jet1.Eta())
@@ -200,11 +222,17 @@ def createPlotsAndTree(sample,prefix,massbins,factor,tree,HLT_isFired):
            mjj=(jet1+jet2).M()
          for massbin in massbins:
            if yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
-             plots[irec].Fill(chi)
+	     if event.genWeight>0:
+               plots[irec].Fill(chi,event.genWeight)
+             else:
+	       plots[irec].Fill(chi)
            irec+=1
          if scale==1:
            if yboost<1.11 and chi<16:
-             plots[irec].Fill(mjj)
+	     if event.genWeight>0:
+               plots[irec].Fill(mjj,event.genWeight)
+	     else:
+               plots[irec].Fill(mjj)
            irec+=1
        #if not "data" in sample and len(event.genJetAK4_pt)>=2:
        #  genJet1=TLorentzVector()
@@ -236,7 +264,7 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_25nsData10"
+    prefix="datacard_shapelimit13TeV_25nsMC10"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -275,8 +303,8 @@ if __name__ == '__main__':
 	      (6000,13000),
               ]
  
-    samples=[("data_obs",[("JetHT_25ns_data10.txt",1.)]),
-             #("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
+    samples=[#("data_obs",[("JetHT_25ns_data10.txt",1.)]),
+             ("QCD",[("QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8.txt",1.)])
              #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
              #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
              #  ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
@@ -307,32 +335,37 @@ if __name__ == '__main__':
 	if len(sys.argv)>1 and sys.argv[1]!=str(counter): continue
 	print counter
 	
-	if os.path.isfile("/afs/cern.ch/user/h/hinzmann/workspace/public/chi_analysis/"+prefix + '_chi'+str(counter)+'_tree.root'):
+	#afsdir="/afs/cern.ch/user/h/hinzmann/workspace/public/chi_analysis"
+	afsdir="/afs/cern.ch/work/z/zhangj/public/forChi"
+	
+	if os.path.isfile(afsdir+"/"+prefix + '_chi'+str(counter)+'_tree.root'):
 	  print "skipping",counter,"because tree file exists"
 	  continue
 
         plots=[]
         genplots=[]
-  	outtree=TFile("/afs/cern.ch/user/h/hinzmann/workspace/public/chi_analysis/"+prefix + '_chi'+str(counter)+'_tree.root','RECREATE')
-	varnames=["jetAK4_pt1","jetAK4_eta1","jetAK4_phi1","jetAK4_mass1",
+  	outtree=TFile(afsdir+"/"+prefix + '_chi'+str(counter)+'_tree.root','RECREATE')
+	varnames=["jetAK4_pt1","jetAK4_eta1","jetAK4_y1","jetAK4_phi1","jetAK4_mass1",
 	          "jetAK4_jec1","jetAK4_muf1","jetAK4_phf1","jetAK4_emf1","jetAK4_nhf1","jetAK4_chf1","jetAK4_area1","jetAK4_cm1","jetAK4_nm1","jetAK4_hof1","jetAK4_chm1","jetAK4_neHadMult1","jetAK4_phoMult1","jetAK4_nemf1","jetAK4_cemf1","jetAK4_csv1","jetAK4_IDTight1",
-	          "jetAK4_pt2","jetAK4_eta2","jetAK4_phi2","jetAK4_mass2",
+	          "jetAK4_pt2","jetAK4_eta2","jetAK4_y2","jetAK4_phi2","jetAK4_mass2",
 	          "jetAK4_jec2","jetAK4_muf2","jetAK4_phf2","jetAK4_emf2","jetAK4_nhf2","jetAK4_chf2","jetAK4_area2","jetAK4_cm2","jetAK4_nm2","jetAK4_hof2","jetAK4_chm2","jetAK4_neHadMult2","jetAK4_phoMult2","jetAK4_nemf2","jetAK4_cemf2","jetAK4_csv2","jetAK4_IDTight2",
-	          "jetAK4_pt3","jetAK4_eta3","jetAK4_phi3","jetAK4_mass3",
+	          "jetAK4_pt3","jetAK4_eta3","jetAK4_y3","jetAK4_phi3","jetAK4_mass3",
 	          "jetAK4_jec3","jetAK4_muf3","jetAK4_phf3","jetAK4_emf3","jetAK4_nhf3","jetAK4_chf3","jetAK4_area3","jetAK4_cm3","jetAK4_nm3","jetAK4_hof3","jetAK4_chm3","jetAK4_neHadMult3","jetAK4_phoMult3","jetAK4_nemf3","jetAK4_cemf3","jetAK4_csv3","jetAK4_IDTight3",
 		  "MET_et","MET_sumEt",
-		  "EVENT_event","EVENT_run","EVENT_lumiBlock",
-		  "passFilter_HBHE","passFilter_HBHEIso","passFilter_EEBadSc","passFilter_globalTightHalo2016","passFilter_GoodVtx","passFilter_ECALDeadCell","passFilter_chargedHadronTrackResolution","passFilter_muonBadTrack",
+		  "EVENT_event","EVENT_run","EVENT_lumiBlock","PV_N",
+		  "mjj","chi","yboost"
+		  #"passFilter_HBHE","passFilter_HBHEIso","passFilter_EEBadSc","passFilter_globalTightHalo2016","passFilter_GoodVtx","passFilter_ECALDeadCell","passFilter_chargedHadronTrackResolution","passFilter_muonBadTrack",
 	          ]
 	if "QCD" in name:
 	  varnames+=[
-	          "genJetAK4_pt1","genJetAK4_eta1","genJetAK4_phi1","genJetAK4_mass1",
+	          "genJetAK4_pt1","genJetAK4_eta1","genJetAK4_y1","genJetAK4_phi1","genJetAK4_mass1",
                   "jetAK4_genParton_pdgID1",
-		  "genJetAK4_pt2","genJetAK4_eta2","genJetAK4_phi2","genJetAK4_mass2",
+		  "genJetAK4_pt2","genJetAK4_eta2","genJetAK4_y2","genJetAK4_phi2","genJetAK4_mass2",
                   "jetAK4_genParton_pdgID2",
-		  "genJetAK4_pt3","genJetAK4_eta3","genJetAK4_phi3","genJetAK4_mass3",
+		  "genJetAK4_pt3","genJetAK4_eta3","genJetAK4_y3","genJetAK4_phi3","genJetAK4_mass3",
                   "jetAK4_genParton_pdgID3",
-		  "genWeight"
+		  "genWeight","nPuVtxTrue",
+		  "genmjj","genchi","genyboost"
 	          ]
 	tree=TNtuple("tree","tree",":".join(varnames))
 	HLT_isFired=std.map("string","bool")()

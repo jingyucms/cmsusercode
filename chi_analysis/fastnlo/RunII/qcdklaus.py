@@ -14,6 +14,7 @@ def writeHistogram(name,points):
    histogram.Write()
 
 if __name__=="__main__":
+    uncprefix="fnl5662j_v23_fix_CT14"
     uncpaths=[("6P"),
            ("HC"),
           ]
@@ -23,6 +24,7 @@ if __name__=="__main__":
         skip=False
         if not ".log" in filename: skip=True
 	if not path.replace("_ak4","").replace("_ak5","") in filename: skip=True
+	if not uncprefix in filename: skip=True
         if skip: continue
         print filename
         f=file(filename)
@@ -31,13 +33,14 @@ if __name__=="__main__":
 	previousBin=None
         for line in f.readlines():
             split=line.replace("D","e").strip(" ").replace("  "," ").replace("  "," ").replace("  "," ").replace("  "," ").split(" ")
-	    print split
+	    #print split
             if len(split)==4 and "E-02" in split[1]:
 	       uncpoints[path+split[0]]=(float(split[2]),float(split[3]))
 
     paths=[("fnl5622i_v23_ak5"),
            ("fnl5662i_v23_fix_CT14_ak4"),
-          ]
+           ("fnl5622j_v23_fix_CT14nlo_allmu_ak4"),
+	  ]
     for path in paths:
      rootfile=TFile(path+".root","RECREATE")
      for filename in os.listdir("."):
@@ -53,7 +56,7 @@ if __name__=="__main__":
 	previousBin=None
         for line in f.readlines():
             split=line.replace("D","e").strip(" ").replace("  "," ").replace("  "," ").replace("  "," ").replace("  "," ").split(" ")
-	    print split
+	    #print split
             if len(split)==12 and ".00" in split[6]:
                name="chi-"+str(int(float(split[3])))+"-"+str(int(float(split[4])))
     	       if previousBin!=name:
