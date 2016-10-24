@@ -25,6 +25,7 @@ if __name__=="__main__":
  models=[1,2,3,4,5,6,7,8,9]
  models+=[20,21,22,23,24,25,26,27,28,29]
  models+=[10]
+ models=[18,19]
 
  for model in models:
 
@@ -49,6 +50,8 @@ if __name__=="__main__":
     if model==10:
        signal="QBH"    
 
+    if model>=18 and model<20:
+       signal="cs_ct14nlo_"
     if model>=20 and model<30:
        signal="cs_nn30nlo_0_"
 

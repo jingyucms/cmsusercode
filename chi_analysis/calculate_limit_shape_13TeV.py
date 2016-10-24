@@ -23,15 +23,21 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
 counter=100
 signalName={}
 signalExtraName={}
-#for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0"]:
-for gq in ["0.1","0.15","0.2","0.25","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
+for gq in ["0.1","0.15","0.2","0.25","0.5","0.75","1.0","1.25","1.5","1.75","2.0","2.25","2.5","2.75","3.0","3.5","4.0","6.0","8.0", "10.0"]:
    for vector in ["800"]:#"801"
      models+=[counter]
      signalName[counter]="DM"
      signalExtraName[counter]="_1_"+gq+"_"+vector
      counter+=1
+for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5", "6.0", "8.0", "10.0", "12.0", "15.0", "20.0"]:
+   for vector in ["800"]:#"801"
+     models+=[counter]
+     signalName[counter]="DM"
+     signalExtraName[counter]="_1_"+gq+"_"+vector+"_zprime5"
+     counter+=1
 
 signalExtra=""
+includeSignalTheoryUncertainties=False
 
 if len(sys.argv)>1:
    models=[int(sys.argv[1])]
@@ -85,6 +91,16 @@ for model in models:
     signal="RS1QBH"
     signalMasses=[4000,4500,5000,5500,6000,6500]
     massbins=[(3600,4200),(4200,4800),(4800,13000)]
+
+ if model==18:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+ if model==19:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL+"
+    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+    includeSignalTheoryUncertainties=True
 
  if model==20:
     signal="cs_nn30nlo_0_"
@@ -204,15 +220,13 @@ for model in models:
  if model>=100:
     signal=signalName[model]
     signalExtra=signalExtraName[model]
-    if float(signalExtraName[model].split("_")[2])<0.13:
-       signalMasses=[2000,2500,3000,3500,4000,5000,6000]
-    elif float(signalExtraName[model].split("_")[2])<=0.15:
-       signalMasses=[1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]
-    else:
-       signalMasses=[1000,1250,1500,5000,6000,7000]
+    #if float(signalExtraName[model].split("_")[2])<=2:
+    signalMasses=[1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]
 
- dire="/afs/cern.ch/work/z/zhangj/private/dirQBH13TeVnloCi/CMSSW_7_4_15/src/cmsusercode/chi_analysis/"
- prefix="/afs/cern.ch/work/z/zhangj/private/dirQBH13TeVnloCi/CMSSW_7_4_15/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+ #dire="/afs/cern.ch/work/z/zhangj/private/dirQBH13TeVnloCi/CMSSW_7_4_15/src/cmsusercode/chi_analysis/"
+ #prefix="/afs/cern.ch/work/z/zhangj/private/dirQBH13TeVnloCi/CMSSW_7_4_15/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+ dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
+ prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
  if model>=30 and model<100:
     name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
@@ -315,7 +329,7 @@ for model in models:
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 2 number of backgrounds
-kmax 3 number of nuisance parameters
+kmax 4 number of nuisance parameters
 -----------
 """)
     for i in range(len(massbins)):
@@ -362,11 +376,17 @@ kmax 3 number of nuisance parameters
     text+="\njes shape "
     for i in range(len(massbins)):
        text+="1 1 - "
-    #text+="\npdf shape "
-    #for i in range(len(massbins)):
-    #   text+="- 1 - "
+    text+="\npdf shape "
+    for i in range(len(massbins)):
+      if includeSignalTheoryUncertainties:
+       text+="1 1 - "
+      else:
+       text+="- 1 - "
     text+="\nscale shape "
     for i in range(len(massbins)):
+      if includeSignalTheoryUncertainties:
+       text+="1 1 - "
+      else:
        text+="- 1 - "
     cfg.writelines(text+"""
 -----------
