@@ -412,7 +412,7 @@ if __name__=="__main__":
             h5.Draw("histsame")
             h6.Draw("histsame")
         h14G.Draw("pzesame")
-        h14Gsys.Draw("||same")
+        #h14Gsys.Draw("||same")
         h14Gsysstat.Draw("zesame")
               
         if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
@@ -452,7 +452,7 @@ if __name__=="__main__":
     l2=TLegend(0.21,0.35,0.8,0.83,"")
     l2.SetTextSize(0.06)
     l2.AddEntry(h14G,"Data","ple")
-    l2.AddEntry(h3newnew,"NLO QCD+EWK prediction","fl")
+    l2.AddEntry(h3newnew,"NLO QCD+EW prediction","fl")
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
     l2.AddEntry(h6,"M_{QBH} (ADD6) = 7.5 TeV","l")
     l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 11 TeV","l")

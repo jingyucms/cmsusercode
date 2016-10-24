@@ -31,7 +31,7 @@ if __name__=="__main__":
     showRun1=False
     show2016=True
     ak5Compare=False
-    showSignal=False
+    showSignal=True
 
     print "start ROOT"
     gROOT.Reset()
@@ -79,8 +79,8 @@ if __name__=="__main__":
               (3000,3600),
               (3600,4200),
               (4200,4800),
-              (4800,13000),
-              #(5400,13000)
+              (4800,5400),
+              (5400,13000)
 	      ]
 
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -88,7 +88,7 @@ if __name__=="__main__":
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+               (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,6,9,12,16),
               ]
     chi_binnings=[]
@@ -563,7 +563,7 @@ if __name__=="__main__":
           h14Gsysstat.Draw("zesame")
 
         if show2016:
-           filename="datacard_shapelimit13TeV_25nsData9combi_chi.root"
+           filename="datacard_shapelimit13TeV_25nsData10combi_chi.root"
            print filename
            f = TFile.Open(filename)
            new_hists+=[f]
@@ -619,9 +619,9 @@ if __name__=="__main__":
         if massbin==2: title="3.0 < #font[72]{M_{jj}} < 3.6"
         if massbin==3: title="3.6 < #font[72]{M_{jj}} < 4.2"
         if massbin==4: title="4.2 < #font[72]{M_{jj}} < 4.8"
-        #if massbin==5: title="4.8 < #font[72]{M_{jj}} < 5.4"
-        if massbin==5: title="#font[72]{M_{jj}} > 4.8"
-        #if massbin==6: title="#font[72]{M_{jj}} > 5.4"
+        if massbin==5: title="4.8 < #font[72]{M_{jj}} < 5.4"
+        #if massbin==5: title="#font[72]{M_{jj}} > 4.8"
+        if massbin==6: title="#font[72]{M_{jj}} > 5.4"
 
         title+=" TeV"
         if offsets[massbin]==0: titleo=""
@@ -648,7 +648,7 @@ if __name__=="__main__":
      else:
       l2.AddEntry(h14G,"13 TeV Data particle-level","ple")
     if show2016:
-      l2.AddEntry(h2016G,"2016 Data detector-level (4.0/fb)","ple")
+      l2.AddEntry(h2016G,"2016 Data detector-level (15.9/fb)","ple")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare:
       l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare and not showData:
