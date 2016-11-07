@@ -336,14 +336,14 @@ if __name__ == '__main__':
     for m in range(5,31):
        samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
 
     xsecs={}

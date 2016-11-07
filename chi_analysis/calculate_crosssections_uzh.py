@@ -230,8 +230,81 @@ if __name__ == '__main__':
 		       ("pythia8_add_m3800_4300_14000_0_0_0_1_13TeV_Nov14",5.867e-09),
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
 		       ]),
+		 ]
+    samples=[("QCDADD15000",[("pythia8_add_m1500_1900_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_15000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD16000",[("pythia8_add_m1500_1900_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_16000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD17000",[("pythia8_add_m1500_1900_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_17000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD18000",[("pythia8_add_m1500_1900_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_18000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD19000",[("pythia8_add_m1500_1900_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_19000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD20000",[("pythia8_add_m1500_1900_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_20000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD21000",[("pythia8_add_m1500_1900_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_21000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD22000",[("pythia8_add_m1500_1900_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_22000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
              ]
-    samples=[("QCDHerwig",[("herwigpp_qcd_m1000_1500___Nov14",3.769e-05),
+    samples2=[("QCDHerwig",[("herwigpp_qcd_m1000_1500___Nov14",3.769e-05),
 		       ("herwigpp_qcd_m1500_1900___Nov14",3.307e-06),
 		       ("herwigpp_qcd_m1900_2400___Nov14",8.836e-07),
 		       ("herwigpp_qcd_m2400_2800___Nov14",1.649e-07),
@@ -245,6 +318,7 @@ if __name__ == '__main__':
     crosssections={}
     for i in range(len(samples)):
       for j in range(len(samples[i][1])):
+       print samples[i][1][j][1]
        crosssections[samples[i][1][j][0]]=samples[i][1][j][1]
        for k in range(200):
          d="jobout_"+samples[i][1][j][0]+"/myout.txt"
@@ -268,6 +342,6 @@ if __name__ == '__main__':
 		break
 
 print crosssections
-fout=file("xsecs_13TeV_herwig.txt","w")
+fout=file("xsecs_13TeV_addnew.txt","w")
 fout.write(str(crosssections))
 fout.close()
