@@ -222,14 +222,14 @@ def createPlotsAndTree(sample,prefix,massbins,factor,tree,HLT_isFired):
            mjj=(jet1+jet2).M()
          for massbin in massbins:
            if yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
-	     if event.genWeight>0:
+	     if "QCD" in name and event.genWeight>0:
                plots[irec].Fill(chi,event.genWeight)
              else:
 	       plots[irec].Fill(chi)
            irec+=1
          if scale==1:
            if yboost<1.11 and chi<16:
-	     if event.genWeight>0:
+	     if "QCD" in name and event.genWeight>0:
                plots[irec].Fill(mjj,event.genWeight)
 	     else:
                plots[irec].Fill(mjj)
@@ -264,17 +264,8 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_25nsMC10"
+    prefix="datacard_shapelimit13TeV_25nsData11"
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
-              (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -294,17 +285,15 @@ if __name__ == '__main__':
               (4200,4800),
               (4800,5400),
               (5400,6000),
-	      (2400,13000),
-	      (3000,13000),
-	      (3600,13000),
-	      (4200,13000),
+              (6000,6600),
 	      (4800,13000),
 	      (5400,13000),
 	      (6000,13000),
+	      (6600,13000),
               ]
  
-    samples=[#("data_obs",[("JetHT_25ns_data10.txt",1.)]),
-             ("QCD",[("QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8.txt",1.)])
+    samples=[("data_obs",[("JetHT_25ns_data11.txt",1.)]),
+             #("QCD",[("QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8.txt",1.)])
              #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
              #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
              #  ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
@@ -453,8 +442,8 @@ if __name__ == '__main__':
   	  legend1.Draw("same")
 
   	canvas.SaveAs(prefix + '_chi'+str(counter)+'.pdf')
-  	canvas.SaveAs(prefix + '_chi'+str(counter)+'.eps')
   	if wait:
+  	    canvas.SaveAs(prefix + '_chi'+str(counter)+'.eps')
   	    os.system("ghostview "+prefix + '_chi'+str(counter)+'.eps')
 
   	canvas = TCanvas("","",0,0,200,200)
@@ -476,8 +465,8 @@ if __name__ == '__main__':
   	legend1.Draw("same")
 
   	canvas.SaveAs(prefix + '_mass'+str(counter)+'.pdf')
-  	canvas.SaveAs(prefix + '_mass'+str(counter)+'.eps')
   	if wait:
+  	    canvas.SaveAs(prefix + '_mass'+str(counter)+'.eps')
   	    os.system("ghostview "+prefix + '_mass'+str(counter)+'.eps')
 
         out.Write()

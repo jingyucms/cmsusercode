@@ -14,7 +14,7 @@ def writeHistogram(name,points):
    histogram.Write()
 
 if __name__=="__main__":
-    uncprefix="fnl5662j_v23_fix_CT14"
+    uncprefix="fnl5662i_v23_fix_CT14nlo"
     uncpaths=[("6P"),
            ("HC"),
           ]
@@ -39,7 +39,7 @@ if __name__=="__main__":
 
     paths=[("fnl5622i_v23_ak5"),
            ("fnl5662i_v23_fix_CT14_ak4"),
-           ("fnl5622j_v23_fix_CT14nlo_allmu_ak4"),
+           ("fnl5662j_v23_fix_CT14nlo_allmu_ak4"),
 	  ]
     for path in paths:
      rootfile=TFile(path+".root","RECREATE")
@@ -61,7 +61,8 @@ if __name__=="__main__":
                name="chi-"+str(int(float(split[3])))+"-"+str(int(float(split[4])))
     	       if previousBin!=name:
 	          if previousBin!=None:
-                      writeHistogram(previousBin,pointsNLO)
+                     writeHistogram(previousBin,pointsNLO)
+		     try:
         	      # scale Down
         	      pointsScaleDown=[(chimin,chimax,value*(1+uncpoints["6P"+index][0])) for chimin,chimax,value,index in pointsNLO]
         	      writeHistogram(previousBin+"scaleDown",pointsScaleDown)
@@ -74,20 +75,23 @@ if __name__=="__main__":
         	      # PDF up
         	      pointsPDFUp=[(chimin,chimax,value*(1+uncpoints["HC"+index][1])) for chimin,chimax,value,index in pointsNLO]
         	      writeHistogram(previousBin+"PDFUp",pointsPDFUp)
+		     except: print "non systematic found"
 		  pointsNLO=[]
 		  previousBin=name
                pointsNLO+=[(float(split[6]),float(split[7]),float(split[10]),split[0])]
         writeHistogram(previousBin,pointsNLO)
-	# scale Down
-	pointsScaleDown=[(chimin,chimax,value*(1+uncpoints["6P"+index][0])) for chimin,chimax,value,index in pointsNLO]
-        writeHistogram(previousBin+"scaleDown",pointsScaleDown)
-	# scale up
-	pointsScaleUp=[(chimin,chimax,value*(1+uncpoints["6P"+index][1])) for chimin,chimax,value,index in pointsNLO]
-        writeHistogram(previousBin+"scaleUp",pointsScaleUp)
-	# PDF Down
-	pointsPDFDown=[(chimin,chimax,value*(1+uncpoints["HC"+index][0])) for chimin,chimax,value,index in pointsNLO]
-        writeHistogram(previousBin+"PDFDown",pointsPDFDown)
-	# PDF up
-	pointsPDFUp=[(chimin,chimax,value*(1+uncpoints["HC"+index][1])) for chimin,chimax,value,index in pointsNLO]
-        writeHistogram(previousBin+"PDFUp",pointsPDFUp)
+	try:
+	 # scale Down
+	 pointsScaleDown=[(chimin,chimax,value*(1+uncpoints["6P"+index][0])) for chimin,chimax,value,index in pointsNLO]
+         writeHistogram(previousBin+"scaleDown",pointsScaleDown)
+	 # scale up
+ 	 pointsScaleUp=[(chimin,chimax,value*(1+uncpoints["6P"+index][1])) for chimin,chimax,value,index in pointsNLO]
+         writeHistogram(previousBin+"scaleUp",pointsScaleUp)
+ 	 # PDF Down
+	 pointsPDFDown=[(chimin,chimax,value*(1+uncpoints["HC"+index][0])) for chimin,chimax,value,index in pointsNLO]
+         writeHistogram(previousBin+"PDFDown",pointsPDFDown)
+	 # PDF up
+	 pointsPDFUp=[(chimin,chimax,value*(1+uncpoints["HC"+index][1])) for chimin,chimax,value,index in pointsNLO]
+         writeHistogram(previousBin+"PDFUp",pointsPDFUp)
+        except: print "non systematic found"
      rootfile.Close()

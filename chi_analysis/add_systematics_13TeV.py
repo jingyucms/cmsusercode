@@ -404,24 +404,40 @@ if __name__ == '__main__':
       elif samples[i][0]=="QCDCIminusLL16000":
         sample=prefix + '_GENnp-16-v4_chi.root'
       elif samples[i][0]=="QCDCIminusLL18000":
-        sample=prefix + '_GENnp-17-v4_chi.root'
+        sample=prefix + '_GENnp-17-v5_chi.root'
       elif samples[i][0]=="QCDADD6000":
-        sample=prefix + '_GENnp-18-v4_chi.root'
+        sample=prefix + '_GENnp-18-v5_chi.root'
       elif samples[i][0]=="QCDADD7000":
-        sample=prefix + '_GENnp-19-v4_chi.root'
+        sample=prefix + '_GENnp-19-v5_chi.root'
       elif samples[i][0]=="QCDADD8000":
-        sample=prefix + '_GENnp-20-v4_chi.root'
+        sample=prefix + '_GENnp-20-v5_chi.root'
       elif samples[i][0]=="QCDADD9000":
-        sample=prefix + '_GENnp-21-v4_chi.root'
+        sample=prefix + '_GENnp-21-v5_chi.root'
       elif samples[i][0]=="QCDADD10000":
-        sample=prefix + '_GENnp-22-v4_chi.root'
+        sample=prefix + '_GENnp-22-v5_chi.root'
       elif samples[i][0]=="QCDADD11000":
-        sample=prefix + '_GENnp-23-v4_chi.root'
+        sample=prefix + '_GENnp-23-v5_chi.root'
       elif samples[i][0]=="QCDADD12000":
-        sample=prefix + '_GENnp-24-v4_chi.root'
+        sample=prefix + '_GENnp-24-v5_chi.root'
       elif samples[i][0]=="QCDADD13000":
-        sample=prefix + '_GENnp-25-v4_chi.root'
+        sample=prefix + '_GENnp-25-v5_chi.root'
       elif samples[i][0]=="QCDADD14000":
+        sample=prefix + '_GENnp-26-v5_chi.root'
+      elif samples[i][0]=="QCDADD15000":
+        sample=prefix + '_GENnp-27-v5_chi.root'
+      elif samples[i][0]=="QCDADD16000":
+        sample=prefix + '_GENnp-28-v5_chi.root'
+      elif samples[i][0]=="QCDADD17000":
+        sample=prefix + '_GENnp-29-v5_chi.root'
+      elif samples[i][0]=="QCDADD18000":
+        sample=prefix + '_GENnp-30-v5_chi.root'
+      elif samples[i][0]=="QCDADD19000":
+        sample=prefix + '_GENnp-31-v5_chi.root'
+      elif samples[i][0]=="QCDADD20000":
+        sample=prefix + '_GENnp-32-v5_chi.root'
+      elif samples[i][0]=="QCDADD21000":
+        sample=prefix + '_GENnp-33-v5_chi.root'
+      elif samples[i][0]=="QCDADD22000":
         sample=prefix + '_GENnp-26-v4_chi.root'
       elif samples[i][0]=="QCDAntiCIplusLL12000":
         sample=prefix + '_GENnp-antici-v4_chi.root'
