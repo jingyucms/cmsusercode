@@ -60,7 +60,7 @@ def createPlots(sample,prefix,xsec,massbins):
     event_count=0
     for event in events:
          event_count+=1
-	 if event_count>100: break
+	 if event_count>10000000: break
          if event_count%10000==1: print "event",event_count
          jet1=TLorentzVector()
          jet2=TLorentzVector()
@@ -88,7 +88,7 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_GENnp-17-v5"
+    prefix="datacard_shapelimit13TeV_GENnp-30-v5"
  
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),

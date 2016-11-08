@@ -87,7 +87,7 @@ if __name__ == '__main__':
     samples=[]
     samples2=[]
 
-    samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -233,7 +233,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -305,6 +305,78 @@ if __name__ == '__main__':
 		       ("pythia8_add_m3800_4300_14000_0_0_0_1_13TeV_Nov14",5.867e-09),
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
 		       ]),
+             ("QCDADD15000",[("pythia8_add_m1500_1900_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_15000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD16000",[("pythia8_add_m1500_1900_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_16000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD17000",[("pythia8_add_m1500_1900_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_17000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD18000",[("pythia8_add_m1500_1900_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_18000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD19000",[("pythia8_add_m1500_1900_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_19000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD20000",[("pythia8_add_m1500_1900_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_20000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD21000",[("pythia8_add_m1500_1900_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_21000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD22000",[("pythia8_add_m1500_1900_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_22000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
              ]
     samples2+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
@@ -334,7 +406,7 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
@@ -404,7 +476,7 @@ if __name__ == '__main__':
       elif samples[i][0]=="QCDCIminusLL16000":
         sample=prefix + '_GENnp-16-v4_chi.root'
       elif samples[i][0]=="QCDCIminusLL18000":
-        sample=prefix + '_GENnp-17-v5_chi.root'
+        sample=prefix + '_GENnp-17-v4_chi.root'
       elif samples[i][0]=="QCDADD6000":
         sample=prefix + '_GENnp-18-v5_chi.root'
       elif samples[i][0]=="QCDADD7000":
@@ -438,7 +510,7 @@ if __name__ == '__main__':
       elif samples[i][0]=="QCDADD21000":
         sample=prefix + '_GENnp-33-v5_chi.root'
       elif samples[i][0]=="QCDADD22000":
-        sample=prefix + '_GENnp-26-v4_chi.root'
+        sample=prefix + '_GENnp-34-v5_chi.root'
       elif samples[i][0]=="QCDAntiCIplusLL12000":
         sample=prefix + '_GENnp-antici-v4_chi.root'
       elif "DM" in samples[i][0] or "ll" in samples[i][0] or "cs" in samples[i][0]:
@@ -1090,27 +1162,28 @@ if __name__ == '__main__':
 	cijesdown.SetLineColor(4)
 	cijesdown.SetLineStyle(3)
         cijesdown.Draw("hesame")
-	cipdfup=cloneNormalize(cipdfup)
-	plots+=[cipdfup]
-	cipdfup.SetLineColor(6)
-	cipdfup.SetLineStyle(2)
-        cipdfup.Draw("hesame")
-	cipdfdown=cloneNormalize(cipdfdown)
-	plots+=[cipdfdown]
-	cipdfdown.SetLineColor(6)
-	cipdfdown.SetLineStyle(3)
-        cipdfdown.Draw("hesame")
-	ciscaleup=cloneNormalize(ciscaleup)
-	plots+=[ciscaleup]
-	ciscaleup.SetLineColor(7)
-	ciscaleup.SetLineStyle(2)
-        ciscaleup.Draw("hesame")
-	ciscaledown=cloneNormalize(ciscaledown)
-	plots+=[ciscaledown]
-	ciscaledown.SetLineColor(7)
-	ciscaledown.SetLineStyle(3)
-        ciscaledown.Draw("hesame")
-
+        if "lo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
+	 cipdfup=cloneNormalize(cipdfup)
+	 plots+=[cipdfup]
+	 cipdfup.SetLineColor(6)
+	 cipdfup.SetLineStyle(2)
+         cipdfup.Draw("hesame")
+	 cipdfdown=cloneNormalize(cipdfdown)
+	 plots+=[cipdfdown]
+	 cipdfdown.SetLineColor(6)
+	 cipdfdown.SetLineStyle(3)
+         cipdfdown.Draw("hesame")
+	 ciscaleup=cloneNormalize(ciscaleup)
+	 plots+=[ciscaleup]
+	 ciscaleup.SetLineColor(7)
+	 ciscaleup.SetLineStyle(2)
+         ciscaleup.Draw("hesame")
+	 ciscaledown=cloneNormalize(ciscaledown)
+	 plots+=[ciscaledown]
+	 ciscaledown.SetLineColor(7)
+	 ciscaledown.SetLineStyle(3)
+         ciscaledown.Draw("hesame")
+ 
 	
 	origdata=data
 	data=TGraphAsymmErrors(cloneNormalize(data))

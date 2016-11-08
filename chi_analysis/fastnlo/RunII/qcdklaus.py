@@ -14,7 +14,7 @@ def writeHistogram(name,points):
    histogram.Write()
 
 if __name__=="__main__":
-    uncprefix="fnl5662i_v23_fix_CT14nlo"
+    uncprefix="fnl5662i_v23_fix_CT14"
     uncpaths=[("6P"),
            ("HC"),
           ]
@@ -48,6 +48,7 @@ if __name__=="__main__":
         if not ".log" in filename: skip=True
 	if not path.replace("_ak4","").replace("_ak5","") in filename: skip=True
 	if "6P" in filename or "HC" in filename: skip=True
+	if "norm" in filename: skip=True
         if skip: continue
         print filename
         f=file(filename)
@@ -56,6 +57,7 @@ if __name__=="__main__":
 	previousBin=None
         for line in f.readlines():
             split=line.replace("D","e").strip(" ").replace("  "," ").replace("  "," ").replace("  "," ").replace("  "," ").split(" ")
+	    if "xmur" in line and ("0.5" in line or "2.0" in line): break
 	    #print split
             if len(split)==12 and ".00" in split[6]:
                name="chi-"+str(int(float(split[3])))+"-"+str(int(float(split[4])))
