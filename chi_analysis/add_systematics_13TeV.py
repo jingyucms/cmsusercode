@@ -406,7 +406,7 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
