@@ -283,7 +283,7 @@ if __name__=="__main__":
         print filename
         f13ewk = TFile.Open(filename)
         new_hists+=[f13ewk]
-        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400").replace("6000-13000","5400-6000")
+        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"")
         print histname
         h13ewk=f13ewk.Get(histname)
         print h13ewk
