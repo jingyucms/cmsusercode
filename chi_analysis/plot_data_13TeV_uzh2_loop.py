@@ -292,7 +292,7 @@ if __name__ == '__main__':
 	      (6600,13000),
               ]
  
-    samples=[("data_obs",[("JetHT_25ns_data11.txt",1.)]),
+    samples=[("data_obs",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/JetHT_25ns_data11.txt",1.)]),
              #("QCD",[("QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8.txt",1.)])
              #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
              #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
@@ -325,7 +325,8 @@ if __name__ == '__main__':
 	print counter
 	
 	#afsdir="/afs/cern.ch/user/h/hinzmann/workspace/public/chi_analysis"
-	afsdir="/afs/cern.ch/work/z/zhangj/public/forChi"
+	#afsdir="/afs/cern.ch/work/z/zhangj/public/forChi"
+	afsdir="."
 	
 	if os.path.isfile(afsdir+"/"+prefix + '_chi'+str(counter)+'_tree.root'):
 	  print "skipping",counter,"because tree file exists"

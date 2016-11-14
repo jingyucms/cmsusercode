@@ -83,8 +83,7 @@ if __name__=="__main__":
               (4200,4800),
               (4800,5400),
               (5400,6000),
-              (6000,6600),
-              (6600,13000)
+              (6000,13000)
               ]
 
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -94,8 +93,9 @@ if __name__=="__main__":
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
-               (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,6,9,12,16),
+               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
+               #(1,2,3,4,5,6,7,8,9,10,12,14,16),
               ]
     chi_binnings=[]
     for mass_bin in chi_bins:
@@ -103,7 +103,7 @@ if __name__=="__main__":
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
 
-    offsets=[0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.45]
+    offsets=[0,0.05,0.1,0.15,0.2,0.25,0.35,0.45]
 
     prefix="datacard_shapelimit"
     if not showData: prefix+="_nodata"
@@ -264,7 +264,7 @@ if __name__=="__main__":
         print filename
         f13 = TFile.Open(filename)
         new_hists+=[f13]
-        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"")#.replace("5400-13000","5400-6000").replace("4800-13000","4800-5400")
+        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("6000-13000","6000-6600")
         print histname
         h13=f13.Get(histname)
         print h13
@@ -283,7 +283,7 @@ if __name__=="__main__":
         print filename
         f13ewk = TFile.Open(filename)
         new_hists+=[f13ewk]
-        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400").replace("6000-6600","5400-6000").replace("6600-13000","5400-6000")
+        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400").replace("6000-13000","5400-6000")
         print histname
         h13ewk=f13ewk.Get(histname)
         print h13ewk
@@ -359,7 +359,7 @@ if __name__=="__main__":
         print filename
         f13 = TFile.Open(filename)
         new_hists+=[f13]
-        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400").replace("6000-6600","5400-6000").replace("6600-13000","5400-6000")
+        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("5400-13000","5400-6000").replace("4800-13000","4800-5400").replace("6000-13000","5400-6000")
         print histname
         h13b=f13.Get(histname)
         print h13b
@@ -394,7 +394,7 @@ if __name__=="__main__":
         print filename
         f13a = TFile.Open(filename)
         new_hists+=[f13a]
-        masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("5400_13000","4200_13000").replace("6000_6600","4200_13000").replace("6600_13000","4200_13000")
+        masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4200_4800","4200_13000").replace("4800_5400","4200_13000").replace("5400_13000","4200_13000").replace("6000_13000","4200_13000")
 
         histname='QCD#genchi'+masstext+'_rebin1'
         print histname
@@ -491,7 +491,9 @@ if __name__=="__main__":
         h2new=h14.Clone("down"+str(massbins13[massbin]))
         h3new=h14.Clone("up"+str(massbins13[massbin]))
         chi2=0
-        for b in range(h14.GetXaxis().GetNbins()):
+	yoda=[]
+        print "hepdata format"
+	for b in range(h14.GetXaxis().GetNbins()):
             if b==0:# or b==h14G.GetXaxis().GetNbins()-1:
                 print massbins13[massbin],b,"stat",h14G.GetErrorYlow(b)/h14G.GetY()[b],h14G.GetErrorYhigh(b)/h14G.GetY()[b]
             exp_sumdown=0
@@ -531,8 +533,11 @@ if __name__=="__main__":
             h14G.SetPointEYhigh(b,0)
             h2new.SetBinContent(b+1,h13backup.GetBinContent(b+1)-theory_sumdown*h13backup.GetBinContent(b+1))
             h3new.SetBinContent(b+1,h13backup.GetBinContent(b+1)+theory_sumup*h13backup.GetBinContent(b+1))
-            #print h2.GetXaxis().GetBinLowEdge(b+1),h2.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(exp_sumdown,2)+pow(stat_down,2)),sqrt(pow(exp_sumup,2)+pow(stat_up,2))
             print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup*h14G.GetY()[b],2)),sqrt(pow(exp_sumdown*h14G.GetY()[b],2)))
+	    yoda+=[[h2new.GetXaxis().GetBinCenter(b+1),h2new.GetXaxis().GetBinCenter(b+1)-h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1)-h2new.GetXaxis().GetBinCenter(b+1),h14G.GetY()[b],sqrt(pow(exp_sumdown*h14G.GetY()[b],2)+pow(stat_down,2)),sqrt(pow(exp_sumup*h14G.GetY()[b],2)+pow(stat_up,2))]]
+        print "yoda format"
+	for y in yoda:
+            print str(y)[1:-1].replace(',',"")
         pvalue=stats.chisqprob(chi2, h14.GetXaxis().GetNbins())
         sign=stats.norm.ppf(pvalue)
         print "sign",sign,"chi2/ndof",chi2/h14.GetXaxis().GetNbins()
@@ -634,8 +639,7 @@ if __name__=="__main__":
         #if massbin==5: title="#font[72]{M_{jj}} > 4.8"
         #if massbin==6: title="#font[72]{M_{jj}} > 5.4"
         if massbin==6: title="5.4 < #font[72]{M_{jj}} < 6.0"
-        if massbin==7: title="6.0 < #font[72]{M_{jj}} < 6.6"
-        if massbin==8: title="#font[72]{M_{jj}} > 6.6"
+        if massbin==7: title="#font[72]{M_{jj}} > 6.0"
 
         title+=" TeV"
         if offsets[massbin]==0: titleo=""
@@ -662,7 +666,7 @@ if __name__=="__main__":
      else:
       l2.AddEntry(h14G,"13 TeV Data particle-level","ple")
     if show2016:
-      l2.AddEntry(h2016G,"2016 Data detector-level (15.9/fb)","ple")
+      l2.AddEntry(h2016G,"2016 Data detector-level (36.2/fb)","ple")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare:
       l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare and not showData:
