@@ -8,14 +8,15 @@ class getVariations:  # This class helps extract xsecs from NLOJET++ and CIJET++
         # Use version="i"for 2015 analysis and use version="j" for 2016 analysis
         # Default path for NLOJET++ cross section input (.log) files is ./
         # Defualt path for NLOJET++ cross section output files is ./
-        # Default path for CIJET++ cross section input (.xsc) files is ./cixsecDir
+        # Default path for CIJET++ cross section input (.xsc) files is ./cixsecDir+style
         # Default path for CIJET++ cross section output files is ./cixsecDir
         self.version="j"
-        self.cixsecDir="csxsec_ct14nlo_0-56_LL"
         self.BaseDir=os.getcwd()
         # other initiation
         self.bins=array('d',[1,2,3,4,5,6,7,8,9,10,12,14,16])
-        self.styles=["LL-","LL+"]
+        self.styles=["LL-","LL+","RR-","RR+","VV-","VV+","AA-","AA+","V-A-","V-A+"]
+        #self.styles=["AA-","AA+"]
+        self.cixsecDir="CIJET_fnl5662"+self.version+"_cs_001_ct14nlo_0_56_"
 
     def getqcdallmu(self):     
         fileallmu=self.BaseDir+"/InclusiveNJetEvents_fnl5662"+self.version+"_v23_fix_CT14nlo_allmu.log"
@@ -60,66 +61,77 @@ class getVariations:  # This class helps extract xsecs from NLOJET++ and CIJET++
         return allmemlist
 
     def getciallmu(self):
-        ls = subprocess.Popen(['ls',self.BaseDir+'/'+self.cixsecDir],stdout=subprocess.PIPE)    
-        stdouts=[]
-        while True:
-            line = ls.stdout.readline()
-            stdouts.append(line)
-            if line == '' and ls.poll() != None:
-                break        
-        files=[]
-        for stdout in stdouts:
-            if stdout=='': continue
-            if "_0_" not in stdout: continue
-            if ".root" in stdout: continue
-            file=stdout.replace("\n","")
-            files.append(file)
-    
+##         ls = subprocess.Popen(['ls',self.BaseDir+'/'+self.cixsecDir],stdout=subprocess.PIPE)    
+##         stdouts=[]
+##         while True:
+##             line = ls.stdout.readline()
+##             stdouts.append(line)
+##             if line == '' and ls.poll() != None:
+##                 break        
+##         files=[]
+##         for stdout in stdouts:
+##             if stdout=='': continue
+##             if "_0_" not in stdout: continue
+##             if ".root" in stdout: continue
+##             file=stdout.replace("\n","")
+##             files.append(file)
+##     
+##         cimudict={}
+##         for file in files:
+##             cimudict[file.replace('.xsc','')]=[]
+##             with open(self.BaseDir+"/"+self.cixsecDir+"/"+file) as f:
+##                 i=-9999
         cimudict={}
-        for file in files:
-            cimudict[file.replace('.xsc','')]=[]
-            with open(self.BaseDir+"/"+self.cixsecDir+"/"+file) as f:
-                i=-9999
-                for line in f:
-                    i+=1
-                    if "CT14nlo" in line: continue
-                    if "Lambda" in line: continue
-                    if "cj/4pi" in line: continue
-                    if "Bin" in line:
-                        i=0
-                    if i==1:
-                        mass_low=float(line.split()[2])
-                        mass_high=float(line.split()[3])
-                        chi_low=float(line.split()[0])
-                        chi_high=float(line.split()[1])
-                    if i>2:
-                        xsec=float(line.split()[3])
-                        mur=float(line.split()[1])
-                        muf=float(line.split()[0])
-                        #print cimudict
-                        if len(cimudict[file.replace('.xsc','')])<9:
-                            mu=[mur,muf]
-                            xsecs=[mass_low,mass_high,chi_low,chi_high,xsec]
-                            muxsecs=[mu,xsecs]
-                            cimudict[file.replace('.xsc','')].append(muxsecs)    
-                        else:
-                            xsecs=[mass_low,mass_high,chi_low,chi_high,xsec]
-                            cimudict[file.replace('.xsc','')][i-3].append(xsecs)
+        for style in self.styles:
+            for m in range(5,31):
+                cimudict["CIJET_fnl5662"+self.version+"_cs_001_ct14nlo_0_56_"+str(m*1000)+"_"+style]=[]
+##                 for j in range(0,57):
+                filename="CIJET_fnl5662"+self.version+"_cs_001_ct14nlo_0_"+str(m*1000)+"_"+style+".xsc"
+                muxsecs=[]
+                with open(self.BaseDir+"/"+self.cixsecDir+style+"/"+filename) as f:
+                    i=-9999
+                    for line in f:
+                        i+=1
+                        if "CT14nlo" in line: continue
+                        if "Lambda" in line: continue
+                        if "cj/4pi" in line: continue
+                        if "Bin" in line:
+                            i=0
+                        if i==1:
+                            mass_low=float(line.split()[2])
+                            mass_high=float(line.split()[3])
+                            chi_low=float(line.split()[0])
+                            chi_high=float(line.split()[1])
+                        if i>2:
+                            xsec=float(line.split()[3])
+                            mur=float(line.split()[1])
+                            muf=float(line.split()[0])
+                            #print cimudict
+                            if len(cimudict[filename.replace('.xsc','').replace('_0_','_0_56_')])<9:
+                                mu=[mur,muf]
+                                xsecs=[mass_low,mass_high,chi_low,chi_high,xsec]
+                                muxsecs=[mu,xsecs]
+                                cimudict[filename.replace('.xsc','').replace('_0_','_0_56_')].append(muxsecs)    
+                            else:
+                                xsecs=[mass_low,mass_high,chi_low,chi_high,xsec]
+                                cimudict[filename.replace('.xsc','').replace('_0_','_0_56_')][i-3].append(xsecs)
         return cimudict
 
     def getciallmem(self):
         cimemdict={}
         for style in self.styles:
             for m in range(5,31):
-                cimemdict["CIJET_fnl5662i_cs_ct14nlo_"+str(m*1000)+"_"+style]=[]
+                cimemdict["CIJET_fnl5662"+self.version+"_cs_001_ct14nlo_0_56_"+str(m*1000)+"_"+style]=[]
                 for j in range(0,57):
-                    filename="CIJET_fnl5662i_cs_ct14nlo_"+str(j)+"_"+str(m*1000)+"_"+style+".xsc"
+                    filename="CIJET_fnl5662"+self.version+"_cs_001_ct14nlo_"+str(j)+"_"+str(m*1000)+"_"+style+".xsc"
                     memxsecs=[]
-                    with open(self.BaseDir+"/csxsec_ct14nlo_0-56_LL/"+filename) as f:
+                    with open(self.BaseDir+"/"+self.cixsecDir+style+"/"+filename) as f:
+                        #print f
                         mem=j
                         memxsecs.append(mem)
                         i=-9999
                         for line in f:
+                            #print line
                             i+=1
                             if "CT14nlo" in line: continue
                             if "Lambda" in line: continue
@@ -138,7 +150,7 @@ class getVariations:  # This class helps extract xsecs from NLOJET++ and CIJET++
                                 if mur==1 and muf==1:
                                     xsecs=[mass_low,mass_high,chi_low,chi_high,xsec]
                                     memxsecs.append(xsecs)
-                        cimemdict["CIJET_fnl5662i_cs_ct14nlo_"+str(m*1000)+"_"+style].append(memxsecs)
+                        cimemdict[filename.replace('.xsc','').replace('_'+str(j)+'_','_0_56_')].append(memxsecs)
         return cimemdict
     
     def dictPrint(self,mydict):
@@ -219,15 +231,16 @@ class getVariations:  # This class helps extract xsecs from NLOJET++ and CIJET++
 if __name__ == "__main__":
     myVariations=getVariations()
     
-    qcdallmu=myVariations.getqcdallmu()
-    myVariations.listFill(qcdallmu,"mu")
+    #qcdallmu=myVariations.getqcdallmu()
+    #myVariations.listFill(qcdallmu,"mu")
     
-    qcdallmem=myVariations.getqcdallmem()
-    myVariations.listFill(qcdallmem,"mem")
+    #qcdallmem=myVariations.getqcdallmem()
+    #myVariations.listFill(qcdallmem,"mem")
 
     ciallmu=myVariations.getciallmu()
     myVariations.dictFill(ciallmu,"mu")
-
+    #myVariations.dictPrint(ciallmu)
+    
     ciallmem=myVariations.getciallmem()
     myVariations.dictFill(ciallmem,"mem")    
             
