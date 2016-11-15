@@ -13,6 +13,35 @@ gStyle.SetLegendBorderSize(0)
 def calcHessianPDFUncert(myxsecs):
     myuncertup=0
     myuncertdown=0
+    i=0
+    xsc=[]
+    for myxsec in myxsecs:
+        #i+=1
+        #if myxsec>0:
+        #    myuncertup+=myxsec**2
+        #if myxsec<0:
+        #    myuncertdown+=myxsec**2
+        #print i
+        #if i==0: continue
+        if i%2==1:
+            xsc.append(myxsec)
+        if i%2==0 and i!=0:
+            xsc.append(myxsec)
+            xsc.append(0)
+            #print myxsecplus,myxsecminus
+            #print xsc[0],xsc[1],xsc[2]
+            #print xsc
+            myuncertup+=((max(xsc))**2)
+            myuncertdown+=((min(xsc))**2)
+            xsc=[]
+        i+=1
+    myfinaluncertup=math.sqrt(myuncertup)
+    myfinaluncertdown=(-1)*math.sqrt(myuncertdown)
+    return myfinaluncertup,myfinaluncertdown
+
+def calcTrivialHessianPDFUncert(myxsecs):
+    myuncertup=0
+    myuncertdown=0
     for myxsec in myxsecs:
         if myxsec>0:
             myuncertup+=myxsec**2
@@ -21,6 +50,7 @@ def calcHessianPDFUncert(myxsecs):
     myfinaluncertup=math.sqrt(myuncertup)
     myfinaluncertdown=(-1)*math.sqrt(myuncertdown)
     return myfinaluncertup,myfinaluncertdown
+    
 
 def multiplyBinWidth(myhist):
     mynewhist=TH1F(myhist.GetName()+"_norm",myhist.GetName()+"_norm",len(chibins)-1,chibins)
@@ -34,13 +64,13 @@ myVariations=getVariations()
 chibins=myVariations.bins
 styles=myVariations.styles
 
-massbins=[[1900,2400],[2400,3000],[3000,3600],[3600,4200],[4200,4800],[4800,5400],[5400,6000]]#,[6000,6600],[6600,13000]
-ciDir="./csxsec_ct14nlo_0-56_LL/"
+massbins=[[1900,2400],[2400,3000],[3000,3600],[3600,4200],[4200,4800],[4800,5400],[5400,6000],[6000,6600],[6600,13000]]
+ciDir="./CIJET_fnl5662j_cs_001_ct14nlo_0_56_/"
 
 normalizeBack=False  
 
-calcUncert=True        # calculate qcd+ci uncertainties
-compareUncert=False      # compare qcd uncertainty with qcd+ci uncertainty
+calcUncert=False        # calculate qcd+ci uncertainties
+compareUncert=True      # compare qcd uncertainty with qcd+ci uncertainty
 
 if calcUncert:
     
@@ -53,17 +83,17 @@ if calcUncert:
     cimemfiles=[]
     for j in styles:
         for i in range(5,31):
-            cimufile="CIJET_fnl5662i_cs_ct14nlo_0_"+str(int(i*1000))+"_"+j+"_mu.root"
-            cimemfile="CIJET_fnl5662i_cs_ct14nlo_"+str(int(i*1000))+"_"+j+"_mem.root"
+            cimufile="CIJET_fnl5662j_cs_001_ct14nlo_0_56_"+str(int(i*1000))+"_"+j+"_mu.root"
+            cimemfile="CIJET_fnl5662j_cs_001_ct14nlo_0_56_"+str(int(i*1000))+"_"+j+"_mem.root"
             cimufiles.append(cimufile)
             cimemfiles.append(cimemfile)
     
     scaleFactorsmu={}
     for f in cimufiles:
-        print "creating",f
+        #print f
         scaleFactorsmu[f.replace(".root","")]=[]
         file=TFile(ciDir+f)
-        newfile=TFile(f.replace("CIJET_","").replace("_mu","").replace("_0_","_"),"RECREATE")
+        newfile=TFile(f.replace("CIJET_","").replace("_mu","").replace("_0_56_","_").replace("_001_","_"),"RECREATE")
         for massbin in massbins:
             if massbins.index(massbin)<3:
                 for scale in scales:
@@ -92,8 +122,7 @@ if calcUncert:
     for f in cimemfiles:
         scaleFactorsmem[f.replace(".root","")]=[]
         file=TFile(ciDir+f)
-        myfile=TFile(f.replace("CIJET_","").replace("_mem",""),"UPDATE")
-	print "updating",f.replace("CIJET_","").replace("_mem","")
+        myfile=TFile(f.replace("CIJET_","").replace("_mem","").replace("_0_56_","_").replace("_001_","_"),"UPDATE")
         for massbin in massbins:
             if massbins.index(massbin)<3:
                 for i in range(0,57):
@@ -118,8 +147,7 @@ if calcUncert:
                     qcdhistadd.Write()
                         
     for f in cimufiles:
-        myfile=TFile(f.replace("CIJET_","").replace("_mu","").replace("_0_","_"),"UPDATE")
-	print "updating",f.replace("CIJET_","").replace("_mu","").replace("_0_","_")
+        myfile=TFile(f.replace("CIJET_","").replace("_mu","").replace("_0_56_","_").replace("_001_","_"),"UPDATE")
         for massbin in massbins:
             histcentral=TH1F("chi-"+str(massbin[0])+"-"+str(massbin[1]),"chi-"+str(massbin[0])+"-"+str(massbin[1]),len(chibins)-1,chibins)
             histcentral.Sumw2()
@@ -152,9 +180,10 @@ if calcUncert:
             histscaledown.Write()
     
     for f in cimemfiles:
-        myfile=TFile(f.replace("CIJET_","").replace("_mem",""),"UPDATE")
-	print "updating",f.replace("CIJET_","").replace("_mem","")
+        myfile=TFile(f.replace("CIJET_","").replace("_mem","").replace("_0_56_","_").replace("_001_","_"),"UPDATE")
+        #print f
         for massbin in massbins:
+            #print massbin[0],massbin[1]
             histcentral=TH1F("chi-"+str(massbin[0])+"-"+str(massbin[1])+"backup","chi-"+str(massbin[0])+"-"+str(massbin[1]),len(chibins)-1,chibins)
             histcentral.Sumw2()
             histscaleup=TH1F("chi-"+str(massbin[0])+"-"+str(massbin[1])+"PDFUp","chi-"+str(massbin[0])+"-"+str(massbin[1])+"PDFUp",len(chibins)-1,chibins)
@@ -162,6 +191,7 @@ if calcUncert:
             histscaledown=TH1F("chi-"+str(massbin[0])+"-"+str(massbin[1])+"PDFDown","chi-"+str(massbin[0])+"-"+str(massbin[1])+"PDFDown",len(chibins)-1,chibins)
             histscaledown.Sumw2()
             for b in range(1,len(chibins)):
+                #print "Bin number:",b
                 xsec=[]
                 i=0
                 for i in range(0,57):
@@ -173,7 +203,10 @@ if calcUncert:
                     #print myhist
                     xsec.append(myhist.GetBinContent(b)-central)
                     if i==57:
+                        #print "central:",central
+                        #print "xsec:",xsec
                         pdf_up,pdf_down=calcHessianPDFUncert(xsec)
+                        #print pdf_up,pdf_down
                         histscaleup.SetBinContent(b,central+pdf_up)
                         histscaledown.SetBinContent(b,central+pdf_down)
     
@@ -184,180 +217,185 @@ if calcUncert:
             histcentral.Write()
             histscaleup.Write()
             histscaledown.Write()
+        myfile.Close()
     
     
-if compareUncert: 
-    os.system("cp ~/../../../work/z/zhangj/private/dirPrelimExam13TeV/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/fastnlo/RunII/fnl5662i_v23_fix_CT14_ak4.root .")   # copy qcd file to current directory, this file will be used in the comparison
+if compareUncert:
+
+    for style in styles:
+        for i in range(5,31):
+            ciqcdfilename="fnl5662j_cs_ct14nlo_"+str(i*1000)+"_"+style+".root"
+
+            os.system("cp ./ref_file/fnl5662i_v23_fix_CT14_ak4.root .")   # copy qcd file to current directory, this file will be used in the comparison
     
-    ciqcdfilename="fnl5662i_cs_ct14nlo_30000_LL+.root" 
-
-    hist1s=[]
-    hist1scaleups=[]
-    hist1scaledowns=[]
-    hist1pdfups=[]
-    hist1pdfdowns=[]
-    hist2s=[]
-    hist2scaleups=[]
-    hist2scaledowns=[]
-    hist2pdfups=[]
-    hist2pdfdowns=[]
-
-    file1=TFile("fnl5662i_v23_fix_CT14_ak4.root","UPDATE")
-    for massbin in massbins[:6]:
-        histname="chi-"+str(massbin[0])+"-"+str(massbin[1])
-        h1=file1.Get(histname)
-        h1scaleup=file1.Get(histname+"scaleUp")
-        h1scaledown=file1.Get(histname+"scaleDown")
-        h1pdfup=file1.Get(histname+"PDFUp")
-        h1pdfdown=file1.Get(histname+"PDFDown")
-        hist1=multiplyBinWidth(h1)
-        hist1scaleup=multiplyBinWidth(h1scaleup)
-        hist1scaledown=multiplyBinWidth(h1scaledown)
-        hist1pdfup=multiplyBinWidth(h1pdfup)
-        hist1pdfdown=multiplyBinWidth(h1pdfdown)
-        scaleFactor=hist1.Integral()
-        hist1.Scale(1./scaleFactor)
-        hist1scaleup.Scale(1./scaleFactor)
-        hist1scaledown.Scale(1./scaleFactor)
-        hist1pdfup.Scale(1./scaleFactor)
-        hist1pdfdown.Scale(1./scaleFactor)
-        hist1.Write()
-        hist1scaleup.Write()
-        hist1scaledown.Write()
-        hist1pdfup.Write()
-        hist1pdfdown.Write()
-    file1.Close()
-
-    file1new=TFile("fnl5662i_v23_fix_CT14_ak4.root")
-    for massbin in massbins[:6]:
-        histname="chi-"+str(massbin[0])+"-"+str(massbin[1])
-        hist1=file1new.Get(histname+"_norm")
-        hist1scaleup=file1new.Get(histname+"scaleUp"+"_norm")
-        hist1scaleup.Divide(hist1)
-        hist1scaledown=file1new.Get(histname+"scaleDown"+"_norm")
-        hist1scaledown.Divide(hist1)
-        hist1pdfup=file1new.Get(histname+"PDFUp"+"_norm")
-        hist1pdfup.Divide(hist1)
-        hist1pdfdown=file1new.Get(histname+"PDFDown"+"_norm")
-        hist1pdfdown.Divide(hist1)
-        hist1s.append(hist1)
-        hist1scaleups.append(hist1scaleup)
-        hist1scaledowns.append(hist1scaledown)
-        hist1pdfups.append(hist1pdfup)
-        hist1pdfdowns.append(hist1pdfdown)
-
-    file2=TFile.Open(ciqcdfilename)
-    for massbin in massbins[:6]:
-        histname="chi-"+str(massbin[0])+"-"+str(massbin[1])
-        hist2=file2.Get(histname)
-        hist2scaleup=file2.Get(histname+"scaleUp")
-        hist2scaleup.Divide(hist2)
-        hist2scaledown=file2.Get(histname+"scaleDown")
-        hist2scaledown.Divide(hist2)
-        hist2pdfup=file2.Get(histname+"PDFUp")
-        hist2pdfup.Divide(hist2)
-        hist2pdfdown=file2.Get(histname+"PDFDown")
-        hist2pdfdown.Divide(hist2)
-        hist2s.append(hist2)
-        hist2scaleups.append(hist2scaleup)
-        hist2scaledowns.append(hist2scaledown)
-        hist2pdfups.append(hist2pdfup)
-        hist2pdfdowns.append(hist2pdfdown)
-
-    canvas=TCanvas("MyCanvas","MyCanvas",0,0,1200,900)
-    saveName=ciqcdfilename.replace(".root","_xsec.pdf")
-    saveName2=ciqcdfilename.replace(".root","_uncert.pdf")
-    canvas.cd()
-    canvas.Divide(3,2)
+            hist1s=[]
+            hist1scaleups=[]
+            hist1scaledowns=[]
+            hist1pdfups=[]
+            hist1pdfdowns=[]
+            hist2s=[]
+            hist2scaleups=[]
+            hist2scaledowns=[]
+            hist2pdfups=[]
+            hist2pdfdowns=[]
     
-    legends=[]
-    for j in range(len(massbins[:6])):
-        
-        legend=TLegend(0.4,0.73,0.79,0.9,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV"))
-        legend.SetFillStyle(0)
-        legend.AddEntry(hist1s[j],"2015 NLOJET","l")
-        legend.AddEntry(hist2s[j],"2016 NLOJET+CIJET","l")
-        legends.append(legend)
-
-    for j in range(len(massbins[:6])):
-        canvas.cd(j+1)
-        pad1=TPad("","",0, 0, 1, 1)
-        pad1.Draw()
-        pad1.cd()
-        hist2s[j].SetLineColor(2)
-        hist2s[j].SetMaximum(hist2s[j].GetMaximum()*2)
-        hist2s[j].GetXaxis().SetTitle("#chi_{dijet}")
-        hist2s[j].Draw()
-        hist1s[j].SetLineColor(1)
-        hist1s[j].Draw("samehist")
-        legends[j].Draw()
-
-    canvas.SaveAs(saveName)
-
-    canvas2=TCanvas("MyCanvas","MyCanvas",0,0,1200,900)
-    canvas2.cd()
-    canvas2.Divide(3,2)
+            file1=TFile("fnl5662i_v23_fix_CT14_ak4.root","UPDATE")
+            for massbin in massbins[:6]:
+                histname="chi-"+str(massbin[0])+"-"+str(massbin[1])
+                h1=file1.Get(histname)
+                h1scaleup=file1.Get(histname+"scaleUp")
+                h1scaledown=file1.Get(histname+"scaleDown")
+                h1pdfup=file1.Get(histname+"PDFUp")
+                h1pdfdown=file1.Get(histname+"PDFDown")
+                hist1=multiplyBinWidth(h1)
+                hist1scaleup=multiplyBinWidth(h1scaleup)
+                hist1scaledown=multiplyBinWidth(h1scaledown)
+                hist1pdfup=multiplyBinWidth(h1pdfup)
+                hist1pdfdown=multiplyBinWidth(h1pdfdown)
+                scaleFactor=hist1.Integral()
+                hist1.Scale(1./scaleFactor)
+                hist1scaleup.Scale(1./scaleFactor)
+                hist1scaledown.Scale(1./scaleFactor)
+                hist1pdfup.Scale(1./scaleFactor)
+                hist1pdfdown.Scale(1./scaleFactor)
+                hist1.Write()
+                hist1scaleup.Write()
+                hist1scaledown.Write()
+                hist1pdfup.Write()
+                hist1pdfdown.Write()
+            file1.Close()
     
-    legends2=[]
-    for j in range(len(massbins[:6])):
+            file1new=TFile("fnl5662i_v23_fix_CT14_ak4.root")
+            for massbin in massbins[:6]:
+                histname="chi-"+str(massbin[0])+"-"+str(massbin[1])
+                hist1=file1new.Get(histname+"_norm")
+                hist1scaleup=file1new.Get(histname+"scaleUp"+"_norm")
+                hist1scaleup.Divide(hist1)
+                hist1scaledown=file1new.Get(histname+"scaleDown"+"_norm")
+                hist1scaledown.Divide(hist1)
+                hist1pdfup=file1new.Get(histname+"PDFUp"+"_norm")
+                hist1pdfup.Divide(hist1)
+                hist1pdfdown=file1new.Get(histname+"PDFDown"+"_norm")
+                hist1pdfdown.Divide(hist1)
+                hist1s.append(hist1)
+                hist1scaleups.append(hist1scaleup)
+                hist1scaledowns.append(hist1scaledown)
+                hist1pdfups.append(hist1pdfup)
+                hist1pdfdowns.append(hist1pdfdown)
+    
+            file2=TFile.Open(ciqcdfilename)
+            for massbin in massbins[:6]:
+                histname="chi-"+str(massbin[0])+"-"+str(massbin[1])
+                hist2=file2.Get(histname)
+                hist2scaleup=file2.Get(histname+"scaleUp")
+                hist2scaleup.Divide(hist2)
+                hist2scaledown=file2.Get(histname+"scaleDown")
+                hist2scaledown.Divide(hist2)
+                hist2pdfup=file2.Get(histname+"PDFUp")
+                hist2pdfup.Divide(hist2)
+                hist2pdfdown=file2.Get(histname+"PDFDown")
+                hist2pdfdown.Divide(hist2)
+                hist2s.append(hist2)
+                hist2scaleups.append(hist2scaleup)
+                hist2scaledowns.append(hist2scaledown)
+                hist2pdfups.append(hist2pdfup)
+                hist2pdfdowns.append(hist2pdfdown)
         
-        legend=TLegend(0.2,0.5,0.8,0.9,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV"))
-        legend.SetFillStyle(0)
-        legend.AddEntry(hist1pdfups[j],"2015 NLOJET PDF Uncertainty","l")
-        legend.AddEntry(hist1scaleups[j],"2015 NLOJET scale Uncertainty","l")
-        legend.AddEntry(hist2pdfups[j],"2016 NLOJET+CIJET PDF Uncertainty","l")
-        legend.AddEntry(hist2scaleups[j],"2016 NLOJET+CIJET scale Uncertainty","l")
-        legends2.append(legend)
-
-    for j in range(len(massbins[:6])):
-        canvas2.cd(j+1)
-        pad2=TPad("","",0, 0, 1, 1)
-        pad2.Draw()
-        pad2.cd()
-        pad2.SetLeftMargin(0.05)
-        pad2.SetBottomMargin(0.08)
-        pad2.SetTopMargin(0.03)
-        pad2.SetRightMargin(0.05)
-        hist1pdfups[j].SetLineColor(4)
-        hist1pdfups[j].SetLineStyle(2)
-        hist1pdfups[j].SetMinimum(0.85)
-        hist1pdfups[j].SetMaximum(1.5)
-        hist1pdfups[j].GetXaxis().SetTitle("#chi_{dijet}")
-        hist1pdfups[j].Draw("hist")
-        hist1pdfdowns[j].SetLineColor(4)
-        hist1pdfdowns[j].SetLineStyle(2)
-        hist1pdfdowns[j].Draw("samehist")
+            canvas=TCanvas("MyCanvas","MyCanvas",0,0,1200,900)
+            saveName=ciqcdfilename.replace(".root","_xsec.pdf")
+            saveName2=ciqcdfilename.replace(".root","_uncert.pdf")
+            canvas.cd()
+            canvas.Divide(3,2)
+            
+            legends=[]
+            for j in range(len(massbins[:6])):
+                
+                legend=TLegend(0.4,0.73,0.79,0.9,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV"))
+                legend.SetFillStyle(0)
+                legend.AddEntry(hist1s[j],"2015 NLOJET","l")
+                legend.AddEntry(hist2s[j],"2016 NLOJET+CIJET","l")
+                legends.append(legend)
         
-        hist1scaleups[j].SetLineColor(6)
-        hist1scaleups[j].SetLineStyle(2)
-        hist1scaleups[j].GetXaxis().SetTitle("#chi_{dijet}")
-        hist1scaleups[j].Draw("samehist")
-        hist1scaledowns[j].SetLineColor(6)
-        hist1scaledowns[j].SetLineStyle(2)
-        hist1scaledowns[j].Draw("samehist")
+            for j in range(len(massbins[:6])):
+                canvas.cd(j+1)
+                pad1=TPad("","",0, 0, 1, 1)
+                pad1.Draw()
+                pad1.cd()
+                hist2s[j].SetLineColor(2)
+                hist2s[j].SetMaximum(hist2s[j].GetMaximum()*2)
+                hist2s[j].GetXaxis().SetTitle("#chi_{dijet}")
+                hist2s[j].Draw()
+                hist1s[j].SetLineColor(1)
+                hist1s[j].Draw("samehist")
+                legends[j].Draw()
         
-        hist2pdfups[j].SetLineColor(1)
-        hist2pdfups[j].SetLineStyle(1)
-        hist2pdfups[j].GetXaxis().SetTitle("#chi_{dijet}")
-        hist2pdfups[j].Draw("samehist")
-        hist2pdfdowns[j].SetLineColor(1)
-        hist2pdfdowns[j].SetLineStyle(1)
-        hist2pdfdowns[j].Draw("samehist")
+            canvas.SaveAs(saveName)
         
-        hist2scaleups[j].SetLineColor(2)
-        hist2scaleups[j].SetLineStyle(1)
-        hist2scaleups[j].GetXaxis().SetTitle("#chi_{dijet}")
-        hist2scaleups[j].Draw("samehist")
-        hist2scaledowns[j].SetLineColor(2)
-        hist2scaledowns[j].SetLineStyle(1)
-        hist2scaledowns[j].Draw("samehist")
+            canvas2=TCanvas("MyCanvas","MyCanvas",0,0,1200,900)
+            canvas2.cd()
+            canvas2.Divide(3,2)
+            
+            legends2=[]
+            for j in range(len(massbins[:6])):
+                
+                legend=TLegend(0.2,0.5,0.8,0.9,(str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV"))
+                legend.SetFillStyle(0)
+                legend.AddEntry(hist1pdfups[j],"2015 NLOJET PDF Uncertainty","l")
+                legend.AddEntry(hist1scaleups[j],"2015 NLOJET scale Uncertainty","l")
+                legend.AddEntry(hist2pdfups[j],"2016 NLOJET+CIJET PDF Uncertainty","l")
+                legend.AddEntry(hist2scaleups[j],"2016 NLOJET+CIJET scale Uncertainty","l")
+                legends2.append(legend)
         
+            for j in range(len(massbins[:6])):
+                canvas2.cd(j+1)
+                pad2=TPad("","",0, 0, 1, 1)
+                pad2.Draw()
+                pad2.cd()
+                pad2.SetLeftMargin(0.05)
+                pad2.SetBottomMargin(0.08)
+                pad2.SetTopMargin(0.03)
+                pad2.SetRightMargin(0.05)
+                gPad.SetTicky(2)
+                hist1pdfups[j].SetLineColor(4)
+                hist1pdfups[j].SetLineStyle(2)
+                hist1pdfups[j].SetMinimum(0.85)
+                hist1pdfups[j].SetMaximum(1.5)
+                hist1pdfups[j].GetXaxis().SetTitle("#chi_{dijet}")
+                hist1pdfups[j].Draw("hist")
+                hist1pdfdowns[j].SetLineColor(4)
+                hist1pdfdowns[j].SetLineStyle(2)
+                hist1pdfdowns[j].Draw("samehist")
+                
+                hist1scaleups[j].SetLineColor(6)
+                hist1scaleups[j].SetLineStyle(2)
+                hist1scaleups[j].GetXaxis().SetTitle("#chi_{dijet}")
+                hist1scaleups[j].Draw("samehist")
+                hist1scaledowns[j].SetLineColor(6)
+                hist1scaledowns[j].SetLineStyle(2)
+                hist1scaledowns[j].Draw("samehist")
+                
+                hist2pdfups[j].SetLineColor(1)
+                hist2pdfups[j].SetLineStyle(1)
+                hist2pdfups[j].GetXaxis().SetTitle("#chi_{dijet}")
+                hist2pdfups[j].Draw("samehist")
+                hist2pdfdowns[j].SetLineColor(1)
+                hist2pdfdowns[j].SetLineStyle(1)
+                hist2pdfdowns[j].Draw("samehist")
+                
+                hist2scaleups[j].SetLineColor(2)
+                hist2scaleups[j].SetLineStyle(1)
+                hist2scaleups[j].GetXaxis().SetTitle("#chi_{dijet}")
+                hist2scaleups[j].Draw("samehist")
+                hist2scaledowns[j].SetLineColor(2)
+                hist2scaledowns[j].SetLineStyle(1)
+                hist2scaledowns[j].Draw("samehist")
+                
+                
+                hist1s[j].SetLineColor(1)
+                hist1s[j].Draw("samehist")
+                legends2[j].Draw()
         
-        hist1s[j].SetLineColor(1)
-        hist1s[j].Draw("samehist")
-        legends2[j].Draw()
-
-    canvas2.SaveAs(saveName2)
+            canvas2.SaveAs(saveName2)
 
     
     
