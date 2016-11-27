@@ -22,13 +22,9 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- models=[]
- #models=[1,2,3,4,5,6,7,8,9]
- models+=[20,21,22,23,24,25,26,27,28,29]
- #models+=[10]
- #models=[18,19]
+ models=[3]
  #models+=[10,11]
- #models+=[60,61,62,63,64,65,66,67,68,69]
+ models+=[60,61,62,63,64,65,66,67,68,69]
 
  for model in models:
 
@@ -64,7 +60,7 @@ if __name__=="__main__":
 
     print signal
 
-    f=file("limits"+str(model)+"_"+signal+".txt")
+    f=file("limits"+str(model)+"_"+signal+"_2016.txt")
     limits=eval(f.readline())
     #print limits
 
@@ -72,8 +68,8 @@ if __name__=="__main__":
     #canvas.GetPad(0).SetLogy()
     mg=TMultiGraph()
 
-    min_x=6000
-    max_x=30000
+    min_x=8000
+    max_x=40000
     g0=TGraph(0)
     g0.SetPoint(0,min_x,0)
     g0.SetPoint(1,max_x,0)
@@ -177,6 +173,6 @@ if __name__=="__main__":
     l2c.SetLineStyle(2)
     l2c.Draw("same")
     
-    canvas.SaveAs('limits'+str(model)+signal+'.pdf')
-    canvas.SaveAs('limits'+str(model)+signal+'.eps')
+    canvas.SaveAs('limits'+str(model)+signal+'_2016.pdf')
+    canvas.SaveAs('limits'+str(model)+signal+'_2016.eps')
     
