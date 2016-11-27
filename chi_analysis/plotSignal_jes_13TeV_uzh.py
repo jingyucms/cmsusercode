@@ -48,7 +48,8 @@ if doJES:
 
   JESuncertainties={}
   for source in JECsources:
-    p = JetCorrectorParameters("/shome/hinzmann/Fall15/CMSSW_7_6_3_patch2/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer15_25nsV7_DATA_UncertaintySources_AK4PFchs.txt", source)
+    #p = JetCorrectorParameters("/shome/hinzmann/Fall15/CMSSW_7_6_3_patch2/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer15_25nsV7_DATA_UncertaintySources_AK4PFchs.txt", source)
+    p = JetCorrectorParameters("/shome/hinzmann/Fall15/CMSSW_7_6_3_patch2/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Spring16_25nsV8BCD_DATA_UncertaintySources_AK4PFchs.txt", source)
     JESuncertainties[source]=JetCorrectionUncertainty(p)
 
 
@@ -149,10 +150,10 @@ def createPlots(sample,prefix,xsec,massbins):
 
 if __name__ == '__main__':
     wait=False
-    #name="QCD"
-    name="QCDCIplusLL10000"
+    name="QCD"
+    #name="QCDCIplusLL10000"
     bin=6 #1-6
-    prefix="datacard_shapelimit13TeV_"+name+"_JESv74b"+str(bin)
+    prefix="datacard_shapelimit13TeV_"+name+"_JESvPrompt80BCDE"+str(bin)
  
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -183,6 +184,7 @@ if __name__ == '__main__':
               (4200,4800),
               (4800,5400),
               (5400,6000),
+              (6000,6600),
 	      (2400,13000),
 	      (3000,13000),
 	      (3600,13000),
@@ -190,6 +192,7 @@ if __name__ == '__main__':
 	      (4800,13000),
 	      (5400,13000),
 	      (6000,13000),
+	      (6600,13000),
               ]
 
     if bin==1 and name=="QCD": 

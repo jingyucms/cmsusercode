@@ -27,7 +27,26 @@ if __name__=="__main__":
         print filename
         f=file(path+"/"+filename)
         pointsNLO=[]
-        name=""
+	if "bin1" in filename:
+	  name="chi-1900-2400"
+	elif "bin2" in filename:
+	  name="chi-2400-3000"
+	elif "bin3" in filename:
+	  name="chi-3000-3600"
+	elif "bin4" in filename:
+	  name="chi-3600-4200"
+	elif "bin5" in filename:
+	  name="chi-4200-4800"
+	elif "bin6" in filename:
+	  name="chi-4800-5400"
+	elif "bin7" in filename:
+	  name="chi-5400-6000"
+	elif "bin8" in filename:
+	  name="chi-6000-6600"
+	elif "bin9" in filename:
+	  name="chi-6600-13000"
+        else:
+	  name=""
         for line in f.readlines():
             split=line.replace("D","e").strip(" ").replace("  "," ").replace("  "," ").replace("  "," ").split(" ")
             if "MJJ" in line and "1.900000e+03, 2.400000e+03" in line or "1900.-2400." in line or "starting at 1900 GeV" in line:
