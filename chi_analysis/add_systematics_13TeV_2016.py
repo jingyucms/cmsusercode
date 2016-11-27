@@ -2,6 +2,7 @@ import os, sys
 from ROOT import * 
 from DataFormats.FWLite import Events,Handle
 import array
+from math import *
 
 #gROOT.Macro( os.path.expanduser( '~/rootlogon.C' ) )
 gROOT.Reset()
@@ -540,10 +541,16 @@ if __name__ == '__main__':
       unfoldfile=TFile(unfoldsample,'READ')
 
       # NLO correction
-      filename1nu2="fastnlo/RunII/fnl5662j_cs_ct14nlo_30000_LL+.root"
+      filename1nu2="fastnlo/RunII/fnl5662j_v23_fix_CT14nlo_allmu_ak4.root"
       print filename1nu2
       nlofile2 = TFile.Open(filename1nu2)
       closefiles+=[nlofile2]
+
+      # NLO uncertainties
+      filename1nu3="fastnlo/RunII/fnl5662j_cs_ct14nlo_30000_LL+.root"
+      print filename1nu3
+      nlofile3 = TFile.Open(filename1nu3)
+      closefiles+=[nlofile3]
 
       # EWK correction
       filename1ewk="fastnlo/RunII/DijetAngularCMS13_ewk.root"
@@ -595,6 +602,9 @@ if __name__ == '__main__':
 	  data.SetName(histname)
 	else:
           data = TH1F(infile.Get("data_obs#chi"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"))
+          for b in range(data.GetXaxis().GetNbins()):
+             data.SetBinContent(b+1,data.GetBinContent(b+1)*data.GetBinWidth(b+1))
+             data.SetBinError(b+1,data.GetBinError(b+1)*data.GetBinWidth(b+1))
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
 	out.cd()
@@ -618,6 +628,19 @@ if __name__ == '__main__':
         for b in range(nloqcd.GetXaxis().GetNbins()):
            nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*nloqcd.GetBinWidth(b+1))
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
+
+        # NLO normalized
+        nloqcdnorm=None
+        for k in mass_bins_nlo_list[j]:
+         histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])
+         print histname
+         hnlo = TH1F(nlofile3.Get(histname))
+         hnlo.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
+         hnlo=rebin(hnlo,len(chi_binnings[j])-1,chi_binnings[j])
+	 if nloqcdnorm:
+	    nloqcdnorm.Add(hnlo)
+	 else:
+	    nloqcdnorm=hnlo
 
         # EWK corrections
         histname='chi-'+str(massbins[j]).strip("()").replace(',',"-").replace(' ',"").replace("6000-13000","6000-6600")
@@ -860,33 +883,29 @@ if __name__ == '__main__':
         for k in mass_bins_nlo_list[j]:
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFUp"
          print histname
-         hnloPDFup = TH1F(nlofile2.Get(histname))
+         hnloPDFup = TH1F(nlofile3.Get(histname))
          hnloPDFup.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloPDFup=rebin(hnloPDFup,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloPDFupqcd:
 	    nloPDFupqcd.Add(hnloPDFup)
 	 else:
 	    nloPDFupqcd=hnloPDFup
-        for b in range(nloPDFupqcd.GetXaxis().GetNbins()):
-           nloPDFupqcd.SetBinContent(b+1,nloPDFupqcd.GetBinContent(b+1)*nloPDFupqcd.GetBinWidth(b+1))
-        nloPDFupqcd.Add(nloqcdbackup,-1)
-        nloPDFupqcd.Scale(1./nloqcdbackup.Integral())
+        nloPDFupqcd.Add(nloqcdnorm,-1)
+        nloPDFupqcd.Scale(1./nloqcdnorm.Integral())
 
         nloPDFdownqcd=None
         for k in mass_bins_nlo_list[j]:
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFDown"
          print histname
-         hnloPDFdown = TH1F(nlofile2.Get(histname))
+         hnloPDFdown = TH1F(nlofile3.Get(histname))
          hnloPDFdown.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloPDFdown=rebin(hnloPDFdown,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloPDFdownqcd:
 	    nloPDFdownqcd.Add(hnloPDFdown)
 	 else:
 	    nloPDFdownqcd=hnloPDFdown
-        for b in range(nloPDFdownqcd.GetXaxis().GetNbins()):
-           nloPDFdownqcd.SetBinContent(b+1,nloPDFdownqcd.GetBinContent(b+1)*nloPDFdownqcd.GetBinWidth(b+1))
-        nloPDFdownqcd.Add(nloqcdbackup,-1)
-        nloPDFdownqcd.Scale(1./nloqcdbackup.Integral())
+        nloPDFdownqcd.Add(nloqcdnorm,-1)
+        nloPDFdownqcd.Scale(1./nloqcdnorm.Integral())
 
         pdfup=alt.Clone(alt.GetName()+"_pdfUp")
         pdfdown=alt.Clone(alt.GetName()+"_pdfDown")
@@ -956,33 +975,29 @@ if __name__ == '__main__':
         for k in mass_bins_nlo_list[j]:
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleUp"
          print histname
-         hnloScaleup = TH1F(nlofile2.Get(histname))
+         hnloScaleup = TH1F(nlofile3.Get(histname))
          hnloScaleup.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloScaleup=rebin(hnloScaleup,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloScaleupqcd:
 	    nloScaleupqcd.Add(hnloScaleup)
 	 else:
 	    nloScaleupqcd=hnloScaleup
-        for b in range(nloScaleupqcd.GetXaxis().GetNbins()):
-           nloScaleupqcd.SetBinContent(b+1,nloScaleupqcd.GetBinContent(b+1)*nloScaleupqcd.GetBinWidth(b+1))
-        nloScaleupqcd.Add(nloqcdbackup,-1)
-        nloScaleupqcd.Scale(1./nloqcdbackup.Integral())
+        nloScaleupqcd.Add(nloqcdnorm,-1)
+        nloScaleupqcd.Scale(1./nloqcdnorm.Integral())
 
         nloScaledownqcd=None
         for k in mass_bins_nlo_list[j]:
          histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleDown"
          print histname
-         hnloScaledown = TH1F(nlofile2.Get(histname))
+         hnloScaledown = TH1F(nlofile3.Get(histname))
          hnloScaledown.Scale(float(mass_bins_nlo3[k+1]-mass_bins_nlo3[k]))
          hnloScaledown=rebin(hnloScaledown,len(chi_binnings[j])-1,chi_binnings[j])
 	 if nloScaledownqcd:
 	    nloScaledownqcd.Add(hnloScaledown)
 	 else:
 	    nloScaledownqcd=hnloScaledown
-        for b in range(nloScaledownqcd.GetXaxis().GetNbins()):
-           nloScaledownqcd.SetBinContent(b+1,nloScaledownqcd.GetBinContent(b+1)*nloScaledownqcd.GetBinWidth(b+1))
-        nloScaledownqcd.Add(nloqcdbackup,-1)
-        nloScaledownqcd.Scale(1./nloqcdbackup.Integral())
+        nloScaledownqcd.Add(nloqcdnorm,-1)
+        nloScaledownqcd.Scale(1./nloqcdnorm.Integral())
 
         scaleup=alt.Clone(alt.GetName()+"_scaleUp")
         scaledown=alt.Clone(alt.GetName()+"_scaleDown")
@@ -1179,7 +1194,10 @@ if __name__ == '__main__':
 	plots+=[data]
 	alpha=1.-0.6827
 	for b in range(data.GetN()):
-	    N=N=1./pow(origdata.GetBinError(b+1)/origdata.GetBinContent(b+1),2)
+	    if useUnfoldedData:
+	      N=1./pow(origdata.GetBinError(b+1)/origdata.GetBinContent(b+1),2)
+	    else:
+	      N=origdata.GetBinContent(b+1)
 	    L=0
 	    if N>0:
 	      L=ROOT.Math.gamma_quantile(alpha/2.,N,1.)
@@ -1195,8 +1213,8 @@ if __name__ == '__main__':
         legend1.SetFillStyle(0)
         legend1.Draw("same")
 
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.pdf')
-      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys.eps')
+      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016.pdf')
+      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016.eps')
 
       for closefile in closefiles:
           closefile.Close()

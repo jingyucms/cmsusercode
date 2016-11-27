@@ -56,7 +56,7 @@ if __name__=="__main__":
     iPeriod = 4;	#// 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
     iPos = 33;
 
-    massbins13=[(1900,2400),
+    massbins13=[#(1900,2400),
                 (2400,3000),
                 (3000,3600),
                 (3600,4200),
@@ -66,7 +66,7 @@ if __name__=="__main__":
                 (6000,13000),
     ]
 
-    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+    chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -88,19 +88,27 @@ if __name__=="__main__":
     if binByBinCorrect: prefix+="_binbybin"
     if unfoldedData: prefix+="_unfolded"
 
-    c = TCanvas("combined", "combined", 0, 0, 500, 800)
+    c = TCanvas("combined", "combined", 0, 0, 500, 700)
     c.Divide(1,1)
     
     pad=[]
     
-    pad1=TPad("","",0,0.68,1,1)
-    pad2=TPad("","",0,0.595,1,0.68)
-    pad3=TPad("","",0,0.51,1,0.595)
-    pad4=TPad("","",0,0.425,1,0.51)
-    pad5=TPad("","",0,0.34,1,0.425)
-    pad6=TPad("","",0,0.255,1,0.34)
-    pad7=TPad("","",0,0.17,1,0.255)
-    pad8=TPad("","",0,0.00,1,0.17)
+    #pad1=TPad("","",0,0.68,1,1)
+    #pad2=TPad("","",0,0.595,1,0.68)
+    #pad3=TPad("","",0,0.51,1,0.595)
+    #pad4=TPad("","",0,0.425,1,0.51)
+    #pad5=TPad("","",0,0.34,1,0.425)
+    #pad6=TPad("","",0,0.255,1,0.34)
+    #pad7=TPad("","",0,0.17,1,0.255)
+    #pad8=TPad("","",0,0.00,1,0.17)
+
+    pad1=TPad("","",0,0.69,1,1)
+    pad2=TPad("","",0,0.59,1,0.69)
+    pad3=TPad("","",0,0.49,1,0.59)
+    pad4=TPad("","",0,0.39,1,0.49)
+    pad5=TPad("","",0,0.29,1,0.39)
+    pad6=TPad("","",0,0.19,1,0.29)
+    pad7=TPad("","",0,0.00,1,0.19)
 
     pad.append(pad1)
     pad.append(pad2)
@@ -109,7 +117,7 @@ if __name__=="__main__":
     pad.append(pad5)
     pad.append(pad6)
     pad.append(pad7)
-    pad.append(pad8)
+    #pad.append(pad8)
 
     new_hists=[]
     
@@ -342,36 +350,36 @@ if __name__=="__main__":
         h3new.Add(TF1("offset",str(offsets[massbin]),1,16))
         
         c.cd()
-        if massbin==1 or massbin==2 or massbin==3 or massbin==4 or massbin==5 or massbin==6:
+        if massbin==1 or massbin==2 or massbin==3 or massbin==4 or massbin==5:
             pad[massbin].SetBottomMargin(0.)
             pad[massbin].SetTopMargin(0.)
         if massbin==0:
             pad[massbin].SetBottomMargin(0.)
             pad[massbin].SetTopMargin(0.14)
-        if massbin==7:
+        if massbin==6:
             pad[massbin].SetTopMargin(0.)
             pad[massbin].SetBottomMargin(0.475)
             
-        pad[7-massbin].Draw()
+        pad[6-massbin].Draw()
         
-        pad[7-massbin].cd()
+        pad[6-massbin].cd()
 
-        if massbin==7:
-            hNloQcd.GetYaxis().SetRangeUser(0.01,0.42)        
+        if massbin==6:
+            hNloQcd.GetYaxis().SetRangeUser(0.01,0.30)        
         elif massbin>=3:
             hNloQcd.GetYaxis().SetRangeUser(0.02,0.14)       
         else:
             hNloQcd.GetYaxis().SetRangeUser(0.02,0.14)          
             
-        if massbin!=7:
+        if massbin!=6:
             hNloQcd.GetYaxis().SetTitleSize(0.)
 	    
 	bigger=1.2
 
-        if massbin==7:
+        if massbin==6:
             hNloQcd.GetYaxis().SetTitleOffset(0.72)
-            hNloQcd.GetYaxis().SetTitleSize(0.085*bigger)
-            hNloQcd.GetYaxis().SetLabelSize(0.065*bigger)
+            hNloQcd.GetYaxis().SetTitleSize(0.09*bigger)
+            hNloQcd.GetYaxis().SetLabelSize(0.078*bigger)
             hNloQcd.GetYaxis().SetLabelOffset(0.005)
 
         if massbin==0:
@@ -381,26 +389,26 @@ if __name__=="__main__":
             hNloQcd.GetYaxis().SetLabelSize(0.13*bigger)
             hNloQcd.GetYaxis().SetLabelOffset(0.005)
         
-        if massbin<7 and massbin>0:
+        if massbin<6 and massbin>0:
             hNloQcd.GetYaxis().SetLabelSize(0.246*bigger)
             hNloQcd.GetYaxis().SetLabelOffset(0.005)
 
         if massbin==0 or massbin==1 or massbin==2:
             hNloQcd.GetYaxis().SetNdivisions(503)
 
-        if massbin==3 or massbin==4 or massbin==5 or massbin==6:
+        if massbin==3 or massbin==4 or massbin==5:
             hNloQcd.GetYaxis().SetNdivisions(503)
 
-        if massbin==7:
+        if massbin==6:
             hNloQcd.GetYaxis().SetNdivisions(510)
 
-        if massbin!=7 and massbin!=0:            
+        if massbin!=6 and massbin!=0:            
             hNloQcd.GetXaxis().SetTickLength(0.04)
             hNloQcd.GetYaxis().SetTickLength(0.025)
         if massbin==0:
             hNloQcd.GetXaxis().SetTickLength(0.03)
             hNloQcd.GetYaxis().SetTickLength(0.05)
-        if massbin==7:
+        if massbin==6:
             hNloQcd.GetXaxis().SetTickLength(0.01)
 
         hNloQcd.GetXaxis().SetNdivisions(110)
@@ -421,19 +429,19 @@ if __name__=="__main__":
         #h14Gsys.Draw("||same")
         h14Gsysstat.Draw("zesame")
               
-        if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
-        if massbin==1: title="2.4 < #font[72]{M_{jj}} < 3.0 TeV"
-        if massbin==2: title="3.0 < #font[72]{M_{jj}} < 3.6 TeV"
-        if massbin==3: title="3.6 < #font[72]{M_{jj}} < 4.2 TeV"
-        if massbin==4: title="4.2 < #font[72]{M_{jj}} < 4.8 TeV"
-        if massbin==5: title="4.8 < #font[72]{M_{jj}} < 5.4 TeV"
-        if massbin==6: title="5.4 < #font[72]{M_{jj}} < 6.0 TeV"
-        if massbin==7: title=" #font[72]{M_{jj}} > 6.0 TeV"
+        #if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
+        if massbin==0: title="2.4 < #font[72]{M_{jj}} < 3.0 TeV"
+        if massbin==1: title="3.0 < #font[72]{M_{jj}} < 3.6 TeV"
+        if massbin==2: title="3.6 < #font[72]{M_{jj}} < 4.2 TeV"
+        if massbin==3: title="4.2 < #font[72]{M_{jj}} < 4.8 TeV"
+        if massbin==4: title="4.8 < #font[72]{M_{jj}} < 5.4 TeV"
+        if massbin==5: title="5.4 < #font[72]{M_{jj}} < 6.0 TeV"
+        if massbin==6: title=" #font[72]{M_{jj}} > 6.0 TeV"
 
-        if massbin==7:
-            ylabel1=0.20
-            ylabel2=0.27
-            Size=0.06
+        if massbin==6:
+            ylabel1=0.23
+            ylabel2=0.30
+            Size=0.075
         elif massbin==0:
             ylabel1=0.785
             ylabel2=0.95
@@ -448,7 +456,7 @@ if __name__=="__main__":
         l.SetFillStyle(0)
         l.Draw("same")
         new_hists+=[l]
-        pad[7-massbin].RedrawAxis()
+        pad[6-massbin].RedrawAxis()
 
     pad[0].cd()
         
@@ -458,7 +466,7 @@ if __name__=="__main__":
     h3newnew.SetLineWidth(2)
     
     l2=TLegend(0.21,0.35,0.8,0.83,"")
-    l2.SetTextSize(0.06)
+    l2.SetTextSize(0.075)
     l2.AddEntry(h14G,"Data","ple")
     l2.AddEntry(h3newnew,"NLO QCD+EW prediction","fl")
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
