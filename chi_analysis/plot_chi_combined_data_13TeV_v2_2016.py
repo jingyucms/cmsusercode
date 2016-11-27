@@ -173,7 +173,7 @@ if __name__=="__main__":
 
         # CI and ADD signal  
 
-        if massbin>4:
+        if massbin>3:
             filename="datacard_shapelimit13TeV_cs_ct14nlo_14000_LL+_chi2016.root"
             print filename
             f = TFile.Open(filename)
@@ -181,11 +181,11 @@ if __name__=="__main__":
             histname='cs_ct14nlo_14000_LL+#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800-13000","4800-5400")+"_rebin1"
             print histname
             h4=f.Get(histname)
-            h4=h4.Rebin(len(chi_binnings[massbin])-1,h4.GetName()+"_rebin",chi_binnings[massbin])
+            h4=rebin2(h4,len(chi_binnings[massbin])-1,chi_binnings[massbin])
             h4.SetLineColor(2)
-            h4.Scale(1./h4.Integral())
-            for b in range(h4.GetNbinsX()):
-                h4.SetBinContent(b+1,h4.GetBinContent(b+1)/h4.GetBinWidth(b+1))
+            #h4.Scale(1./h4.Integral())
+            #for b in range(h4.GetNbinsX()):
+            #    h4.SetBinContent(b+1,h4.GetBinContent(b+1)/h4.GetBinWidth(b+1))
             
             filename="datacard_shapelimit13TeV_GENnp-25-v5_chi2016.root"
             print filename
@@ -197,9 +197,9 @@ if __name__=="__main__":
 	    h5=rebin2(h5,len(chi_binnings[massbin])-1,chi_binnings[massbin])
             h5.SetLineColor(4)
             h5.SetLineStyle(2)
-            h5.Scale(1./h5.Integral())
-            for b in range(h5.GetNbinsX()):
-                h5.SetBinContent(b+1,h5.GetBinContent(b+1)/h5.GetBinWidth(b+1))
+            #h5.Scale(1./h5.Integral())
+            #for b in range(h5.GetNbinsX()):
+            #    h5.SetBinContent(b+1,h5.GetBinContent(b+1)/h5.GetBinWidth(b+1))
             
             #filename="datacard_shapelimit13TeV_QBH_7500_6_chi_v1.root"
             #print filename
@@ -421,7 +421,7 @@ if __name__=="__main__":
         h2new.Draw("histsame")
         hNloQcd.Draw("histsame")
         #hNloQcdNoEwk.Draw("histsame")
-        if massbin>4:
+        if massbin>3:
             h4.Draw("histsame")
             h5.Draw("histsame")
             #h6.Draw("histsame")
