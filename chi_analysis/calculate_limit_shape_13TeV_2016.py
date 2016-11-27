@@ -3,9 +3,9 @@ from ROOT import *
 import array
 import ROOT
 
-massbins=[(4800,13000),
-	      (4200,4800),
-	      (3600,4200),
+massbins=[(6000,13000),
+	      (5400,6000),
+	      (4800,5400),
               ]
 
 xsecs={}
@@ -30,19 +30,14 @@ for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5",
      signalExtraName[counter]="_1_"+gq+"_"+vector+"_zprime5"
      counter+=1
 
-#models+=[1,2,3,4,5,6,7]
-#models+=[8,9]
-models+=[10,11]
-#models=[20,21,22,23,24,25,26,27,28,29]
-#models+=[30,31,32,33,34,35,36,37]
-#models+=[40,41,42,43,44,45,46,47]
-#models=[1]
-models=[60,61,62,63,64,65,66,67,68,69]
 models=[3]
+#models+=[10,11]
+models+=[60,61,62,63,64,65,66,67,68,69]
+models=[68,69]
 
 
 signalExtra=""
-includeSignalTheoryUncertainties=True
+includeSignalTheoryUncertainties=False
 
 if len(sys.argv)>1:
    models=[int(sys.argv[1])]
@@ -57,7 +52,7 @@ for model in models:
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
  if model==3:
     signal="ADD"
-    signalMasses=[6000,7000,8000,9000,10000,11000,12000,13000,14000]
+    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000]
  if model==4:
     signal="cs_nn30nlo_0_"
     signalExtra="_LL+"
@@ -222,46 +217,49 @@ for model in models:
     signalMasses=[12000]
     massbins=[(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)]
 
+ if model>=60 and model<70:
+    includeSignalTheoryUncertainties=True
+
  if model==60:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
  if model==61:
     signal="cs_ct14nlo_"
     signalExtra="_LL-"
-    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
+    signalMasses=[16000,17000,18000,19000,20000,22000,24000,25000,26000,27000,28000,29000]
  if model==62:
     signal="cs_ct14nlo_"
     signalExtra="_RR+"
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000]
  if model==63:
     signal="cs_ct14nlo_"
     signalExtra="_RR-"
-    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
+    signalMasses=[16000,17000,18000,19000,20000,22000,24000,25000,26000,27000,28000]
  if model==64:
     signal="cs_ct14nlo_"
     signalExtra="_VV+"
-    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,21000,22000,23000,24000]
  if model==65:
     signal="cs_ct14nlo_"
     signalExtra="_VV-"
-    signalMasses=[13000,14000,15000,16000,17000,18000,19000,20000,22000,24000,26000]
+    signalMasses=[17000,18000,19000,20000,22000,24000,26000,27000,28000,29000,30000]
  if model==66:
     signal="cs_ct14nlo_"
     signalExtra="_AA+"
-    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,21000,22000,23000,24000]
  if model==67:
     signal="cs_ct14nlo_"
     signalExtra="_AA-"
-    signalMasses=[13000,14000,15000,16000,17000,18000,19000,20000,22000,24000,26000]
+    signalMasses=[17000,18000,19000,20000,22000,24000,26000,27000,28000,29000,30000]
  if model==68:
     signal="cs_ct14nlo_"
     signalExtra="_V-A+"
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
  if model==69:
     signal="cs_ct14nlo_"
     signalExtra="_V-A-"
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
+    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
 
  if model>=100:
     signal=signalName[model]
@@ -283,77 +281,87 @@ for model in models:
  for signalMass in signalMasses:
     signalWithMass=signal+str(signalMass)+signalExtra
     print signalWithMass
-    cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass+".txt","w")
-    #if signal=="ADD":
-    #   fname=prefix+"_GENaddv3_chi.root"
-    #elif signal=="CIplusLL":
-    #   fname=prefix+"_GENciv3_chi.root"
-    #else:
-    #   fname=prefix+"_GENciminusv3_chi.root"
+    cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass+"_2016.txt","w")
     if signalWithMass=="CIplusLL8000":
-        fname=prefix + '_GENnp-0-v4_chi.root'
+        fname=prefix + '_GENnp-0-v4_chi2016.root'
     elif signalWithMass=="CIplusLL9000":
-        fname=prefix + '_GENnp-1-v4_chi.root'
+        fname=prefix + '_GENnp-1-v4_chi2016.root'
     elif signalWithMass=="CIplusLL10000":
-        fname=prefix + '_GENnp-2-v4_chi.root'
+        fname=prefix + '_GENnp-2-v4_chi2016.root'
     elif signalWithMass=="CIplusLL11000":
-        fname=prefix + '_GENnp-3-v4_chi.root'
+        fname=prefix + '_GENnp-3-v4_chi2016.root'
     elif signalWithMass=="CIplusLL12000":
-        fname=prefix + '_GENnp-4-v4_chi.root'
+        fname=prefix + '_GENnp-4-v4_chi2016.root'
     elif signalWithMass=="CIplusLL13000":
-        fname=prefix + '_GENnp-5-v4_chi.root'
+        fname=prefix + '_GENnp-5-v4_chi2016.root'
     elif signalWithMass=="CIplusLL14000":
-        fname=prefix + '_GENnp-6-v4_chi.root'
+        fname=prefix + '_GENnp-6-v4_chi2016.root'
     elif signalWithMass=="CIplusLL16000":
-        fname=prefix + '_GENnp-7-v4_chi.root'
+        fname=prefix + '_GENnp-7-v4_chi2016.root'
     elif signalWithMass=="CIplusLL18000":
-        fname=prefix + '_GENnp-8-v4_chi.root'
+        fname=prefix + '_GENnp-8-v4_chi2016.root'
     elif signalWithMass=="CIminusLL8000":
-        fname=prefix + '_GENnp-9-v4_chi.root'
+        fname=prefix + '_GENnp-9-v4_chi2016.root'
     elif signalWithMass=="CIminusLL9000":
-        fname=prefix + '_GENnp-10-v4_chi.root'
+        fname=prefix + '_GENnp-10-v4_chi2016.root'
     elif signalWithMass=="CIminusLL10000":
-        fname=prefix + '_GENnp-11-v4_chi.root'
+        fname=prefix + '_GENnp-11-v4_chi2016.root'
     elif signalWithMass=="CIminusLL11000":
-        fname=prefix + '_GENnp-12-v4_chi.root'
+        fname=prefix + '_GENnp-12-v4_chi2016.root'
     elif signalWithMass=="CIminusLL12000":
-        fname=prefix + '_GENnp-13-v4_chi.root'
+        fname=prefix + '_GENnp-13-v4_chi2016.root'
     elif signalWithMass=="CIminusLL13000":
-        fname=prefix + '_GENnp-14-v4_chi.root'
+        fname=prefix + '_GENnp-14-v4_chi2016.root'
     elif signalWithMass=="CIminusLL14000":
-        fname=prefix + '_GENnp-15-v4_chi.root'
+        fname=prefix + '_GENnp-15-v4_chi2016.root'
     elif signalWithMass=="CIminusLL16000":
-        fname=prefix + '_GENnp-16-v4_chi.root'
+        fname=prefix + '_GENnp-16-v4_chi2016.root'
     elif signalWithMass=="CIminusLL18000":
-        fname=prefix + '_GENnp-17-v4_chi.root'
+        fname=prefix + '_GENnp-17-v4_chi2016.root'
     elif signalWithMass=="ADD6000":
-        fname=prefix + '_GENnp-18-v4_chi.root'
+        fname=prefix + '_GENnp-18-v5_chi2016.root'
     elif signalWithMass=="ADD7000":
-        fname=prefix + '_GENnp-19-v4_chi.root'
+        fname=prefix + '_GENnp-19-v5_chi2016.root'
     elif signalWithMass=="ADD8000":
-        fname=prefix + '_GENnp-20-v4_chi.root'
+        fname=prefix + '_GENnp-20-v5_chi2016.root'
     elif signalWithMass=="ADD9000":
-        fname=prefix + '_GENnp-21-v4_chi.root'
+        fname=prefix + '_GENnp-21-v5_chi2016.root'
     elif signalWithMass=="ADD10000":
-        fname=prefix + '_GENnp-22-v4_chi.root'
+        fname=prefix + '_GENnp-22-v5_chi2016.root'
     elif signalWithMass=="ADD11000":
-        fname=prefix + '_GENnp-23-v4_chi.root'
+        fname=prefix + '_GENnp-23-v5_chi2016.root'
     elif signalWithMass=="ADD12000":
-        fname=prefix + '_GENnp-24-v4_chi.root'
+        fname=prefix + '_GENnp-24-v5_chi2016.root'
     elif signalWithMass=="ADD13000":
-        fname=prefix + '_GENnp-25-v4_chi.root'
+        fname=prefix + '_GENnp-25-v5_chi2016.root'
     elif signalWithMass=="ADD14000":
-        fname=prefix + '_GENnp-26-v4_chi.root'
+        fname=prefix + '_GENnp-26-v5_chi2016.root'
+    elif signalWithMass=="ADD15000":
+        fname=prefix + '_GENnp-27-v5_chi2016.root'
+    elif signalWithMass=="ADD16000":
+        fname=prefix + '_GENnp-28-v5_chi2016.root'
+    elif signalWithMass=="ADD17000":
+        fname=prefix + '_GENnp-29-v5_chi2016.root'
+    elif signalWithMass=="ADD18000":
+        fname=prefix + '_GENnp-30-v5_chi2016.root'
+    elif signalWithMass=="ADD19000":
+        fname=prefix + '_GENnp-31-v5_chi2016.root'
+    elif signalWithMass=="ADD20000":
+        fname=prefix + '_GENnp-32-v5_chi2016.root'
+    elif signalWithMass=="ADD21000":
+        fname=prefix + '_GENnp-33-v5_chi2016.root'
+    elif signalWithMass=="ADD22000":
+        fname=prefix + '_GENnp-34-v5_chi2016.root'
     elif signalWithMass=="AntiCIplusLL12000":
-        fname=prefix + '_GENnp-antici-v4_chi.root'
+        fname=prefix + '_GENnp-antici-v4_chi2016.root'
     elif signalWithMass=="ADD6QBH"+str(signalMass):
         fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
     elif signalWithMass=="RS1QBH"+str(signalMass):
         fname=prefix+"_QBH_"+str(signalMass)+"_RS1_chi_v1.root"
     elif "cs" in signal:
-        fname=prefix+"_"+str(signalWithMass)+"_chi.root"
+        fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
     elif "DM" in signal:
-        fname=prefix+"_"+str(signalWithMass)+"_chi.root"
+        fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
 	if not signalWithMass in xsecs.keys():
 	  continue
 	if signalMass<=2000:
@@ -443,15 +451,15 @@ jmax 2 number of backgrounds""")
 
     cfg.close()
     os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
-    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+".txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+".txt") # --frequentist --testStat LHC
+    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
+    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+"_2016.txt") # --frequentist --testStat LHC
     os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    os.system('root -q -b '+dire+'"extractSignificanceStats.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" > '+name+'_exp_'+str(signalMass)+'.txt')
+    os.system('root -q -b '+dire+'"extractSignificanceStats.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" > '+name+'_exp_'+str(signalMass)+'_2016.txt')
 
  for signalMass in signalMasses:
     limits[signalMass]=[]
     try:
-      f=file(name+"_"+str(signalMass)+".txt")
+      f=file(name+"_"+str(signalMass)+"_2016.txt")
     except:
       print "file not found", f
       continue
@@ -463,7 +471,7 @@ jmax 2 number of backgrounds""")
     if len(limits[signalMass])==0:
          limits[signalMass]+=[signalMass,0,0]
     try:
-      f=file(name+"_exp_"+str(signalMass)+".txt")
+      f=file(name+"_exp_"+str(signalMass)+"_2016.txt")
     except:
       print "file not found", f
       continue
@@ -477,7 +485,7 @@ jmax 2 number of backgrounds""")
          limits[signalMass]+=[0]
 
  print limits
- name=name+".txt"
+ name=name+"_2016.txt"
  f=file(name,"w")
  f.write(str([limits[signalMass] for signalMass in signalMasses]))
  f.close()
