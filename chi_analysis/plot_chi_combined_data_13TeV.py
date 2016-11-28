@@ -283,7 +283,7 @@ if __name__=="__main__":
         print filename
         f13ewk = TFile.Open(filename)
         new_hists+=[f13ewk]
-        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"")
+        histname='chi-'+str(massbins13[massbin]).strip("()").replace(',',"-").replace(' ',"").replace("6000-13000","6000-6600")
         print histname
         h13ewk=f13ewk.Get(histname)
         print h13ewk
@@ -316,9 +316,10 @@ if __name__=="__main__":
         h13.GetXaxis().SetTickLength(0.02)
         c.cd(1)
 
-        if massbin==8:
+        if unfoldedData:
+	  if massbin==8:
             h13.Draw("hist")
-        else:
+          else:
             h13.Draw("histsame")
         h13.Draw("axissame")
 
@@ -557,10 +558,10 @@ if __name__=="__main__":
         h3new.Add(TF1("offset",str(offsets[massbin]),1,16))
 
         if showData:
-          if True:#not showRun1:
+          if unfoldedData:#not showRun1:
             h3new.Draw("histsame")
             h2new.Draw("histsame")
-          h13.Draw("histsame")
+            h13.Draw("histsame")
           h13.Draw("axissame")
           if not ak5Compare and not show2016:
             h13noewk.Draw("histsame")
@@ -674,7 +675,7 @@ if __name__=="__main__":
     if ak5Compare:
       l2.AddEntry(h13,"13 TeV NLO AK4 QCD prediction","l")
       l2.AddEntry(h13b,"13 TeV NLO AK5 QCD prediction","l")
-    else:
+    elif unfoldedData:
       l2.AddEntry(h3new,"13 TeV NLO QCD+EW prediction","f")
       if not show2016:
         l2.AddEntry(h13noewk,"13 TeV NLO QCD prediction","l")
@@ -699,7 +700,8 @@ if __name__=="__main__":
       l2b.AddEntry(h16," ","")
     if show2016:
       l2b.AddEntry(h2016G," ","")
-    l2b.AddEntry(h13," ","l")
+    if unfoldedData:
+      l2b.AddEntry(h13," ","l")
     if not show2016:
       l2b.AddEntry(h13noewk," ","")
     if showSignal:
