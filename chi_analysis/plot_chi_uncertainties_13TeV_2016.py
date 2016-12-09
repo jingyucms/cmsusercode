@@ -34,11 +34,11 @@ def rebin(h1,nbins,binning):
 if __name__ == '__main__':
 
     useLensData=False
-    useUnfoldedData=False
+    useUnfoldedData=True
 
     prefixs=["datacard_shapelimit13TeV"]
  
-    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+    chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         chi_binnings+=[array.array('d')]
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
-    massbins=[(1900,2400),
+    massbins=[#(1900,2400),
               (2400,3000),
 	      (3000,3600),
 	      (3600,4200),
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     mass_bins_nlo3[9]=6000
     mass_bins_nlo3[10]=6600
     mass_bins_nlo3[11]=13000
-    mass_bins_nlo_list=[(2,),
+    mass_bins_nlo_list=[#(2,),
     	      (3,),
     	      (4,),
     	      (5,),
@@ -108,7 +108,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root '
+      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
@@ -157,10 +157,7 @@ if __name__ == '__main__':
           data = TH1D(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	elif useUnfoldedData:
-  	  if "13000" in str(massbins[j]):
-            histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
-          else:
-	    histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
+          histname2="dijet_mass2_chi1_unfolded;"+str(j+1)
           print histname2
   	  #if "1900" in str(massbins[j]):
           #   data = TH1F(unfoldfile2.Get(histname2))

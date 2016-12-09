@@ -667,7 +667,7 @@ if __name__=="__main__":
      else:
       l2.AddEntry(h14G,"13 TeV Data particle-level","ple")
     if show2016:
-      l2.AddEntry(h2016G,"2016 Data detector-level (36.2/fb)","ple")
+      l2.AddEntry(h2016G,"2016 Data detector-level (36.5/fb)","ple")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare:
       l2.AddEntry(h15,"13 TeV LO QCD detector-level","l")
     if not (binByBinCorrect or unfoldedData) and not ak5Compare and not showData:

@@ -42,11 +42,11 @@ def cloneNormalize(h1):
 if __name__ == '__main__':
 
     useLensData=False
-    useUnfoldedData=False
+    useUnfoldedData=True
 
     prefixs=["datacard_shapelimit13TeV"]
  
-    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
+    chi_bins=[#(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         chi_binnings+=[array.array('d')]
         for chi_bin in mass_bin:
             chi_binnings[-1].append(chi_bin)
-    massbins=[(1900,2400),
+    massbins=[#(1900,2400),
               (2400,3000),
               (3000,3600),
               (3600,4200),
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     mass_bins_nlo3[9]=6000
     mass_bins_nlo3[10]=6600
     mass_bins_nlo3[11]=13000
-    mass_bins_nlo_list=[(2,),
+    mass_bins_nlo_list=[#(2,),
     	      (3,),
     	      (4,),
     	      (5,),
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     samples=[]
     samples2=[]
 
-    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -165,7 +165,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
+    samples2+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_-1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_-1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_-1_0_0_13TeV_Nov14",6.446e-08),
@@ -238,7 +238,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -383,7 +383,7 @@ if __name__ == '__main__':
 		       ("pythia8_add_m5200_13000_22000_0_0_0_1_13TeV_Nov14",1),
 		       ]),
              ]
-    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples2+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -404,7 +404,7 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
@@ -536,7 +536,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
@@ -590,14 +590,8 @@ if __name__ == '__main__':
           data = TH1D(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	elif useUnfoldedData:
-  	  if "13000" in str(massbins[j]):
-            histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
-          else:
-	    histname2="dijet_mass1_chi2__projY_"+str(massbins[j]).strip("()").replace(',',".0-").replace(' ',"")+".0_unfolded"
+          histname2="dijet_mass2_chi1_unfolded;"+str(j+1)
           print histname2
-  	  #if "1900" in str(massbins[j]):
-          #   data = TH1F(unfoldfile2.Get(histname2))
-	  #else:   
           data = TH1F(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	else:
