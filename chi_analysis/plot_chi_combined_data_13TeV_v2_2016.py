@@ -27,7 +27,7 @@ if __name__=="__main__":
 
     showData=True
     binByBinCorrect=False
-    unfoldedData=False
+    unfoldedData=True
     showSignal=True
 
     print "start ROOT"
@@ -173,7 +173,7 @@ if __name__=="__main__":
 
         # CI and ADD signal  
 
-        if massbin>4:
+        if massbin>3:
             filename="datacard_shapelimit13TeV_cs_ct14nlo_14000_LL+_chi2016.root"
             print filename
             f = TFile.Open(filename)
@@ -181,25 +181,25 @@ if __name__=="__main__":
             histname='cs_ct14nlo_14000_LL+#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800-13000","4800-5400")+"_rebin1"
             print histname
             h4=f.Get(histname)
-            h4=h4.Rebin(len(chi_binnings[massbin])-1,h4.GetName()+"_rebin",chi_binnings[massbin])
+            h4=rebin2(h4,len(chi_binnings[massbin])-1,chi_binnings[massbin])
             h4.SetLineColor(2)
-            h4.Scale(1./h4.Integral())
-            for b in range(h4.GetNbinsX()):
-                h4.SetBinContent(b+1,h4.GetBinContent(b+1)/h4.GetBinWidth(b+1))
+            #h4.Scale(1./h4.Integral())
+            #for b in range(h4.GetNbinsX()):
+            #    h4.SetBinContent(b+1,h4.GetBinContent(b+1)/h4.GetBinWidth(b+1))
             
-            filename="datacard_shapelimit13TeV_GENnp-25-v5_chi2016.root"
+            filename="datacard_shapelimit13TeV_GENnp-24-v5_chi2016.root"
             print filename
             f = TFile.Open(filename)
             new_hists+=[f]
-            histname='QCDADD13000#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+            histname='QCDADD12000#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
             print histname
             h5=f.Get(histname)
 	    h5=rebin2(h5,len(chi_binnings[massbin])-1,chi_binnings[massbin])
             h5.SetLineColor(4)
             h5.SetLineStyle(2)
-            h5.Scale(1./h5.Integral())
-            for b in range(h5.GetNbinsX()):
-                h5.SetBinContent(b+1,h5.GetBinContent(b+1)/h5.GetBinWidth(b+1))
+            #h5.Scale(1./h5.Integral())
+            #for b in range(h5.GetNbinsX()):
+            #    h5.SetBinContent(b+1,h5.GetBinContent(b+1)/h5.GetBinWidth(b+1))
             
             #filename="datacard_shapelimit13TeV_QBH_7500_6_chi_v1.root"
             #print filename
@@ -225,9 +225,9 @@ if __name__=="__main__":
         # Unfolded data
       
         if unfoldedData:
-          filename="datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root"
+          filename="datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',".0-").replace(' ',"")
-          histname='dijet_mass1_chi2__projY_'+masstext+'.0_unfolded'
+          histname="dijet_mass2_chi1_unfolded;"+str(massbin+1)
 	else:
           filename="datacards/datacard_shapelimit13TeV_25nsData11combi_chi.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
@@ -421,7 +421,7 @@ if __name__=="__main__":
         h2new.Draw("histsame")
         hNloQcd.Draw("histsame")
         #hNloQcdNoEwk.Draw("histsame")
-        if massbin>4:
+        if massbin>3:
             h4.Draw("histsame")
             h5.Draw("histsame")
             #h6.Draw("histsame")
@@ -472,7 +472,7 @@ if __name__=="__main__":
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
     #l2.AddEntry(h6,"M_{QBH} (ADD6) = 7.5 TeV","l")
     l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 14 TeV","l")
-    l2.AddEntry(h5,"#Lambda_{T} (GRW) = 13 TeV","l")
+    l2.AddEntry(h5,"#Lambda_{T} (GRW) = 12 TeV","l")
     l2.SetFillStyle(0)
     l2.Draw("same")
     
