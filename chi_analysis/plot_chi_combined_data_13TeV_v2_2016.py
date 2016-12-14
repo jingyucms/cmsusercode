@@ -3,6 +3,7 @@ import ROOT
 import array, math
 import os
 from math import *
+from scipy import stats
 
 def rebin(h1,nbins,binning):
     for b in range(h1.GetXaxis().GetNbins()):
@@ -315,6 +316,7 @@ if __name__=="__main__":
             theory_sumdown=sqrt(theory_sumdown)
             theory_sumup=sqrt(theory_sumup)
 
+	    print "delta,error",pow(hNloQcdbackup.GetBinContent(b+1)-h14G.GetY()[b],2), pow(max(exp_sumdown,exp_sumup)*h14G.GetY()[b],2),pow(max(theory_sumdown,theory_sumup)*h14G.GetY()[b],2),pow(max(h14G.GetErrorYlow(b),h14G.GetErrorYhigh(b)),2)
 	    chi2+=pow(hNloQcdbackup.GetBinContent(b+1)-h14G.GetY()[b],2) / \
 	           (pow(max(exp_sumdown,exp_sumup)*h14G.GetY()[b],2)+pow(max(theory_sumdown,theory_sumup)*h14G.GetY()[b],2)+pow(max(h14G.GetErrorYlow(b),h14G.GetErrorYhigh(b)),2))
 
@@ -333,7 +335,9 @@ if __name__=="__main__":
             h2new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)-theory_sumdown*hNloQcdbackup.GetBinContent(b+1))
             h3new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)+theory_sumup*hNloQcdbackup.GetBinContent(b+1))
 	    print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup*h14G.GetY()[b],2)),sqrt(pow(exp_sumdown*h14G.GetY()[b],2)))
-        print "chi2/ndof",chi2/h14G.GetXaxis().GetNbins()
+        pvalue=stats.chisqprob(chi2, h14.GetXaxis().GetNbins())
+        sign=stats.norm.ppf(pvalue)
+        print "sign",sign,"chi2/ndof",chi2/h14.GetXaxis().GetNbins()
 	new_hists+=[h2new]
         new_hists+=[h3new]
         h2new.SetLineStyle(1)
