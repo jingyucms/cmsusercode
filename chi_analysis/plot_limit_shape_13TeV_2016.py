@@ -25,6 +25,9 @@ if __name__=="__main__":
  models=[3]
  #models+=[10,11]
  models+=[60,61,62,63,64,65,66,67,68,69]
+ models=[70,71,72,73,74,75,76,77]
+ #models=[30,31,32,33,34,35,36,37,38]
+ #models=[40,41,42,43,44,45,46,47,48]
 
  for model in models:
 
@@ -55,7 +58,13 @@ if __name__=="__main__":
        signal="cs_ct14nlo_"
     if model>=20 and model<30:
        signal="cs_nn30nlo_0_"
+    if model>=30 and model<40:
+       signal="cs_ct14nlo_"
+    if model>=40 and model<50:
+       signal="AntiCIplusLL"
     if model>=60 and model<70:
+       signal="cs_ct14nlo_"
+    if model>=70 and model<80:
        signal="cs_ct14nlo_"
 
     print signal
