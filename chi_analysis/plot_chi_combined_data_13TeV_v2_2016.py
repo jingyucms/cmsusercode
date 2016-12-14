@@ -53,7 +53,7 @@ if __name__=="__main__":
     print "start CMS_lumi"
 
     gROOT.LoadMacro("CMS_lumi.C");
-    iPeriod = 4;	#// 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
+    iPeriod = 5;	#// 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
     iPos = 33;
 
     massbins13=[#(1900,2400),
@@ -225,7 +225,7 @@ if __name__=="__main__":
         # Unfolded data
       
         if unfoldedData:
-          filename="datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf.root"
+          filename="datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf_v2.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',".0-").replace(' ',"")
           histname="dijet_mass2_chi1_unfolded;"+str(massbin+1)
 	else:

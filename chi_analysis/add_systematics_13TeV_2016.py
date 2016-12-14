@@ -92,7 +92,7 @@ if __name__ == '__main__':
     samples=[]
     samples2=[]
 
-    samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -165,7 +165,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_-1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_-1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_-1_0_0_13TeV_Nov14",6.446e-08),
@@ -238,7 +238,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -383,7 +383,7 @@ if __name__ == '__main__':
 		       ("pythia8_add_m5200_13000_22000_0_0_0_1_13TeV_Nov14",1),
 		       ]),
              ]
-    samples2+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -404,7 +404,7 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
@@ -536,7 +536,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf_v2.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 

@@ -108,7 +108,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf_v2.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
