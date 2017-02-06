@@ -199,7 +199,7 @@ if __name__=="__main__":
             print histname
             h6=f.Get(histname)
             h6=h6.Rebin(len(chi_binnings[massbin])-1,h6.GetName()+"_rebin",chi_binnings[massbin])
-            h6.SetLineColor(7)
+            h6.SetLineColor(kGreen+3)
             h6.SetLineStyle(4)
             h6.Scale(1./h6.Integral())
             for b in range(h6.GetNbinsX()):
@@ -415,12 +415,12 @@ if __name__=="__main__":
         #h14Gsys.Draw("||same")
         h14Gsysstat.Draw("zesame")
               
-        if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
-        if massbin==1: title="2.4 < #font[72]{M_{jj}} < 3.0 TeV"
-        if massbin==2: title="3.0 < #font[72]{M_{jj}} < 3.6 TeV"
-        if massbin==3: title="3.6 < #font[72]{M_{jj}} < 4.2 TeV"
-        if massbin==4: title="4.2 < #font[72]{M_{jj}} < 4.8 TeV"
-        if massbin==5: title=" #font[72]{M_{jj}} > 4.8 TeV"
+        if massbin==0: title="1.9 < #font[72]{M}_{jj} < 2.4 TeV"
+        if massbin==1: title="2.4 < #font[72]{M}_{jj} < 3.0 TeV"
+        if massbin==2: title="3.0 < #font[72]{M}_{jj} < 3.6 TeV"
+        if massbin==3: title="3.6 < #font[72]{M}_{jj} < 4.2 TeV"
+        if massbin==4: title="4.2 < #font[72]{M}_{jj} < 4.8 TeV"
+        if massbin==5: title=" #font[72]{M}_{jj} > 4.8 TeV"
 
         if massbin==5:
             ylabel1=0.33
@@ -457,9 +457,9 @@ if __name__=="__main__":
     l2.SetFillStyle(0)
     l2.Draw("same")
     
-    l3=TLegend(0.55,0.44,0.85,0.83,"")
+    l3=TLegend(0.50,0.44,0.85,0.83,"")
     l3.SetTextSize(0.06)
-    l3.AddEntry(h6,"M_{QBH} (ADD6) = 7.5 TeV","l")
+    l3.AddEntry(h6,"M_{QBH} (n_{ED}=6 ADD) = 7.5 TeV","l")
     l3.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 11 TeV","l")
     l3.AddEntry(h5,"#Lambda_{T} (GRW) = 10 TeV","l")
     l3.SetFillStyle(0)

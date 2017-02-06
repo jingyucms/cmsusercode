@@ -376,7 +376,7 @@ if __name__=="__main__":
           print histname
           h6=f.Get(histname)
           h6=h6.Rebin(len(chi_binnings[massbin])-1,h6.GetName()+"_rebin",chi_binnings[massbin])
-          h6.SetLineColor(7)
+          h6.SetLineColor(kGreen+3)
           h6.SetLineStyle(4)
           h6.SetLineWidth(2)
           h6.Scale(1./h6.Integral())
@@ -434,12 +434,12 @@ if __name__=="__main__":
 
         ylabel=0.50
         
-        if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
-        if massbin==1: title="2.4 < #font[72]{M_{jj}} < 3.0 TeV"
-        if massbin==2: title="3.0 < #font[72]{M_{jj}} < 3.6 TeV"
-        if massbin==3: title="3.6 < #font[72]{M_{jj}} < 4.2 TeV"
-        if massbin==4: title="4.2 < #font[72]{M_{jj}} < 4.8 TeV"
-        if massbin==5: title=" #font[72]{M_{jj}} > 4.8 TeV"
+        if massbin==0: title="1.9 < #font[72]{M}_{jj} < 2.4 TeV"
+        if massbin==1: title="2.4 < #font[72]{M}_{jj} < 3.0 TeV"
+        if massbin==2: title="3.0 < #font[72]{M}_{jj} < 3.6 TeV"
+        if massbin==3: title="3.6 < #font[72]{M}_{jj} < 4.2 TeV"
+        if massbin==4: title="4.2 < #font[72]{M}_{jj} < 4.8 TeV"
+        if massbin==5: title=" #font[72]{M}_{jj} > 4.8 TeV"
 
         #title+=" TeV"
         #if offsets[massbin]==0: titleo=""
@@ -485,7 +485,7 @@ if __name__=="__main__":
     l2.SetTextSize(0.035)
     l2.AddEntry(h14G,"Data","ple")
     l2.AddEntry(h3new,"NLO QCD+EW","f")
-    l2.AddEntry(h6,"M_{QBH} (ADD6) = 7.5 TeV","l")
+    l2.AddEntry(h6,"M_{QBH} (n_{ED}=6 ADD) = 7.5 TeV","l")
     l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 11 TeV","l")
     l2.AddEntry(h4b,"#Lambda_{LL}^{#font[122]{-}} (CI) = 11 TeV","l")
     l2.AddEntry(h4c,"#Lambda_{VV}^{#font[122]{+}} (CI) = 11 TeV","l")

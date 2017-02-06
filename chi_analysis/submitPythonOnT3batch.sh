@@ -144,7 +144,7 @@ gfal-ls srm://t3se01.psi.ch:8443/srm/managerv2?SFN=/pnfs/psi.ch/cms/ >> myout.tx
 dd if=/dev/urandom of=mybigfile count=100 &>/dev/null
 
 CMSSW_DIR=$3
-CMSSW_CONFIG_FILE=$CMSSW_DIR/src/$4
+CMSSW_CONFIG_FILE=$4
 
 
 cd $CMSSW_DIR/src

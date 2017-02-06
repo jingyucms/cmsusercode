@@ -28,8 +28,9 @@ if __name__=="__main__":
 
     showData=True
     binByBinCorrect=False
-    unfoldedData=True
-    showSignal=True
+    unfoldedData=False
+    showSignal=False
+    showReReco=True
 
     print "start ROOT"
     gROOT.Reset()
@@ -88,6 +89,7 @@ if __name__=="__main__":
     if not showData: prefix+="_nodata"
     if binByBinCorrect: prefix+="_binbybin"
     if unfoldedData: prefix+="_unfolded"
+    if showReReco: prefix+="_rereco"
 
     c = TCanvas("combined", "combined", 0, 0, 500, 700)
     c.Divide(1,1)
@@ -210,7 +212,7 @@ if __name__=="__main__":
             #print histname
             #h6=f.Get(histname)
             #h6=h6.Rebin(len(chi_binnings[massbin])-1,h6.GetName()+"_rebin",chi_binnings[massbin])
-            #h6.SetLineColor(7)
+            #h6.SetLineColor(kGreen+3)
             #h6.SetLineStyle(4)
             #h6.Scale(1./h6.Integral())
             #for b in range(h6.GetNbinsX()):
@@ -249,8 +251,8 @@ if __name__=="__main__":
 	new_hists+=[h14G]
         h14G.SetMarkerStyle(21)
         h14G.SetMarkerSize(0.4)
-        h14G.SetMarkerColor(1)
-        h14G.SetLineColor(1)
+        h14G.SetMarkerColor(4)
+        h14G.SetLineColor(4)
 	alpha=1.-0.6827
 	nevents=0
 	for b in range(h14G.GetN()):
@@ -273,6 +275,52 @@ if __name__=="__main__":
 	h14Gsysstat=h14G.Clone(histname+"sysstat")
 	new_hists+=[h14Gsysstat]
         
+        # Alternative data
+      
+        if showReReco:
+          filename="datacard_shapelimit13TeV_25nsData13combi_chi.root"
+          masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
+          histname='Data13#chi'+masstext+'_rebin1'
+          print filename
+          fData = TFile.Open(filename)
+          new_hists+=[fData]
+          print histname
+          h14A=fData.Get(histname)
+	  if not unfoldedData:
+           for b in range(h14A.GetXaxis().GetNbins()):
+            h14A.SetBinContent(b+1,h14A.GetBinContent(b+1)*h14A.GetBinWidth(b+1))
+            h14A.SetBinError(b+1,h14A.GetBinError(b+1)*h14A.GetBinWidth(b+1))
+  	  origh14A=h14A.Rebin(len(chi_binnings[massbin])-1,h14A.GetName()+"rebinorig",chi_binnings[massbin])
+	  h14A=rebin2(h14A,len(chi_binnings[massbin])-1,chi_binnings[massbin])
+	    
+   	  h14AG=TGraphAsymmErrors(h14A.Clone(histname+"G"))
+	  new_hists+=[h14AG]
+          h14AG.SetMarkerStyle(21)
+          h14AG.SetMarkerSize(0.4)
+          h14AG.SetMarkerColor(1)
+          h14AG.SetLineColor(1)
+	  alpha=1.-0.6827
+	  nevents=0
+	  for b in range(h14AG.GetN()):
+	      if unfoldedData:
+	  	  N=origh14A.GetBinContent(b+1)
+	      else:
+	  	  N=1./pow(h14A.GetBinError(b+1)/h14A.GetBinContent(b+1),2)
+	      print N
+	      nevents+=N
+	      L=0
+	      if N>0:
+	  	  L=ROOT.Math.gamma_quantile(alpha/2.,N,1.)
+              U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
+              h14AG.SetPointEYlow(b,(N-L)/N*h14A.GetBinContent(b+1))
+              h14AG.SetPointEYhigh(b,(U-N)/N*h14A.GetBinContent(b+1))
+          print "data events:", nevents
+	  
+	  h14AGsys=h14AG.Clone(histname+"sys")
+	  new_hists+=[h14AGsys]
+	  h14AGsysstat=h14AG.Clone(histname+"sysstat")
+	  new_hists+=[h14AGsysstat]
+          
         filename="datacard_shapelimit13TeV_QCD_chi2016.root"
         print filename
         fsys = TFile.Open(filename)
@@ -432,15 +480,19 @@ if __name__=="__main__":
         h14G.Draw("pzesame")
         #h14Gsys.Draw("||same")
         h14Gsysstat.Draw("zesame")
+	if showReReco:
+          h14AG.Draw("pzesame")
+          #h14AGsys.Draw("||same")
+          h14AGsysstat.Draw("zesame")
               
-        #if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
-        if massbin==0: title="2.4 < #font[72]{M_{jj}} < 3.0 TeV"
-        if massbin==1: title="3.0 < #font[72]{M_{jj}} < 3.6 TeV"
-        if massbin==2: title="3.6 < #font[72]{M_{jj}} < 4.2 TeV"
-        if massbin==3: title="4.2 < #font[72]{M_{jj}} < 4.8 TeV"
-        if massbin==4: title="4.8 < #font[72]{M_{jj}} < 5.4 TeV"
-        if massbin==5: title="5.4 < #font[72]{M_{jj}} < 6.0 TeV"
-        if massbin==6: title=" #font[72]{M_{jj}} > 6.0 TeV"
+        #if massbin==0: title="1.9 < #font[72]{M}_{jj} < 2.4 TeV"
+        if massbin==0: title="2.4 < #font[72]{M}_{jj} < 3.0 TeV"
+        if massbin==1: title="3.0 < #font[72]{M}_{jj} < 3.6 TeV"
+        if massbin==2: title="3.6 < #font[72]{M}_{jj} < 4.2 TeV"
+        if massbin==3: title="4.2 < #font[72]{M}_{jj} < 4.8 TeV"
+        if massbin==4: title="4.8 < #font[72]{M}_{jj} < 5.4 TeV"
+        if massbin==5: title="5.4 < #font[72]{M}_{jj} < 6.0 TeV"
+        if massbin==6: title=" #font[72]{M}_{jj} > 6.0 TeV"
 
         if massbin==6:
             ylabel1=0.23
@@ -472,9 +524,11 @@ if __name__=="__main__":
     l2=TLegend(0.21,0.35,0.8,0.83,"")
     l2.SetTextSize(0.075)
     l2.AddEntry(h14G,"Data","ple")
+    if showReReco:
+      l2.AddEntry(h14AG,"Data ReReco","ple")
     l2.AddEntry(h3newnew,"NLO QCD+EW prediction","fl")
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
-    #l2.AddEntry(h6,"M_{QBH} (ADD6) = 7.5 TeV","l")
+    #l2.AddEntry(h6,"M_{QBH} (n_{ED}=6 ADD) = 7.5 TeV","l")
     l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 14 TeV","l")
     l2.AddEntry(h5,"#Lambda_{T} (GRW) = 12 TeV","l")
     l2.SetFillStyle(0)

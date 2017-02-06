@@ -89,6 +89,7 @@ def createPlotsAndTree(sample,prefix,massbins,factor,tree,HLT_isFired):
      print f
      try:
        fil=TFile.Open(f)
+       
        events=fil.Get("ntuplizer/tree")
        nevents=events.GetEntries()
      except:
@@ -234,22 +235,22 @@ def createPlotsAndTree(sample,prefix,massbins,factor,tree,HLT_isFired):
 	     else:
                plots[irec].Fill(mjj)
            irec+=1
-       #if not "data" in sample and len(event.genJetAK4_pt)>=2:
-       #  genJet1=TLorentzVector()
-       #  genJet2=TLorentzVector()
-       #  genJet1.SetPtEtaPhiM(event.genJetAK4_pt[0],event.genJetAK4_eta[0],event.genJetAK4_phi[0],event.genJetAK4_mass[0])
-       #  genJet2.SetPtEtaPhiM(event.genJetAK4_pt[1],event.genJetAK4_eta[1],event.genJetAK4_phi[1],event.genJetAK4_mass[1])
-       #  genmjj=(genJet1+genJet2).M()
-       #  genchi=exp(abs(genJet1.Rapidity()-genJet2.Rapidity()))
-       #  genyboost=abs(genJet1.Rapidity()+genJet2.Rapidity())/2.
-       #  igen=0
-       #  for massbin in massbins:
-       #    if genyboost<1.11 and genmjj>=massbin[0] and genmjj<massbin[1]:
-	#     genplots[igen].Fill(genchi)
-  	#   igen+=1
-        # if genyboost<1.11 and genchi<16:
-        #   genplots[igen].Fill(genmjj)
-        # igen+=1
+       if "QCD" in name and len(event.genJetAK4_pt)>=2:
+         genJet1=TLorentzVector()
+         genJet2=TLorentzVector()
+         genJet1.SetPtEtaPhiM(event.genJetAK4_pt[0],event.genJetAK4_eta[0],event.genJetAK4_phi[0],event.genJetAK4_mass[0])
+         genJet2.SetPtEtaPhiM(event.genJetAK4_pt[1],event.genJetAK4_eta[1],event.genJetAK4_phi[1],event.genJetAK4_mass[1])
+         genmjj=(genJet1+genJet2).M()
+         genchi=exp(abs(genJet1.Rapidity()-genJet2.Rapidity()))
+         genyboost=abs(genJet1.Rapidity()+genJet2.Rapidity())/2.
+         igen=0
+         for massbin in massbins:
+           if genyboost<1.11 and genmjj>=massbin[0] and genmjj<massbin[1]:
+	     genplots[igen].Fill(genchi)
+  	   igen+=1
+         if genyboost<1.11 and genchi<16:
+           genplots[igen].Fill(genmjj)
+         igen+=1
      fil.Close()
 
     print "analyzed",event_count,"events"
@@ -264,7 +265,8 @@ if __name__ == '__main__':
 
     wait=False
  
-    prefix="datacard_shapelimit13TeV_25nsData11"
+    prefix="datacard_shapelimit13TeV_25ns"
+    
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -292,18 +294,19 @@ if __name__ == '__main__':
 	      (6600,13000),
               ]
  
-    samples=[("data_obs",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/JetHT_25ns_data11.txt",1.)]),
-             #("QCD",[("QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8.txt",1.)])
-             #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
-             #  ("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
-             #  ("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
-             #  ("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
-             #  ("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
-             #  ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
-             #  ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
-             #  ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
-             #  ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0)],)
+    samples=[("Data13",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/JetHT_25ns_data13.txt",1.)]),
+             ("QCD_HT_1000_madgraph",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_HT_1000_madgraph.txt",1.)]),
+             ("QCD_HT_1500_madgraph",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_HT_1500_madgraph.txt",1.)]),
+             ("QCD_HT_2000_madgraph",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_HT_2000_madgraph.txt",1.)]),
+             ("QCD_HT_300_madgraph",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_HT_300_madgraph.txt",1.)]),
+             ("QCD_HT_500_madgraph",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_HT_500_madgraph.txt",1.)]),
+             ("QCD_HT_700_madgraph",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_HT_700_madgraph.txt",1.)]),
+             ("QCD_herwigpp",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_herwigpp.txt",1.)]),
+             ("QCD_pythia8",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_pythia8.txt",1.)]),
             ]
+    if len(sys.argv)>1:
+      samplenum=int(sys.argv[1])/100000
+      samples=[samples[samplenum]]
  
     chi_binnings=[]
     for mass_bin in chi_bins:
@@ -321,7 +324,7 @@ if __name__ == '__main__':
 
         if not ".root" in line: continue
         counter+=1
-	if len(sys.argv)>1 and sys.argv[1]!=str(counter): continue
+	if len(sys.argv)>1 and (int(sys.argv[1])%100000)!=counter: continue
 	print counter
 	
 	#afsdir="/afs/cern.ch/user/h/hinzmann/workspace/public/chi_analysis"
@@ -427,7 +430,7 @@ if __name__ == '__main__':
   	  canvas.Divide(2,2)
 
   	legends=[]
-  	color=[1,2,4,6,7,8,9]
+  	color=[1,2,4,6,7,8,9,11,12,13,14,15,16,17]
   	for j in range(len(massbins)):
   	  canvas.cd(j+1)
   	  plots[0][j].Draw("he")
@@ -442,10 +445,10 @@ if __name__ == '__main__':
   	  legend1.SetFillStyle(0)
   	  legend1.Draw("same")
 
-  	canvas.SaveAs(prefix + '_chi'+str(counter)+'.pdf')
+  	canvas.SaveAs(prefix + name + '_chi'+str(counter)+'.pdf')
   	if wait:
-  	    canvas.SaveAs(prefix + '_chi'+str(counter)+'.eps')
-  	    os.system("ghostview "+prefix + '_chi'+str(counter)+'.eps')
+  	    canvas.SaveAs(prefix + name +'_chi'+str(counter)+'.eps')
+  	    os.system("ghostview "+prefix + name +'_chi'+str(counter)+'.eps')
 
   	canvas = TCanvas("","",0,0,200,200)
   	canvas.SetLogy()
@@ -465,10 +468,10 @@ if __name__ == '__main__':
   	legend1.SetFillStyle(0)
   	legend1.Draw("same")
 
-  	canvas.SaveAs(prefix + '_mass'+str(counter)+'.pdf')
+  	canvas.SaveAs(prefix + name +'_mass'+str(counter)+'.pdf')
   	if wait:
-  	    canvas.SaveAs(prefix + '_mass'+str(counter)+'.eps')
-  	    os.system("ghostview "+prefix + '_mass'+str(counter)+'.eps')
+  	    canvas.SaveAs(prefix + name +'_mass'+str(counter)+'.eps')
+  	    os.system("ghostview "+prefix + name +'_mass'+str(counter)+'.eps')
 
         out.Write()
         out.Close()
