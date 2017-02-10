@@ -30,22 +30,20 @@ if __name__ == '__main__':
    colors=[1,2,3,4,6,7,8,9,10,11,12,13]
    styles=[1,2,3,4,5,6,7,8,9,11,12,13]
    
-   sources = ["AbsoluteScale", "AbsoluteFlavMap", "AbsoluteMPFBias", "Fragmentation",
+   sources = ["AbsoluteStat", "AbsoluteScale", "AbsoluteFlavMap", "AbsoluteMPFBias", "Fragmentation",
 "SinglePionECAL", "SinglePionHCAL",
-"FlavorQCD", "TimeEta", "TimePt",
+"FlavorQCD", "TimePtEta",
 "RelativeJEREC1", "RelativeJEREC2", "RelativeJERHF",
-"RelativePtBB","RelativePtEC1", "RelativePtEC2", "RelativePtHF", "RelativeFSR",
+"RelativePtBB","RelativePtEC1", "RelativePtEC2", "RelativePtHF", "RelativeBal", "RelativeFSR",
 "RelativeStatFSR", "RelativeStatEC", "RelativeStatHF",
-"PileUpDataMC", 
 "PileUpPtRef", "PileUpPtBB", "PileUpPtEC1", "PileUpPtEC2", "PileUpPtHF","PileUpMuZero", "PileUpEnvelope",
-#"TimeRunA", "TimeRunB", "TimeRunC",
-"TimeRunD",
 #"SubTotalPileUp","SubTotalRelative","SubTotalPt","SubTotalScale","SubTotalAbsolute","SubTotalMC",
 "Total",
 #"TotalNoFlavor","TotalNoTime","TotalNoFlavorNoTime",
 #"FlavorZJet","FlavorPhotonJet","FlavorPureGluon","FlavorPureQuark","FlavorPureCharm","FlavorPureBottom"
+#"TimeRunBCD", "TimeRunEF", "TimeRunG", "TimeRunH",
   ]
-   sourcesets=[[0,1,2,3,4,5,6,7,8],[9,10,11,28],[12,13,14,15,16,17,18,19],[20,21,22,23,24,25,26,27],[29]]
+   sourcesets=[[0,1,2,3,4,5,6,7],[8,9,10,11],[12,13,14,15,16,17,18,19,20],[21,22,23,24,25,26,27],[28]]
 
    chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -83,8 +81,8 @@ if __name__ == '__main__':
         if mass==2: b="3"
         if mass==1: b="4"
         if mass==0: b="6"
-	print "datacard_shapelimit13TeV_"+prefix+"_JESv7b"+b+"_chi.root"
-        f_refmc=TFile.Open("datacard_shapelimit13TeV_"+prefix+"_JESv7b"+b+"_chi.root")
+	print "datacard_shapelimit13TeV_"+prefix+"_JESvRerecoV3"+b+"_chi.root"
+        f_refmc=TFile.Open("datacard_shapelimit13TeV_"+prefix+"_JESvRerecoV3"+b+"_chi.root")
 	files+=[f_refmc]
         f_mc=f_refmc
         canvas.cd(mass+1)
@@ -149,7 +147,7 @@ if __name__ == '__main__':
               legend.AddEntry(hist2,"JEC Single overall variation","l")
             else:
 	      legend.AddEntry(hist2,"JEC "+sources[sourceset[i]],"l")
-	    if sourceset!=[29]:
+	    if sourceset!=[28]:
               for chi_bin in range(len(chi_binnings[mass])):
 	       if (hist2.GetBinContent(chi_bin+1)-1.0)*(hist2.GetBinCenter(chi_bin+1)-8.5)>0:
 	        sum_in_quadrature_up[mass][chi_bin]=sqrt(pow(sum_in_quadrature_up[mass][chi_bin],2)+pow(hist2.GetBinContent(chi_bin+1)-1.0,2))
@@ -196,7 +194,7 @@ if __name__ == '__main__':
             hist3.SetStats(False)
 	    hists+=[hist3]
             hist3.Draw("histsame")
-	    if sourceset!=[29]:
+	    if sourceset!=[28]:
               for chi_bin in range(len(chi_binnings[mass])):
 	       if (hist3.GetBinContent(chi_bin+1)-1.0)*(hist3.GetBinCenter(chi_bin+1)-8.5)>0:
 	        sum_in_quadrature_up[mass][chi_bin]=sqrt(pow(sum_in_quadrature_up[mass][chi_bin],2)+pow(hist3.GetBinContent(chi_bin+1)-1.0,2))
@@ -221,5 +219,5 @@ if __name__ == '__main__':
         legend.SetFillStyle(0)
         legend.Draw("same")
 
-      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"v7_13TeV_2016.root")
-      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"v7_13TeV_2016.pdf")
+      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"RerecoV3_13TeV_2016.root")
+      canvas.SaveAs("chi_systematic_plots"+var+"_"+prefix+str(sourcesets.index(sourceset))+"RerecoV3_13TeV_2016.pdf")

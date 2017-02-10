@@ -108,7 +108,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf_v2.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
@@ -131,13 +131,13 @@ if __name__ == '__main__':
       closefiles+=[ewkfile]
 
       # JES uncertainty QCD
-      filename1jes="datacards/chi_systematic_plotschi_QCD4v7_13TeV_2016.root"
+      filename1jes="datacards/chi_systematic_plotschi_QCD4RerecoV3_13TeV_2016.root"
       print filename1jes
       jesfile = TFile.Open(filename1jes)
       closefiles+=[jesfile]
 
       # JES uncertainty CI
-      filename1jesci="datacards/chi_systematic_plotschi_QCD4v7_13TeV_2016.root"
+      filename1jesci="datacards/chi_systematic_plotschi_QCD4RerecoV3_13TeV_2016.root"
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
@@ -163,7 +163,7 @@ if __name__ == '__main__':
           data = TH1D(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	elif useUnfoldedData:
-          histname2="dijet_mass2_chi1_unfolded;"+str(j+1)
+          histname2="dijet_mass_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_chi_unfolded"
           print histname2
   	  #if "1900" in str(massbins[j]):
           #   data = TH1F(unfoldfile2.Get(histname2))
@@ -348,7 +348,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[j]
+	jes=jespad.GetListOfPrimitives()[j+1]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
@@ -364,7 +364,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jesfile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[j]
+	jes=jespad.GetListOfPrimitives()[j+1]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))

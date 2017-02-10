@@ -303,6 +303,7 @@ if __name__ == '__main__':
              ("QCD_HT_700_madgraph",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_HT_700_madgraph.txt",1.)]),
              ("QCD_herwigpp",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_herwigpp.txt",1.)]),
              ("QCD_pythia8",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/QCD_pythia8.txt",1.)]),
+             ("DataMu13",[("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/SingleMuon_13.txt",1.)]),
             ]
     if len(sys.argv)>1:
       samplenum=int(sys.argv[1])/100000

@@ -92,7 +92,7 @@ if __name__ == '__main__':
     samples=[]
     samples2=[]
 
-    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -165,7 +165,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
+    samples2+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_-1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_-1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_-1_0_0_13TeV_Nov14",6.446e-08),
@@ -238,7 +238,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -383,7 +383,7 @@ if __name__ == '__main__':
 		       ("pythia8_add_m5200_13000_22000_0_0_0_1_13TeV_Nov14",1),
 		       ]),
              ]
-    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples2+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -393,7 +393,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
-    samples+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples2+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -536,7 +536,7 @@ if __name__ == '__main__':
       infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf_v2.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
@@ -559,13 +559,13 @@ if __name__ == '__main__':
       closefiles+=[ewkfile]
 
       # JES uncertainty QCD
-      filename1jes="datacards/chi_systematic_plotschi_QCD4v7_13TeV_2016.root"
+      filename1jes="datacards/chi_systematic_plotschi_QCD4RerecoV3_13TeV_2016.root"
       print filename1jes
       jesfile = TFile.Open(filename1jes)
       closefiles+=[jesfile]
 
       # JES uncertainty CI
-      filename1jesci="datacards/chi_systematic_plotschi_QCD4v7_13TeV_2016.root"
+      filename1jesci="datacards/chi_systematic_plotschi_QCD4RerecoV3_13TeV_2016.root"
       print filename1jesci
       jescifile = TFile.Open(filename1jesci)
       closefiles+=[jescifile]
@@ -590,7 +590,7 @@ if __name__ == '__main__':
           data = TH1D(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	elif useUnfoldedData:
-          histname2="dijet_mass2_chi1_unfolded;"+str(j+1)
+          histname2="dijet_mass_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_chi_unfolded"
           print histname2
           data = TH1F(unfoldfile.Get(histname2))
 	  data.SetName(histname)
@@ -845,7 +845,7 @@ if __name__ == '__main__':
         cijesup=clone.Clone(histname+"_jesUp")
         cijesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[j]
+	jes=jespad.GetListOfPrimitives()[j+1]
         for b in range(clone.GetNbinsX()):
 	    cijesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             cijesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
@@ -861,7 +861,7 @@ if __name__ == '__main__':
         jesup=clone.Clone(histname+"_jesUp")
         jesdown=clone.Clone(histname+"_jesDown")
         jespad=jesfile.Get("jes")
-	jes=jespad.GetListOfPrimitives()[j]
+	jes=jespad.GetListOfPrimitives()[j+1]
 	for b in range(clone.GetNbinsX()):
 	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
             jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))

@@ -25,31 +25,30 @@ gStyle.SetLegendBorderSize(0)
 doJES=True
 
 if doJES:
-  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/Utilities.cc+");
-  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/JetCorrectorParameters.cc+");
-  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/SimpleJetCorrectionUncertainty.cc+");
-  gROOT.ProcessLine(".L /shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/JetCorrectionUncertainty.cc+");
+  gROOT.ProcessLine(".L /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/Utilities.cc+");
+  gROOT.ProcessLine(".L /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/JetCorrectorParameters.cc+");
+  gROOT.ProcessLine(".L /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/SimpleJetCorrectionUncertainty.cc+");
+  gROOT.ProcessLine(".L /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/CondFormats/JetMETObjects/src/JetCorrectionUncertainty.cc+");
 
-  JECsources = ["AbsoluteScale", "AbsoluteFlavMap", "AbsoluteMPFBias", "Fragmentation",
+  JECsources = ["AbsoluteStat", "AbsoluteScale", "AbsoluteFlavMap", "AbsoluteMPFBias", "Fragmentation",
 "SinglePionECAL", "SinglePionHCAL",
-"FlavorQCD", "TimeEta", "TimePt",
+"FlavorQCD", "TimePtEta",
 "RelativeJEREC1", "RelativeJEREC2", "RelativeJERHF",
-"RelativePtBB","RelativePtEC1", "RelativePtEC2", "RelativePtHF", "RelativeFSR",
+"RelativePtBB","RelativePtEC1", "RelativePtEC2", "RelativePtHF", "RelativeBal", "RelativeFSR",
 "RelativeStatFSR", "RelativeStatEC", "RelativeStatHF",
-"PileUpDataMC", 
 "PileUpPtRef", "PileUpPtBB", "PileUpPtEC1", "PileUpPtEC2", "PileUpPtHF","PileUpMuZero", "PileUpEnvelope",
-#"TimeRunA", "TimeRunB", "TimeRunC",
-"TimeRunD",
 #"SubTotalPileUp","SubTotalRelative","SubTotalPt","SubTotalScale","SubTotalAbsolute","SubTotalMC",
 "Total",
 #"TotalNoFlavor","TotalNoTime","TotalNoFlavorNoTime",
 #"FlavorZJet","FlavorPhotonJet","FlavorPureGluon","FlavorPureQuark","FlavorPureCharm","FlavorPureBottom"
+#"TimeRunBCD", "TimeRunEF", "TimeRunG", "TimeRunH",
   ]
 
   JESuncertainties={}
   for source in JECsources:
     #p = JetCorrectorParameters("/shome/hinzmann/Fall15/CMSSW_7_6_3_patch2/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer15_25nsV7_DATA_UncertaintySources_AK4PFchs.txt", source)
-    p = JetCorrectorParameters("/shome/hinzmann/Fall15/CMSSW_7_6_3_patch2/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Spring16_25nsV8BCD_DATA_UncertaintySources_AK4PFchs.txt", source)
+    #p = JetCorrectorParameters("/shome/hinzmann/Fall15/CMSSW_7_6_3_patch2/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Spring16_25nsV8BCD_DATA_UncertaintySources_AK4PFchs.txt", source)
+    p = JetCorrectorParameters("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_8_0_21/src/EXOVVNtuplizerRunII/Ntuplizer/JEC/Summer16_23Sep2016V3_MC_UncertaintySources_AK4PFchs.txt", source)
     JESuncertainties[source]=JetCorrectionUncertainty(p)
 
 
@@ -153,7 +152,7 @@ if __name__ == '__main__':
     name="QCD"
     #name="QCDCIplusLL10000"
     bin=6 #1-6
-    prefix="datacard_shapelimit13TeV_"+name+"_JESvPrompt80BCDE"+str(bin)
+    prefix="datacard_shapelimit13TeV_"+name+"_JESvRerecoV3"+str(bin)
  
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),

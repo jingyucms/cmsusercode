@@ -135,9 +135,9 @@ if __name__=="__main__":
         h0.SetLineStyle(3)
 
         if unfoldedData:
-          filename="datacards/Unfolded_chiNtuple_data_PFHT900_v2_fromCB_AK4SF_pythia8_Pt_170toInf_v2.root"
-          masstext=str(massbins[massbin]).strip("()").replace(',',".0-").replace(' ',"")
-          histname="dijet_mass2_chi1_unfolded;"+str(massbin+1)
+          filename="datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root"
+          masstext=str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")
+          histname="dijet_mass_"+masstext+"_chi_unfolded"
 	else:
           filename="datacards/datacard_shapelimit13TeV_25nsData11combi_chi2016.root"
           masstext=str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")
