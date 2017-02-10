@@ -232,9 +232,9 @@ if __name__=="__main__":
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
           histname="dijet_mass_"+masstext+"_chi_unfolded"
 	else:
-          filename="datacards/datacard_shapelimit13TeV_25nsData11combi_chi.root"
+          filename="datacard_shapelimit13TeV_25nsData13combi_chi.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
-          histname='data_obs#chi'+masstext+'_rebin1'
+          histname='Data13#chi'+masstext+'_rebin1'
         print filename
         fData = TFile.Open(filename)
         new_hists+=[fData]

@@ -531,7 +531,7 @@ if __name__ == '__main__':
       in2=TFile(sample2,'READ')
 
       # data file
-      insample='datacards/datacard_shapelimit13TeV_25nsData11combi_chi.root'
+      insample='datacards/datacard_shapelimit13TeV_25nsData13combi_chi.root'
       print insample
       infile=TFile(insample,'READ')
 
@@ -595,7 +595,7 @@ if __name__ == '__main__':
           data = TH1F(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	else:
-          data = TH1F(infile.Get("data_obs#chi"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"))
+          data = TH1F(infile.Get("Data13#chi"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"))
           for b in range(data.GetXaxis().GetNbins()):
              data.SetBinContent(b+1,data.GetBinContent(b+1)*data.GetBinWidth(b+1))
              data.SetBinError(b+1,data.GetBinError(b+1)*data.GetBinWidth(b+1))
@@ -806,14 +806,14 @@ if __name__ == '__main__':
 	cijerup=clone.Clone(histname+"_jerUp")
         cijerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
-	slopes[1900]=0.011
-	slopes[2400]=0.012 
-	slopes[3000]=0.013 
-	slopes[3600]=0.014
-	slopes[4200]=0.015
-	slopes[4800]=0.016
-	slopes[5400]=0.016
-	slopes[6000]=0.016
+	slopes[1900]=0.018
+	slopes[2400]=0.018 
+	slopes[3000]=0.020 
+	slopes[3600]=0.020
+	slopes[4200]=0.034
+	slopes[4800]=0.034
+	slopes[5400]=0.026
+	slopes[6000]=0.026
 	for b in range(clone.GetNbinsX()):
 	    cijerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
             cijerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))

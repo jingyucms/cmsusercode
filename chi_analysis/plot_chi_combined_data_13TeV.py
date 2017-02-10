@@ -574,11 +574,11 @@ if __name__=="__main__":
           h14Gsysstat.Draw("zesame")
 
       if show2016:
-           filename="datacard_shapelimit13TeV_25nsData11combi_chi.root"
+           filename="datacard_shapelimit13TeV_25nsData13combi_chi.root"
            print filename
            f = TFile.Open(filename)
            new_hists+=[f]
-           histname='data_obs#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+           histname='Data13#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
            print histname
            h2016=f.Get(histname)
            h2016=rebin(h2016,len(chi_binnings[massbin])-1,chi_binnings[massbin])
