@@ -18,11 +18,11 @@ version="Feb23"
 
 for sample,signalMass,mDM,coupling in samples:
   
-  numjobs=10
+  numjobs=100
 
   for jobnum in range(numjobs):
 
-    samplename=sample+"_"+str(signalMass)+"_"+coupling[0]+"_"+coupling[1]+"_"+version
+    samplename=sample+"_"+str(signalMass)+"_"+str(mDM)+"_"+coupling[0]+"_"+coupling[1]+"_"+version
     filen=sample+"-"+str(signalMass)+"_Mchi-"+str(mDM)+"_gSM-"+coupling[0]+"_gDM-"+coupling[1]+"_13TeV-madgraph_tarball.tar.xz"
     cfg=open(samplename+str(jobnum)+".py","w")
     cfg.writelines("""
@@ -34,7 +34,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("GEN")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -54,19 +54,6 @@ process.out.outputCommands.extend(
       'keep *_ak4CaloJets_*_*',
       'keep *_ak4JetID_*_*',
       'keep *_ak4JetExtender_*_*',
-      'keep *_ak5GenJets_*_*',
-      'keep *_ak5CaloJets_*_*',
-      'keep *_ak5JetID_*_*',
-      'keep *_ak5JetExtender_*_*',
-      'keep *_ak7GenJets_*_*',
-      'keep *_ak7CaloJets_*_*',
-      'keep *_ak7JetID_*_*',
-      'keep *_ak7JetExtender_*_*',
-      #------- PFJet collections --------
-      'keep *_kt6PFJets_rho_*',
-      'keep *_kt6PFJets_sigma_*',
-      'keep *_ak5PFJets_*_*',
-      'keep *_ak7PFJets_*_*',
       #------- Trigger collections ------
       'keep edmTriggerResults_TriggerResults_*_*',
       'keep *_hltTriggerSummaryAOD_*_*',
@@ -76,9 +63,6 @@ process.out.outputCommands.extend(
       'keep *_EventAuxilary_*_*',
       'keep *_offlinePrimaryVertices_*_*',
       'keep *_offlinePrimaryVerticesWithBS_*_*',
-      #------- MET collections ----------
-      'keep *_met_*_*',
-      'keep *_pfMet_*_*',
     ])
 
 # import of standard configurations
@@ -104,7 +88,7 @@ process.MessageLogger=cms.Service("MessageLogger",
 )
 
 process.externalLHEProducer = cms.EDProducer("ExternalLHEProducer",
-    nEvents = cms.untracked.uint32(10000),
+    nEvents = cms.untracked.uint32(500),
     outputFile = cms.string('cmsgrid_final.lhe'),
     scriptName = cms.FileInPath('GeneratorInterface/LHEInterface/data/run_generic_tarball_cvmfs.sh'),
     numberOfParameters = cms.uint32(1),
@@ -132,14 +116,14 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
 process.load("RecoJets.Configuration.GenJetParticles_cff")
 process.load("RecoJets.Configuration.RecoGenJets_cff")
 process.ak4GenJets.jetPtMin="""+str(minMass/10)+"""
-process.ak5GenJets.jetPtMin="""+str(minMass/10)+"""
 
+process.RandomNumberGeneratorService.externalLHEProducer.initialSeed="""+str(jobnum)+"""
 process.RandomNumberGeneratorService.generator.initialSeed="""+str(jobnum)+"""
 
-process.p = cms.Path(process.externalLHEProducer*process.generator*process.genParticles*process.genJetParticles*process.ak4GenJets*process.ak5GenJets)#*process.ca08PrunedGenJets
+process.p = cms.Path(process.externalLHEProducer*process.generator*process.genParticles*process.genJetParticles*process.ak4GenJets)#*process.ca08PrunedGenJets
 process.endpath = cms.EndPath(process.out)
 process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles*_*_*','drop *_genParticlesForJets*_*_*')
 """)
     cfg.close()
-    os.system("qsub -q all.q -o /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+str(jobnum)+".py "+str(jobnum)+" jobtmp_"+samplename+" /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
+    os.system("qsub -q all.q -o /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch2 cmsusercode/chi_analysis/"+samplename+str(jobnum)+".py "+str(jobnum)+" jobtmp_"+samplename+" /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
