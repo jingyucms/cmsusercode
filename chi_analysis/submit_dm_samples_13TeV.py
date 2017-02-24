@@ -1,16 +1,15 @@
 import os
 
 signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
-signalMasses=[3000]
 minMass=1900
 couplings=[("1p5","1p0")]
-mDMs=[1]
+mDMs=[1,3000]
 samples=[]
 
 for signalMass in signalMasses:
   for mDM in mDMs:
     for coupling in couplings:
-        #samples+=[('Axial_Dijet_LO_Mphi',signalMass,mDM,coupling),]
+        samples+=[('Axial_Dijet_LO_Mphi',signalMass,mDM,coupling),]
         samples+=[('Vector_Dijet_LO_Mphi',signalMass,mDM,coupling),]
 
 print samples
@@ -19,7 +18,7 @@ version="Feb23"
 
 for sample,signalMass,mDM,coupling in samples:
   
-  numjobs=1
+  numjobs=10
 
   for jobnum in range(numjobs):
 
@@ -28,14 +27,14 @@ for sample,signalMass,mDM,coupling in samples:
     cfg=open(samplename+str(jobnum)+".py","w")
     cfg.writelines("""
 import os
-os.system("eos cp /eos/cms/store/user/pharris/gridpack/"""+filen+""" /tmp/hinzmann/")
+#os.system("eos cp /eos/cms/store/user/pharris/gridpack/"""+filen+""" /tmp/hinzmann/")
     
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("GEN")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(False))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
@@ -105,11 +104,11 @@ process.MessageLogger=cms.Service("MessageLogger",
 )
 
 process.externalLHEProducer = cms.EDProducer("ExternalLHEProducer",
-    nEvents = cms.untracked.uint32(1),
+    nEvents = cms.untracked.uint32(10000),
     outputFile = cms.string('cmsgrid_final.lhe'),
     scriptName = cms.FileInPath('GeneratorInterface/LHEInterface/data/run_generic_tarball_cvmfs.sh'),
     numberOfParameters = cms.uint32(1),
-    args = cms.vstring("/tmp/hinzmann/"""+filen+"""")
+    args = cms.vstring('/mnt/t3nfs01/data01/shome/hinzmann/gridpacks/"""+filen+"""')
 )
 
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
@@ -143,4 +142,4 @@ process.schedule = cms.Schedule(process.p,process.endpath)
 process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_generator_*_*','drop *_genParticles*_*_*','drop *_genParticlesForJets*_*_*')
 """)
     cfg.close()
-    os.system("qsub -q all.q -o /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+str(jobnum)+".py "+str(jobnum)+" jobtmp_"+samplename+" /shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
+    os.system("qsub -q all.q -o /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2 cmsusercode/chi_analysis/"+samplename+str(jobnum)+".py "+str(jobnum)+" jobtmp_"+samplename+" /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/jobout_"+samplename+"")

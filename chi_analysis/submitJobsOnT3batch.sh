@@ -156,7 +156,7 @@ fi
 
 cd $WORKDIR
 
-cmsRun $CMSSW_CONFIG_FILE>> myout.txt 2>>/dev/null
+cmsRun $CMSSW_CONFIG_FILE>> myout.txt 2>>myerr.txt
 
 
 #### RETRIEVAL OF OUTPUT FILES AND CLEANING UP ############################
