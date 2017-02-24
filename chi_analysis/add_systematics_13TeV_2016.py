@@ -404,7 +404,7 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
@@ -415,6 +415,12 @@ if __name__ == '__main__':
                ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
+
+    for mass in [1700,2000,2300,2600,2900,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7100]:
+     for xsec in [5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,1e-2,2e-2,5e-2,1e-2]:
+      for width in ["kMG1439","kMG2035","kMG2493","kMG3218"]:
+        for decay in ["GluonGluon","QuarkQuark"]:
+          samples+=[("wide"+str(mass)+"_"+str(xsec)+"_"+decay+"_"+width,["wide"+str(mass)+"_"+str(xsec)+"_"+decay+"_"+width,1])]
 
     xsecs={}
     for l in open("xsecs_13TeV_dm.txt").readlines():
@@ -511,7 +517,7 @@ if __name__ == '__main__':
         sample=prefix + '_GENnp-34-v5_chi2016.root'
       elif samples[i][0]=="QCDAntiCIplusLL12000":
         sample=prefix + '_GENnp-antici-v4_chi2016.root'
-      elif "DM" in samples[i][0] or "ll" in samples[i][0] or "cs" in samples[i][0]:
+      elif "DM" in samples[i][0] or "ll" in samples[i][0] or "cs" in samples[i][0] or "wide" in samples[i][0]:
         sample=prefix + "_" + samples[i][0] + '_chi2016.root'
       #if "ADD" in samples[i][0]:
       #  sample=prefix + '_GENaddv3_chi2016.root'
@@ -740,6 +746,17 @@ if __name__ == '__main__':
           ci.Scale(1./nloqcdbackup.Integral())
 	  if not "zprime" in samples[i][0]:
 	    ci.Scale(5./4.) #to bug fix xsec from Phil
+          ci.Add(nloqcd)
+	elif "wide" in samples[i][0]:
+          cibackup=out.Get(histname)
+	  try:
+  	    histname=cibackup.GetName().replace("_backup","")
+	  except:
+	    print "problem reading", histname
+	    break
+          ci=cibackup.Clone(histname)
+          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
+          ci.Scale(10./nloqcdbackup.Integral()) # make in units if 10pb
           ci.Add(nloqcd)
 	else:
           cibackup=out.Get(histname)
