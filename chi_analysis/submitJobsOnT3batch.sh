@@ -156,6 +156,7 @@ fi
 
 cd $WORKDIR
 
+cmsenv
 cmsRun $CMSSW_CONFIG_FILE>> myout.txt 2>>myerr.txt
 
 
