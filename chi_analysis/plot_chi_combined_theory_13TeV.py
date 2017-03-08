@@ -94,6 +94,9 @@ if __name__=="__main__":
 	print "NLO QCD hist: "
         print fNloQcd
 	hNloQcd=rebin(hNloQcd,len(chi_binnings[massbin])-1,chi_binnings[massbin])
+	hNloQcd.SetLineColor(1)
+	hNloQcd.SetLineStyle(3)
+	hNloQcd.SetLineWidth(2)
     
         filename="fastnlo/RunII/DijetAngularCMS13_ewk.root"
         print filename
@@ -126,6 +129,7 @@ if __name__=="__main__":
         h0=f.Get(histname)
         h0.SetLineColor(1)
         h0.SetLineStyle(3)
+	h0.SetLineWidth(2)
 
         if unfoldedData:
           filename="datacards/Unfolded_chiNtuple_PFHT800_20160530_fromCB_AK4SF_DataToMCSF_Pythia_M_1000toInf.root"
@@ -408,14 +412,14 @@ if __name__=="__main__":
         h0.GetXaxis().SetTickLength(0.02)
         h0.GetYaxis().SetNdivisions(505)
         c.cd(1)
-
-        if massbin==len(massbins)-1:
-            h0.Draw("axis")
-        else:
-            h0.Draw("axissame")
+	
+        #if massbin==len(massbins)-1:
+        h0.Draw("axis")
+        #else:
+        #h0.Draw("axissame")
         h3new.Draw("histsame")
         h2new.Draw("histsame")
-        h0.Draw("histsame")
+        hNloQcd.Draw("histsame")
         if massbin>=0:
              h4.Draw("histsame")
              h4b.Draw("histsame")
@@ -428,7 +432,7 @@ if __name__=="__main__":
              h5.Draw("histsame")
              h6.Draw("histsame")
         h14G.Draw("pzesame")
-        h14Gsys.Draw("||same")
+        #h14Gsys.Draw("||same")
         h14Gsysstat.Draw("zesame")
         h0.Draw("axissame")
 

@@ -23,7 +23,7 @@ gStyle.SetLabelSize(0.05, "XYZ")
 gStyle.SetNdivisions(510, "XYZ")
 gStyle.SetLegendBorderSize(0)
 
-def createPlots(sample,prefix,nxsec,massbins):
+def createPlots(sample,prefix,weightname,massbins):
     files=[]
     print "list files"
     if sample.endswith(".txt"):
@@ -34,8 +34,8 @@ def createPlots(sample,prefix,nxsec,massbins):
     else:
         folders=os.listdir("/pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/")
 	for folder in folders:
-	  if sample in folder:
-            files+=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+folder+"/GEN.root"]
+	  if sample in folder and ".root" in folder:
+            files+=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+folder]#+"/GEN.root"
 	    #break
         #files=["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/mc/model3_v2/gen/"+sample+".root"]
 
@@ -67,10 +67,10 @@ def createPlots(sample,prefix,nxsec,massbins):
          event_count+=1
 	 if event_count>10000000: break
          if event_count%10000==1: print "event",event_count
-	 xsec=event.LHEEventProduct_externalLHEProducer__GEN.product().originalXWGTUP()
-	 weights=[(w.id,w.wgt) for w in event.LHEEventProduct_externalLHEProducer__GEN.product().weights() if "gdmv_1p0_gdma_0_gv" in w.id]
+	 xsec=event.LHEEventProduct_externalLHEProducer__GEN.product().originalXWGTUP()*1000. # convert to pb
+	 #weights=[(w.id,w.wgt) for w in event.LHEEventProduct_externalLHEProducer__GEN.product().weights()]
 	 #print weights
-	 weight=weights[nxsec][1]
+	 weight=[w.wgt for w in event.LHEEventProduct_externalLHEProducer__GEN.product().weights() if weightname==w.id][0]/event.LHEEventProduct_externalLHEProducer__GEN.product().weights()[0].wgt
 	 #print xsec,weight
          jet1=TLorentzVector()
          jet2=TLorentzVector()
@@ -100,16 +100,21 @@ def createPlots(sample,prefix,nxsec,massbins):
 
 if __name__ == '__main__':
 
-    #if len(sys.argv)<2:
-    #   print "ERROR: need to provide sample name as argument"
-    #point=sys.argv[1]
-    point="Vector_Dijet_LO_Mphi_1500_1_1p5_1p0_Feb23"
-    nxsec=0
+    if len(sys.argv)<2:
+       print "ERROR: need to provide sample name as argument"
+    point=sys.argv[1]
+    #point="Vector_Dijet_LO_Mphi_1500_1_1p5_1p0_Feb25"
+    nxsec=int(sys.argv[2])
+    #nxsec=0
     print point
+    if "Vector" in point:
+      weights=['gdmv_1p0_gdma_0_gv_0p01_ga_0', 'gdmv_1p0_gdma_0_gv_0p05_ga_0', 'gdmv_1p0_gdma_0_gv_0p1_ga_0', 'gdmv_1p0_gdma_0_gv_0p2_ga_0', 'gdmv_1p0_gdma_0_gv_0p25_ga_0', 'gdmv_1p0_gdma_0_gv_0p3_ga_0', 'gdmv_1p0_gdma_0_gv_0p5_ga_0', 'gdmv_1p0_gdma_0_gv_0p75_ga_0', 'gdmv_1p0_gdma_0_gv_1_ga_0', 'gdmv_1p0_gdma_0_gv_1p5_ga_0', 'gdmv_1p0_gdma_0_gv_2p0_ga_0', 'gdmv_1p0_gdma_0_gv_2p5_ga_0', 'gdmv_1p0_gdma_0_gv_3p0_ga_0']
+    else:
+      weights=['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']
  
     wait=False
     
-    prefix="datacard_shapelimit13TeV_DM"+point+"_"+str(nxsec)
+    prefix="datacard_shapelimit13TeV_DM"+point+"_"+weights[nxsec]
  
     chi_bins=[(1,2,3,4,5,6,7,8,9,10,12,14,16),
               (1,2,3,4,5,6,7,8,9,10,12,14,16),
@@ -149,12 +154,12 @@ if __name__ == '__main__':
 	      (6000,13000),
               ]
  
-    samples=[("DM"+point+"nxsec"+str(nxsec),[(point,nxsec)]),
+    samples=[("DM"+point+"_"+weights[nxsec],[(point,weights[nxsec])]),
              ]
     
     #xsecs={}
-    #for l in open("xsecs_13TeV_dm.txt").readlines():
-    #  xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
+    #for l in open("xsecs_13TeV_dm_2016.txt").readlines():
+    #  xsecs=eval(l)
     #print xsecs
 
     chi_binnings=[]
@@ -169,16 +174,16 @@ if __name__ == '__main__':
     for name,files in samples:
       plots+=[[]]
       i=0
-      for filename,nxsec in files:
+      for filename,weightname in files:
         i+=1
-        ps=createPlots(filename,name,nxsec,massbins)
+        ps=createPlots(filename,name,weightname,massbins)
         if i==1:
           plots[-1]+=ps
 	else:
 	  for i in range(len(plots[-1])):
             plots[-1][i].Add(ps[i])
     try:
-     out=TFile(prefix + '_chi.root','RECREATE')
+     out=TFile(prefix + '_chi2016.root','RECREATE')
      for j in range(len(massbins)+1):#+1
       for i in range(len(samples)):
         #if plots[i][j].Integral()>0:

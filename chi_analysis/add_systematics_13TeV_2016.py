@@ -420,22 +420,20 @@ if __name__ == '__main__':
      for xsec in [5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,1e-2,2e-2,5e-2,1e-2]:
       for width in ["kMG1439","kMG2035","kMG2493","kMG3218"]:
         for decay in ["GluonGluon","QuarkQuark"]:
-          samples+=[("wide"+str(mass)+"_"+str(xsec)+"_"+decay+"_"+width,["wide"+str(mass)+"_"+str(xsec)+"_"+decay+"_"+width,1])]
+          samples2+=[("wide"+str(mass)+"_"+str(xsec)+"_"+decay+"_"+width,["wide"+str(mass)+"_"+str(xsec)+"_"+decay+"_"+width,1])]
 
-    xsecs={}
-    for l in open("xsecs_13TeV_dm.txt").readlines():
-      xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
-    for mass in [1000,1250,1500,2000,2500,3000,3500,4000,5000,6000,7000]:
-     #for gq in ["0.05","0.08","0.09","0.1","0.11","0.12","0.13","0.14","0.15","0.16","0.17","0.18","0.19","0.2","0.21","0.22","0.23","0.24","0.25","0.26","0.27","0.28","0.29","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0"]:
-     for gq in ["0.1","0.15","0.2","0.25","0.5","0.75","1.0","1.25","1.5","1.75","2.0","2.25","2.5","2.75","3.0","3.5","4.0","6.0","8.0", "10.0"]:
-      for vector in ["800"]:#,"801"
-        if "DM"+str(mass)+"_1_"+gq+"_"+vector in xsecs.keys():
-         samples2+=[("DM"+str(mass)+"_1_"+gq+"_"+vector,[("dijet_"+str(mass)+"_1_"+gq+"_"+vector,0)]),
+    #xsecs={}
+    #for l in open("xsecs_13TeV_dm.txt").readlines():
+    #  xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
+    for mass in [1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000,8000]:
+    #for mass in [6000,7000,8000]:
+    #for mass in [4500]:
+     for mDM in [1,3000]:
+      for weight in ['gdmv_1p0_gdma_0_gv_0p01_ga_0', 'gdmv_1p0_gdma_0_gv_0p05_ga_0', 'gdmv_1p0_gdma_0_gv_0p1_ga_0', 'gdmv_1p0_gdma_0_gv_0p2_ga_0', 'gdmv_1p0_gdma_0_gv_0p25_ga_0', 'gdmv_1p0_gdma_0_gv_0p3_ga_0', 'gdmv_1p0_gdma_0_gv_0p5_ga_0', 'gdmv_1p0_gdma_0_gv_0p75_ga_0', 'gdmv_1p0_gdma_0_gv_1_ga_0', 'gdmv_1p0_gdma_0_gv_1p5_ga_0', 'gdmv_1p0_gdma_0_gv_2p0_ga_0', 'gdmv_1p0_gdma_0_gv_2p5_ga_0', 'gdmv_1p0_gdma_0_gv_3p0_ga_0']:
+         samples+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,0)]),
              ]
-     for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5", "6.0", "8.0", "10.0", "12.0", "15.0", "20.0"]:
-      for vector in ["800"]:#,"801"
-        if "DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5" in xsecs.keys():
-         samples2+=[("DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",[("dijet_"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",0)]),
+      for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
+         samples+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
 
     dataevents={}
@@ -737,15 +735,15 @@ if __name__ == '__main__':
 	elif "DM" in samples[i][0]:
           cibackup=out.Get(histname)
 	  try:
-  	    histname=cibackup.GetName().replace("_backup","")
+  	   histname=cibackup.GetName().replace("_backup","")
 	  except:
 	    print "problem reading", histname
 	    break
           ci=cibackup.Clone(histname)
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
           ci.Scale(1./nloqcdbackup.Integral())
-	  if not "zprime" in samples[i][0]:
-	    ci.Scale(5./4.) #to bug fix xsec from Phil
+	  #if not "zprime" in samples[i][0]:
+	  #  ci.Scale(5./4.) #to bug fix xsec from Phil
           ci.Add(nloqcd)
 	elif "wide" in samples[i][0]:
           cibackup=out.Get(histname)
