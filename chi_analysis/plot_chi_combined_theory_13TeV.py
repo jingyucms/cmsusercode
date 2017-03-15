@@ -150,7 +150,7 @@ if __name__=="__main__":
 	h14G=TGraphAsymmErrors(h14.Clone(histname+"G"))
 	new_hists+=[h14G]
         h14G.SetMarkerStyle(21)
-        h14G.SetMarkerSize(0.4)
+        h14G.SetMarkerSize(0.7)
         h14G.SetMarkerColor(1)
         h14G.SetLineColor(1)
 	alpha=1.-0.6827
@@ -489,7 +489,7 @@ if __name__=="__main__":
     l2.SetTextSize(0.035)
     l2.AddEntry(h14G,"Data","ple")
     l2.AddEntry(h3new,"NLO QCD+EW","f")
-    l2.AddEntry(h6,"M_{QBH} (n_{ED}=6 ADD) = 7.5 TeV","l")
+    l2.AddEntry(h6,"M_{QBH} (n_{ED} = 6 ADD) = 7.5 TeV","l")
     l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 11 TeV","l")
     l2.AddEntry(h4b,"#Lambda_{LL}^{#font[122]{-}} (CI) = 11 TeV","l")
     l2.AddEntry(h4c,"#Lambda_{VV}^{#font[122]{+}} (CI) = 11 TeV","l")
