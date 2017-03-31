@@ -2,8 +2,8 @@ import os
 from ROOT import *
 import array
 
-massbinssets=[#[(6000,13000)],
-	      #[(5400,6000)],
+massbinssets=[[(6000,13000)],
+	      [(5400,6000)],
 	      [(4800,5400)],
 	      [(4200,4800)],
 	      [(3600,4200)],
