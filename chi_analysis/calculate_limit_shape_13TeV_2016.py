@@ -3,10 +3,7 @@ from ROOT import *
 import array
 import ROOT
 
-massbins=[(6000,13000),
-	      (5400,6000),
-	      (4800,5400),
-              ]
+massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
 xsecs={}
 for l in open("xsecs_13TeV_dm.txt").readlines():
@@ -30,31 +27,36 @@ for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5",
      signalExtraName[counter]="_1_"+gq+"_"+vector+"_zprime5"
      counter+=1
 
-models=[3]
+#models=[3]
 #models+=[10,11]
-models+=[60,61,62,63,64,65,66,67,68,69]
-models=[70,71,72,73,74,75,76,77]
-models=[30,31,32,33,34,35,36,37,38]
-#models=[40,41,42,43,44,45,46,47,48]
+#models+=[60,61,62,63,64,65,66,67,68,69]
+#models+=[70,71,72,73,74,75,76,77]
+#models+=[30,31,32,33,34,35,36,37,38]
+#models+=[40,41,42,43,44,45,46,47,48]
+#models+=[78,79,80,81,82,83,84,85]
+#models=[88,89]
+models=[60,61]
 
-
-signalExtra=""
-includeSignalTheoryUncertainties=False
+testStat="LHC" # in 2012 and 2015 data used "LEP", checking "LHC" for 2016 data
 
 if len(sys.argv)>1:
    models=[int(sys.argv[1])]
 
 for model in models:
 
+ signalExtra=""
+ includeSignalTheoryUncertainties=False
+
  if model==1:
     signal="CIplusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signalMasses=[9000,10000,11000,12000,13000,14000,16000,18000]
  if model==2:
     signal="CIminusLL"    
-    signalMasses=[8000,9000,10000,11000,12000,13000,14000,16000,18000]
+    signalMasses=[9000,10000,11000,12000,13000,14000,16000,18000]
  if model==3:
     signal="ADD"
-    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000]
+    signalMasses=[9000,10000,11000,12000,13000,14000,15000,16000,17000]
+    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
  if model==4:
     signal="cs_nn30nlo_0_"
     signalExtra="_LL+"
@@ -234,18 +236,18 @@ for model in models:
  if model>=60 and model<100:
     includeSignalTheoryUncertainties=True
 
- if model==60:
+ if model==60 or model==88:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
-    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
- if model==61:
+    signalMasses=[11000,12000,13000,14000,15000,16000,17000,18000,19000,20000,21000]
+ if model==61 or model==89:
     signal="cs_ct14nlo_"
     signalExtra="_LL-"
-    signalMasses=[16000,17000,18000,19000,20000,22000,24000,25000,26000,27000,28000,29000]
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,25000,26000,28000,30000]
  if model==62:
     signal="cs_ct14nlo_"
     signalExtra="_RR+"
-    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000]
+    signalMasses=[11000,12000,13000,14000,15000,16000,17000,18000,19000,20000,21000]
  if model==63:
     signal="cs_ct14nlo_"
     signalExtra="_RR-"
@@ -269,26 +271,26 @@ for model in models:
  if model==68:
     signal="cs_ct14nlo_"
     signalExtra="_V-A+"
-    signalMasses=[9000,10000,11000,12000,13000,14000,15000,16000,17000,18000,19000]
+    signalMasses=[7000,8000,9000,10000,11000,12000,13000,14000,15000,16000]
  if model==69:
     signal="cs_ct14nlo_"
     signalExtra="_V-A-"
-    signalMasses=[9000,10000,11000,12000,13000,14000,15000,16000,17000,18000,19000]
+    signalMasses=[7000,8000,9000,10000,11000,12000,13000,14000,15000,16000]
 
  if model==70:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
-    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    signalMasses=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000]
     massbins=[(6000,13000)]
  if model==71:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
-    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    signalMasses=[11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
     massbins=[(5400,6000)]
  if model==72:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
-    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    signalMasses=[11000,12000,13000,14000,15000,16000,17000,18000,19000,20000]
     massbins=[(4800,5400)]
  if model==73:
     signal="cs_ct14nlo_"
@@ -298,23 +300,73 @@ for model in models:
  if model==74:
     signal="cs_ct14nlo_"
     signalExtra="_LL-"
-    signalMasses=[16000,17000,18000,19000,20000,22000,24000,25000,26000,27000,28000,29000]
+    signalMasses=[13000,14000,15000,16000,17000,18000,19000,20000,22000]
     massbins=[(6000,13000)]
  if model==75:
     signal="cs_ct14nlo_"
     signalExtra="_LL-"
-    signalMasses=[16000,17000,18000,19000,20000,22000,24000,25000,26000,27000,28000,29000]
+    signalMasses=[15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(5400,6000)]
  if model==76:
     signal="cs_ct14nlo_"
     signalExtra="_LL-"
-    signalMasses=[16000,17000,18000,19000,20000,22000,24000,25000,26000,27000,28000,29000]
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(4800,5400)]
  if model==77:
     signal="cs_ct14nlo_"
     signalExtra="_LL-"
-    signalMasses=[16000,17000,18000,19000,20000,22000,24000,25000,26000,27000,28000,29000]
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(5400,6000),(6000,13000)]
+ if model==78:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL+"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    massbins=[(4800,5400),(5400,6000),(6000,13000)]
+ if model==79:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL-"
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
+    massbins=[(4800,5400),(5400,6000),(6000,13000)]
+ if model==80:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL+"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    massbins=[(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==81:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL-"
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
+    massbins=[(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==82:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL+"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==83:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL-"
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
+    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==84:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL+"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==85:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL-"
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
+    massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==86:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL+"
+    signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,21000,22000,23000]
+    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==87:
+    signal="cs_ct14nlo_"
+    signalExtra="_LL-"
+    signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
+    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
  if model>=100:
     signal=signalName[model]
@@ -328,9 +380,9 @@ for model in models:
  prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
  if model>=30 and model<60:
-    name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
+    name="pvalue_"+testStat+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
-    name="limits"+str(model)+"_"+signal
+    name="limits"+testStat+str(model)+"_"+signal
 
  limits={}
  for signalMass in signalMasses:
@@ -507,20 +559,34 @@ jmax 2 number of backgrounds""")
     cfg.close()
     os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
     os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --singlePoint 1.0 --rule CLs --saveHybridResult --testStat LEP --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+"_2016.txt") # --frequentist --testStat LHC
-    os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    os.system('root -q -b '+dire+'"extractSignificanceStats.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" > '+name+'_exp_'+str(signalMass)+'_2016.txt')
+    method=testStat
+    add=""
+    if testStat=="LHC":
+      method+=" --frequentist"
+      add="LHC"
+    #os.system("combine -m "+str(signalMass)+" --rule CLs -M HybridNew --singlePoint 1.0 --saveHybridResult --testStat "+method+" --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root &> "+name+"_"+str(signalMass)+"_2016.txt")
+    #os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
+    #os.system('root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" &> '+name+'_exp_'+str(signalMass)+'_2016.txt')
+    # diagnostics
+    os.system("mkdir "+name)
+    os.system("combine -m "+str(signalMass)+" -M MaxLikelihoodFit --plots --out "+name+" -n "+name+str(signalMass)+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+
 
  for signalMass in signalMasses:
     limits[signalMass]=[]
     try:
+     if testStat=="LHC":
+      f=file(name+"_exp_"+str(signalMass)+"_2016.txt")
+     else:
       f=file(name+"_"+str(signalMass)+"_2016.txt")
     except:
       print "file not found", f
       continue
     for line in f.readlines():
-        if "CLs = " in line:
+        if "CLs = " in line and testStat!="LHC":
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
+        if "Observed CLs = " in line and testStat=="LHC":
+           limits[signalMass]=[signalMass,float(line.strip().split(" ")[-1]),0]
         if "CLb = " in line:
            print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
     if len(limits[signalMass])==0:

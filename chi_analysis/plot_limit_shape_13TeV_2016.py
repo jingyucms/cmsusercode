@@ -25,9 +25,13 @@ if __name__=="__main__":
  models=[3]
  #models+=[10,11]
  models+=[60,61,62,63,64,65,66,67,68,69]
- models=[70,71,72,73,74,75,76,77]
- #models=[30,31,32,33,34,35,36,37,38]
- #models=[40,41,42,43,44,45,46,47,48]
+ models+=[70,71,72,73,74,75,76,77]
+ #models+=[30,31,32,33,34,35,36,37,38]
+ #models+=[40,41,42,43,44,45,46,47,48]
+ models+=[78,79,80,81,82,83,84,85,86,87]
+ models=[88,89]
+ 
+ testStat="LHC"
 
  for model in models:
 
@@ -64,12 +68,12 @@ if __name__=="__main__":
        signal="AntiCIplusLL"
     if model>=60 and model<70:
        signal="cs_ct14nlo_"
-    if model>=70 and model<80:
+    if model>=70 and model<90:
        signal="cs_ct14nlo_"
 
-    print signal
+    print signal,model
 
-    f=file("limits"+str(model)+"_"+signal+"_2016.txt")
+    f=file("limits"+testStat+str(model)+"_"+signal+"_2016.txt")
     limits=eval(f.readline())
     #print limits
 
@@ -182,6 +186,6 @@ if __name__=="__main__":
     l2c.SetLineStyle(2)
     l2c.Draw("same")
     
-    canvas.SaveAs('limits'+str(model)+signal+'_2016.pdf')
-    canvas.SaveAs('limits'+str(model)+signal+'_2016.eps')
+    canvas.SaveAs('limits'+testStat+str(model)+signal+'_2016.pdf')
+    canvas.SaveAs('limits'+testStat+str(model)+signal+'_2016.eps')
     
