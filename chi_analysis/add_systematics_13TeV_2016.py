@@ -404,16 +404,16 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
 
     for mass in [1700,2000,2300,2600,2900,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7100]:
@@ -428,12 +428,20 @@ if __name__ == '__main__':
     for mass in [1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000,8000]:
     #for mass in [6000,7000,8000]:
     #for mass in [4500]:
-     for mDM in [1,3000]:
+     if mass==6000:
+       mDMs=[1,2990]
+     elif mass==7000:
+       mDMs=[1,4000]
+     elif mass==8000:
+       mDMs=[1,3990]
+     else:
+       mDMs=[1,3000]
+     for mDM in mDMs:
       for weight in ['gdmv_1p0_gdma_0_gv_0p01_ga_0', 'gdmv_1p0_gdma_0_gv_0p05_ga_0', 'gdmv_1p0_gdma_0_gv_0p1_ga_0', 'gdmv_1p0_gdma_0_gv_0p2_ga_0', 'gdmv_1p0_gdma_0_gv_0p25_ga_0', 'gdmv_1p0_gdma_0_gv_0p3_ga_0', 'gdmv_1p0_gdma_0_gv_0p5_ga_0', 'gdmv_1p0_gdma_0_gv_0p75_ga_0', 'gdmv_1p0_gdma_0_gv_1_ga_0', 'gdmv_1p0_gdma_0_gv_1p5_ga_0', 'gdmv_1p0_gdma_0_gv_2p0_ga_0', 'gdmv_1p0_gdma_0_gv_2p5_ga_0', 'gdmv_1p0_gdma_0_gv_3p0_ga_0']:
-         samples+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,0)]),
+         samples2+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,0)]),
              ]
       for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
-         samples+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
+         samples2+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
 
     dataevents={}

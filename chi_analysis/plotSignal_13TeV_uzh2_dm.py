@@ -10,9 +10,9 @@ gROOT.Reset()
 gROOT.SetStyle("Plain")
 gStyle.SetOptStat(0)
 gStyle.SetOptFit(0)
-gStyle.SetTitleOffset(1.2,"Y")
+#gStyle.SetTitleOffset(1.2,"Y")
 gStyle.SetPadLeftMargin(0.18)
-gStyle.SetPadBottomMargin(0.15)
+gStyle.SetPadBottomMargin(0.18)
 gStyle.SetPadTopMargin(0.03)
 gStyle.SetPadRightMargin(0.05)
 gStyle.SetMarkerSize(1.5)
@@ -32,10 +32,12 @@ def createPlots(sample,prefix,weightname,massbins):
 	    if ".root" in line:
 	        files+=[line.strip()]
     else:
-        folders=os.listdir("/pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/")
+        #folders=os.listdir("/pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/")
+	folders=os.listdir("/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis")
 	for folder in folders:
 	  if sample in folder and ".root" in folder:
-            files+=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+folder]#+"/GEN.root"
+            #files+=["dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+folder]#+"/GEN.root"
+	    files+=["/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis/"+folder]
 	    #break
         #files=["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/mc/model3_v2/gen/"+sample+".root"]
 
@@ -47,7 +49,7 @@ def createPlots(sample,prefix,weightname,massbins):
     plots=[]
     for massbin in massbins:
       plots += [TH1F(prefix+'#chi'+str(massbin).strip("()").replace(',',"_").replace(' ',""),';#chi;N',15,1,16)]
-    plots += [TH1F(prefix+'dijetmass',';test;N',20,masspoint-500,masspoint+500)]
+    plots += [TH1F(prefix+'dijetmass',';dijet mass;N',35,0,7000)]
     
     for plot in plots:
         plot.Sumw2()
@@ -64,13 +66,18 @@ def createPlots(sample,prefix,weightname,massbins):
       continue
      print sample,nevents,nxsec
      for event in events:
-         event_count+=1
-	 if event_count>10000000: break
-         if event_count%10000==1: print "event",event_count
 	 xsec=event.LHEEventProduct_externalLHEProducer__GEN.product().originalXWGTUP()*1000. # convert to pb
 	 #weights=[(w.id,w.wgt) for w in event.LHEEventProduct_externalLHEProducer__GEN.product().weights()]
 	 #print weights
-	 weight=[w.wgt for w in event.LHEEventProduct_externalLHEProducer__GEN.product().weights() if weightname==w.id][0]/event.LHEEventProduct_externalLHEProducer__GEN.product().weights()[0].wgt
+	 try:
+	  weight=[w.wgt for w in event.LHEEventProduct_externalLHEProducer__GEN.product().weights() if weightname==w.id][0]/event.LHEEventProduct_externalLHEProducer__GEN.product().weights()[0].wgt
+	 except:
+	  print "error reading weight"
+	  break
+	 #if weight<1./(nevents*len(files)): continue # ignore events with weight < 1/ngenerated
+         event_count+=1
+	 if event_count>10000000: break
+         if event_count%10000==1: print "event",event_count
 	 #print xsec,weight
          jet1=TLorentzVector()
          jet2=TLorentzVector()
@@ -170,6 +177,9 @@ if __name__ == '__main__':
         
     print prefix, samples
 
+    canvas = TCanvas("","",0,0,400,400)
+    canvas.SetLogy()
+
     plots=[]
     for name,files in samples:
       plots+=[[]]
@@ -190,6 +200,9 @@ if __name__ == '__main__':
         #  plots[i][j].Scale(expectedevents[j]/plots[i][j].Integral())
 	if j<len(massbins):
           plots[i][j]=plots[i][j].Rebin(len(chi_binnings[j])-1,plots[i][j].GetName()+"_rebin1",chi_binnings[j])
+        else:
+	  plots[i][j].Draw()
+	  canvas.SaveAs(prefix + '_mass.pdf')
 	if samples[i][0]=="QCD":
 	   # data
 	   plots[i][j].Write(plots[i][j].GetName().replace("QCD","data_obs"))
@@ -220,6 +233,7 @@ if __name__ == '__main__':
         #plots[i][j].GetYaxis().SetRangeUser(0,0.2)
 
      canvas = TCanvas("","",0,0,400,200)
+     canvas.SetLogy(False)
      canvas.Divide(2,1)
      if len(massbins)>2:
       canvas = TCanvas("","",0,0,600,400)
