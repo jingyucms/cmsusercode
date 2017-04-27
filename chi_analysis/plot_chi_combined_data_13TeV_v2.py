@@ -457,9 +457,9 @@ if __name__=="__main__":
     l2.SetFillStyle(0)
     l2.Draw("same")
     
-    l3=TLegend(0.50,0.44,0.85,0.83,"")
+    l3=TLegend(0.495,0.44,0.80,0.83,"")
     l3.SetTextSize(0.06)
-    l3.AddEntry(h6,"M_{QBH} (n_{ED}=6 ADD) = 7.5 TeV","l")
+    l3.AddEntry(h6,"M_{QBH} (n_{ED} = 6 ADD) = 7.5 TeV","l")
     l3.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 11 TeV","l")
     l3.AddEntry(h5,"#Lambda_{T} (GRW) = 10 TeV","l")
     l3.SetFillStyle(0)
