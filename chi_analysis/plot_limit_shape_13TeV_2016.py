@@ -29,6 +29,7 @@ if __name__=="__main__":
  #models+=[30,31,32,33,34,35,36,37,38]
  #models+=[40,41,42,43,44,45,46,47,48]
  models+=[78,79,80,81,82,83,84,85,86,87]
+ models=[88,89]
  
  testStat="LHC"
 
@@ -70,7 +71,7 @@ if __name__=="__main__":
     if model>=70 and model<90:
        signal="cs_ct14nlo_"
 
-    print signal
+    print signal,model
 
     f=file("limits"+testStat+str(model)+"_"+signal+"_2016.txt")
     limits=eval(f.readline())

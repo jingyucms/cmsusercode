@@ -27,13 +27,15 @@ for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5",
      signalExtraName[counter]="_1_"+gq+"_"+vector+"_zprime5"
      counter+=1
 
-models=[3]
+#models=[3]
 #models+=[10,11]
-models+=[60,61,62,63,64,65,66,67,68,69]
-models+=[70,71,72,73,74,75,76,77]
-models+=[30,31,32,33,34,35,36,37,38]
-models+=[40,41,42,43,44,45,46,47,48]
-models+=[78,79,80,81,82,83,84,85]
+#models+=[60,61,62,63,64,65,66,67,68,69]
+#models+=[70,71,72,73,74,75,76,77]
+#models+=[30,31,32,33,34,35,36,37,38]
+#models+=[40,41,42,43,44,45,46,47,48]
+#models+=[78,79,80,81,82,83,84,85]
+#models=[88,89]
+models=[60,61]
 
 testStat="LHC" # in 2012 and 2015 data used "LEP", checking "LHC" for 2016 data
 
@@ -54,6 +56,7 @@ for model in models:
  if model==3:
     signal="ADD"
     signalMasses=[9000,10000,11000,12000,13000,14000,15000,16000,17000]
+    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
  if model==4:
     signal="cs_nn30nlo_0_"
     signalExtra="_LL+"
@@ -233,11 +236,11 @@ for model in models:
  if model>=60 and model<100:
     includeSignalTheoryUncertainties=True
 
- if model==60:
+ if model==60 or model==88:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
     signalMasses=[11000,12000,13000,14000,15000,16000,17000,18000,19000,20000,21000]
- if model==61:
+ if model==61 or model==89:
     signal="cs_ct14nlo_"
     signalExtra="_LL-"
     signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,25000,26000,28000,30000]
@@ -561,9 +564,13 @@ jmax 2 number of backgrounds""")
     if testStat=="LHC":
       method+=" --frequentist"
       add="LHC"
-    os.system("combine -m "+str(signalMass)+" --rule CLs -M HybridNew --singlePoint 1.0 --saveHybridResult --testStat "+method+" --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root &> "+name+"_"+str(signalMass)+"_2016.txt")
-    os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    os.system('root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" &> '+name+'_exp_'+str(signalMass)+'_2016.txt')
+    #os.system("combine -m "+str(signalMass)+" --rule CLs -M HybridNew --singlePoint 1.0 --saveHybridResult --testStat "+method+" --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root &> "+name+"_"+str(signalMass)+"_2016.txt")
+    #os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
+    #os.system('root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" &> '+name+'_exp_'+str(signalMass)+'_2016.txt')
+    # diagnostics
+    os.system("mkdir "+name)
+    os.system("combine -m "+str(signalMass)+" -M MaxLikelihoodFit --plots --out "+name+" -n "+name+str(signalMass)+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+
 
  for signalMass in signalMasses:
     limits[signalMass]=[]
