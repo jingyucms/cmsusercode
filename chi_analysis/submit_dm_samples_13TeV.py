@@ -1,31 +1,36 @@
 import os
 
 signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000,8000]
+#signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,7000,8000]
+#signalMasses=[1000]
+#signalMasses=[1000,2000]
+signalMasses=[3500,4000,4500,5000,6000,7000,8000]
 minMass=1900
-couplings=[("1p5","1p0")]
 samples=[]
 
 for signalMass in signalMasses:
-  if signalMass==7000:
+  if signalMass==6000:
+   mDMs=[1,2990]
+  elif signalMass==7000:
    mDMs=[1,4000]
   elif signalMass==8000:
    mDMs=[1,3990]
   else:
    mDMs=[1,3000]
   for mDM in mDMs:
-    for coupling in couplings:
-        samples+=[('Axial_Dijet_LO_Mphi',signalMass,mDM,coupling),]
-        samples+=[('Vector_Dijet_LO_Mphi',signalMass,mDM,coupling),]
+        samples+=[('Axial_Dijet_LO_Mphi',signalMass,mDM,("1p0","1p0")),]
+        samples+=[('Vector_Dijet_LO_Mphi',signalMass,mDM,("1p5","1p0")),]
 
 print samples
 
-version="Feb25"
+version="Mar5"
 
 for sample,signalMass,mDM,coupling in samples:
   
-  numjobs=1
+  offset=335
+  numjobs=20
 
-  for jobnum in range(numjobs):
+  for jobnum in range(offset,offset+numjobs+1):
 
     samplename=sample+"_"+str(signalMass)+"_"+str(mDM)+"_"+coupling[0]+"_"+coupling[1]+"_"+version
     filen=sample+"-"+str(signalMass)+"_Mchi-"+str(mDM)+"_gSM-"+coupling[0]+"_gDM-"+coupling[1]+"_13TeV-madgraph_tarball.tar.xz"
@@ -46,7 +51,7 @@ process.load("Configuration.EventContent.EventContent_cff")
 process.out = cms.OutputModule(
     "PoolOutputModule",
     process.AODSIMEventContent,
-    fileName = cms.untracked.string('GEN.root'),
+    fileName = cms.untracked.string('../"""+samplename+str(jobnum)+""".root'),
     )
 
 process.load("CommonTools.ParticleFlow.PF2PAT_EventContent_cff")
@@ -133,5 +138,8 @@ process.out.outputCommands=cms.untracked.vstring('keep *','drop edmHepMCProduct_
 """)
     cfg.close()
     #os.system("qsub -q all.q -o /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis/jobout_"+samplename+".out -e /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis/jobout_"+samplename+".err submitJobsOnT3batch.sh GEN.root dijet_angular /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3 cmsusercode/chi_analysis/"+samplename+str(jobnum)+".py "+str(jobnum)+" jobtmp_"+samplename+" /mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis/jobout_"+samplename+"")
-    os.system("cmsRun "+samplename+str(jobnum)+".py")
-    os.system("gfal-copy -f file:////mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis/GEN.root root://t3dcachedb03.psi.ch//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+samplename+str(jobnum)+".root")
+    os.system("mkdir "+samplename+"_tmp")
+    os.chdir(samplename+"_tmp")
+    os.system("cmsRun ../"+samplename+str(jobnum)+".py &> ../"+samplename+str(jobnum)+".log")
+    os.system("gfal-copy -f file:////mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis/"+samplename+str(jobnum)+".root root://t3dcachedb03.psi.ch//pnfs/psi.ch/cms/trivcat/store/user/hinzmann/dijet_angular/"+samplename+str(jobnum)+".root")
+    os.chdir("/shome/hinzmann/CMSSW_7_1_25_patch3/src/cmsusercode/chi_analysis/")
