@@ -27,17 +27,20 @@ for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5",
      signalExtraName[counter]="_1_"+gq+"_"+vector+"_zprime5"
      counter+=1
 
-#models=[3]
+models=[]
+models=[3]
 #models+=[10,11]
-#models+=[60,61,62,63,64,65,66,67,68,69]
-#models+=[70,71,72,73,74,75,76,77]
+models+=[60,61,62,63,64,65,66,67,68,69]
+models+=[70,71,72,73,74,75,76,77]
+models+=[78,79,80,81,82,83,84,85]
 #models+=[30,31,32,33,34,35,36,37,38]
-#models+=[40,41,42,43,44,45,46,47,48]
-#models+=[78,79,80,81,82,83,84,85]
+#models+=[40,41,42,43,44,45,46]
 #models=[88,89]
-models=[60,61]
+#models=[60,61]
 
-testStat="LHC" # in 2012 and 2015 data used "LEP", checking "LHC" for 2016 data
+testStat="LHC" # in 2012 and 2015 data used "LEP", checking "TEV" and "LHC" for 2016 data
+# The POI for LHC-style CLS is not clear, since CI models have no freedom  in signal strength or cross section.
+# The LEP-style and TEV-style CLS do not fit the POI.
 
 if len(sys.argv)>1:
    models=[int(sys.argv[1])]
@@ -147,53 +150,46 @@ for model in models:
     signalExtra="_V-A-"
     signalMasses=[8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000]
 
- if model>=30 and model<40:
+ if model>=30 and model<50:
     includeSignalTheoryUncertainties=True
 
  if model==30:
-    signal="cs_ct14nlo_"
-    signalExtra="_LL+"
-    signalMasses=[14000]
+    signal="CIplusLL"
+    signalMasses=[12000]
     massbins=[(6000,13000),]
  if model==31:
-    signal="cs_ct14nlo_"
-    signalExtra="_LL+"
-    signalMasses=[14000]
+    signal="CIplusLL"
+    signalMasses=[12000]
     massbins=[(5400,6000),]
  if model==32:
-    signal="cs_ct14nlo_"
-    signalExtra="_LL+"
-    signalMasses=[14000]
+    signal="CIplusLL"
+    signalMasses=[12000]
     massbins=[(4800,5400),]
  if model==33:
-    signal="cs_ct14nlo_"
-    signalExtra="_LL+"
-    signalMasses=[14000]
+    signal="CIplusLL"
+    signalMasses=[12000]
     massbins=[(4200,4800),]
  if model==34:
-    signal="cs_ct14nlo_"
-    signalExtra="_LL+"
-    signalMasses=[14000]
+    signal="CIplusLL"
+    signalMasses=[12000]
     massbins=[(3600,4200),]
  if model==35:
-    signal="cs_ct14nlo_"
-    signalExtra="_LL+"
-    signalMasses=[14000]
+    signal="CIplusLL"
+    signalMasses=[12000]
     massbins=[(3000,3600),]
  if model==36:
-    signal="cs_ct14nlo_"
-    signalExtra="_LL+"
-    signalMasses=[14000]
+    signal="CIplusLL"
+    signalMasses=[12000]
     massbins=[(2400,3000),]
  if model==37:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
-    signalMasses=[14000]
+    signalMasses=[13000]
     massbins=[(4800,5400),(5400,6000),(6000,13000)]
  if model==38:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
-    signalMasses=[14000]
+    signalMasses=[13000]
     massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
  if model==40:
@@ -224,14 +220,14 @@ for model in models:
     signal="AntiCIplusLL"    
     signalMasses=[12000]
     massbins=[(2400,3000),]
- if model==47:
-    signal="AntiCIplusLL"    
-    signalMasses=[12000]
-    massbins=[(4800,5400),(5400,6000),(6000,13000)]
- if model==48:
-    signal="AntiCIplusLL"    
-    signalMasses=[12000]
-    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ #if model==47:
+ #   signal="AntiCIplusLL"    
+ #   signalMasses=[12000]
+ #   massbins=[(4800,5400),(5400,6000),(6000,13000)]
+ #if model==48:
+ #   signal="AntiCIplusLL"    
+ #   signalMasses=[12000]
+ #   massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
  if model>=60 and model<100:
     includeSignalTheoryUncertainties=True
@@ -390,42 +386,42 @@ for model in models:
     print signalWithMass
     cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass+"_2016.txt","w")
     if signalWithMass=="CIplusLL8000":
-        fname=prefix + '_GENnp-0-v4_chi2016.root'
+    	fname=prefix + '_GENnp-0-v4_chi2016.root'
     elif signalWithMass=="CIplusLL9000":
-        fname=prefix + '_GENnp-1-v4_chi2016.root'
+    	fname=prefix + '_GENnp-1-v4_chi2016.root'
     elif signalWithMass=="CIplusLL10000":
-        fname=prefix + '_GENnp-2-v4_chi2016.root'
+    	fname=prefix + '_GENnp-2-v4_chi2016.root'
     elif signalWithMass=="CIplusLL11000":
-        fname=prefix + '_GENnp-3-v4_chi2016.root'
+    	fname=prefix + '_GENnp-3-v4_chi2016.root'
     elif signalWithMass=="CIplusLL12000":
-        fname=prefix + '_GENnp-4-v4_chi2016.root'
+    	fname=prefix + '_GENnp-4-v4_chi2016.root'
     elif signalWithMass=="CIplusLL13000":
-        fname=prefix + '_GENnp-5-v4_chi2016.root'
+    	fname=prefix + '_GENnp-5-v4_chi2016.root'
     elif signalWithMass=="CIplusLL14000":
-        fname=prefix + '_GENnp-6-v4_chi2016.root'
+    	fname=prefix + '_GENnp-6-v4_chi2016.root'
     elif signalWithMass=="CIplusLL16000":
-        fname=prefix + '_GENnp-7-v4_chi2016.root'
+    	fname=prefix + '_GENnp-7-v4_chi2016.root'
     elif signalWithMass=="CIplusLL18000":
-        fname=prefix + '_GENnp-8-v4_chi2016.root'
+    	fname=prefix + '_GENnp-8-v4_chi2016.root'
     elif signalWithMass=="CIminusLL8000":
-        fname=prefix + '_GENnp-9-v4_chi2016.root'
+    	fname=prefix + '_GENnp-9-v4_chi2016.root'
     elif signalWithMass=="CIminusLL9000":
-        fname=prefix + '_GENnp-10-v4_chi2016.root'
+    	fname=prefix + '_GENnp-10-v4_chi2016.root'
     elif signalWithMass=="CIminusLL10000":
-        fname=prefix + '_GENnp-11-v4_chi2016.root'
+    	fname=prefix + '_GENnp-11-v4_chi2016.root'
     elif signalWithMass=="CIminusLL11000":
-        fname=prefix + '_GENnp-12-v4_chi2016.root'
+    	fname=prefix + '_GENnp-12-v4_chi2016.root'
     elif signalWithMass=="CIminusLL12000":
-        fname=prefix + '_GENnp-13-v4_chi2016.root'
+    	fname=prefix + '_GENnp-13-v4_chi2016.root'
     elif signalWithMass=="CIminusLL13000":
-        fname=prefix + '_GENnp-14-v4_chi2016.root'
+    	fname=prefix + '_GENnp-14-v4_chi2016.root'
     elif signalWithMass=="CIminusLL14000":
-        fname=prefix + '_GENnp-15-v4_chi2016.root'
+    	fname=prefix + '_GENnp-15-v4_chi2016.root'
     elif signalWithMass=="CIminusLL16000":
-        fname=prefix + '_GENnp-16-v4_chi2016.root'
+    	fname=prefix + '_GENnp-16-v4_chi2016.root'
     elif signalWithMass=="CIminusLL18000":
-        fname=prefix + '_GENnp-17-v4_chi2016.root'
-    elif signalWithMass=="ADD6000":
+    	fname=prefix + '_GENnp-17-v4_chi2016.root'
+    if signalWithMass=="ADD6000":
         fname=prefix + '_GENnp-18-v5_chi2016.root'
     elif signalWithMass=="ADD7000":
         fname=prefix + '_GENnp-19-v5_chi2016.root'
@@ -557,44 +553,54 @@ jmax 2 number of backgrounds""")
 """)
 
     cfg.close()
-    os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
-    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
-    method=testStat
-    add=""
+    method=testStat+" --singlePoint 1.0"
+    if testStat=="LEP":
+      poi=""
+      add=""
     if testStat=="LHC":
+      poi=" --redefineSignalPOIs x" # -H ProfileLikelihood
       method+=" --frequentist"
       add="LHC"
-    #os.system("combine -m "+str(signalMass)+" --rule CLs -M HybridNew --singlePoint 1.0 --saveHybridResult --testStat "+method+" --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root &> "+name+"_"+str(signalMass)+"_2016.txt")
-    #os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    #os.system('root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" &> '+name+'_exp_'+str(signalMass)+'_2016.txt')
+    if testStat=="TEV":
+      poi=" --redefineSignalPOIs x"
+      add=""
+    os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
+    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
+    os.system("combine -m "+str(signalMass)+" --rule CLs -M HybridNew --saveHybridResult --testStat "+method+poi+" --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root &> "+name+"_"+str(signalMass)+"_2016.txt")
+    os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
+    os.system('root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'\\")" &> '+name+'_exp_'+str(signalMass)+'_2016.txt')
     # diagnostics
     os.system("mkdir "+name)
-    os.system("combine -m "+str(signalMass)+" -M MaxLikelihoodFit --plots --out "+name+" -n "+name+str(signalMass)+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
-
+    os.system("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+" -n "+name+str(signalMass)+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
 
  for signalMass in signalMasses:
     limits[signalMass]=[]
+    if testStat!="LEP":
+     fname=name+"_exp_"+str(signalMass)+"_2016.txt"
+    else:
+     fname=name+"_"+str(signalMass)+"_2016.txt"
     try:
-     if testStat=="LHC":
-      f=file(name+"_exp_"+str(signalMass)+"_2016.txt")
-     else:
-      f=file(name+"_"+str(signalMass)+"_2016.txt")
+      print "open",fname
+      f=file(fname)
     except:
-      print "file not found", f
+      print "file not found", fname
       continue
     for line in f.readlines():
-        if "CLs = " in line and testStat!="LHC":
+        if "CLs = " in line and testStat=="LEP":
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
-        if "Observed CLs = " in line and testStat=="LHC":
+        if "Observed CLs = " in line and testStat!="LEP":
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-1]),0]
-        if "CLb = " in line:
+        if "CLb = " in line and testStat=="LEP":
            print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
+        if "Observed CLb = " in line and testStat!="LEP":
+           print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-1]))/2.,1),"(",(1.-float(line.strip().split(" ")[-1])),")"
     if len(limits[signalMass])==0:
          limits[signalMass]+=[signalMass,0,0]
     try:
-      f=file(name+"_exp_"+str(signalMass)+"_2016.txt")
+      fname=name+"_exp_"+str(signalMass)+"_2016.txt"
+      f=file(fname)
     except:
-      print "file not found", f
+      print "file not found", fname
       continue
     for line in f.readlines():
         if "Expected CLs" in line:
