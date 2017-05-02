@@ -55,6 +55,8 @@ def createPlots(sample,prefix,weightname,massbins):
         plot.Sumw2()
 
     event_count=0
+    acceptance=0
+    sumweights=0
     for f in files[:]:
      print f
      try:
@@ -78,6 +80,7 @@ def createPlots(sample,prefix,weightname,massbins):
          event_count+=1
 	 if event_count>10000000: break
          if event_count%10000==1: print "event",event_count
+	 sumweights+=weight
 	 #print xsec,weight
          jet1=TLorentzVector()
          jet2=TLorentzVector()
@@ -94,11 +97,13 @@ def createPlots(sample,prefix,weightname,massbins):
 	    plots[-1].Fill(mjj,weight)
 	 irec=0
          if mjj<1500 or chi>16. or yboost>1.11: continue
+         if mjj>2400: acceptance+=weight
 	 for massbin in massbins:
             if yboost<1.11 and mjj>=massbin[0] and mjj<massbin[1]:
                plots[irec].Fill(chi,weight)
 	    irec+=1
      fil.Close()
+    print sample,weightname,"acceptance",acceptance/sumweights
     for plot in plots:
       if nevents>0:
         plot.Scale(xsec/event_count)

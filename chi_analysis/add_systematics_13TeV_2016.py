@@ -238,7 +238,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -393,7 +393,16 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
-    samples2+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
+		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
+		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
+		       ("pythia8_ci_m3300_3800_12000_1_0_0_13TeV_Nov14",1.863e-08),
+		       ("pythia8_ci_m3800_4300_12000_1_0_0_13TeV_Nov14",5.867e-09),
+		       ("pythia8_ci_m4300_13000_12000_1_0_0_13TeV_Nov14",3.507e-09),
+		       ]),
+             ]
+    samples+=[("QCDCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -404,16 +413,16 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
 
     for mass in [1700,2000,2300,2600,2900,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7100]:
@@ -764,6 +773,43 @@ if __name__ == '__main__':
           ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
           ci.Scale(10./nloqcdbackup.Integral()) # make in units if 10pb
           ci.Add(nloqcd)
+        elif "CIplus" in samples[i][0]:
+	  print "CREATE FAKE SIGNAL"
+  	  if j<=3: # fake signal for signficances
+	    histnamealt=samples[i][0].replace("Anti","")+'#chi'+str((4800,5400)).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_backup"
+	  else:
+	    histnamealt=histname
+	  cibackup=out.Get(histnamealt).Clone(histname)
+	  histname=cibackup.GetName().replace("_backup","")
+          ci=cibackup.Clone(histname)
+          ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
+	  ci.Scale(1e9) #mb -> pb
+          cinorm[j]=ci.Integral()
+	  #print "BBB", qcdnorm[0],cinorm[0],qcdnorm[j]/dataevents[j]*26000.,cinorm[j]/dataevents[j]*26000.,nloqcdbackup.Integral()/dataevents[j]*26000.
+	  # CORRECT FORMULAT
+	  #ci.Scale(qcdnorm[0]/cinorm[0])
+	  # APPROXIMATE FORMULAT
+	  ci.Scale(qcdnorm[j]/cinorm[j])
+	  ci.Add(qcd,-1.)
+	  #ci.Scale(cinorm[0]/qcdnorm[0]) # trusting the QCD+CI LO prediction in mb (10^9) for the LO cross section
+	  #print "AAA",histname,ci.Integral()/qcdnorm[j], ci.Integral()/qcdnorm[0]*cinorm[0]/nloqcdbackup.Integral()*1e6, qcdnorm[j], nloqcdbackup.Integral()/1e6
+	  if "Anti" in samples[i][0]:
+	    ci.Scale(-1.)
+	    histname=histname.replace("CI","AntiCI")
+	    ci.SetName(histname)
+	  #if j>5:
+	  #  # APPROXIMATE FORMULA
+	  #  #ci.Scale(1./qcdnorm[j])
+	  #  # CORRECT FORMULA
+	  #   ci.Scale(1./nloqcdbackup.Integral())
+	  #else:
+	  #  # APPROXIMATE FORMULA
+	  #  #ci.Scale(nloqcd.Integral()/qcdnorm[j]/5.)
+	  #  # CORRECT FORMULA
+	  ci.Scale(nloqcd.Integral()/nloqcdbackup.Integral()) # fake signal for signficances
+	  scalesignal=abs(3*data.GetBinError(1)*nloqcd.Integral()/data.Integral()/ci.GetBinContent(1)) # find 2 sigma deviation
+          ci.Scale(scalesignal)
+	  ci.Add(nloqcd)
 	else:
           cibackup=out.Get(histname)
   	  histname=cibackup.GetName().replace("_backup","")
@@ -779,19 +825,19 @@ if __name__ == '__main__':
 	  ci.Add(qcd,-1.)
 	  #ci.Scale(cinorm[0]/qcdnorm[0]) # trusting the QCD+CI LO prediction in mb (10^9) for the LO cross section
 	  #print "AAA",histname,ci.Integral()/qcdnorm[j], ci.Integral()/qcdnorm[0]*cinorm[0]/nloqcdbackup.Integral()*1e6, qcdnorm[j], nloqcdbackup.Integral()/1e6
-	  if "Anti" in samples[i][0]:
-	    ci.Scale(-1.)
-	    histname=histname.replace("CI","AntiCI")
-	  if j>=2:
-	    # APPROXIMATE FORMULA
-	    #ci.Scale(1./qcdnorm[j])
-	    # CORRECT FORMULA
-	    ci.Scale(1./nloqcdbackup.Integral())
-	  else:
-	    # APPROXIMATE FORMULA
-	    #ci.Scale(nloqcd.Integral()/qcdnorm[j]/5.)
-	    # CORRECT FORMULA
-	    ci.Scale(nloqcd.Integral()/nloqcdbackup.Integral()/5.)
+	  #if "Anti" in samples[i][0]:
+	  #  ci.Scale(-1.)
+	  #  histname=histname.replace("CI","AntiCI")
+	  #if j>=2:
+	  #  # APPROXIMATE FORMULA
+	  #  #ci.Scale(1./qcdnorm[j])
+	  #  # CORRECT FORMULA
+	  ci.Scale(1./nloqcdbackup.Integral())
+	  #else:
+	  #  # APPROXIMATE FORMULA
+	  #  #ci.Scale(nloqcd.Integral()/qcdnorm[j]/5.)
+	  #  # CORRECT FORMULA
+	  #ci.Scale(nloqcd.Integral()/nloqcdbackup.Integral()/5.)
           ci.Add(nloqcd)
 	if ci.Integral()!=0:
           ci.Scale(dataevents[j]/ci.Integral())
@@ -968,24 +1014,27 @@ if __name__ == '__main__':
      	       nloPDFdownci=hnloPDFdown
            nloPDFdownci.Add(cibackup,-1)
      	   nloPDFdownci.Scale(1./cibackup.Integral())
+        else:
+           nloPDFdownci=nloPDFdownqcd
+           nloPDFupci=nloPDFupqcd
 
-     	   cipdfup=ci.Clone(ci.GetName()+"_pdfUp")
-     	   cipdfdown=ci.Clone(ci.GetName()+"_pdfDown")
-     	   cipdfup.Add(nloPDFupci,dataevents[j])
-     	   cipdfdown.Add(nloPDFdownci,dataevents[j])
-     	   for b in range(cipdfup.GetXaxis().GetNbins()):
-     	       cipdfup.SetBinError(b+1,0)
-     	       cipdfdown.SetBinError(b+1,0)
-     	       if cipdfup.GetBinCenter(b+1)-8.5>0:
-     	   	  tmp=cipdfup.GetBinContent(b+1)
-     	   	  cipdfup.SetBinContent(b+1,cipdfdown.GetBinContent(b+1))
-     	   	  cipdfdown.SetBinContent(b+1,tmp)
-     	   out.cd()
-     	   for k in range(0,200):
-     	       out.Delete(ci.GetName()+"_pdfUp"+";"+str(k))
-     	       out.Delete(ci.GetName()+"_pdfDown"+";"+str(k))
-     	   cipdfup.Write()
-     	   cipdfdown.Write()
+     	cipdfup=ci.Clone(ci.GetName()+"_pdfUp")
+     	cipdfdown=ci.Clone(ci.GetName()+"_pdfDown")
+     	cipdfup.Add(nloPDFupci,dataevents[j])
+     	cipdfdown.Add(nloPDFdownci,dataevents[j])
+     	for b in range(cipdfup.GetXaxis().GetNbins()):
+     	    cipdfup.SetBinError(b+1,0)
+     	    cipdfdown.SetBinError(b+1,0)
+     	    if cipdfup.GetBinCenter(b+1)-8.5>0:
+     	       tmp=cipdfup.GetBinContent(b+1)
+     	       cipdfup.SetBinContent(b+1,cipdfdown.GetBinContent(b+1))
+     	       cipdfdown.SetBinContent(b+1,tmp)
+     	out.cd()
+     	for k in range(0,200):
+     	    out.Delete(ci.GetName()+"_pdfUp"+";"+str(k))
+     	    out.Delete(ci.GetName()+"_pdfDown"+";"+str(k))
+     	cipdfup.Write()
+     	cipdfdown.Write()
 
         # NLO Scaleup/down
         nloScaleupqcd=None
@@ -1060,24 +1109,27 @@ if __name__ == '__main__':
      	       nloScaledownci=hnloScaledown
            nloScaledownci.Add(cibackup,-1)
      	   nloScaledownci.Scale(1./cibackup.Integral())
+        else:
+	   nloScaledownci=nloScaledownqcd
+	   nloScaleupci=nloScaleupqcd
 
-     	   ciscaleup=ci.Clone(ci.GetName()+"_scaleUp")
-     	   ciscaledown=ci.Clone(ci.GetName()+"_scaleDown")
-     	   ciscaleup.Add(nloScaleupci,dataevents[j])
-     	   ciscaledown.Add(nloScaledownci,dataevents[j])
-     	   for b in range(ciscaleup.GetXaxis().GetNbins()):
-     	       ciscaleup.SetBinError(b+1,0)
-     	       ciscaledown.SetBinError(b+1,0)
-     	       if ciscaleup.GetBinCenter(b+1)-8.5>0:
-     	   	  tmp=ciscaleup.GetBinContent(b+1)
-     	   	  ciscaleup.SetBinContent(b+1,ciscaledown.GetBinContent(b+1))
-     	   	  ciscaledown.SetBinContent(b+1,tmp)
-     	   out.cd()
-     	   for k in range(0,200):
-     	       out.Delete(ci.GetName()+"_scaleUp"+";"+str(k))
-     	       out.Delete(ci.GetName()+"_scaleDown"+";"+str(k))
-     	   ciscaleup.Write()
-     	   ciscaledown.Write()
+     	ciscaleup=ci.Clone(ci.GetName()+"_scaleUp")
+     	ciscaledown=ci.Clone(ci.GetName()+"_scaleDown")
+     	ciscaleup.Add(nloScaleupci,dataevents[j])
+     	ciscaledown.Add(nloScaledownci,dataevents[j])
+     	for b in range(ciscaleup.GetXaxis().GetNbins()):
+     	    ciscaleup.SetBinError(b+1,0)
+     	    ciscaledown.SetBinError(b+1,0)
+     	    if ciscaleup.GetBinCenter(b+1)-8.5>0:
+     	       tmp=ciscaleup.GetBinContent(b+1)
+     	       ciscaleup.SetBinContent(b+1,ciscaledown.GetBinContent(b+1))
+     	       ciscaledown.SetBinContent(b+1,tmp)
+     	out.cd()
+     	for k in range(0,200):
+     	    out.Delete(ci.GetName()+"_scaleUp"+";"+str(k))
+     	    out.Delete(ci.GetName()+"_scaleDown"+";"+str(k))
+     	ciscaleup.Write()
+     	ciscaledown.Write()
 	
 	# DATA BLINDED
 	#data=alt.Clone("data_blinded")
