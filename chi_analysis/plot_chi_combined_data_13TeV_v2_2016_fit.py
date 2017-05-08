@@ -339,22 +339,26 @@ if __name__=="__main__":
             central=fsys.Get(histname3)
             uncertainties+=[[up,down,central]]
 	    
+        hPrefit=hNloQcdbackup.Clone("prefit"+str(massbins13[massbin]))
+	hPrefit.SetLineWidth(1)
+	hPrefit.SetLineColor(1)
+	hPrefit.SetLineStyle(1)
+	new_hists+=[hPrefit]
+
         # Shift theory prediction according to fitted nuisance parameters
-        hPostfit=hNloQcdbackup.Clone("postfit"+str(massbins13[massbin]))
 	fitParameters=[-0.33,-0.84,+0.46,+0.24]
+	fitConstraints=[0.69,0.34,1.03,0.21]
 	for nn in range(len(fitParameters)):
           for b in range(h14.GetXaxis().GetNbins()):
 	    if fitParameters[nn]>0:
-	      hPostfit.SetBinContent(b+1,hPostfit.GetBinContent(b+1)*(1+fitParameters[nn]*(uncertainties[nn][0].GetBinContent(b+1)-uncertainties[nn][2].GetBinContent(b+1))/uncertainties[nn][2].GetBinContent(b+1)))
+	      hNloQcd.SetBinContent(b+1,hNloQcd.GetBinContent(b+1)*(1+fitParameters[nn]*(uncertainties[nn][0].GetBinContent(b+1)-uncertainties[nn][2].GetBinContent(b+1))/uncertainties[nn][2].GetBinContent(b+1)))
+	      hNloQcdbackup.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)*(1+fitParameters[nn]*(uncertainties[nn][0].GetBinContent(b+1)-uncertainties[nn][2].GetBinContent(b+1))/uncertainties[nn][2].GetBinContent(b+1)))
 	    else:
-	      hPostfit.SetBinContent(b+1,hPostfit.GetBinContent(b+1)*(1-fitParameters[nn]*(uncertainties[nn][1].GetBinContent(b+1)-uncertainties[nn][2].GetBinContent(b+1))/uncertainties[nn][2].GetBinContent(b+1)))
-	hPostfit.SetLineWidth(1)
-	hPostfit.SetLineColor(1)
-	hPostfit.SetLineStyle(1)
-	new_hists+=[hPostfit]
+	      hNloQcd.SetBinContent(b+1,hNloQcd.GetBinContent(b+1)*(1-fitParameters[nn]*(uncertainties[nn][1].GetBinContent(b+1)-uncertainties[nn][2].GetBinContent(b+1))/uncertainties[nn][2].GetBinContent(b+1)))
+	      hNloQcdbackup.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)*(1-fitParameters[nn]*(uncertainties[nn][1].GetBinContent(b+1)-uncertainties[nn][2].GetBinContent(b+1))/uncertainties[nn][2].GetBinContent(b+1)))
 	    
-        h2new=h14.Clone("down"+str(massbins13[massbin]))
-        h3new=h14.Clone("up"+str(massbins13[massbin]))
+        h2new=hNloQcdbackup.Clone("down"+str(massbins13[massbin]))
+        h3new=hNloQcdbackup.Clone("up"+str(massbins13[massbin]))
 	chi2=0
         for b in range(h14.GetXaxis().GetNbins()):
             if b==0:# or b==h14G.GetXaxis().GetNbins()-1:
@@ -363,17 +367,20 @@ if __name__=="__main__":
 	    exp_sumup=0
             theory_sumdown=0
             theory_sumup=0
+	    nn=0
             for up,down,central in uncertainties:
 	        if b==0:# or b==h14G.GetXaxis().GetNbins()-1:
                     print massbins13[massbin],b,uncertaintynames[uncertainties.index([up,down,central])],abs(up.GetBinContent(b+1)-central.GetBinContent(b+1))/central.GetBinContent(b+1),abs(down.GetBinContent(b+1)-central.GetBinContent(b+1))/central.GetBinContent(b+1)
-                addup=pow(max(0,up.GetBinContent(b+1)-central.GetBinContent(b+1),down.GetBinContent(b+1)-central.GetBinContent(b+1)),2)/pow(central.GetBinContent(b+1),2)
-		adddown=pow(max(0,central.GetBinContent(b+1)-up.GetBinContent(b+1),central.GetBinContent(b+1)-down.GetBinContent(b+1)),2)/pow(central.GetBinContent(b+1),2)
+                addup=fitConstraints[nn]*pow(max(0,up.GetBinContent(b+1)-central.GetBinContent(b+1),down.GetBinContent(b+1)-central.GetBinContent(b+1)),2)/pow(central.GetBinContent(b+1),2)
+		adddown=fitConstraints[nn]*pow(max(0,central.GetBinContent(b+1)-up.GetBinContent(b+1),central.GetBinContent(b+1)-down.GetBinContent(b+1)),2)/pow(central.GetBinContent(b+1),2)
                 if uncertaintynames[uncertainties.index([up,down,central])]=="jer" or uncertaintynames[uncertainties.index([up,down,central])]=="jes":
 		    exp_sumup+=addup
                     exp_sumdown+=adddown
 		else:
 		    theory_sumup+=addup
-                    theory_sumdown+=adddown
+                
+		    theory_sumdown+=adddown
+		nn+=1
             exp_sumdown=sqrt(exp_sumdown)
             exp_sumup=sqrt(exp_sumup)
             theory_sumdown=sqrt(theory_sumdown)
@@ -415,7 +422,7 @@ if __name__=="__main__":
         h14Gsysstat.Apply(TF2("offset",str(offsets[massbin])+"+y",1,16))
         h2new.Add(TF1("offset",str(offsets[massbin]),1,16))
         h3new.Add(TF1("offset",str(offsets[massbin]),1,16))
-        hPostfit.Add(TF1("offset",str(offsets[massbin]),1,16))
+        hPrefit.Add(TF1("offset",str(offsets[massbin]),1,16))
         
         c.cd()
         if massbin==1 or massbin==2 or massbin==3 or massbin==4 or massbin==5:
@@ -488,7 +495,7 @@ if __name__=="__main__":
         h3new.Draw("histsame")
         h2new.Draw("histsame")
         hNloQcd.Draw("histsame")
-	hPostfit.Draw("histsame")
+	hPrefit.Draw("histsame")
         #hNloQcdNoEwk.Draw("histsame")
         #if massbin>3:
             #h4.Draw("histsame")
@@ -543,10 +550,10 @@ if __name__=="__main__":
     l2.AddEntry(h14G,"Data","le")
     if showReReco:
       l2.AddEntry(h14AG,"Data ReReco","ple")
-    l2.AddEntry(h3newnew,"NLO QCD+EW prediction","fl")
+    l2.AddEntry(h3newnew,"Background-only fit","fl")
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
     #l2.AddEntry(h6,"M_{QBH} (n_{ED}=6 ADD) = 7.5 TeV","l")
-    l2.AddEntry(hPostfit,"Background-only fit ","l")
+    l2.AddEntry(hPrefit,"NLO QCD+EW prediction","l")
     #l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 14 TeV","l")
     #l2.AddEntry(h5,"#Lambda_{T} (GRW) = 12 TeV","l")
     l2.SetFillStyle(0)
