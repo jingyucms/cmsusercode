@@ -34,7 +34,7 @@ class TwoHypotesisHiggs(PhysicsModel):
                     raise RuntimeError, "Extrema for Higgs mass range defined with inverterd order. Second must be larger the first"
     def doParametersOfInterest(self):
         """Create POI and other parameters, and define the POI set."""
-        self.modelBuilder.doVar("x[0,0,1]");
+        self.modelBuilder.doVar("x[1,0,1.623]"); # QCD+NP=x=1.623 --> QCD=1-x^2=-1.623 --> (QCD-NP)-(QCD) = 1.623*NP
         poi = "x"
         if self.muFloating: 
             self.modelBuilder.doVar("r[1,0,4]");
@@ -48,8 +48,9 @@ class TwoHypotesisHiggs(PhysicsModel):
             #self.modelBuilder.factory_("expr::not_x(\"(1.000 - 0.999*@0)\", x)")
             #self.modelBuilder.factory_("expr::yes_x(\"(0.001 + 0.999*@0)\", x)")
             #self.sigNorms = { True:'yes_x', False:'not_x' }
-            self.modelBuilder.factory_("expr::not_x(\"(1-@0)\", x)")
-            self.sigNorms = { False:'x', True:'not_x' }
+            self.modelBuilder.factory_("expr::yes_x(\"@0*@0\", x)")
+            self.modelBuilder.factory_("expr::not_x(\"(1-@0*@0)\", x)")
+            self.sigNorms = { False:'yes_x', True:'not_x' }
         if self.modelBuilder.out.var("MH"):
             if len(self.mHRange):
                 print 'MH will be left floating within', self.mHRange[0], 'and', self.mHRange[1]
