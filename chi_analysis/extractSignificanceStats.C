@@ -29,9 +29,9 @@ int extractSignificanceStats(TString prefix){
   t->SetBranchAddress("weight",&w);
   t->SetBranchAddress("type",&type);
 
-  TH1F *hSM=new TH1F("hSM;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",8000,-100,100);
-  TH1F *hPS=new TH1F("hPS;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",8000,-100,100);
-  TH1F *hObs=new TH1F("hObserved","",100,-10,10);
+  TH1F *hSM=new TH1F("hSM;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",80000,-1000,1000);
+  TH1F *hPS=new TH1F("hPS;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",80000,-1000,1000);
+  TH1F *hObs=new TH1F("hObserved","",1000,-100,100);
   cout<<"Start to lopp on tree in file "<<fileName<<endl;
 
   std::vector<float> v_SM, v_PS,v_Obs;
@@ -187,8 +187,8 @@ cout<<"Cutting at "<<cut<<endl;
   gStyle->SetOptStat(0);
   TCanvas *c1=new TCanvas("c1","c1",800,800);
   c1->cd();
-  hSM->Rebin(50);
-  hPS->Rebin(50);
+  //hSM->Rebin(50);
+  //hPS->Rebin(50);
   hSM->SetXTitle("S = -2 #times ln(L_{1}/L_{2})");
   hSM->SetYTitle("Generated experiments");
   hPS->SetXTitle("S = -2 #times ln(L_{1}/L_{2})");
