@@ -29,9 +29,9 @@ int extractSignificanceStats(TString prefix){
   t->SetBranchAddress("weight",&w);
   t->SetBranchAddress("type",&type);
 
-  TH1F *hSM=new TH1F("hSM;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",80000,-1000,1000);
-  TH1F *hPS=new TH1F("hPS;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",80000,-1000,1000);
-  TH1F *hObs=new TH1F("hObserved","",1000,-100,100);
+  TH1F *hSM=new TH1F("hSM;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",8000,-100,100);
+  TH1F *hPS=new TH1F("hPS;S = -2 #times ln(L_{1}/L_{2});Number of Toys","",8000,-100,100);
+  TH1F *hObs=new TH1F("hObserved","",100,-10,10);
   cout<<"Start to lopp on tree in file "<<fileName<<endl;
 
   std::vector<float> v_SM, v_PS,v_Obs;

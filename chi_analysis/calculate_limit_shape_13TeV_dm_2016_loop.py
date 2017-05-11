@@ -43,6 +43,6 @@ if AxialDM:
       counter+=1
 
 
-#print models
+print models
 #print signalName
-#print signalExtraName
+print signalExtraName

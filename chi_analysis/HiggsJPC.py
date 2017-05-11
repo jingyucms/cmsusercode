@@ -45,11 +45,10 @@ class TwoHypotesisHiggs(PhysicsModel):
             #self.modelBuilder.factory_("expr::r_times_x(\"@0*(0.0001+0.9999*@1)\", r, x)")
             self.sigNorms = { True:'r_times_x', False:'r_times_not_x' }
         else:
-            #self.modelBuilder.factory_("expr::not_x(\"(1.000 - 0.999*@0)\", x)")
-            #self.modelBuilder.factory_("expr::yes_x(\"(0.001 + 0.999*@0)\", x)")
-            #self.sigNorms = { True:'yes_x', False:'not_x' }
             self.modelBuilder.factory_("expr::yes_x(\"@0*@0\", x)")
             self.modelBuilder.factory_("expr::not_x(\"(1-@0*@0)\", x)")
+            #self.modelBuilder.factory_("expr::yes_x(\"(x>=1)\", x)")
+            #self.modelBuilder.factory_("expr::not_x(\"(x<1)\", x)")
             self.sigNorms = { False:'yes_x', True:'not_x' }
         if self.modelBuilder.out.var("MH"):
             if len(self.mHRange):
