@@ -27,17 +27,12 @@ def medWidth(gq):
 
 if __name__=="__main__":
   
-  #style="DMVector"
-  style="DMAxial"
+  style="DMVector"
+  #style="DMAxial"
 
   testStat="LHC"
-<<<<<<< HEAD
   asym="a" # asymptotic CLS
   version="_v3"
-  #version=""
-=======
-  version="_v2"
->>>>>>> FETCH_HEAD
   
   signalCounter={}
   if style=="DMVector":
@@ -49,7 +44,7 @@ if __name__=="__main__":
   #mdms=["1","3000"]
   mdms=["1"]
   #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
-  signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000]
+  signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
  
   for mdm in mdms:
     for g in gs:
@@ -311,18 +306,18 @@ if __name__=="__main__":
     canvas = TCanvas("","",0,0,300,300)
     mg=TMultiGraph()
 
-    #min_x_new=signalMasses[0]
-    min_x_new=2000
+    min_x_new=signalMasses[0]
+    #min_x_new=2000
 
-    ymin=0.1
+    ymin=0.0
     ymax=1.42788
 
-    xs=np.linspace(6100,6500,num=20000)
+    max_x_new=6000
+    xs=np.linspace(5000,7000,num=20000)
     for x in xs:
       if g_q_exp.Eval(x)>=1.42788:
         max_x_new=x
         break
-    #max_x_new=6000
       
     g_q_band_2sigma.SetFillStyle(1001)
     g_q_band_2sigma.SetFillColor(kOrange)

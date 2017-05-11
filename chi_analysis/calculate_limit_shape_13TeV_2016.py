@@ -15,22 +15,23 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
   xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
 
 models=[]
-models=[3]
+#models=[3]
 #models+=[10,11]
 #models+=[60,61,62,63,64,65,66,67,68,69]
 #models+=[70,71,72,73,74,75,76,77]
-#models+=[78,79,80,81,82,83,84,85]
+models+=[78,79,80,81,82,83,84,85]
 #models+=[30,31,32,33,34,35,36,37,38]
 #models+=[40,41,42,43,44,45,46]
 #models=[88,89]
 
-VectorDM=False
+VectorDM=True
 AxialDM=True
 
+signalName={}
+signalExtraName={}
+  
 if VectorDM:
   counter=100
-  signalName={}
-  signalExtraName={}
   for mdm in ["1","3000"]:
   #for mdm in ["1"]:
     for gv in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
@@ -41,8 +42,6 @@ if VectorDM:
 
 if AxialDM:
   counter=1100
-  signalName={}
-  signalExtraName={}
   for mdm in ["1","3000"]:
     for ga in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
       #models+=[counter]
@@ -57,7 +56,7 @@ asym="a" #asymptotic CLS
 # The LEP-style and TEV-style CLS do not fit the POI.
 ntoys=30000 #30000 good enough for 1 sigma bands. 300000 for 2 sigma bands
 
-version="_v2" #version number controls how many massbin to use for DM
+version="_v3" #version number controls how many massbin to use for DM
 
 if len(sys.argv)>1:
    models=[int(sys.argv[1])]
@@ -275,7 +274,7 @@ for model in models:
  if model==65:
     signal="cs_ct14nlo_"
     signalExtra="_VV-"
-    signalMasses=[17000,18000,19000,20000,22000,24000,26000,27000,28000,29000,30000]
+    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000,32000,34000,36000]
  if model==66:
     signal="cs_ct14nlo_"
     signalExtra="_AA+"
@@ -283,7 +282,7 @@ for model in models:
  if model==67:
     signal="cs_ct14nlo_"
     signalExtra="_AA-"
-    signalMasses=[17000,18000,19000,20000,22000,24000,26000,27000,28000,29000,30000]
+    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000,32000,34000,36000]
  if model==68:
     signal="cs_ct14nlo_"
     signalExtra="_V-A+"
@@ -388,7 +387,7 @@ for model in models:
     signal=signalName[model]
     signalExtra=signalExtraName[model]
     #if float(signalExtraName[model].split("_")[2])<=2:
-    signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
+    signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000]
     #signalMasses=[3000]
 
  #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/"
@@ -487,9 +486,8 @@ for model in models:
     elif "DM" in signal and version=="_v1":
       signalWithMass=signal+'_'+str(signalMass)+signalExtra
       fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
-      if signalMass==6000:
-        fname=fname.replace("6000_3000","6000_2990")
-        signalWithMass=signalWithMass.replace("6000_3000","6000_2990")
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
       if signalMass<=2000:
         massbins=[(2400,3000)]
       elif signalMass==2500:
@@ -509,29 +507,23 @@ for model in models:
     elif "DM" in signal and version=="_v2":
       signalWithMass=signal+'_'+str(signalMass)+signalExtra
       fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
-      if signalMass==6000:
-        fname=fname.replace("6000_3000","6000_2990")
-        signalWithMass=signalWithMass.replace("6000_3000","6000_2990")
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
       massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
     elif "DM" in signal and version=="_v3":
       signalWithMass=signal+'_'+str(signalMass)+signalExtra
       fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
-      if signalMass==6000:
-        fname=fname.replace("6000_3000","6000_2990")
-        signalWithMass=signalWithMass.replace("6000_3000","6000_2990")
-      if signalMass<=2000:
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      if signalMass<=1500:
         massbins=[(2400,3000)]
-      elif signalMass<=2250:
+      elif signalMass<=2000:
         massbins=[(2400,3000),(3000,3600)]
-      elif signalMass==2500:
+      elif signalMass<=2500:
         massbins=[(2400,3000),(3000,3600),(3600,4200)]
-      elif signalMass==3000:
-        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800)]
-      elif signalMass==3500:
-        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400)]
-      elif signalMass==4000:
+      elif signalMass<=3000:
         massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000)]
-      elif signalMass<=4500:
+      elif signalMass<=6000:
         massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
       elif signalMass<=7000:
         massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
