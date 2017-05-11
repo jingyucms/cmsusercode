@@ -27,8 +27,8 @@ def medWidth(gq):
 
 if __name__=="__main__":
   
-  style="DMVector"
-  #style="DMAxial"
+  #style="DMVector"
+  style="DMAxial"
 
   testStat="LHC"
   asym="a" # asymptotic CLS
@@ -40,9 +40,9 @@ if __name__=="__main__":
   else:
     counter=1100
 
-  gs=["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
-  #mdms=["1","3000"]
-  mdms=["1"]
+  gs=["0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
+  mdms=["1","3000"]
+  #mdms=["1"]
   #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
   signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
  
@@ -131,7 +131,7 @@ if __name__=="__main__":
             limits[-1][i]=1e-6
 
       if asym: # reorder expected limits to exp,-1,+1,-2,+2
-        for g in range(len(gs)):
+        for g in range(len(limits)):
           limits[g]=[limits[g][0],limits[g][1],limits[g][2],limits[g][5],limits[g][6],limits[g][4],limits[g][7],limits[g][3]]
 
       print limits
@@ -312,12 +312,12 @@ if __name__=="__main__":
     ymin=0.0
     ymax=1.42788
 
-    max_x_new=6000
     xs=np.linspace(5000,7000,num=20000)
     for x in xs:
       if g_q_exp.Eval(x)>=1.42788:
         max_x_new=x
         break
+    max_x_new=6000
       
     g_q_band_2sigma.SetFillStyle(1001)
     g_q_band_2sigma.SetFillColor(kOrange)
