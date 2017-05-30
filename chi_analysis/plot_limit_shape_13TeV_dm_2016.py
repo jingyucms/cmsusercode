@@ -27,8 +27,7 @@ def medWidth(gq):
 
 if __name__=="__main__":
   
-  #style="DMVector"
-  style="DMAxial"
+ for style in ["DMVector","DMAxial"]:
 
   testStat="LHC"
   asym="a" # asymptotic CLS
@@ -45,6 +44,7 @@ if __name__=="__main__":
   #mdms=["1"]
   #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
   signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
+  signalMasses=[2500,3000,3500,4000,4500,5000,6000]
  
   for mdm in mdms:
     for g in gs:
@@ -404,7 +404,7 @@ if __name__=="__main__":
     lt.SetTextSize(0.04)
     lt.Draw("same")
     
-    l=TLegend(0.15,0.66,0.575,0.9,"95% CL upper limits")
+    l=TLegend(0.55,0.15,0.9,0.35,"95% CL upper limits")
     l.SetFillColor(0)
     l.SetFillStyle(0)
     l.SetTextSize(0.03)
