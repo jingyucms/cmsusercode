@@ -8,7 +8,8 @@ def system_call(command):
     p = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
     return p.stdout.read()
     
-massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+#massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)] # did not calculate CI for lower mass bins yet
 
 xsecs={}
 for l in open("xsecs_13TeV_dm.txt").readlines():
@@ -17,15 +18,18 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
 models=[]
 #models=[3]
 #models+=[10,11]
-#models+=[60,61,62,63,64,65,66,67,68,69]
+models+=[60,61,62,63,64,65,66,67,68,69]
 #models+=[70,71,72,73,74,75,76,77]
 #models+=[78,79,80,81,82,83,84,85]
 #models+=[30,31,32,33,34,35,36,37,38]
 #models+=[40,41,42,43,44,45,46]
-models=[88,89]
+#models=[88,89]
 
 VectorDM=True
 AxialDM=True
+
+injectSignal=True
+dataWithSignal="_DMAxial_Dijet_LO_Mphi_4000_3000_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1_chi2016_inject.root"
 
 signalName={}
 signalExtraName={}
@@ -274,7 +278,7 @@ for model in models:
  if model==65:
     signal="cs_ct14nlo_"
     signalExtra="_VV-"
-    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000,32000,34000,36000]
+    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000]#,32000,34000,36000
  if model==66:
     signal="cs_ct14nlo_"
     signalExtra="_AA+"
@@ -282,7 +286,7 @@ for model in models:
  if model==67:
     signal="cs_ct14nlo_"
     signalExtra="_AA-"
-    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000,32000,34000,36000]
+    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000]#,32000,34000,36000
  if model==68:
     signal="cs_ct14nlo_"
     signalExtra="_V-A+"
@@ -545,6 +549,9 @@ kmax 4 number of nuisance parameters""")
 -----------
 """)
     for i in range(len(massbins)):
+        if injectSignal:
+          cfg.writelines("""shapes data_obs bin"""+str(i)+""" """+prefix+dataWithSignal+""" data_obs#chi"""+str(massbins[i][0])+"""_"""+str(massbins[i][1])+"""_rebin1 data_obs#chi"""+str(massbins[i][0])+"""_"""+str(massbins[i][1])+"""_rebin1_$SYSTEMATIC
+""")
         cfg.writelines("""shapes * bin"""+str(i)+""" """+fname+""" $PROCESS#chi"""+str(massbins[i][0])+"""_"""+str(massbins[i][1])+"""_rebin1 $PROCESS#chi"""+str(massbins[i][0])+"""_"""+str(massbins[i][1])+"""_rebin1_$SYSTEMATIC
 """)
     cfg.writelines("""
