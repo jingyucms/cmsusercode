@@ -4,7 +4,7 @@ import array
 import ROOT
 
 
-VectorDM=False
+VectorDM=True
 AxialDM=True
 
 models=[]
@@ -21,10 +21,10 @@ if VectorDM:
       models+=[counter]
       signalName[counter]="DMVector_Dijet_LO_Mphi"
       signalExtraName[counter]="_"+mdm+"_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_"+gv+"_ga_0"
-      if not gv==gvs[-1]:
-        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)+" >& log"+str(counter)+" &"
+      if counter%5==4:
+        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)+" >& log"+str(counter)
       else:
-        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)
+        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)+" >& log"+str(counter)+" &"
       counter+=1
 
 if AxialDM:
@@ -36,10 +36,10 @@ if AxialDM:
       models+=[counter]
       signalName[counter]="DMAxial_Dijet_LO_Mphi"
       signalExtraName[counter]="_"+mdm+"_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_"+ga
-      if not ga==gas[-1]:
-        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)+" >& log"+str(counter)+" &"
+      if counter%5==4:
+        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)+" >& log"+str(counter)
       else:
-        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)
+        print "python calculate_limit_shape_13TeV_2016.py "+str(counter)+" >& log"+str(counter)+" &"
       counter+=1
 
 

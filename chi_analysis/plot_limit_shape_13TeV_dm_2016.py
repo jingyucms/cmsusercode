@@ -1,6 +1,7 @@
 from ROOT import *
 import ROOT,sys,os,math
 from math import *
+import numpy as np
 
 #gROOT.Macro( os.path.expanduser( '~/rootlogon.C' ) )
 gROOT.Reset()
@@ -9,9 +10,9 @@ gStyle.SetOptStat(0)
 gStyle.SetOptFit(0)
 gStyle.SetTitleOffset(0.9,"XY")
 gStyle.SetPadLeftMargin(0.1)
-gStyle.SetPadBottomMargin(0.09)
-gStyle.SetPadTopMargin(0.1)
-gStyle.SetPadRightMargin(0.05)
+gStyle.SetPadBottomMargin(0.1)
+gStyle.SetPadTopMargin(0.075)
+gStyle.SetPadRightMargin(0.1)
 gStyle.SetMarkerSize(1.5)
 gStyle.SetHistLineWidth(1)
 gStyle.SetStatFontSize(0.020)
@@ -21,14 +22,16 @@ gStyle.SetNdivisions(513, "Y")
 gStyle.SetNdivisions(510, "X")
 gStyle.SetLegendBorderSize(0)
 
+def medWidth(gq):
+  return 6*gq**2/(4*3.141592653)+1/(12*3.141592653)
+
 if __name__=="__main__":
   
-  #style="DMVector"
-  style="DMAxial"
+ for style in ["DMVector","DMAxial"]:
 
-  testStat="TEV"
+  testStat="LHC"
+  asym="a" # asymptotic CLS
   version="_v3"
-  #version=""
   
   signalCounter={}
   if style=="DMVector":
@@ -36,20 +39,21 @@ if __name__=="__main__":
   else:
     counter=1100
 
-  gs=["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
+  gs=["0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
   mdms=["1","3000"]
   #mdms=["1"]
   #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
-  signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
+  signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
+  signalMasses=[2500,3000,3500,4000,4500,5000,6000]
  
   for mdm in mdms:
     for g in gs:
       signalCounter[style+"_mdm"+mdm+"_g"+g]=counter
       counter+=1
       
-  #for mdm in mdms:
-  for mdm in ["1"]:
-    g_q_out=TFile('limits'+testStat+"_"+style+"_mdm"+mdm+version+'.root',"RECREATE")
+  for mdm in mdms:
+  #for mdm in ["1"]:
+    g_q_out=TFile('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'.root',"RECREATE")
     
     g_q=TGraph(0)
     g_q_exp=TGraph(0)
@@ -65,19 +69,22 @@ if __name__=="__main__":
       for g in gs:
         if testStat!="LEP":
           try:
-            f=file("limits"+testStat+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
+            f=file("limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
           except:
-            print "can't open","limits"+testStat+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
+            print "can't open","limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
 	    continue
         else:
           try:
-            f=file("limits"+testStat+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt")
+            f=file("limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt")
           except:
-            print "can't open","limits"+testStat+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt"
+            print "can't open","limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt"
             continue
           
         limits+=[[]]
         for line in f.readlines():
+ 
+          if "Observed Limit" in line and asym:
+            limits[-1]=[float(g.replace('p','.')),float(line.strip().split(" ")[-1]),0]
           
           if "CLs = " in line and testStat=="LEP":
             limits[-1]=[float(g.replace('p','.')),float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
@@ -86,6 +93,9 @@ if __name__=="__main__":
           
           if "Observed CLs = " in line and testStat!="LEP":
             limits[-1]=[float(g.replace('p','.')),float(line.strip().split(" ")[-1]),0]
+ 
+          if "Significance:" in line and asym:
+            print "observed signficance (p-value): ",line.strip().split(" ")[-1].strip(")")
               
           if "CLb      = " in line and testStat=="LEP":
             print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
@@ -99,12 +109,14 @@ if __name__=="__main__":
           limits[-1]+=[0]
           
         try:
-          f=file("limits"+testStat+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
+          f=file("limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
         except:
-          print "can't open","limits"+testStat+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
+          print "can't open","limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
           del limits[-1]
 	  continue
         for line in f.readlines():
+          if "Expected" in line and asym:
+              limits[-1]+=[float(line.strip().split(" ")[-1])]
           if "Expected CLs" in line:
 	    try:
               limits[-1]+=[float(line.strip().split(" ")[-1])]
@@ -117,6 +129,10 @@ if __name__=="__main__":
         for i in range(len(limits[-1])):
           if limits[-1][i]==0 and i>=3:
             limits[-1][i]=1e-6
+
+      if asym: # reorder expected limits to exp,-1,+1,-2,+2
+        for g in range(len(limits)):
+          limits[g]=[limits[g][0],limits[g][1],limits[g][2],limits[g][5],limits[g][6],limits[g][4],limits[g][7],limits[g][3]]
 
       print limits
 
@@ -194,17 +210,32 @@ if __name__=="__main__":
       mg.Draw("apl")
       mg.SetTitle("")
       mg.GetXaxis().SetTitle("g_{q}")
-      mg.GetYaxis().SetTitle("log_{10}(CL_{S})")
-      mg.GetYaxis().SetRangeUser(-6,0)
+      if asym:
+        mg.GetYaxis().SetTitle("log_{10}(signal strength)")
+        miny=-1
+        maxy=1
+      else:
+        mg.GetYaxis().SetTitle("log_{10}(CL_{S})")
+        miny=-6
+        maxy=0
+      mg.GetYaxis().SetRangeUser(miny,maxy)
 
       min_x=0.01
   
-      l=TLine(min_x,log10(0.05),max_x,log10(0.05))
+      if asym:
+        cut=1
+      else:
+        cut=0.05
+
+      l=TLine(min_x,log10(cut),max_x,log10(cut))
       l.SetLineColor(2)
       l.SetLineStyle(2)
       l.Draw("same")
       
-      l1=TLatex((max_x-min_x)*0.75+min_x,log10(0.05)*1.15,"CL_{S}=0.05")
+      if asym:
+        l1=TLatex((max_x-min_x)*0.5+min_x,log10(cut)*1,"signal strength = 1")
+      else:
+        l1=TLatex((max_x-min_x)*0.5+min_x,log10(cut)*1,"CL_{S}=0.05")
       l1.Draw("same")
 
       limit=0
@@ -213,26 +244,24 @@ if __name__=="__main__":
       exp1p=0
       exp2m=0
       exp2p=0
-      nseg=500000
-      #print "min_x,max_x:",min_x,max_x
-      for i in reversed(range(nseg)):
-        mass=i*(limits[-1][0]-limits[0][0])/float(nseg)+limits[0][0]
-        if mass<min_x or mass>max_x: continue
-        if limit==0 and g.Eval(mass,0)>log10(0.05) and mass<=max_mass:
+      nseg=10000
+      masses=np.linspace(max_x,min_x,num=nseg)
+      for mass in masses:  
+        if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
           limit=mass
-        if exp==0 and g_exp_.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp:
+        if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
           exp=mass
           print "exp:",i,mass
-        if exp1m==0 and g_exp1m.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp1m:
+        if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
           print "exp1m:",i,mass
           exp1m=mass
-        if exp1p==0 and g_exp1p.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp1p:
+        if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
           exp1p=mass
           print "exp1p:",i,mass
-        if exp2m==0 and g_exp2m.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp2m:
+        if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
           print "exp2m:",i,mass
           exp2m=mass
-        if exp2p==0 and g_exp2p.Eval(mass,0)>log10(0.05) and mass<=max_mass_exp2p:
+        if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
           exp2p=mass
           print "exp2p:",i,mass
 
@@ -252,37 +281,44 @@ if __name__=="__main__":
       g_q_band_2sigma.SetPointError(g_q_band_2sigma.GetN()-1,0,0,exp-min(exp2p,exp2m),max(exp2p,exp2m)-exp)
       #print "g_q_band_2sigma.GetErrorYlow(g_q_band_2sigma.GetN()-1),g_q_band.GetErrorYhigh(g_q_band_2sigma.GetN()-1):",g_q_band_2sigma.GetErrorYlow(g_q_band_2sigma.GetN()-1),g_q_band_2sigma.GetErrorYhigh(g_q_band_2sigma.GetN()-1)
   
-      l2=TLine(limit,-3,limit,log10(0.05))
+      l2=TLine(limit,miny,limit,log10(cut))
       l2.SetLineColor(1)
       l2.SetLineStyle(2)
       l2.Draw("same")
       
-      l2a=TLine(exp,-3,exp,log10(0.05))
+      l2a=TLine(exp,miny,exp,log10(cut))
       l2a.SetLineColor(2)
       l2a.SetLineStyle(2)
       l2a.Draw("same")
   
-      l2b=TLine(exp1m,-3,exp1m,log10(0.05))
+      l2b=TLine(exp1m,miny,exp1m,log10(cut))
       l2b.SetLineColor(3)
       l2b.SetLineStyle(2)
       l2b.Draw("same")
   
-      l2c=TLine(exp1p,-3,exp1p,log10(0.05))
+      l2c=TLine(exp1p,miny,exp1p,log10(cut))
       l2c.SetLineColor(3)
       l2c.SetLineStyle(2)
       l2c.Draw("same")
   
-      canvas.SaveAs('limits'+testStat+signal+version+'.pdf')
+      canvas.SaveAs('limits'+testStat+asym+signal+version+'.pdf')
 
     canvas = TCanvas("","",0,0,300,300)
-    #canvas.GetPad(0).SetLogy()
-    canvas.SetTickx(1)
-    canvas.SetTicky(1)
     mg=TMultiGraph()
 
-    min_x=signalMasses[0]
-    max_x=signalMasses[-1]
+    min_x_new=signalMasses[0]
+    #min_x_new=2000
 
+    ymin=0.0
+    ymax=1.42788
+
+    xs=np.linspace(5000,7000,num=20000)
+    for x in xs:
+      if g_q_exp.Eval(x)>=1.42788:
+        max_x_new=x
+        break
+    max_x_new=6000
+      
     g_q_band_2sigma.SetFillStyle(1001)
     g_q_band_2sigma.SetFillColor(kOrange)
     g_q_band_2sigma.SetLineColor(1)
@@ -314,29 +350,53 @@ if __name__=="__main__":
     mg.SetTitle("")
     mg.GetXaxis().SetTitle("M_{Med} [GeV]")
     mg.GetYaxis().SetTitle("g_{q}")
-    mg.GetYaxis().SetRangeUser(0.,3.)
-    mg.GetXaxis().SetRangeUser(min_x,max_x)
+    mg.GetYaxis().SetLabelSize(0.03)
+    mg.GetYaxis().SetTitleSize(0.04)
+    mg.GetYaxis().SetTitleOffset(1.1)
+    mg.GetXaxis().SetLimits(min_x_new,max_x_new)
+    mg.GetYaxis().SetRangeUser(ymin,ymax)
+    mg.GetYaxis().SetNdivisions(510)
+    mg.GetXaxis().SetNdivisions(510)
 
-    l0p5=TLine(min_x,0.5,max_x,0.5)
+    y1=TGaxis(min_x_new, ymin, min_x_new, ymax, ymin,ymax,510,"")
+    y1.SetLabelSize(0)
+    y1.SetTitleSize(0)
+    y1.Draw()
+
+    x2=TGaxis(min_x_new, ymax, max_x_new, ymax, min_x_new,max_x_new,510,"-")
+    x2.SetLabelSize(0)
+    x2.SetTitleSize(0)
+    x2.Draw()
+
+    minwidth=medWidth(ymin)
+    myFunc=TF1("myFunc","pow((x-1/(12*3.141592653))*(4*3.141592653)/6,0.5)",minwidth,1)
+    y2=TGaxis(max_x_new, ymin, max_x_new, ymax,"myFunc",510,"+L")
+    y2.SetTitle("#Gamma/M_{Med}")
+    y2.SetLabelSize(0.03)
+    y2.SetTitleSize(0.04)
+    y2.SetTitleOffset(1.1)
+    y2.Draw()
+
+    l0p5=TLine(min_x_new,0.5,max_x_new,0.5)
     l0p5.SetLineColor(kGray+1)
     l0p5.SetLineStyle(kDashed)
     l0p5.Draw("same")
       
-    l0p5T=TLatex((max_x-min_x)*0.35+min_x,0.5+0.1,"g_{q}=0.5")
+    l0p5T=TLatex((max_x_new-min_x_new)*0.35+min_x_new,0.5-0.05,"g_{q}=0.5")
     l0p5T.SetTextSize(0.03)
     l0p5T.SetTextColor(kGray+1)
     l0p5T.Draw("same")
 
-    l1p0=TLine(min_x,1,max_x,1)
+    l1p0=TLine(min_x_new,1,max_x_new,1)
     l1p0.SetLineColor(kGray+1)
     l1p0.SetLineStyle(kDashed)
     l1p0.Draw("same")
       
-    l1p0T=TLatex((max_x-min_x)*0.35+min_x,1.0+0.1,"g_{q}=1.0")
+    l1p0T=TLatex((max_x_new-min_x_new)*0.35+min_x_new,1.0-0.05,"g_{q}=1.0")
     l1p0T.SetTextSize(0.03)
     l1p0T.SetTextColor(kGray+1)
     l1p0T.Draw("same")
-
+    
     if style=="DMAxial":
       lt=TLatex(signalMasses[1],2.65,"#splitline{Axial-vector Mediator & Dirac DM}{ m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
     else:
@@ -344,7 +404,7 @@ if __name__=="__main__":
     lt.SetTextSize(0.04)
     lt.Draw("same")
     
-    l=TLegend(0.2,0.51,0.575,0.75,"95% CL upper limits")
+    l=TLegend(0.55,0.15,0.9,0.35,"95% CL upper limits")
     l.SetFillColor(0)
     l.SetFillStyle(0)
     l.SetTextSize(0.03)
@@ -354,16 +414,17 @@ if __name__=="__main__":
     l.AddEntry(g_q_band,"Expected #pm 1#sigma","F")
     l.AddEntry(g_q_band_2sigma,"Expected #pm 2#sigma","F")
     l.Draw()
+    
 
     # CMS
-    leg2=TLatex(min_x,3.05,"#bf{CMS} #it{Preliminary}")
+    leg2=TLatex(min_x_new,ymax+0.03,"#bf{CMS} #it{Preliminary}")
     leg2.SetTextFont(42)
     leg2.SetTextSize(0.04)
     # lumi
-    leg3=TLatex(max_x-1500,3.05,"35.9 fb^{-1} (13 TeV)")
+    leg3=TLatex(max_x_new-1500,ymax+0.03,"35.9 fb^{-1} (13 TeV)")
     leg3.SetTextFont(42)
     leg3.SetTextSize(0.04)
     leg2.Draw("same")
     leg3.Draw("same")
     
-    canvas.SaveAs('limits'+testStat+"_"+style+"_mdm"+mdm+version+'.pdf')
+    canvas.SaveAs('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'.pdf')

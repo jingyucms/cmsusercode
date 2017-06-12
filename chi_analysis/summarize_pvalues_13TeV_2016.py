@@ -20,7 +20,7 @@ for signal,signalMass in [("CIplusLL","12000"),("cs_ct14nlo_","13000"),("AntiCIp
     if signal=="cs_ct14nlo_" and len(massbins)==1: continue
     if signal!="cs_ct14nlo_" and len(massbins)>1: continue
     limits={}
-    name="pvalue_TEV"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")+"_exp_"+signalMass+"_2016"
+    name="pvalue_LHCa"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")+"_exp_"+signalMass+"_2016"
     print name
     f1=open(name+".txt")
     observed=0
@@ -28,3 +28,6 @@ for signal,signalMass in [("CIplusLL","12000"),("cs_ct14nlo_","13000"),("AntiCIp
         if "CLb" in l:
 	    pval=float(l.split("=")[1].split("+")[0].strip(" "))
             print "pvalue",pval,"significance",RooStats.PValueToSignificance((1.-pval)/2.)
+        if "Significance:" in l:
+	    significance=float(l.strip().split(" ")[-1].strip(")"))
+            print "significance",significance

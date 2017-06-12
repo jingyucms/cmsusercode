@@ -2,7 +2,12 @@ import os,sys
 from ROOT import *
 import array
 import ROOT
+import subprocess
 
+def system_call(command):
+    p = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
+    return p.stdout.read()
+    
 massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
 xsecs={}
@@ -10,37 +15,46 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
   xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
 
 models=[]
+#models=[3]
+#models+=[10,11]
+#models+=[60,61,62,63,64,65,66,67,68,69]
+#models+=[70,71,72,73,74,75,76,77]
+#models+=[78,79,80,81,82,83,84,85]
+#models+=[30,31,32,33,34,35,36,37,38]
+#models+=[40,41,42,43,44,45,46]
+models=[88,89]
 
-VectorDM=False
+VectorDM=True
 AxialDM=True
 
+signalName={}
+signalExtraName={}
+  
 if VectorDM:
   counter=100
-  signalName={}
-  signalExtraName={}
   for mdm in ["1","3000"]:
   #for mdm in ["1"]:
     for gv in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
-      models+=[counter]
+      #models+=[counter]
       signalName[counter]="DMVector_Dijet_LO_Mphi"
       signalExtraName[counter]="_"+mdm+"_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_"+gv+"_ga_0"
       counter+=1
 
 if AxialDM:
   counter=1100
-  signalName={}
-  signalExtraName={}
   for mdm in ["1","3000"]:
     for ga in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
-      models+=[counter]
+      #models+=[counter]
       signalName[counter]="DMAxial_Dijet_LO_Mphi"
       signalExtraName[counter]="_"+mdm+"_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_"+ga
       counter+=1    
 
 
 testStat="LHC"# in 2012 and 2015 data used "LEP", checking "TEV" and "LHC" for 2016 data
+asym="a" #asymptotic CLS
 # The POI for LHC-style CLS is not clear, since CI models have no freedom  in signal strength or cross section.
 # The LEP-style and TEV-style CLS do not fit the POI.
+ntoys=30000 #30000 good enough for 1 sigma bands. 300000 for 2 sigma bands
 
 version="_v3" #version number controls how many massbin to use for DM
 
@@ -260,7 +274,7 @@ for model in models:
  if model==65:
     signal="cs_ct14nlo_"
     signalExtra="_VV-"
-    signalMasses=[17000,18000,19000,20000,22000,24000,26000,27000,28000,29000,30000]
+    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000,32000,34000,36000]
  if model==66:
     signal="cs_ct14nlo_"
     signalExtra="_AA+"
@@ -268,7 +282,7 @@ for model in models:
  if model==67:
     signal="cs_ct14nlo_"
     signalExtra="_AA-"
-    signalMasses=[17000,18000,19000,20000,22000,24000,26000,27000,28000,29000,30000]
+    signalMasses=[20000,22000,24000,26000,27000,28000,29000,30000,32000,34000,36000]
  if model==68:
     signal="cs_ct14nlo_"
     signalExtra="_V-A+"
@@ -376,15 +390,15 @@ for model in models:
     signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000]
     #signalMasses=[3000]
 
- dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/"
- prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/DMMay2/datacard_shapelimit13TeV"
- #dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- #prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+ #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/"
+ #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/DMMay2/datacard_shapelimit13TeV"
+ dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
+ prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
  if model>=30 and model<60:
-    name="pvalue_"+testStat+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
+    name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
-    name="limits"+testStat+str(model)+"_"+signal
+    name="limits"+testStat+asym+str(model)+"_"+signal
 
  limits={}
  for signalMass in signalMasses:
@@ -472,9 +486,8 @@ for model in models:
     elif "DM" in signal and version=="_v1":
       signalWithMass=signal+'_'+str(signalMass)+signalExtra
       fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
-      if signalMass==6000:
-        fname=fname.replace("6000_3000","6000_2990")
-        signalWithMass=signalWithMass.replace("6000_3000","6000_2990")
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
       if signalMass<=2000:
         massbins=[(2400,3000)]
       elif signalMass==2500:
@@ -494,29 +507,23 @@ for model in models:
     elif "DM" in signal and version=="_v2":
       signalWithMass=signal+'_'+str(signalMass)+signalExtra
       fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
-      if signalMass==6000:
-        fname=fname.replace("6000_3000","6000_2990")
-        signalWithMass=signalWithMass.replace("6000_3000","6000_2990")
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
       massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
     elif "DM" in signal and version=="_v3":
       signalWithMass=signal+'_'+str(signalMass)+signalExtra
       fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
-      if signalMass==6000:
-        fname=fname.replace("6000_3000","6000_2990")
-        signalWithMass=signalWithMass.replace("6000_3000","6000_2990")
-      if signalMass<=2000:
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      if signalMass<=1500:
         massbins=[(2400,3000)]
-      elif signalMass<=2250:
+      elif signalMass<=2000:
         massbins=[(2400,3000),(3000,3600)]
-      elif signalMass==2500:
+      elif signalMass<=2500:
         massbins=[(2400,3000),(3000,3600),(3600,4200)]
-      elif signalMass==3000:
-        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800)]
-      elif signalMass==3500:
-        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400)]
-      elif signalMass==4000:
+      elif signalMass<=3000:
         massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000)]
-      elif signalMass<=4500:
+      elif signalMass<=6000:
         massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
       elif signalMass<=7000:
         massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
@@ -600,37 +607,50 @@ kmax 4 number of nuisance parameters""")
 
     cfg.close()
 
-    os.system("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
-    os.system("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
+    out=system_call("cp "+dire+"HiggsJPC.py ${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/python")
+    out=system_call("text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root")
     print "text2workspace.py -m "+str(signalMass)+" chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt -P HiggsAnalysis.CombinedLimit.HiggsJPC:twoHypothesisHiggs -o fixedMu_"+signalWithMass.replace("QCD","")+".root"
     
     method=testStat+" --singlePoint 1.0"
     if testStat=="LEP":
-      poi=""
-      add=""
+     poi=""
+     add=""
     if testStat=="LHC":
-      poi=" --redefineSignalPOIs x" # -H ProfileLikelihood
-      method+=" --frequentist"
-      add="LHC"
+     poi=" --redefineSignalPOIs x" # -H ProfileLikelihood
+     method+=" --frequentist"
+     add="LHC"
     if testStat=="TEV":
-      poi=" --redefineSignalPOIs x"
-      add=""
-    
-    os.system("combine -m "+str(signalMass)+" -M HybridNew --rule CLs --saveHybridResult --testStat "+method+poi+" --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+"_2016"+version+".txt")
-    print "combine -m "+str(signalMass)+" -M HybridNew --rule CLs --saveHybridResult --testStat "+method+poi+" --fork 4 -T 30000 --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root > "+name+"_"+str(signalMass)+"_2016"+version+".txt"
-    
-    os.system('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
-    print 'root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'.root\\",'+str(signalMass)+',1,\\"x\\")"'
-    
-    os.system('root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'\\")" > '+name+'_exp_'+str(signalMass)+'_2016'+version+'.txt')
-    print 'root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'\\")" > '+name+'_exp_'+str(signalMass)+'_2016'+version+'.txt'
+     poi=" --redefineSignalPOIs x"
+     add=""
+    if asym:
+     if "limit" in name:
+      print "combine -m "+str(signalMass)+" -M Asymptotic -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root"
+      out=system_call("combine -m "+str(signalMass)+" -M Asymptotic -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      f = open(name+"_exp_"+str(signalMass)+"_2016"+version+".txt","w");f.write(out);f.close()
+     else: 
+      print "combine --signif -m "+str(signalMass)+" -M Asymptotic -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root"
+      out=system_call("combine --signif -m "+str(signalMass)+" -M ProfileLikelihood -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      f = open(name+"_exp_"+str(signalMass)+"_2016"+version+".txt","w");f.write(out);f.close()
 
+    else:
+    
+     print "combine -m "+str(signalMass)+" -M HybridNew --rule CLs --saveHybridResult --testStat "+method+poi+" --fork 4 -T "+str(ntoys)+" --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root"
+     out=system_call("combine -m "+str(signalMass)+" -M HybridNew --rule CLs --saveHybridResult --testStat "+method+poi+" --fork 4 -T "+str(ntoys)+" --clsAcc 0.1 -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+     f = open(name+"_"+str(signalMass)+"_2016"+version+".txt","w");f.write(out);f.close()
+    
+     print 'root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'.root\\",'+str(signalMass)+',1,\\"x\\")"'
+     out=system_call('root -q -b higgsCombine'+signal+signalExtra+'.HybridNew.mH'+str(signalMass)+'.root "${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/test/plotting/hypoTestResultTree.cxx(\\"qmu_'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'.root\\",'+str(signalMass)+',1,\\"x\\")"')
+    
+     print 'root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'\\")"'
+     out=system_call('root -q -b '+dire+'"extractSignificanceStats'+add+'.C(\\"'+signal+str(signalMass)+signalExtra+'_'+testStat+version+'\\")"')
+     f = open(name+'_exp_'+str(signalMass)+'_2016'+version+'.txt',"w");f.write(out);f.close()
     
     # diagnostics
-    diagnostic=False
+    diagnostic=True
     if diagnostic==True:
-      os.system("mkdir "+name)
-      os.system("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+" -n "+name+str(signalMass)+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      out=system_call("mkdir "+name)
+      out=system_call("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+" -n "+name+str(signalMass)+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      out=system_call("python diffNuisances.py -p x -a "+name+"/mlfit"+name+str(signalMass)+".root")
 
  for signalMass in signalMasses:
     limits[signalMass]=[]
@@ -645,10 +665,14 @@ kmax 4 number of nuisance parameters""")
       print "file not found", fname
       continue
     for line in f.readlines():
+        if "Observed Limit" in line and asym:
+           limits[signalMass]=[signalMass,float(line.strip().split(" ")[-1]),0]
         if "CLs = " in line and testStat=="LEP":
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-3]),float(line.strip().split(" ")[-1])]
         if "Observed CLs = " in line and testStat!="LEP":
            limits[signalMass]=[signalMass,float(line.strip().split(" ")[-1]),0]
+        if "Significance:" in line and asym:
+           print "observed signficance (p-value): ",line.strip().split(" ")[-1].strip(")")
         if "CLb = " in line and testStat=="LEP":
            print "observed signficance (p-value): ",ROOT.Math.normal_quantile_c((1.-float(line.strip().split(" ")[-3]))/2.,1),"(",(1.-float(line.strip().split(" ")[-3])),")"
         if "Observed CLb = " in line and testStat!="LEP":
@@ -662,6 +686,8 @@ kmax 4 number of nuisance parameters""")
       print "file not found", fname
       continue
     for line in f.readlines():
+        if "Expected" in line and asym:
+           limits[signalMass]+=[float(line.strip().split(" ")[-1])]
         if "Expected CLs" in line:
 	  try:
            limits[signalMass]+=[float(line.strip().split(" ")[-1])]
@@ -669,6 +695,10 @@ kmax 4 number of nuisance parameters""")
            print "didn't find one point"
     for i in range(len(limits[signalMass]),8):
          limits[signalMass]+=[0]
+
+ if asym: # reorder expected limits to exp,-1,+1,-2,+2
+   for signalMass in signalMasses:
+     limits[signalMass]=[limits[signalMass][0],limits[signalMass][1],limits[signalMass][2],limits[signalMass][5],limits[signalMass][6],limits[signalMass][4],limits[signalMass][7],limits[signalMass][3]]
 
  print limits
  name=name+"_2016"+version+".txt"
