@@ -43,6 +43,7 @@ if __name__ == '__main__':
 
     useLensData=False
     useUnfoldedData=True
+    injectSignal=False
 
     prefixs=["datacard_shapelimit13TeV"]
  
@@ -238,7 +239,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -434,9 +435,8 @@ if __name__ == '__main__':
     #xsecs={}
     #for l in open("xsecs_13TeV_dm.txt").readlines():
     #  xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
-    for mass in [1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000,8000]:
-    #for mass in [6000,7000,8000]:
-    #for mass in [4500]:
+    #for mass in [1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000,8000]:
+    for mass in [4000]:
      if mass==6000:
        mDMs=[1,2990]
      elif mass==7000:
@@ -623,10 +623,11 @@ if __name__ == '__main__':
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
 	out.cd()
-	histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
-	for k in range(0,200):
-            out.Delete(histname+";"+str(k))
-        data.Write(histname)
+	if not injectSignal:
+	 histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	 for k in range(0,200):
+             out.Delete(histname+";"+str(k))
+         data.Write(histname)
 
         # NLO
         nloqcd=None
@@ -868,6 +869,14 @@ if __name__ == '__main__':
             out.Delete(histname+";"+str(k))
         alt.Write(histname)
 	
+	if injectSignal:
+	 data.Add(ci,1)
+	 data.Add(alt,-1)
+	 histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+	 for k in range(0,200):
+             out.Delete(histname+";"+str(k))
+         data.Write(histname)
+
         # JER uncertainty
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         clone=ci.Clone(histname)

@@ -346,8 +346,8 @@ if __name__=="__main__":
 	new_hists+=[hPrefit]
 
         # Shift theory prediction according to fitted nuisance parameters
-	fitParameters=[-0.33,-0.84,+0.46,+0.24]
-	fitConstraints=[0.69,0.34,1.03,0.21]
+	fitParameters=[-0.26,-1.03,+0.36,+0.21]
+	fitConstraints=[0.86,0.74,1.10,0.29]
 	for nn in range(len(fitParameters)):
           for b in range(h14.GetXaxis().GetNbins()):
 	    if fitParameters[nn]>0:
