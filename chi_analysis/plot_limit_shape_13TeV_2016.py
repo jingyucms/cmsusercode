@@ -22,7 +22,7 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- #models=[3]
+ models=[3]
  #models+=[10,11]
  #models+=[60,61,62,63,64,65,66,67,68,69]
  #models+=[70,71,72,73,74,75,76,77]
@@ -30,7 +30,7 @@ if __name__=="__main__":
  #models+=[30,31,32,33,34,35,36,37,38]
  #models+=[40,41,42,43,44,45,46,47,48]
  #models=[88,89]
- models=[60]
+ #models+=[60,61]
  
  testStat="LHC"
  asym="a" #asymptotic CLS
@@ -180,7 +180,7 @@ if __name__=="__main__":
 
     print "limit: %.1f" % (limit/1000.), "& %.1f" % (exp/1000.), "$\pm$ %.1f" % (err/1000.)
 
-    print "limit: %.2f," % (limit/1000.), "%.2f," % (exp/1000.), "%.2f, %.2f, 0, 0" % ((err+exp)/1000.,(exp-err)/1000.)
+    print "limit: %.2f," % (limit/1000.), "%.2f," % (exp/1000.), "%.2f, %.2f, 0, 0" % ((exp1m)/1000.,(exp1p)/1000.)
     
     l2=TLine(limit,miny,limit,log10(cut))
     l2.SetLineColor(1)

@@ -17,7 +17,7 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
   xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
 
 models=[]
-#models=[3]
+models=[3]
 #models+=[10,11]
 #models+=[60,61,62,63,64,65,66,67,68,69]
 #models+=[70,71,72,73,74,75,76,77]
@@ -25,7 +25,7 @@ models=[]
 #models+=[30,31,32,33,34,35,36,37,38]
 #models+=[40,41,42,43,44,45,46]
 #models=[88,89]
-models=[60]
+#models=[60]
 
 VectorDM=True
 AxialDM=True
@@ -83,7 +83,8 @@ for model in models:
  if model==3:
     signal="ADD"
     signalMasses=[9000,10000,11000,12000,13000,14000,15000,16000,17000]
-    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)] #signal MC statistics not enough in bins <4200
+    #includeSignalTheoryUncertainties=True # from QCD-only though
  if model==4:
     signal="cs_nn30nlo_0_"
     signalExtra="_LL+"
@@ -446,7 +447,7 @@ for model in models:
     	fname=prefix + '_GENnp-16-v4_chi2016.root'
     elif signalWithMass=="CIminusLL18000":
     	fname=prefix + '_GENnp-17-v4_chi2016.root'
-    if signalWithMass=="ADD6000":
+    elif signalWithMass=="ADD6000":
         fname=prefix + '_GENnp-18-v5_chi2016.root'
     elif signalWithMass=="ADD7000":
         fname=prefix + '_GENnp-19-v5_chi2016.root'
@@ -536,15 +537,10 @@ for model in models:
     if not "DM" in signal and not "cs" in signal:
         signalWithMass="QCD"+signalWithMass
     f=TFile(fname)
-    cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass+"_2016.txt","w")
+    cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt","w")
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
-jmax 2 number of backgrounds""")
-    if includeSignalTheoryUncertainties:
-      cfg.writelines("""
-kmax 4 number of nuisance parameters""")
-    else:
-      cfg.writelines("""
+jmax 2 number of backgrounds
 kmax 4 number of nuisance parameters""")
     cfg.writelines("""
 -----------
