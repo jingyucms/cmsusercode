@@ -533,6 +533,29 @@ for model in models:
         massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
       elif signalMass<=7000:
         massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+    elif "DM" in signal and version=="_v4":
+      signalWithMass=signal+'_'+str(signalMass)+signalExtra
+      fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      if signalMass<=1500:
+        massbins=[(2400,3000)]
+      elif signalMass<=2000:
+        massbins=[(2400,3000)]
+      elif signalMass<=2500:
+        massbins=[(2400,3000),(3000,3600),(3600,4200)]
+      elif signalMass<=3000:
+        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800)]
+      elif signalMass<=3500:
+        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400)]
+      elif signalMass<=4000:
+        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000)]
+      elif signalMass<=4500:
+        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]  
+      elif signalMass<=5000:
+        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+      elif signalMass<=6000:
+        massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
     print fname
     if not "DM" in signal and not "cs" in signal:
         signalWithMass="QCD"+signalWithMass

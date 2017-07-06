@@ -55,10 +55,10 @@ if __name__=="__main__":
 
     unfoldedData=True
     
-    coupling="0p3"
+    coupling="0p75"
     
-    #style="Axial"
-    style="Vector"
+    style="Axial"
+    #style="Vector"
 
     massbins=[#(1900,2400),
   	(2400,3000),
@@ -108,8 +108,8 @@ if __name__=="__main__":
     h14Gs=[]
     h14Gsysstats=[]
     hNloQcds=[]
-    h0s=[]
     ls=[]
+    h4={}
 
     new_hists=[]
     for massbin in range(0,7):
@@ -155,7 +155,7 @@ if __name__=="__main__":
         ### Data
         
         if unfoldedData:
-          filename="datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root"
+          filename="Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root"
           masstext=str(massbins[massbin]).strip("()").replace(',',".0-").replace(' ',"")
           #histname="dijet_mass2_chi1_unfolded;"+str(massbin+1)
           histname="dijet_mass_"+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_chi_unfolded;1"
@@ -278,13 +278,11 @@ if __name__=="__main__":
 
         ##### Signals
 
-        signalDir='./DMMay2/'
-        
         if style=="Axial":  
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_1000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_1000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_1000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_1000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_1000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_1000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4z = TFile.Open(filename)
@@ -293,10 +291,10 @@ if __name__=="__main__":
         h4z=f4z.Get(histname)
 
         if style=="Axial": 
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_1500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_1500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_1500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_1500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_1500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_1500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4y = TFile.Open(filename)
@@ -305,10 +303,10 @@ if __name__=="__main__":
         h4y=f4y.Get(histname)
 
         if style=="Axial":    
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_1750_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_1750_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_1750_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_1750_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_1750_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_1750_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4x = TFile.Open(filename)
@@ -317,10 +315,10 @@ if __name__=="__main__":
         h4x=f4x.Get(histname)
 
         if style=="Axial":
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_2000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_2000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_2000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_2000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_2000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_2000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4 = TFile.Open(filename)
@@ -329,10 +327,10 @@ if __name__=="__main__":
         h4=f4.Get(histname)
 
         if style=="Axial":    
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_2250_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_2250_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_2250_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_2250_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_2250_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_2250_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4b = TFile.Open(filename)
@@ -341,10 +339,10 @@ if __name__=="__main__":
         h4b=f4b.Get(histname)
 
         if style=="Axial":     
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_2500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_2500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_2500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_2500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_2500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_2500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4c = TFile.Open(filename)
@@ -353,10 +351,10 @@ if __name__=="__main__":
         h4c=f4c.Get(histname)
 
         if style=="Axial":   
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_3000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_3000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_3000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_3000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_3000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_3000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4d = TFile.Open(filename)
@@ -365,10 +363,10 @@ if __name__=="__main__":
         h4d=f4d.Get(histname)
 
         if style=="Axial":    
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_3500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_3500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_3500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_3500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_3500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_3500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4e = TFile.Open(filename)
@@ -377,10 +375,10 @@ if __name__=="__main__":
         h4e=f4e.Get(histname)
 
         if style=="Axial":    
-            filename=signalDir+"datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_4000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_"+coupling+"_chi2016.root"
+            filename="datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_4000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_"+coupling+"_chi2016.root"
             histname='DMAxial_Dijet_LO_Mphi_4000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_4000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_4000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_4000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4f = TFile.Open(filename)
@@ -389,10 +387,10 @@ if __name__=="__main__":
         h4f=f4f.Get(histname)
 
         if style=="Axial":     
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_4500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_4500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_4500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_4500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_4500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_4500_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4g = TFile.Open(filename)
@@ -401,10 +399,10 @@ if __name__=="__main__":
         h4g=f4g.Get(histname)
 
         if style=="Axial":  
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_5000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_5000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_5000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_5000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_5000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_5000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4h = TFile.Open(filename)
@@ -413,48 +411,20 @@ if __name__=="__main__":
         h4h=f4h.Get(histname)
 
         if style=="Axial":  
-            filename=signalDir+'datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_6000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_6000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'_chi2016.root'
             histname='DMAxial_Dijet_LO_Mphi_6000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_'+coupling+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         elif style=="Vector":
-            filename=signalDir+'datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_6000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
+            filename='datacard_shapelimit13TeV_DMVector_Dijet_LO_Mphi_6000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0_chi2016.root'
             histname='DMVector_Dijet_LO_Mphi_6000_1_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_'+coupling+'_ga_0#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print filename
         f4i = TFile.Open(filename)
         new_hists+=[f4i]
         print histname
         h4i=f4i.Get(histname)
-
-        ### Backgroud-only fit
-        filename="mlfit/mlfitlimits1106_DMAxial_Dijet_LO_Mphi5000.root"
-        filefit=TFile(filename)
-        new_hists+=[filefit]
-        histname="bin"+str(massbin)+"_fit_b"
-        hfit=filefit.Get(histname)
-        hbgfitname="pdf_binbin"+str(massbin)+"_Norm[CMS_th1x]"
-        hbgfit=hfit.getCurve(hbgfitname)
-        if massbin!=6:
-            h0=TH1D("bgfit"+str(massbin),"bgfit"+str(massbin),12,array.array('d',[1,2,3,4,5,6,7,8,9,10,12,14,16]))
-            #h0=hNloQcd.Clone("bgfit"+str(massbin))
-            for b in range(1,13):
-                h0.SetBinContent(b,hbgfit.Eval(b))
-            h0.Scale(1./h0.Integral())
-            for b in range(h0.GetXaxis().GetNbins()):
-	        h0.SetBinContent(b+1,h0.GetBinContent(b+1)/h0.GetBinWidth(b+1))
-            #for b in range(h0.GetXaxis().GetNbins()):
-            #    print b+1,h0.GetBinContent(b+1)
-        elif massbin==6:
-            h0=TH1D("bgfit"+str(massbin),"bgfit"+str(massbin),5,array.array('d',[1,3,6,9,12,16]))
-            for b in range(1,6):
-                h0.SetBinContent(b,hbgfit.Eval(b))
-            h0.Scale(1./h0.Integral())
-            for b in range(h0.GetXaxis().GetNbins()):
-	        h0.SetBinContent(b+1,h0.GetBinContent(b+1)/h0.GetBinWidth(b+1))
-            #for b in range(h0.GetXaxis().GetNbins()):
-            #    print b+1,h0.GetBinContent(b+1)
         
         ### Customize Histograms
         
-        hNloQcd.GetYaxis().SetRangeUser(0.05,0.1)
+        hNloQcd.GetYaxis().SetRangeUser(0.03,0.13)
         hNloQcd.GetXaxis().SetTitle("#chi_{dijet}")
         hNloQcd.GetYaxis().SetTitle("1/#sigma_{dijet} d#sigma_{dijet}/d#chi_{dijet}")
         hNloQcd.GetYaxis().SetTitleOffset(0.9)
@@ -467,9 +437,6 @@ if __name__=="__main__":
         hNloQcd.GetYaxis().SetTickLength(0.03)
         hNloQcd.GetYaxis().SetNdivisions(505)
         hNloQcd.SetLineColor(10)
-
-        h0.SetLineColor(1)
-        h0.SetLineWidth(1)
 
         setUpDMHists(h4z,8,1,2)
         setUpDMHists(h4y,4,1,2)
@@ -502,9 +469,6 @@ if __name__=="__main__":
         #h14Gsyss.append(h14Gsys)
         h14Gsysstats.append(h14Gsysstat)
         hNloQcds.append(hNloQcd)
-        h0s.append(h0)
-
-        #h0.Write()
         
         ylabel=0.8
         #if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
@@ -521,8 +485,24 @@ if __name__=="__main__":
         l.SetFillStyle(0)
         ls.append(l)
 
-    c = TCanvas("combined", "combined", 0, 0, 900, 1200)
-    c.Divide(2,4)
+    h4={}
+    h4["1000"]=h4zs
+    h4["1500"]=h4ys
+    h4["1750"]=h4xs
+    h4["2000"]=h4s
+    h4["2250"]=h4bs
+    h4["2500"]=h4cs
+    h4["3000"]=h4ds
+    h4["3500"]=h4es
+    h4["4000"]=h4fs
+    h4["4500"]=h4gs
+    h4["5000"]=h4hs
+    h4["6000"]=h4is
+
+    #sys.exit()
+
+    c = TCanvas("combined", "combined", 0, 0, 1500, 900)
+    c.Divide(3,3)
     for massbin in range(0,8):
         if massbin==0:
             c.cd(8)
@@ -532,22 +512,23 @@ if __name__=="__main__":
             hNloQcds[massbin].Draw("axissame")
             h3news[massbin].Draw("histsame")
             h2news[massbin].Draw("histsame")
-            h4zs[massbin].Draw("histsame")
-            h4ys[massbin].Draw("histsame")
-            h4xs[massbin].Draw("histsame")
-            h4s[massbin].Draw("histsame")
-            h4bs[massbin].Draw("histsame")
-            h4cs[massbin].Draw("histsame")
-            h4ds[massbin].Draw("histsame")
-            h4es[massbin].Draw("histsame")
-            h4fs[massbin].Draw("histsame")
-            h4gs[massbin].Draw("histsame")
-            #h4hs[massbin].Draw("histsame")
-            #h4is[massbin].Draw("histsame")
+            
+            #h4["1000"][massbin].Draw("histsame")
+            #h4["1500"][massbin].Draw("histsame")
+            #h4["1750"][massbin].Draw("histsame")
+            #h4["2000"][massbin].Draw("histsame")
+            #h4["2250"][massbin].Draw("histsame")
+            h4["2500"][massbin].Draw("histsame")
+            h4["3000"][massbin].Draw("histsame")
+            h4["3500"][massbin].Draw("histsame")
+            h4["4000"][massbin].Draw("histsame")
+            h4["4500"][massbin].Draw("histsame")            
+            h4["5000"][massbin].Draw("histsame")
+            #h4["6000"][massbin].Draw("histsame")
+            
             h14Gs[massbin].Draw("pzesame")
             #h14Gsyss[massbin].Draw("||same")
             h14Gsysstats[massbin].Draw("zesame")
-            h0s[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("axissame")
             ls[massbin].Draw("same")
@@ -559,22 +540,23 @@ if __name__=="__main__":
             hNloQcds[massbin].Draw("axissame")
             h3news[massbin].Draw("histsame")
             h2news[massbin].Draw("histsame")
-            #h4zs[massbin].Draw("histsame")
-            #h4ys[massbin].Draw("histsame")
-            #h4xs[massbin].Draw("histsame")
-            #h4s[massbin].Draw("histsame")
-            h4bs[massbin].Draw("histsame")
-            h4cs[massbin].Draw("histsame")
-            h4ds[massbin].Draw("histsame")
-            h4es[massbin].Draw("histsame")
-            h4fs[massbin].Draw("histsame")
-            h4gs[massbin].Draw("histsame")
-            h4hs[massbin].Draw("histsame")
-            h4is[massbin].Draw("histsame")
+            
+            #h4["1000"][massbin].Draw("histsame")
+            #h4["1500"][massbin].Draw("histsame")
+            #h4["1750"][massbin].Draw("histsame")
+            #h4["2000"][massbin].Draw("histsame")
+            #h4["2250"][massbin].Draw("histsame")
+            h4["2500"][massbin].Draw("histsame")
+            h4["3000"][massbin].Draw("histsame")
+            h4["3500"][massbin].Draw("histsame")
+            h4["4000"][massbin].Draw("histsame")
+            h4["4500"][massbin].Draw("histsame")            
+            h4["5000"][massbin].Draw("histsame")
+            h4["6000"][massbin].Draw("histsame")
+            
             h14Gs[massbin].Draw("pzesame")
             #h14Gsyss[massbin].Draw("||same")
             h14Gsysstats[massbin].Draw("zesame")
-            h0s[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("axissame")
             ls[massbin].Draw("same")
@@ -586,22 +568,23 @@ if __name__=="__main__":
             hNloQcds[massbin].Draw("axissame")
             h3news[massbin].Draw("histsame")
             h2news[massbin].Draw("histsame")
-            #h4zs[massbin].Draw("histsame")
-            #h4ys[massbin].Draw("histsame")
-            #h4xs[massbin].Draw("histsame")
-            #h4s[massbin].Draw("histsame")
-            #h4bs[massbin].Draw("histsame")
-            h4cs[massbin].Draw("histsame")
-            h4ds[massbin].Draw("histsame")
-            h4es[massbin].Draw("histsame")
-            h4fs[massbin].Draw("histsame")
-            h4gs[massbin].Draw("histsame")
-            h4hs[massbin].Draw("histsame")
-            h4is[massbin].Draw("histsame")
+            
+            #h4["1000"][massbin].Draw("histsame")
+            #h4["1500"][massbin].Draw("histsame")
+            #h4["1750"][massbin].Draw("histsame")
+            #h4["2000"][massbin].Draw("histsame")
+            #h4["2250"][massbin].Draw("histsame")
+            h4["2500"][massbin].Draw("histsame")
+            h4["3000"][massbin].Draw("histsame")
+            h4["3500"][massbin].Draw("histsame")
+            h4["4000"][massbin].Draw("histsame")
+            h4["4500"][massbin].Draw("histsame")            
+            h4["5000"][massbin].Draw("histsame")
+            h4["6000"][massbin].Draw("histsame")
+            
             h14Gs[massbin].Draw("pzesame")
             #h14Gsyss[massbin].Draw("||same")
             h14Gsysstats[massbin].Draw("zesame")
-            h0s[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("axissame")
             ls[massbin].Draw("same")
@@ -613,22 +596,23 @@ if __name__=="__main__":
             hNloQcds[massbin].Draw("axissame")
             h3news[massbin].Draw("histsame")
             h2news[massbin].Draw("histsame")
-            #h4zs[massbin].Draw("histsame")
-            #h4ys[massbin].Draw("histsame")
-            #h4xs[massbin].Draw("histsame")
-            #h4s[massbin].Draw("histsame")
-            #h4bs[massbin].Draw("histsame")
-            #h4cs[massbin].Draw("histsame")
-            h4ds[massbin].Draw("histsame")
-            h4es[massbin].Draw("histsame")
-            h4fs[massbin].Draw("histsame")
-            h4gs[massbin].Draw("histsame")
-            h4hs[massbin].Draw("histsame")
-            h4is[massbin].Draw("histsame")
+            
+            #h4["1000"][massbin].Draw("histsame")
+            #h4["1500"][massbin].Draw("histsame")
+            #h4["1750"][massbin].Draw("histsame")
+            #h4["2000"][massbin].Draw("histsame")
+            #h4["2250"][massbin].Draw("histsame")
+            #h4["2500"][massbin].Draw("histsame")
+            h4["3000"][massbin].Draw("histsame")
+            h4["3500"][massbin].Draw("histsame")
+            h4["4000"][massbin].Draw("histsame")
+            h4["4500"][massbin].Draw("histsame")            
+            h4["5000"][massbin].Draw("histsame")
+            h4["6000"][massbin].Draw("histsame")
+            
             h14Gs[massbin].Draw("pzesame")
             #h14Gsyss[massbin].Draw("||same")
             h14Gsysstats[massbin].Draw("zesame")
-            h0s[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("axissame")
             ls[massbin].Draw("same")
@@ -640,22 +624,23 @@ if __name__=="__main__":
             hNloQcds[massbin].Draw("axissame")
             h3news[massbin].Draw("histsame")
             h2news[massbin].Draw("histsame")
-            #h4zs[massbin].Draw("histsame")
-            #h4ys[massbin].Draw("histsame")
-            #h4xs[massbin].Draw("histsame")
-            #h4s[massbin].Draw("histsame")
-            #h4bs[massbin].Draw("histsame")
-            #h4cs[massbin].Draw("histsame")
-            #h4ds[massbin].Draw("histsame")
-            h4es[massbin].Draw("histsame")
-            h4fs[massbin].Draw("histsame")
-            h4gs[massbin].Draw("histsame")
-            h4hs[massbin].Draw("histsame")
-            h4is[massbin].Draw("histsame")
+            
+            #h4["1000"][massbin].Draw("histsame")
+            #h4["1500"][massbin].Draw("histsame")
+            #h4["1750"][massbin].Draw("histsame")
+            #h4["2000"][massbin].Draw("histsame")
+            #h4["2250"][massbin].Draw("histsame")
+            #h4["2500"][massbin].Draw("histsame")
+            #h4["3000"][massbin].Draw("histsame")
+            h4["3500"][massbin].Draw("histsame")
+            h4["4000"][massbin].Draw("histsame")
+            h4["4500"][massbin].Draw("histsame")            
+            h4["5000"][massbin].Draw("histsame")
+            h4["6000"][massbin].Draw("histsame")
+            
             h14Gs[massbin].Draw("pzesame")
             #h14Gsyss[massbin].Draw("||same")
             h14Gsysstats[massbin].Draw("zesame")
-            h0s[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("axissame")
             ls[massbin].Draw("same")
@@ -667,55 +652,57 @@ if __name__=="__main__":
             hNloQcds[massbin].Draw("axissame")
             h3news[massbin].Draw("histsame")
             h2news[massbin].Draw("histsame")
-            #h4zs[massbin].Draw("histsame")
-            #h4ys[massbin].Draw("histsame")
-            #h4xs[massbin].Draw("histsame")
-            #h4s[massbin].Draw("histsame")
-            #h4bs[massbin].Draw("histsame")
-            #h4cs[massbin].Draw("histsame")
-            #h4ds[massbin].Draw("histsame")
-            #h4es[massbin].Draw("histsame")
-            h4fs[massbin].Draw("histsame")
-            h4gs[massbin].Draw("histsame")
-            h4hs[massbin].Draw("histsame")
-            h4is[massbin].Draw("histsame")
+            
+            #h4["1000"][massbin].Draw("histsame")
+            #h4["1500"][massbin].Draw("histsame")
+            #h4["1750"][massbin].Draw("histsame")
+            #h4["2000"][massbin].Draw("histsame")
+            #h4["2250"][massbin].Draw("histsame")
+            #h4["2500"][massbin].Draw("histsame")
+            #h4["3000"][massbin].Draw("histsame")
+            #h4["3500"][massbin].Draw("histsame")
+            h4["4000"][massbin].Draw("histsame")
+            h4["4500"][massbin].Draw("histsame")            
+            h4["5000"][massbin].Draw("histsame")
+            h4["6000"][massbin].Draw("histsame")
+            
             h14Gs[massbin].Draw("pzesame")
             #h14Gsyss[massbin].Draw("||same")
             h14Gsysstats[massbin].Draw("zesame")
-            h0s[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("axissame")
             ls[massbin].Draw("same")
         elif massbin==6:
-            c.cd(1)
+            c.cd(2)
             pad2=TPad("","",0, 0, 1, 1)
             pad2.Draw()
             pad2.cd()
             hNloQcds[massbin].Draw("axissame")
             h3news[massbin].Draw("histsame")
             h2news[massbin].Draw("histsame")
-            #h4zs[massbin].Draw("histsame")
-            #h4ys[massbin].Draw("histsame")
-            #h4xs[massbin].Draw("histsame")
-            #h4s[massbin].Draw("histsame")
-            #h4bs[massbin].Draw("histsame")
-            #h4cs[massbin].Draw("histsame")
-            #h4ds[massbin].Draw("histsame")
-            #h4es[massbin].Draw("histsame")
-            #h4fs[massbin].Draw("histsame")
-            h4gs[massbin].Draw("histsame")
-            h4hs[massbin].Draw("histsame")
-            h4is[massbin].Draw("histsame")
+            
+            #h4["1000"][massbin].Draw("histsame")
+            #h4["1500"][massbin].Draw("histsame")
+            #h4["1750"][massbin].Draw("histsame")
+            #h4["2000"][massbin].Draw("histsame")
+            #h4["2250"][massbin].Draw("histsame")
+            #h4["2500"][massbin].Draw("histsame")
+            #h4["3000"][massbin].Draw("histsame")
+            #h4["3500"][massbin].Draw("histsame")
+            #h4["4000"][massbin].Draw("histsame")
+            h4["4500"][massbin].Draw("histsame")            
+            h4["5000"][massbin].Draw("histsame")
+            h4["6000"][massbin].Draw("histsame")
+            
             h14Gs[massbin].Draw("pzesame")
             #h14Gsyss[massbin].Draw("||same")
             h14Gsysstats[massbin].Draw("zesame")
-            h0s[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("histsame")
             hNloQcds[massbin].Draw("axissame")
             ls[massbin].Draw("same")
         elif massbin==7:
             #c.Update()
-            c.cd(2)
+            c.cd(1)
             pad2=TPad("","",0, 0, 1, 1)
             pad2.Draw()
             pad2.cd()
@@ -729,24 +716,23 @@ if __name__=="__main__":
         h3newnew.SetLineStyle(3)
         h3newnew.SetLineWidth(2)
         
-        c.cd(2)
+        c.cd(1)
         l2=TLegend(0.3,0.15,0.6,0.93,"")
         l2.SetTextSize(0.045)
         l2.AddEntry(h14Gs[6],"Data","ple")
         l2.AddEntry(h3newnew,"NLO QCD+EW","fl")
-        l2.AddEntry(h0s[6],"Backgound-only Fit","l")
-        l2.AddEntry(h4zs[6],"M_{Med} = 1.0 TeV","l")
-        l2.AddEntry(h4ys[6],"M_{Med} = 1.5 TeV","l")
-        l2.AddEntry(h4xs[6],"M_{Med} = 1.75 TeV","l")
-        l2.AddEntry(h4s[6],"M_{Med} = 2.0 TeV","l")
-        l2.AddEntry(h4bs[6],"M_{Med} = 2.25 TeV","l")
-        l2.AddEntry(h4cs[6],"M_{Med} = 2.5 TeV","l")
-        l2.AddEntry(h4ds[6],"M_{Med} = 3.0 TeV","l")
-        l2.AddEntry(h4es[6],"M_{Med} = 3.5 TeV","l")
-        l2.AddEntry(h4fs[6],"M_{Med} = 4.0 TeV","l")
-        l2.AddEntry(h4gs[6],"M_{Med} = 4.5 TeV","l")
-        l2.AddEntry(h4hs[6],"M_{Med} = 5.0 TeV","l")
-        l2.AddEntry(h4is[6],"M_{Med} = 6.0 TeV","l")
+        #l2.AddEntry(h4["1000"][6],"M_{Med} = 1.0 TeV","l")
+        #l2.AddEntry(h4["1500"][6],"M_{Med} = 1.5 TeV","l")
+        #l2.AddEntry(h4["1750"][6],"M_{Med} = 1.75 TeV","l")
+        #l2.AddEntry(h4["2000"][6],"M_{Med} = 2.0 TeV","l")
+        #l2.AddEntry(h4["2250"][6],"M_{Med} = 2.25 TeV","l")
+        l2.AddEntry(h4["2500"][6],"M_{Med} = 2.5 TeV","l")
+        l2.AddEntry(h4["3000"][6],"M_{Med} = 3.0 TeV","l")
+        l2.AddEntry(h4["3500"][6],"M_{Med} = 3.5 TeV","l")
+        l2.AddEntry(h4["4000"][6],"M_{Med} = 4.0 TeV","l")
+        l2.AddEntry(h4["4500"][6],"M_{Med} = 4.5 TeV","l")
+        l2.AddEntry(h4["5000"][6],"M_{Med} = 5.0 TeV","l")
+        l2.AddEntry(h4["6000"][6],"M_{Med} = 6.0 TeV","l")
         l2.SetFillStyle(0)
         l2.Draw("same")
         xlow=11
@@ -775,7 +761,7 @@ if __name__=="__main__":
         #leg5.Draw("same")
         #leg1.Draw("same")
         leg4.Draw("same")
-        leg1.Draw("same")
+        #leg1.Draw("same")
         c.Update()
     #ans = raw_input('\npress return to continue, q to quit...')
     #if ans=='q':

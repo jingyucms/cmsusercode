@@ -27,11 +27,14 @@ def medWidth(gq):
 
 if __name__=="__main__":
   
- for style in ["DMVector","DMAxial"]:
+ #for style in ["DMVector","DMAxial"]:
+ for style in ["DMAxial"]:
 
   testStat="LHC"
   asym="a" # asymptotic CLS
-  version="_v3"
+  #testStat="LEP"
+  #asym=""
+  version="_v4"
   
   signalCounter={}
   if style=="DMVector":
@@ -41,9 +44,9 @@ if __name__=="__main__":
 
   gs=["0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
   mdms=["1","3000"]
-  #mdms=["1"]
+  #mdms=["3000"]
   #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
-  signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
+  #signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
   signalMasses=[2500,3000,3500,4000,4500,5000,6000]
  
   for mdm in mdms:
@@ -51,8 +54,8 @@ if __name__=="__main__":
       signalCounter[style+"_mdm"+mdm+"_g"+g]=counter
       counter+=1
       
-  for mdm in mdms:
-  #for mdm in ["1"]:
+  #for mdm in mdms:
+  for mdm in ["1"]:
     g_q_out=TFile('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'.root',"RECREATE")
     
     g_q=TGraph(0)
@@ -142,7 +145,7 @@ if __name__=="__main__":
       mg=TMultiGraph()
 
       min_x=0.01
-      max_x=3
+      max_x=11
 
       g=TGraph(0)
       g_exp_=TGraph(0)
@@ -219,6 +222,7 @@ if __name__=="__main__":
         miny=-6
         maxy=0
       mg.GetYaxis().SetRangeUser(miny,maxy)
+      mg.GetXaxis().SetLimits(min_x, max_x)
 
       min_x=0.01
   
@@ -245,23 +249,32 @@ if __name__=="__main__":
       exp2m=0
       exp2p=0
       nseg=10000
+      #if asym:
       masses=np.linspace(max_x,min_x,num=nseg)
+      #else:
+        #masses=np.linspace(min_x,max_x,num=nseg)
       for mass in masses:  
-        if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
+        #if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
+        if limit==0 and g.Eval(mass,0)>log10(cut):
           limit=mass
-        if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
+        #if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
+        if exp==0 and g_exp_.Eval(mass,0)>log10(cut):
           exp=mass
           print "exp:",i,mass
-        if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
+        #if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
+        if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut):
           print "exp1m:",i,mass
           exp1m=mass
-        if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
+        #if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
+        if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut):
           exp1p=mass
           print "exp1p:",i,mass
-        if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
+        #if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
+        if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut):
           print "exp2m:",i,mass
           exp2m=mass
-        if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
+        #if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
+        if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut):  
           exp2p=mass
           print "exp2p:",i,mass
 
@@ -311,8 +324,8 @@ if __name__=="__main__":
 
     ymin=0.0
     ymax=1.42788
-
-    xs=np.linspace(5000,7000,num=20000)
+    #ymax=3
+    xs=np.linspace(4000,6000,num=20000)
     for x in xs:
       if g_q_exp.Eval(x)>=1.42788:
         max_x_new=x
@@ -345,6 +358,12 @@ if __name__=="__main__":
     g_q_exp.SetName("gq_exp")
     g_q.Write()
     g_q_exp.Write()
+    g_q_band.SetName("gq_exp_1sigma")
+    g_q_band.Write()
+    g_q_band_2sigma.SetName("g_q_exp_2sigma")
+    g_q_band_2sigma.Write()
+    mg.SetName("chi")
+    mg.Write()
     
     mg.Draw("apl")
     mg.SetTitle("")
@@ -354,9 +373,14 @@ if __name__=="__main__":
     mg.GetYaxis().SetTitleSize(0.04)
     mg.GetYaxis().SetTitleOffset(1.1)
     mg.GetXaxis().SetLimits(min_x_new,max_x_new)
+    #mg.GetXaxis().SetRangeUser(min_x_new,max_x_new)
     mg.GetYaxis().SetRangeUser(ymin,ymax)
     mg.GetYaxis().SetNdivisions(510)
     mg.GetXaxis().SetNdivisions(510)
+    mg.GetXaxis().SetLabelSize(0.03)
+    mg.GetXaxis().SetLabelOffset(0.015)
+    mg.GetXaxis().SetTitleSize(0.04)
+    mg.GetXaxis().SetTitleOffset(1.2)
 
     y1=TGaxis(min_x_new, ymin, min_x_new, ymax, ymin,ymax,510,"")
     y1.SetLabelSize(0)
@@ -380,12 +404,12 @@ if __name__=="__main__":
     l0p5=TLine(min_x_new,0.5,max_x_new,0.5)
     l0p5.SetLineColor(kGray+1)
     l0p5.SetLineStyle(kDashed)
-    l0p5.Draw("same")
+    #l0p5.Draw("same")
       
     l0p5T=TLatex((max_x_new-min_x_new)*0.35+min_x_new,0.5-0.05,"g_{q}=0.5")
     l0p5T.SetTextSize(0.03)
     l0p5T.SetTextColor(kGray+1)
-    l0p5T.Draw("same")
+    #l0p5T.Draw("same")
 
     l1p0=TLine(min_x_new,1,max_x_new,1)
     l1p0.SetLineColor(kGray+1)
@@ -398,16 +422,17 @@ if __name__=="__main__":
     l1p0T.Draw("same")
     
     if style=="DMAxial":
-      lt=TLatex(signalMasses[1],2.65,"#splitline{Axial-vector Mediator & Dirac DM}{ m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
+      lt=TLatex(signalMasses[0]+100,1.27,"#splitline{Vector/Axial-Vector Mediator}{ m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
+      #lt=TLatex(signalMasses[0]+100,1.31,"m_{DM} = "+mdm+" GeV, g_{DM} = 1.0")
     else:
-      lt=TLatex(signalMasses[1],2.65,"#splitline{Vector Mediator & Dirac DM}{ m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
+      lt=TLatex(signalMasses[0]+100,1.26,"#splitline{Vector Mediator}{ m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
     lt.SetTextSize(0.04)
     lt.Draw("same")
     
-    l=TLegend(0.55,0.15,0.9,0.35,"95% CL upper limits")
+    l=TLegend(0.52,0.15,0.87,0.35,"95% CL upper limits")
     l.SetFillColor(0)
     l.SetFillStyle(0)
-    l.SetTextSize(0.03)
+    l.SetTextSize(0.04)
     l.SetShadowColor(0)
     l.AddEntry(g_q,"Observed","LP")
     l.AddEntry(g_q_exp,"Expected","LP")
@@ -421,10 +446,11 @@ if __name__=="__main__":
     leg2.SetTextFont(42)
     leg2.SetTextSize(0.04)
     # lumi
-    leg3=TLatex(max_x_new-1500,ymax+0.03,"35.9 fb^{-1} (13 TeV)")
+    leg3=TLatex(max_x_new-1150,ymax+0.03,"35.9 fb^{-1} (13 TeV)")
     leg3.SetTextFont(42)
     leg3.SetTextSize(0.04)
     leg2.Draw("same")
     leg3.Draw("same")
     
+    #canvas.SaveAs('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'_noSys.pdf')
     canvas.SaveAs('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'.pdf')
