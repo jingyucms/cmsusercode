@@ -42,7 +42,7 @@ def cloneNormalize(h1):
 if __name__ == '__main__':
 
     useLensData=False
-    useUnfoldedData=True
+    useUnfoldedData=False
     injectSignal=False
 
     prefixs=["datacard_shapelimit13TeV"]
@@ -56,11 +56,6 @@ if __name__ == '__main__':
                (1,2,3,4,5,6,7,8,9,10,12,14,16),
                (1,3,6,9,12,16),
               ]
-    chi_binnings=[]
-    for mass_bin in chi_bins:
-        chi_binnings+=[array.array('d')]
-        for chi_bin in mass_bin:
-            chi_binnings[-1].append(chi_bin)
     massbins=[#(1900,2400),
               (2400,3000),
               (3000,3600),
@@ -89,6 +84,15 @@ if __name__ == '__main__':
 	      (8,),
 	      (9,10,),
     	     ]
+    #if useUnfoldedData:
+    #   massbins=massbins[1:]
+    #   mass_bins_nlo_list=mass_bins_nlo_list[1:]
+    #   chi_bins=chi_bins[1:]
+    chi_binnings=[]
+    for mass_bin in chi_bins:
+        chi_binnings+=[array.array('d')]
+        for chi_bin in mass_bin:
+            chi_binnings[-1].append(chi_bin)
 
     samples=[]
     samples2=[]
@@ -414,16 +418,16 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+       samples+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
 
     for mass in [1700,2000,2300,2600,2900,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7100]:
@@ -435,8 +439,8 @@ if __name__ == '__main__':
     #xsecs={}
     #for l in open("xsecs_13TeV_dm.txt").readlines():
     #  xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
-    #for mass in [1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000,8000]:
-    for mass in [4000]:
+    for mass in [1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000,8000]:
+    #for mass in [4000]:
      if mass==6000:
        mDMs=[1,2990]
      elif mass==7000:
@@ -447,10 +451,10 @@ if __name__ == '__main__':
        mDMs=[1,3000]
      for mDM in mDMs:
       for weight in ['gdmv_1p0_gdma_0_gv_0p01_ga_0', 'gdmv_1p0_gdma_0_gv_0p05_ga_0', 'gdmv_1p0_gdma_0_gv_0p1_ga_0', 'gdmv_1p0_gdma_0_gv_0p2_ga_0', 'gdmv_1p0_gdma_0_gv_0p25_ga_0', 'gdmv_1p0_gdma_0_gv_0p3_ga_0', 'gdmv_1p0_gdma_0_gv_0p5_ga_0', 'gdmv_1p0_gdma_0_gv_0p75_ga_0', 'gdmv_1p0_gdma_0_gv_1_ga_0', 'gdmv_1p0_gdma_0_gv_1p5_ga_0', 'gdmv_1p0_gdma_0_gv_2p0_ga_0', 'gdmv_1p0_gdma_0_gv_2p5_ga_0', 'gdmv_1p0_gdma_0_gv_3p0_ga_0']:
-         samples+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p5_1p0_Mar5_"+weight,0)]),
+         samples2+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
       for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
-         samples+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
+         samples2+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
 
     dataevents={}
@@ -552,12 +556,13 @@ if __name__ == '__main__':
       in2=TFile(sample2,'READ')
 
       # data file
-      insample='datacards/datacard_shapelimit13TeV_25nsData13combi_chi.root'
-      print insample
-      infile=TFile(insample,'READ')
+      #insample='datacards/datacard_shapelimit13TeV_25nsData13combi_chi.root'
+      #print insample
+      #infile=TFile(insample,'READ')
 
       # unfolded data file
-      unfoldsample='datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root'
+      #unfoldsample='datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root'
+      unfoldsample='datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf_MatrixInvert.root'
       print unfoldsample
       unfoldfile=TFile(unfoldsample,'READ')
 
@@ -616,12 +621,17 @@ if __name__ == '__main__':
           data = TH1F(unfoldfile.Get(histname2))
 	  data.SetName(histname)
 	else:
-          data = TH1F(infile.Get("Data13#chi"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"))
-          for b in range(data.GetXaxis().GetNbins()):
-             data.SetBinContent(b+1,data.GetBinContent(b+1)*data.GetBinWidth(b+1))
-             data.SetBinError(b+1,data.GetBinError(b+1)*data.GetBinWidth(b+1))
+          histname2="dijet_mass_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_chi"
+          print histname2
+          data = TH1D(unfoldfile.Get(histname2))
+	  data.SetName(histname)
+          #data = TH1F(infile.Get("Data13#chi"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"))
+          #for b in range(data.GetXaxis().GetNbins()):
+          #   data.SetBinContent(b+1,data.GetBinContent(b+1)*data.GetBinWidth(b+1))
+          #   data.SetBinError(b+1,data.GetBinError(b+1)*data.GetBinWidth(b+1))
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
 	dataevents[j]=data.Integral()
+	print dataevents[j]
 	out.cd()
 	if not injectSignal:
 	 histname='data_obs#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
@@ -1293,6 +1303,97 @@ if __name__ == '__main__':
 
       canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016.pdf')
       canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016.eps')
+      
+      if not useUnfoldedData:
+        print "Applying response matrix"
+        matrix=TFile("datacards/responseMatrices.root",'READ')
+        matrix1=matrix.Get("TMatrixT<double>;2") #low mass chi binning
+        matrix2=matrix.Get("TMatrixT<double>;3") #highest mass chi binning
+        matrixMassBins=[1000,1200,1500,1900,2400,3000,3600,4200,4800,5400,6000,13000]
+        #print (len(matrixMassBins)-1)*(len(chi_bins[0])-1)
+        #matrix1.Print()
+        #print (len(matrixMassBins)-1)*(len(chi_bins[-1])-1)
+        #matrix2.Print()
+
+        # modify histograms
+	histogram_names=[
+	  (samples[i][0]+'#chi',"_rebin1"),
+	  (samples[i][0]+'_ALT#chi',"_rebin1"),
+	  #(samples[i][0]+'#chi',"_rebin1_jerUp"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_jerUp"),
+	  #(samples[i][0]+'#chi',"_rebin1_jerDown"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_jerDown"),
+	  #(samples[i][0]+'#chi',"_rebin1_jesUp"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_jesUp"),
+	  #(samples[i][0]+'#chi',"_rebin1_jesDown"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_jesDown"),
+	  #(samples[i][0]+'#chi',"_rebin1_scaleUp"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_scaleUp"),
+	  #(samples[i][0]+'#chi',"_rebin1_scaleDown"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_scaleDown"),
+	  #(samples[i][0]+'#chi',"_rebin1_pdfUp"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_pdfUp"),
+	  #(samples[i][0]+'#chi',"_rebin1_pdfDown"),
+	  #(samples[i][0]+'_ALT#chi',"_rebin1_pdfDown"),
+	]
+	for pre,post in histogram_names:
+          print pre+post
+	  althists=[]
+          althistsclones=[]
+          for j in range(len(massbins)):
+            histname=pre+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+post
+            althists+=[out.Get(histname)]
+            althistsclones+=[althists[-1].Clone(althists[-1].GetName()+"original")]
+            althists[-1].Scale(0)
+          countgen=0
+          for j1 in range(len(massbins)):
+	    for b1 in range(althists[j1].GetNbinsX()):
+              for j2 in range(len(massbins)):
+         	for b2 in range(althists[j2].GetNbinsX()):
+          	  bin1=althists[0].FindBin(althists[j1].GetBinCenter(b1+1))-1
+          	  bin2=althists[0].FindBin(althists[j2].GetBinCenter(b2+1))-1
+		  #response=(b1==b2)*0.8+(b1==b2+1)*0.1+(b1==b2-1)*0.1
+		  if j1==(len(massbins)-1) and j2==(len(massbins)-1):
+		    # both in highest mass bin
+		    response=matrix2[(j1+4)+b1*(len(matrixMassBins)-1)][(j2+4)+b2*(len(matrixMassBins)-1)]
+		  elif j1!=(len(massbins)-1) and j2!=(len(massbins)-1):
+		    # both in lower mass bins
+		    response=matrix1[(j1+4)+b1*(len(matrixMassBins)-1)][(j2+4)+b2*(len(matrixMassBins)-1)]
+		  elif abs(j1-j2)<=3: # don't take elements too far from the diagonal to avoid statistical fluctuations
+		    # one in highest, one in lower mass bin
+		    response=0
+		    count=0
+		    for bin1 in range(althists[0].GetNbinsX()):
+		      if althists[0].GetBinCenter(bin1+1)>althists[j1].GetXaxis().GetBinLowEdge(b1+1) and\
+		         althists[0].GetBinCenter(bin1+1)<althists[j1].GetXaxis().GetBinUpEdge(b1+1):
+		         for bin2 in range(althists[0].GetNbinsX()):
+		           if althists[0].GetBinCenter(bin2+1)>althists[j2].GetXaxis().GetBinLowEdge(b2+1) and\
+		              althists[0].GetBinCenter(bin2+1)<althists[j2].GetXaxis().GetBinUpEdge(b2+1):
+		             response+=matrix1[(j1+4)+bin1*(len(matrixMassBins)-1)][(j2+4)+bin2*(len(matrixMassBins)-1)]
+			     count+=1
+		    response/=count
+		    response*=althists[j2].GetBinWidth(b2+1)/althists[j1].GetBinWidth(b1+1)
+		  althists[j2].Fill(althists[j2].GetBinCenter(b2+1),althistsclones[j1].GetBinContent(b1+1)*response)
+          for j in range(len(massbins)):
+            print dataevents[j],althists[j].Integral()
+            althists[j].Scale(dataevents[j]/althists[j].Integral())
+            #for b in range(althists[j].GetNbinsX()):
+              #print althists[j].GetBinContent(b+1),althistsclones[j].GetBinContent(b+1)
+          out.cd()
+          for hist in althists:
+            for k in range(0,200):
+         	out.Delete(hist.GetName()+";"+str(k))
+            hist.Write()
+          if not "Up" in post and not "Down" in post:
+	   for j in range(len(massbins)):
+	    canvas.cd(j+1)#j-2
+	    althists[j].SetMarkerStyle(5)
+            althists[j].SetMarkerSize(0.5)
+	    alt=cloneNormalize(althists[j])
+	    alt.Draw("histpsame")
+	    plots+=[alt]
+      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016_smear.pdf')
+      canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016_smear.eps')
 
       for closefile in closefiles:
           closefile.Close()

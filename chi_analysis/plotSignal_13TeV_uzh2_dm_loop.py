@@ -16,7 +16,7 @@ for signalMass in signalMasses:
   for mDM in mDMs:
       for nxsec in range(13):
         samples+=[('Axial_Dijet_LO_Mphi',signalMass,mDM,("1p0","1p0"),nxsec),]
-        samples+=[('Vector_Dijet_LO_Mphi',signalMass,mDM,("1p5","1p0"),nxsec),]
+        samples+=[('Vector_Dijet_LO_Mphi',signalMass,mDM,("1p0","1p0"),nxsec),]
 
 #print samples
 
