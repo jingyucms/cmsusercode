@@ -24,12 +24,13 @@ if __name__=="__main__":
 
  models=[3]
  #models+=[10,11]
- models+=[60,61,62,63,64,65,66,67,68,69]
- models+=[70,71,72,73,74,75,76,77]
- models+=[78,79,80,81,82,83,84,85,86,87]
+ #models+=[60,61,62,63,64,65,66,67,68,69]
+ #models+=[70,71,72,73,74,75,76,77]
+ #models+=[78,79,80,81,82,83,84,85,86,87]
  #models+=[30,31,32,33,34,35,36,37,38]
  #models+=[40,41,42,43,44,45,46,47,48]
- models=[88,89]
+ #models=[88,89]
+ #models+=[60,61]
  
  testStat="LHC"
  asym="a" #asymptotic CLS
@@ -95,7 +96,7 @@ if __name__=="__main__":
     g_exp1p=TGraph(0)
     for mass,limit,error,exp,exp1m,exp1p,exp2m,exp2p in limits:
       if limit==0: limit=1e-5
-      if not asym:
+      if not testStat=="LHC":
        if exp>=1: exp=1e-5
        if exp1m>=1: exp1m=1e-5
        if exp1p>=1: exp1p=1e-5
@@ -133,7 +134,7 @@ if __name__=="__main__":
     mg.Draw("apl")
     mg.SetTitle("")
     mg.GetXaxis().SetTitle("scale [GeV]")
-    if asym:
+    if testStat=="LHC":
       mg.GetYaxis().SetTitle("log_{10}(signal strength)")
       miny=-1
       maxy=1
@@ -143,7 +144,7 @@ if __name__=="__main__":
       maxy=0
     mg.GetYaxis().SetRangeUser(miny,maxy)
     
-    if asym:
+    if testStat=="LHC":
       cut=1
     else:
       cut=0.05
@@ -151,7 +152,7 @@ if __name__=="__main__":
     l.SetLineColor(2)
     l.SetLineStyle(2)
     l.Draw("same")
-    if asym:
+    if testStat=="LHC":
       l1=TLatex((max_x-min_x)*0.5+min_x,log10(cut)*1,"signal strength = 1")
     else:
       l1=TLatex((max_x-min_x)*0.5+min_x,log10(cut)*1,"CL_{S}=0.05")
@@ -179,7 +180,7 @@ if __name__=="__main__":
 
     print "limit: %.1f" % (limit/1000.), "& %.1f" % (exp/1000.), "$\pm$ %.1f" % (err/1000.)
 
-    print "limit: %.2f," % (limit/1000.), "%.2f," % (exp/1000.), "%.2f, %.2f, 0, 0" % ((err+exp)/1000.,(exp-err)/1000.)
+    print "limit: %.2f," % (limit/1000.), "%.2f," % (exp/1000.), "%.2f, %.2f, 0, 0" % ((exp1m)/1000.,(exp1p)/1000.)
     
     l2=TLine(limit,miny,limit,log10(cut))
     l2.SetLineColor(1)
