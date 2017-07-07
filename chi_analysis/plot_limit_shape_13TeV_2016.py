@@ -30,7 +30,7 @@ if __name__=="__main__":
  #models+=[30,31,32,33,34,35,36,37,38]
  #models+=[40,41,42,43,44,45,46,47,48]
  #models=[88,89]
- #models+=[60,61]
+ models=[60,61]
  
  testStat="LHC"
  asym="a" #asymptotic CLS

@@ -25,7 +25,7 @@ models=[3]
 #models+=[30,31,32,33,34,35,36,37,38]
 #models+=[40,41,42,43,44,45,46]
 #models=[88,89]
-#models=[60]
+models=[60,61]
 
 VectorDM=True
 AxialDM=True
