@@ -57,6 +57,7 @@ def createPlots(sample,prefix,weightname,massbins):
     event_count=0
     acceptance=0
     sumweights=0
+    firstxsec=0
     for f in files[:]:
      print f
      try:
@@ -68,7 +69,10 @@ def createPlots(sample,prefix,weightname,massbins):
       continue
      print sample,nevents,nxsec
      for event in events:
-	 xsec=event.LHEEventProduct_externalLHEProducer__GEN.product().originalXWGTUP()*1000. # convert to pb
+         xsec=event.LHEEventProduct_externalLHEProducer__GEN.product().originalXWGTUP()*1000. # convert to pb
+	 if firstxsec>0 and xsec!=firstxsec:
+	    print "inconsistent xsec",firstxsec,xsec
+	    inconsistent
 	 #weights=[(w.id,w.wgt) for w in event.LHEEventProduct_externalLHEProducer__GEN.product().weights()]
 	 #print weights
 	 try:
@@ -103,7 +107,7 @@ def createPlots(sample,prefix,weightname,massbins):
                plots[irec].Fill(chi,weight)
 	    irec+=1
      fil.Close()
-    print sample,weightname,"acceptance",acceptance/sumweights
+    print sample,weightname,"acceptance",acceptance/sumweights, "xsec",xsec*sumweights/event_count
     for plot in plots:
       if nevents>0:
         plot.Scale(xsec/event_count)

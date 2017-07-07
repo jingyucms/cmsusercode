@@ -260,7 +260,6 @@ if __name__=="__main__":
 	        N=origh14.GetBinContent(b+1)
 	    else:
 	        N=1./pow(h14.GetBinError(b+1)/h14.GetBinContent(b+1),2)
-	    print N
 	    nevents+=N
 	    L=0
 	    if N>0:
@@ -268,6 +267,7 @@ if __name__=="__main__":
             U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
             h14G.SetPointEYlow(b,(N-L)/N*h14.GetBinContent(b+1))
             h14G.SetPointEYhigh(b,(U-N)/N*h14.GetBinContent(b+1))
+	    print N, sqrt(N)/N, origh14.GetBinError(b+1)/origh14.GetBinContent(b+1), h14.GetBinError(b+1)/h14.GetBinContent(b+1), (N-L)/N, (U-N)/N
         print "data events:", nevents
 	
 	h14Gsys=h14G.Clone(histname+"sys")
@@ -383,6 +383,7 @@ if __name__=="__main__":
             h2new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)-theory_sumdown*hNloQcdbackup.GetBinContent(b+1))
             h3new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)+theory_sumup*hNloQcdbackup.GetBinContent(b+1))
 	    print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup*h14G.GetY()[b],2)),sqrt(pow(exp_sumdown*h14G.GetY()[b],2)))
+	    print "sum rel error",sqrt(pow(exp_sumup,2)+pow(theory_sumup,2)+pow(h14G.GetErrorYhigh(b)/h14G.GetY()[b],2))
         pvalue=stats.chisqprob(chi2, h14.GetXaxis().GetNbins())
         sign=stats.norm.ppf(pvalue)
         print "sign",sign,"chi2/ndof",chi2/h14.GetXaxis().GetNbins()
