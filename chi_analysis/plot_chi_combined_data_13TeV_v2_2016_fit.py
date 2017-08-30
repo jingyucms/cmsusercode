@@ -28,7 +28,7 @@ if __name__=="__main__":
 
     showData=True
     binByBinCorrect=False
-    unfoldedData=True
+    unfoldedData=False
     showSignal=True
     showReReco=False
 
@@ -232,9 +232,12 @@ if __name__=="__main__":
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
           histname="dijet_mass_"+masstext+"_chi_unfolded"
 	else:
-          filename="datacard_shapelimit13TeV_25nsData13combi_chi.root"
+          filename="datacards/chiHist_dataReReco_v3_PFHT900.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
-          histname='Data13#chi'+masstext+'_rebin1'
+          histname="dijet_"+masstext+"_chi"
+          #filename="datacard_shapelimit13TeV_25nsData13combi_chi.root"
+          #masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
+          #histname='Data13#chi'+masstext+'_rebin1'
         print filename
         fData = TFile.Open(filename)
         new_hists+=[fData]
@@ -346,7 +349,8 @@ if __name__=="__main__":
 	new_hists+=[hPrefit]
 
         # Shift theory prediction according to fitted nuisance parameters
-	fitParameters=[-0.26,-1.03,+0.36,+0.21]
+	#fitParameters=[-0.26,-1.03,+0.36,+0.21]
+	fitParameters=[0,0,0,0]
 	fitConstraints=[0.86,0.74,1.10,0.29]
 	for nn in range(len(fitParameters)):
           for b in range(h14.GetXaxis().GetNbins()):
@@ -562,5 +566,5 @@ if __name__=="__main__":
     #// writing the lumi information and the CMS "logo"
     CMS_lumi( c, iPeriod, iPos );
     
-    c.SaveAs(prefix + "_combined_RunII_25ns_v2_2016_fit.pdf")
-    c.SaveAs(prefix + "_combined_RunII_25ns_v2_2016_fit.eps")
+    c.SaveAs(prefix + "_combined_RunII_25ns_v2_2016_fit_central_raw.pdf")
+    c.SaveAs(prefix + "_combined_RunII_25ns_v2_2016_fit_central_raw.eps")
