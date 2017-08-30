@@ -19,19 +19,22 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
 models=[]
 models=[3]
 #models+=[10,11]
-#models+=[60,61,62,63,64,65,66,67,68,69]
+models+=[60,61,62,63,64,65,66,67,68,69]
 #models+=[70,71,72,73,74,75,76,77]
 #models+=[78,79,80,81,82,83,84,85]
 #models+=[30,31,32,33,34,35,36,37,38]
 #models+=[40,41,42,43,44,45,46]
 #models=[88,89]
-models=[60,61]
+#models=[60,61]
 
 VectorDM=True
 AxialDM=True
 
 injectSignal=False
 dataWithSignal="_DMAxial_Dijet_LO_Mphi_4000_3000_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1_chi2016_inject.root"
+
+jesSources=16 # 1 corresponds to the single overall variation, 16 to all
+separateScaleUncertainties=False
 
 signalName={}
 signalExtraName={}
@@ -61,7 +64,7 @@ asym="a" #"a" for asymptotic CLS
 # The POI for LHC-style CLS is not clear, since CI models have no freedom  in signal strength or cross section.
 # The LEP-style and TEV-style CLS do not fit the POI.
 
-version="_v3" #version number controls how many massbin to use for DM
+version="_v5" #version number controls how many massbin to use for DM
 
 if len(sys.argv)>1:
    models=[int(sys.argv[1])]
@@ -393,13 +396,15 @@ for model in models:
     signal=signalName[model]
     signalExtra=signalExtraName[model]
     #if float(signalExtraName[model].split("_")[2])<=2:
-    signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000]
-    #signalMasses=[3000]
+    #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000]
+    signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
+    #signalMasses=[5000]
+    includeSignalTheoryUncertainties=True # Assign QCD-only scale uncertainty to QCD+DM
 
  #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/"
  #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/DMMay2/datacard_shapelimit13TeV"
  dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+ prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
 
  if model>=30 and model<60:
     name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
@@ -556,6 +561,25 @@ for model in models:
         massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
       elif signalMass<=6000:
         massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+    elif "DM" in signal and version=="_v5":
+      signalWithMass=signal+'_'+str(signalMass)+signalExtra
+      fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
+      fname=fname.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      signalWithMass=signalWithMass.replace("6000_3000","6000_2990").replace("7000_3000","7000_4000").replace("8000_3000","8000_3990")
+      if signalMass<=2500:
+        massbins=[(2400,3000)]
+      elif signalMass<=3000:
+        massbins=[(2400,3000),(3000,3600)]
+      elif signalMass<=3500:
+        massbins=[(2400,3000),(3000,3600),(3600,4200)]
+      elif signalMass<=4000:
+        massbins=[(2400,3000),(3000,3600),(3600,4200)]
+      elif signalMass<=4500:
+        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800)]  
+      elif signalMass<=5000:
+        massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000)]
+      elif signalMass<=6000:
+        massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
     print fname
     if not "DM" in signal and not "cs" in signal:
         signalWithMass="QCD"+signalWithMass
@@ -564,7 +588,7 @@ for model in models:
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 2 number of backgrounds
-kmax 4 number of nuisance parameters""")
+kmax """+str(3+jesSources+1*separateScaleUncertainties)+""" number of nuisance parameters""")
     cfg.writelines("""
 -----------
 """)
@@ -613,21 +637,41 @@ kmax 4 number of nuisance parameters""")
     text+="jer shape "
     for i in range(len(massbins)):
        text+="1 1 - "
-    text+="\njes shape "
-    for i in range(len(massbins)):
-       text+="1 1 - "
+    if jesSources>1:
+     for n in range(jesSources):
+      text+="\njes"+str(n+1)+" shape "
+      for i in range(len(massbins)):
+         text+="1 1 - "
+    else:
+      text+="\njes shape "
+      for i in range(len(massbins)):
+         text+="1 1 - "
     text+="\npdf shape "
     for i in range(len(massbins)):
       if includeSignalTheoryUncertainties:
        text+="1 1 - "
       else:
        text+="- 1 - "
-    text+="\nscale shape "
-    for i in range(len(massbins)):
-      if includeSignalTheoryUncertainties:
-       text+="1 1 - "
-      else:
-       text+="- 1 - "
+    if separateScaleUncertainties:
+      text+="\nscaleMuR shape "
+      for i in range(len(massbins)):
+        if includeSignalTheoryUncertainties:
+         text+="1 1 - "
+        else:
+         text+="- 1 - "
+      text+="\nscaleMuF shape "
+      for i in range(len(massbins)):
+        if includeSignalTheoryUncertainties:
+         text+="1 1 - "
+        else:
+         text+="- 1 - "
+    else:
+      text+="\nscale shape "
+      for i in range(len(massbins)):
+        if includeSignalTheoryUncertainties:
+         text+="1 1 - "
+        else:
+         text+="- 1 - "
     cfg.writelines(text+"""
 -----------
 """)
@@ -656,6 +700,7 @@ kmax 4 number of nuisance parameters""")
     if asym:
      if "limit" in name:
       out=system_call("combine -m "+str(signalMass)+" -M Asymptotic -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      # -H ProfileLikelihood
       f = open(name+"_exp_"+str(signalMass)+"_2016"+version+".txt","w");f.write(out);f.close()
      else: 
       out=system_call("combine --signif -m "+str(signalMass)+" -M ProfileLikelihood -n "+signal+signalExtra+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
@@ -687,10 +732,11 @@ kmax 4 number of nuisance parameters""")
     
     # diagnostics
     diagnostic=True
-    if diagnostic==True:
+    if diagnostic:
       out=system_call("mkdir "+name)
-      out=system_call("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+" -n "+name+str(signalMass)+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
-      out=system_call("python diffNuisances.py -p x -a "+name+"/mlfit"+name+str(signalMass)+".root")
+      out=system_call("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+" -n "+signalWithMass.replace("QCD","")+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      out=system_call("python diffNuisances.py -p x -a "+name+"/mlfit"+signalWithMass.replace("QCD","")+".root -A")
+      print out
 
  for signalMass in signalMasses:
     limits[signalMass]=[]

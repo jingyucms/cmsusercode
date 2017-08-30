@@ -20,7 +20,7 @@ if VectorDM:
     for gv in gvs:
       models+=[counter]
       signalName[counter]="DMVector_Dijet_LO_Mphi"
-      signalExtraName[counter]="_"+mdm+"_1p5_1p0_Mar5_gdmv_1p0_gdma_0_gv_"+gv+"_ga_0"
+      signalExtraName[counter]="_"+mdm+"_1p0_1p0_Mar5_gdmv_1p0_gdma_0_gv_"+gv+"_ga_0"
       if counter%5==4:
         print "python calculate_limit_shape_13TeV_2016.py "+str(counter)+" >& log"+str(counter)
       else:
