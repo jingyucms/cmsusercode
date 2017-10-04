@@ -36,13 +36,19 @@ dataWithSignal="_DMAxial_Dijet_LO_Mphi_4000_3000_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv
 jesSources=16 # 1 corresponds to the single overall variation, 16 to all
 separateScaleUncertainties=False
 
+isGen=False
+
+isCB=False
+
+isInjection=True
+
 signalName={}
 signalExtraName={}
   
 if VectorDM:
   counter=100
-  for mdm in ["1","3000"]:
-  #for mdm in ["1"]:
+  #for mdm in ["1","3000"]:
+  for mdm in ["1"]:
     for gv in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
       #models+=[counter]
       signalName[counter]="DMVector_Dijet_LO_Mphi"
@@ -51,7 +57,8 @@ if VectorDM:
 
 if AxialDM:
   counter=1100
-  for mdm in ["1","3000"]:
+  #for mdm in ["1","3000"]:
+  for mdm in ["1"]:
     for ga in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
       #models+=[counter]
       signalName[counter]="DMAxial_Dijet_LO_Mphi"
@@ -401,15 +408,36 @@ for model in models:
     #signalMasses=[5000]
     includeSignalTheoryUncertainties=True # Assign QCD-only scale uncertainty to QCD+DM
 
- #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/"
- #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/DMMay2/datacard_shapelimit13TeV"
- dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
+ if isGen:
+     dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+     prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/invertMatrixAug30/datacard_shapelimit13TeV"
+ elif isCB:
+     dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+     #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
+     prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/crystalBallSmearedAug30/datacard_shapelimit13TeV"
+ else:
+     dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+     prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
+
+ if isInjection:
+     prefix=prefix.replace("/datacard_","Injection/datacard_")
+ print prefix
 
  if model>=30 and model<60:
     name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
     name="limits"+testStat+asym+str(model)+"_"+signal
+
+ if isGen:
+     name=name.replace("limits","limitsGen")
+ elif isCB:
+     name=name.replace("limits","limitsDetCB")
+ else:
+     name=name.replace("limits","limitsDet")
+
+ if isInjection:
+     name=name+"Injection"
+ print name
 
  limits={}
  for signalMass in signalMasses:
@@ -733,9 +761,9 @@ kmax """+str(3+jesSources+1*separateScaleUncertainties)+""" number of nuisance p
     # diagnostics
     diagnostic=True
     if diagnostic:
-      out=system_call("mkdir "+name)
-      out=system_call("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+" -n "+signalWithMass.replace("QCD","")+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
-      out=system_call("python diffNuisances.py -p x -a "+name+"/mlfit"+signalWithMass.replace("QCD","")+".root -A")
+      out=system_call("mkdir "+name+version)
+      out=system_call("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+version+" -n "+signalWithMass.replace("QCD","")+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      out=system_call("python diffNuisances.py -p x -a "+name+version+"/mlfit"+signalWithMass.replace("QCD","")+".root -A")
       print out
 
  for signalMass in signalMasses:
