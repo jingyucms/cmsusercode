@@ -31,6 +31,7 @@ if __name__=="__main__":
  #models+=[40,41,42,43,44,45,46,47,48]
  #models=[88,89]
  #models=[60,61]
+ models=[10,11]
  
  testStat="LHC"
  asym="a" #asymptotic CLS
@@ -56,9 +57,9 @@ if __name__=="__main__":
     if model==9:
        signal="cs_nn30nlo_0_"    
     if model==10:
-       signal="ADD6QBH"    
+       signal="QBH_"    
     if model==11:
-       signal="RS1QBH"    
+       signal="QBH_"    
 
     if model>=18 and model<20:
        signal="cs_ct14nlo_"
@@ -83,8 +84,8 @@ if __name__=="__main__":
     #canvas.GetPad(0).SetLogy()
     mg=TMultiGraph()
 
-    min_x=8000
-    max_x=40000
+    min_x=5000
+    max_x=20000
     g0=TGraph(0)
     g0.SetPoint(0,min_x,0)
     g0.SetPoint(1,max_x,0)

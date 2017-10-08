@@ -40,7 +40,7 @@ isGen=False
 
 isCB=False
 
-isInjection=True
+isInjection=False
 
 signalName={}
 signalExtraName={}
@@ -126,13 +126,15 @@ for model in models:
     signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(4800,13000)]
  if model==10:
-    signal="ADD6QBH"    
-    signalMasses=[6500,7000,7500,8000,8500,9000]
-    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+    signal="QBH_"    
+    signalMasses=[7500,8000,8500,9000,9500,10000,10500,11000]
+    massbins=[(4800,5400),(5400,6000),(6000,13000)]
+    signalExtra="_6"
  if model==11:
-    signal="RS1QBH"
-    signalMasses=[4000,4500,5000,5500,6000,6500]
-    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+    signal="QBH_"
+    signalMasses=[4500,5000,5500,6000,6500,7000]
+    massbins=[(4800,5400),(5400,6000),(6000,13000)]
+    signalExtra="_RS1"
 
  if model==18:
     signal="cs_ct14nlo_"
@@ -399,6 +401,9 @@ for model in models:
     signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
     massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
+ dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+ prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+
  if model>=100:  # Dark Matter
     signal=signalName[model]
     signalExtra=signalExtraName[model]
@@ -407,37 +412,39 @@ for model in models:
     signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
     #signalMasses=[5000]
     includeSignalTheoryUncertainties=True # Assign QCD-only scale uncertainty to QCD+DM
+    
+    if isGen:
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/invertMatrixAug30/datacard_shapelimit13TeV"
+    elif isCB:
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+        #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/crystalBallSmearedAug30/datacard_shapelimit13TeV"
+    else:
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
 
- if isGen:
-     dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
-     prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/invertMatrixAug30/datacard_shapelimit13TeV"
- elif isCB:
-     dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
-     #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
-     prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/crystalBallSmearedAug30/datacard_shapelimit13TeV"
- else:
-     dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
-     prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
+    if isInjection:
+        prefix=prefix.replace("/datacard_","Injection0p75/datacard_")
+    print prefix
 
- if isInjection:
-     prefix=prefix.replace("/datacard_","Injection/datacard_")
- print prefix
+    name="limits"+testStat+asym+str(model)+"_"+signal
+    
+    if isGen:
+        name=name.replace("limits","limitsGen")
+    elif isCB:
+        name=name.replace("limits","limitsDetCB")
+    else:
+        name=name.replace("limits","limitsDet")
 
+    if isInjection:
+        name=name+"Injection0p75"
+    print name
+    
  if model>=30 and model<60:
     name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
     name="limits"+testStat+asym+str(model)+"_"+signal
-
- if isGen:
-     name=name.replace("limits","limitsGen")
- elif isCB:
-     name=name.replace("limits","limitsDetCB")
- else:
-     name=name.replace("limits","limitsDet")
-
- if isInjection:
-     name=name+"Injection"
- print name
 
  limits={}
  for signalMass in signalMasses:
@@ -516,10 +523,10 @@ for model in models:
         fname=prefix + '_GENnp-34-v5_chi2016.root'
     elif signalWithMass=="AntiCIplusLL12000":
         fname=prefix + '_GENnp-antici-v4_chi2016.root'
-    elif signalWithMass=="ADD6QBH"+str(signalMass):
-        fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
-    elif signalWithMass=="RS1QBH"+str(signalMass):
-        fname=prefix+"_QBH_"+str(signalMass)+"_RS1_chi_v1.root"
+    elif signalWithMass=="QBH_"+str(signalMass)+"_6":
+        fname=prefix + "_" + signalWithMass + "_chi2016.root"
+    elif signalWithMass=="QBH_"+str(signalMass)+"_RS1":
+        fname=prefix + "_" + signalWithMass + "_chi2016.root"
     elif "cs" in signal:
         fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
     elif "DM" in signal and version=="_v1":
@@ -609,7 +616,7 @@ for model in models:
       elif signalMass<=6000:
         massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
     print fname
-    if not "DM" in signal and not "cs" in signal:
+    if not "DM" in signal and not "cs" in signal and not "QBH" in signal:
         signalWithMass="QCD"+signalWithMass
     f=TFile(fname)
     cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt","w")

@@ -37,9 +37,10 @@ if __name__=="__main__":
   version="_v5"
 
   isGen=False
-  isCB=False
+  isCB=True
   
   isInjection=True
+  injectiontext="Injection1p0"
   
   if isGen:
     prefix="limitsGen"
@@ -82,14 +83,14 @@ if __name__=="__main__":
       signal=style+"_Mphi"+str(signalMass)+"_mdm"+mdm
 
       if isInjection:
-        signal=signal.replace("Mphi","MphiInjection")
+        signal=signal.replace("Mphi","Mphi"+injectiontext)
 
       limits=[]
       for g in gsplot:
         if testStat!="LEP":
           try:
             if isInjection:
-              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_MphiInjection_exp_"+str(signalMass)+"_2016"+version+".txt")
+              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi"+injectiontext+"_exp_"+str(signalMass)+"_2016"+version+".txt")
             else:
               f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
           except:
@@ -98,7 +99,7 @@ if __name__=="__main__":
         else:
           try:
             if isInjection:
-              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_MphiInjection_"+str(signalMass)+"_2016"+version+".txt")
+              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi"+injectiontext+"_"+str(signalMass)+"_2016"+version+".txt")
             else:
               f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt")
           except:
@@ -135,7 +136,7 @@ if __name__=="__main__":
           
         try:
           if isInjection:
-            f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_MphiInjection_exp_"+str(signalMass)+"_2016"+version+".txt")
+            f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi"+injectiontext+"_exp_"+str(signalMass)+"_2016"+version+".txt")
           else:
             f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
         except:
@@ -274,34 +275,57 @@ if __name__=="__main__":
       exp2m=0
       exp2p=0
       nseg=10000
-      #if asym:
-      masses=np.linspace(max_x,min_x,num=nseg)
-      #else:
-        #masses=np.linspace(min_x,max_x,num=nseg)
-      for mass in masses:  
-        #if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
-        if limit==0 and g.Eval(mass,0)>log10(cut):
-          limit=mass
-        #if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
-        if exp==0 and g_exp_.Eval(mass,0)>log10(cut):
-          exp=mass
-          #print "exp:",i,mass
-        #if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
-        if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut):
-          #print "exp1m:",i,mass
-          exp1m=mass
-        #if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
-        if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut):
-          exp1p=mass
-          #print "exp1p:",i,mass
-        #if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
-        if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut):
-          #print "exp2m:",i,mass
-          exp2m=mass
-        #if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
-        if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut):  
-          exp2p=mass
-          #print "exp2p:",i,mass
+      masses=np.linspace(max_x,min_x,num=nseg)      
+      if signalMass==6000:
+        for mass in masses:  
+          #if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
+          if limit==0 and g.Eval(mass,0)>log10(cut):
+            limit=mass
+          #if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
+          if exp==0 and g_exp_.Eval(mass,0)>log10(cut):
+            exp=mass
+            #print "exp:",i,mass
+          #if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
+          if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut):
+            #print "exp1m:",i,mass
+            exp1m=mass
+          #if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
+          if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut):
+            exp1p=mass
+            #print "exp1p:",i,mass
+          #if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
+          if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut):
+            #print "exp2m:",i,mass
+            exp2m=mass
+          #if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
+          if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut):  
+            exp2p=mass
+            #print "exp2p:",i,mass        
+      else:
+        for mass in masses:  
+          if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
+          #if limit==0 and g.Eval(mass,0)>log10(cut):
+            limit=mass
+          if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
+            #if exp==0 and g_exp_.Eval(mass,0)>log10(cut):
+            exp=mass
+            #print "exp:",i,mass
+          if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
+            #if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut):
+            #print "exp1m:",i,mass
+            exp1m=mass
+          if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
+          #if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut):
+            exp1p=mass
+            #print "exp1p:",i,mass
+          if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
+          #if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut):
+            #print "exp2m:",i,mass
+            exp2m=mass
+          if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
+          #if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut):  
+            exp2p=mass
+            #print "exp2p:",i,mass
 
 
       print "limit: %.2f" % (limit), "& %.2f" % (exp), "$\pm$ %.2f" % (max(exp-exp1p,exp1m-exp))
@@ -479,6 +503,6 @@ if __name__=="__main__":
     
     #canvas.SaveAs('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'_noSys.pdf')
     if isInjection:
-      canvas.SaveAs(prefix+testStat+asym+"_"+style+"_mdm"+mdm+version+'Injection.pdf')
+      canvas.SaveAs(prefix+testStat+asym+"_"+style+"_mdm"+mdm+version+injectiontext+'.pdf')
     else:
       canvas.SaveAs(prefix+testStat+asym+"_"+style+"_mdm"+mdm+version+'.pdf')
