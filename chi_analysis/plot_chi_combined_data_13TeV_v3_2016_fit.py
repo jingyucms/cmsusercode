@@ -48,7 +48,27 @@ def getFitResults(fitFile, treename):
         fitConstraints.append(tree.floatParsFinal().find(name).getError())
     return fitParameters, fitConstraints
 
-def applyFitResults(fitParameters,fitConstraints,uncertainties,hist):
+def applyFitResults(fitParameters,fitConstraints,uncertainties,hist,hdata):
+    hdataG=TGraphAsymmErrors(hdata.Clone(hdata.GetName()+"G"))
+    alpha=1.-0.6827
+    nevents=0
+    for b in range(hdataG.GetN()):
+        if unfoldedData:
+            N=h14.GetBinContent(b+1)
+        else:
+            N=1./pow(h14.GetBinError(b+1)/h14.GetBinContent(b+1),2)
+        print N
+        nevents+=N
+        L=0
+        if N>0:
+            L=ROOT.Math.gamma_quantile(alpha/2.,N,1.)
+        U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
+        hdataG.SetPointEYlow(b,(N-L)/N*hdata.GetBinContent(b+1))
+        hdataG.SetPointEYhigh(b,(U-N)/N*hdata.GetBinContent(b+1))
+    print "data events:", nevents
+
+    hdataGsysstat=hdataG.Clone(hdataG.GetName()+"_sysstat")
+    
     histbackup=hist.Clone(hist.GetName()+"_backup")
     for nn in range(len(fitParameters)):
         for b in range(hist.GetXaxis().GetNbins()):
@@ -62,46 +82,66 @@ def applyFitResults(fitParameters,fitConstraints,uncertainties,hist):
     h2new=histbackup.Clone("down"+str(massbins[massbin]))
     h3new=histbackup.Clone("up"+str(massbins[massbin]))
     for b in range(histbackup.GetXaxis().GetNbins()):
-        sumdown=0
-        sumup=0
+        theory_sumdown=0
+        theory_sumup=0
+        exp_sumdown=0
+        exp_sumup=0
         nn=0
         for up,down,central in uncertainties:
             addup=fitConstraints[nn]*pow(max(0,up.GetBinContent(b+1)-central.GetBinContent(b+1),down.GetBinContent(b+1)-central.GetBinContent(b+1)),2)/pow(central.GetBinContent(b+1),2)
             adddown=fitConstraints[nn]*pow(max(0,central.GetBinContent(b+1)-up.GetBinContent(b+1),central.GetBinContent(b+1)-down.GetBinContent(b+1)),2)/pow(central.GetBinContent(b+1),2)
-            sumup+=addup
-            sumdown+=adddown
+            if "jer" in uncertaintynames[uncertainties.index([up,down,central])] or "jes" in uncertaintynames[uncertainties.index([up,down,central])]:
+                exp_sumup+=addup
+                exp_sumdown+=adddown
+                #print uncertaintynames[uncertainties.index([up,down,central])]
+            else:
+                theory_sumup+=addup
+                theory_sumdown+=adddown
             nn+=1
-        sumdown=sqrt(sumdown)
-        sumup=sqrt(sumup)
-        
-        h2new.SetBinContent(b+1,histbackup.GetBinContent(b+1)-sumdown*histbackup.GetBinContent(b+1))
-        h3new.SetBinContent(b+1,histbackup.GetBinContent(b+1)+sumup*histbackup.GetBinContent(b+1))
-    return h2new,h3new
+        theory_sumdown=sqrt(theory_sumdown)
+        theory_sumup=sqrt(theory_sumup)
+        exp_sumdown=sqrt(exp_sumdown)
+        exp_sumup=sqrt(exp_sumup)
 
-def getUncertainties(fsys,basename,pname):
+        hdataGsysstat.SetPointEXlow(b,0)
+        hdataGsysstat.SetPointEXhigh(b,0)
+        hdataGsysstat.SetPointEYlow(b,sqrt(pow(exp_sumdown*hdataG.GetY()[b],2)+pow(hdataG.GetErrorYlow(b),2)))
+        hdataGsysstat.SetPointEYhigh(b,sqrt(pow(exp_sumup*hdataG.GetY()[b],2)+pow(hdataG.GetErrorYhigh(b),2)))
+        
+        h2new.SetBinContent(b+1,histbackup.GetBinContent(b+1)-theory_sumdown*histbackup.GetBinContent(b+1))
+        h3new.SetBinContent(b+1,histbackup.GetBinContent(b+1)+theory_sumup*histbackup.GetBinContent(b+1))
+        
+    return h2new,h3new,hdataGsysstat
+
+def getUncertainties(fsys,basename,pname,masstext):
     uncertainties=[]
     for u in uncertaintynames:
         hup_orig=fsys.Get(basename+"_"+u+"Up")
-        up=hup_orig.Clone(pname+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Up")
+        up=hup_orig.Clone(pname+'#chi'+masstext+"_rebin1_"+u+"Up")
         divBinWidth(up)
 
         hdown_orig=fsys.Get(basename+"_"+u+"Down")
-        down=hdown_orig.Clone(pname+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Down")
+        down=hdown_orig.Clone(pname+'#chi'+masstext+"_rebin1_"+u+"Down")
         divBinWidth(down)
 
         hcentral_orig=fsys.Get(basename)
-        central=hcentral_orig.Clone(pname+'#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")
+        central=hcentral_orig.Clone(pname+'#chi'+masstext+"_rebin1")
         divBinWidth(central)
         
         uncertainties+=[[up,down,central]]
 
     return uncertainties
     
-                
+def shiftWRTmu(uncertainties,mu,hDm,hbPrefit,hsPrefit):
+    hDm.Add(hDm,-1)
+    hDm.Add(hsPrefit,mu**2)
+    hDm.Add(hbPrefit,(1-mu**2))
+    return
+    
 
 if __name__=="__main__":
 
-    unfoldedData=False
+    unfoldedData=True
     isCB=False
 
     print "start ROOT"
@@ -242,7 +282,7 @@ if __name__=="__main__":
                 # QCD systematics
 
                 pname='QCD'
-                uncertainties=getUncertainties(f,basename,pname)
+                uncertainties=getUncertainties(f,basename,pname,masstext)
                 
                 new_hists+=[uncertainties]
 
@@ -252,12 +292,13 @@ if __name__=="__main__":
                 hbPrefit.SetLineColor(1)
                 hbPrefit.SetLineStyle(1)
                 new_hists+=[hbPrefit]
-    
-                # Shift theory prediction according to fitted nuisance parameters
+
+                
+                # Shift theory predictions according to fitted nuisance parameters
                 
                 bfitParameters,bfitConstraints=getFitResults(fitFile, 'fit_b')
 
-                h2bnew,h3bnew=applyFitResults(bfitParameters,bfitConstraints,uncertainties,hNloQcd)
+                h2bnew,h3bnew,h14Gsysstat=applyFitResults(bfitParameters,bfitConstraints,uncertainties,hNloQcd,h14)
 
                 # DM plot
                 basename=histnameprefix+"#chi"+masstext+"_rebin1"
@@ -272,13 +313,13 @@ if __name__=="__main__":
     	            hDm.SetBinContent(b+1,hDm.GetBinContent(b+1)/hDm.GetBinWidth(b+1))
     
                 hDm.SetLineColor(2)
-                hDm.SetLineStyle(3)
+                hDm.SetLineStyle(5)
                 hDm.SetLineWidth(2)
             
                 # DM systematics
 
                 pname='DM'
-                uncertainties=getUncertainties(f,basename,pname)
+                uncertainties=getUncertainties(f,basename,pname,masstext)
                 
                 new_hists+=[uncertainties]
 
@@ -288,12 +329,17 @@ if __name__=="__main__":
                 hsPrefit.SetLineColor(2)
                 hsPrefit.SetLineStyle(1)
                 new_hists+=[hsPrefit]
-    
+
+                # Shift theory predictions according to fitted signal strength
+                tree=fitFile.Get('fit_s')
+                mu=tree.floatParsFinal().find("x").getVal()
+                shiftWRTmu(uncertainties,mu,hDm,hbPrefit,hsPrefit)
+                
                 # Shift theory prediction according to fitted nuisance parameters
                 
                 sfitParameters,sfitConstraints=getFitResults(fitFile, 'fit_s')
 
-                h2snew,h3snew=applyFitResults(sfitParameters,sfitConstraints,uncertainties,hDm)
+                h2snew,h3snew,h14Gsysstat_sb=applyFitResults(sfitParameters,sfitConstraints,uncertainties,hDm,h14)
         
                 # Plotting
                 h2bnew.SetLineStyle(1)
@@ -341,7 +387,8 @@ if __name__=="__main__":
                 hNloQcd.Draw("axissame")
                 h3bnew.Draw("histsame")
                 h2bnew.Draw("histsame")
-                h14.Draw("same")
+                h14.Draw("zesame")
+                h14Gsysstat.Draw("zesame")
                 hNloQcd.Draw("histsame")
                 hbPrefit.Draw("histsame")
                 hDm.Draw("histsame")
@@ -381,6 +428,8 @@ if __name__=="__main__":
                 h3bnew.SetLineStyle(1)
                 h3bnew.SetLineColor(15)
                 h3bnew.SetFillColor(15)
+
+                print "systematic uncertainty:", (h3bnew.GetBinContent(1)-hNloQcd.GetBinContent(1))/hNloQcd.GetBinContent(1)
         
                 canvas.SaveAs(SaveDir + prefix + "_combined_RunII_25ns_v3_2016_fit_"+histnameprefix+"_"+masstext+".pdf")
 
