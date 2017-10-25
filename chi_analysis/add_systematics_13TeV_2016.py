@@ -451,16 +451,17 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
+    #for m in range(29,31):
        samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
-               #("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
 
     for mass in [1700,2000,2300,2600,2900,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7100]:
@@ -483,13 +484,13 @@ if __name__ == '__main__':
        mDMs=[1,3990]
      else:
        mDMs=[1,3000]
-     mDMs=[1]
+     #mDMs=[1]
      for mDM in mDMs:
       for weight in ['gdmv_1p0_gdma_0_gv_0p01_ga_0', 'gdmv_1p0_gdma_0_gv_0p05_ga_0', 'gdmv_1p0_gdma_0_gv_0p1_ga_0', 'gdmv_1p0_gdma_0_gv_0p2_ga_0', 'gdmv_1p0_gdma_0_gv_0p25_ga_0', 'gdmv_1p0_gdma_0_gv_0p3_ga_0', 'gdmv_1p0_gdma_0_gv_0p5_ga_0', 'gdmv_1p0_gdma_0_gv_0p75_ga_0', 'gdmv_1p0_gdma_0_gv_1_ga_0', 'gdmv_1p0_gdma_0_gv_1p5_ga_0', 'gdmv_1p0_gdma_0_gv_2p0_ga_0', 'gdmv_1p0_gdma_0_gv_2p5_ga_0', 'gdmv_1p0_gdma_0_gv_3p0_ga_0']:
-         samples2+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
+         samples+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
-      for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
-      #for weight in ['gdmv_0_gdma_1p0_gv_0_ga_1']:
+      #for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
+      for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p5']:
          samples+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
 
@@ -594,6 +595,7 @@ if __name__ == '__main__':
 
       # data file
       insample='datacards/chiHist_dataReReco_v3_PFHT900.root'
+      #insample='datacards/datacard_shapelimit13TeV_25nsData13combi_chi.root' # buggy data
       print insample
       infile=TFile(insample,'READ')
 
@@ -693,11 +695,11 @@ if __name__ == '__main__':
           histname2="dijet_"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_chi"
           print histname2
           data = TH1F(infile.Get(histname2))
-          data.SetName(histname)
-          #data = TH1F(infile.Get("Data13#chi"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"))
+          #data = TH1F(infile.Get("Data13#chi"+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1")) # buggy data
           #for b in range(data.GetXaxis().GetNbins()):
           #   data.SetBinContent(b+1,data.GetBinContent(b+1)*data.GetBinWidth(b+1))
           #   data.SetBinError(b+1,data.GetBinError(b+1)*data.GetBinWidth(b+1))
+          data.SetName(histname)
         data=data.Rebin(len(chi_binnings[j])-1,data.GetName()+"_rebin1",chi_binnings[j])
         dataevents[j]=data.Integral()
         print dataevents[j]
@@ -723,6 +725,7 @@ if __name__ == '__main__':
         for b in range(nloqcd.GetXaxis().GetNbins()):
            nloqcd.SetBinContent(b+1,nloqcd.GetBinContent(b+1)*nloqcd.GetBinWidth(b+1))
         nloqcdbackup=nloqcd.Clone(nloqcd.GetName()+"_backup")
+	print "NLO integral:", nloqcdbackup.Integral()
 
         # NLO normalized
         nloqcdnorm=None
@@ -1244,7 +1247,7 @@ if __name__ == '__main__':
           scaledown.Write()
           
           if "lo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
-             signalmassname="_".join(samples[i][0].split["_"][2:4])
+             signalmassname="_".join(samples[i][0].split("_")[2:4])
 	     nloScaleupci=None
              for k in mass_bins_nlo_list[j]:
               histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scale"+scaleVariation+"Up"
@@ -1457,26 +1460,26 @@ if __name__ == '__main__':
             for b1 in range(althists[j1].GetNbinsX()):
               for j2 in range(len(massbins)):
                 for b2 in range(althists[j2].GetNbinsX()):
-		  if abs(j1-j2)>1 or j2<j1: continue #don't take elements too far from the diagonal to avoid statistical fluctuations
+		  #if abs(j1-j2)>1 or j2<j1: continue #don't take elements too far from the diagonal to avoid statistical fluctuations
                   response=0
                   if j1==(len(massbins)-1) and j2==(len(massbins)-1):
                     # both in highest mass bin
-                    response=matrix2[(j1+3)+b1*(len(matrixMassBins)-1)][(j2+3)+b2*(len(matrixMassBins)-1)]
+                    response=matrix2[(j2+3)+b2*(len(matrixMassBins)-1)][(j1+3)+b1*(len(matrixMassBins)-1)]
                   elif j1!=(len(massbins)-1) and j2!=(len(massbins)-1):
                     # both in lower mass bins
-                    response=matrix1[(j1+3)+b1*(len(matrixMassBins)-1)][(j2+3)+b2*(len(matrixMassBins)-1)]
+                    response=matrix1[(j2+3)+b2*(len(matrixMassBins)-1)][(j1+3)+b1*(len(matrixMassBins)-1)]
                   elif j1==(len(massbins)-1):
                     # one in highest, one in lower mass bin
 		    for bin1 in range(althists[0].GetNbinsX()):
                       if althists[0].GetBinCenter(bin1+1)>althists[j1].GetXaxis().GetBinLowEdge(b1+1) and\
                          althists[0].GetBinCenter(bin1+1)<althists[j1].GetXaxis().GetBinUpEdge(b1+1):
-                        response+=matrix1[(j1+3)+bin1*(len(matrixMassBins)-1)][(j2+3)+b2*(len(matrixMassBins)-1)]
+                        response+=matrix1[(j2+3)+b2*(len(matrixMassBins)-1)][(j1+3)+bin1*(len(matrixMassBins)-1)]
                   elif j2==(len(massbins)-1):
                     # one in highest, one in lower mass bin
 		    for bin2 in range(althists[0].GetNbinsX()):
                       if althists[0].GetBinCenter(bin2+1)>althists[j2].GetXaxis().GetBinLowEdge(b2+1) and\
                          althists[0].GetBinCenter(bin2+1)<althists[j2].GetXaxis().GetBinUpEdge(b2+1):
-                        response+=matrix1[(j1+3)+b1*(len(matrixMassBins)-1)][(j2+3)+bin2*(len(matrixMassBins)-1)]
+                        response+=matrix1[(j2+3)+bin2*(len(matrixMassBins)-1)][(j1+3)+b1*(len(matrixMassBins)-1)]
 		  #response=((b1==b2) and (j1==j2))
 		  althists[j2].Fill(althists[j2].GetBinCenter(b2+1),althistsclones[j1].GetBinContent(b1+1)*response)
           for j in range(len(massbins)):
@@ -1501,9 +1504,9 @@ if __name__ == '__main__':
             plots+=[alt]
 	  for j in range(len(massbins)):
 	    syss=["jes","jer","scale","pdf"]
-	    for n in range(len(jessources)-1):
-	      syss+=["jes"+str(n+1)]
-            syss+=["scaleMuR","scaleMuF"]
+	    #for n in range(len(jessources)-1):
+	    #  syss+=["jes"+str(n+1)]
+            #syss+=["scaleMuR","scaleMuF"]
 	    for sys in syss:
 	      for shift in ["Up","Down"]:
 	        histname=althists[j].GetName()+"_"+sys+shift
