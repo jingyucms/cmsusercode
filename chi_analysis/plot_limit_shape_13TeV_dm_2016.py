@@ -34,29 +34,43 @@ if __name__=="__main__":
   asym="a" # asymptotic CLS
   #testStat="LEP"
   #asym=""
-  version="_v4"
+  version="_v5"
+
+  isGen=False
+  isCB=True
   
+  isInjection=True
+  injectiontext="Injection1p0"
+  
+  if isGen:
+    prefix="limitsGen"
+  elif isCB:
+    prefix="limitsDetCB"
+  else:
+    prefix="limitsDet"
+    
   signalCounter={}
   if style=="DMVector":
     counter=100
   else:
     counter=1100
 
-  gs=["0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
+  gs=["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
+  gsplot=["0p1","0p2","0p25","0p3","0p5","0p75","1","1p5"]
   mdms=["1","3000"]
-  #mdms=["3000"]
+  #mdms=["1"]
   #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
   #signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
-  signalMasses=[2500,3000,3500,4000,4500,5000,6000]
+  signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
  
   for mdm in mdms:
     for g in gs:
       signalCounter[style+"_mdm"+mdm+"_g"+g]=counter
       counter+=1
-      
+
   #for mdm in mdms:
   for mdm in ["1"]:
-    g_q_out=TFile('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'.root',"RECREATE")
+    g_q_out=TFile(prefix+testStat+asym+"_"+style+"_mdm"+mdm+version+'.root',"RECREATE")
     
     g_q=TGraph(0)
     g_q_exp=TGraph(0)
@@ -68,19 +82,28 @@ if __name__=="__main__":
       print "--------------------"
       signal=style+"_Mphi"+str(signalMass)+"_mdm"+mdm
 
+      if isInjection:
+        signal=signal.replace("Mphi","Mphi"+injectiontext)
+
       limits=[]
-      for g in gs:
+      for g in gsplot:
         if testStat!="LEP":
           try:
-            f=file("limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
+            if isInjection:
+              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi"+injectiontext+"_exp_"+str(signalMass)+"_2016"+version+".txt")
+            else:
+              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
           except:
-            print "can't open","limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
+            print "can't open",prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
 	    continue
         else:
           try:
-            f=file("limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt")
+            if isInjection:
+              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi"+injectiontext+"_"+str(signalMass)+"_2016"+version+".txt")
+            else:
+              f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt")
           except:
-            print "can't open","limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt"
+            print "can't open",prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_"+str(signalMass)+"_2016"+version+".txt"
             continue
           
         limits+=[[]]
@@ -112,9 +135,12 @@ if __name__=="__main__":
           limits[-1]+=[0]
           
         try:
-          f=file("limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
+          if isInjection:
+            f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi"+injectiontext+"_exp_"+str(signalMass)+"_2016"+version+".txt")
+          else:
+            f=file(prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt")
         except:
-          print "can't open","limits"+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
+          print "can't open",prefix+testStat+asym+str(signalCounter[style+"_mdm"+mdm+"_g"+g])+"_"+style+"_Dijet_LO_Mphi_exp_"+str(signalMass)+"_2016"+version+".txt"
           del limits[-1]
 	  continue
         for line in f.readlines():
@@ -137,14 +163,14 @@ if __name__=="__main__":
         for g in range(len(limits)):
           limits[g]=[limits[g][0],limits[g][1],limits[g][2],limits[g][5],limits[g][6],limits[g][4],limits[g][7],limits[g][3]]
 
-      print limits
+      #print limits
 
       canvas = TCanvas("","",0,0,300,300)
       #canvas.GetPad(0).SetLogy()
-      #canvas.GetPad(0).SetLogx()
+      canvas.GetPad(0).SetLogx()
       mg=TMultiGraph()
 
-      min_x=0.01
+      min_x=0.1
       max_x=11
 
       g=TGraph(0)
@@ -249,37 +275,60 @@ if __name__=="__main__":
       exp2m=0
       exp2p=0
       nseg=10000
-      #if asym:
-      masses=np.linspace(max_x,min_x,num=nseg)
-      #else:
-        #masses=np.linspace(min_x,max_x,num=nseg)
-      for mass in masses:  
-        #if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
-        if limit==0 and g.Eval(mass,0)>log10(cut):
-          limit=mass
-        #if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
-        if exp==0 and g_exp_.Eval(mass,0)>log10(cut):
-          exp=mass
-          print "exp:",i,mass
-        #if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
-        if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut):
-          print "exp1m:",i,mass
-          exp1m=mass
-        #if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
-        if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut):
-          exp1p=mass
-          print "exp1p:",i,mass
-        #if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
-        if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut):
-          print "exp2m:",i,mass
-          exp2m=mass
-        #if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
-        if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut):  
-          exp2p=mass
-          print "exp2p:",i,mass
+      masses=np.linspace(max_x,min_x,num=nseg)      
+      if signalMass==6000:
+        for mass in masses:  
+          #if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
+          if limit==0 and g.Eval(mass,0)>log10(cut):
+            limit=mass
+          #if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
+          if exp==0 and g_exp_.Eval(mass,0)>log10(cut):
+            exp=mass
+            #print "exp:",i,mass
+          #if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
+          if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut):
+            #print "exp1m:",i,mass
+            exp1m=mass
+          #if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
+          if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut):
+            exp1p=mass
+            #print "exp1p:",i,mass
+          #if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
+          if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut):
+            #print "exp2m:",i,mass
+            exp2m=mass
+          #if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
+          if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut):  
+            exp2p=mass
+            #print "exp2p:",i,mass        
+      else:
+        for mass in masses:  
+          if limit==0 and g.Eval(mass,0)>log10(cut) and mass<=max_mass:
+          #if limit==0 and g.Eval(mass,0)>log10(cut):
+            limit=mass
+          if exp==0 and g_exp_.Eval(mass,0)>log10(cut) and mass<=max_mass_exp:
+            #if exp==0 and g_exp_.Eval(mass,0)>log10(cut):
+            exp=mass
+            #print "exp:",i,mass
+          if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1m:
+            #if exp1m==0 and g_exp1m.Eval(mass,0)>log10(cut):
+            #print "exp1m:",i,mass
+            exp1m=mass
+          if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp1p:
+          #if exp1p==0 and g_exp1p.Eval(mass,0)>log10(cut):
+            exp1p=mass
+            #print "exp1p:",i,mass
+          if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2m:
+          #if exp2m==0 and g_exp2m.Eval(mass,0)>log10(cut):
+            #print "exp2m:",i,mass
+            exp2m=mass
+          if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut) and mass<=max_mass_exp2p:
+          #if exp2p==0 and g_exp2p.Eval(mass,0)>log10(cut):  
+            exp2p=mass
+            #print "exp2p:",i,mass
 
 
-      print "limit: %.6f" % (limit), "& %.6f" % (exp), "$\pm$ %.6f" % (max(exp-exp1p,exp1m-exp))
+      print "limit: %.2f" % (limit), "& %.2f" % (exp), "$\pm$ %.2f" % (max(exp-exp1p,exp1m-exp))
 
       #print "limit: %.6f," % (limit), "%.6f," % (exp), "%.6f, %.6f, 0, 0" % ((-max(exp-exp1p,exp1m-exp)+exp),(exp+max(exp-exp1p,exp1m-exp)))
       print "limit: %.6f," % (limit), "%.6f," % (exp), "%.6f, %.6f, %.6f, %.6f" % (exp-min(exp1p,exp1m),max(exp1p,exp1m)-exp, exp-min(exp2p,exp2m), max(exp2p,exp2m)-exp)
@@ -314,7 +363,7 @@ if __name__=="__main__":
       l2c.SetLineStyle(2)
       l2c.Draw("same")
   
-      canvas.SaveAs('limits'+testStat+asym+signal+version+'.pdf')
+      canvas.SaveAs(prefix+testStat+asym+signal+version+'.pdf')
 
     canvas = TCanvas("","",0,0,300,300)
     mg=TMultiGraph()
@@ -330,7 +379,7 @@ if __name__=="__main__":
       if g_q_exp.Eval(x)>=1.42788:
         max_x_new=x
         break
-    max_x_new=6000
+    max_x_new=signalMasses[-1]
       
     g_q_band_2sigma.SetFillStyle(1001)
     g_q_band_2sigma.SetFillColor(kOrange)
@@ -453,4 +502,7 @@ if __name__=="__main__":
     leg3.Draw("same")
     
     #canvas.SaveAs('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'_noSys.pdf')
-    canvas.SaveAs('limits'+testStat+asym+"_"+style+"_mdm"+mdm+version+'.pdf')
+    if isInjection:
+      canvas.SaveAs(prefix+testStat+asym+"_"+style+"_mdm"+mdm+version+injectiontext+'.pdf')
+    else:
+      canvas.SaveAs(prefix+testStat+asym+"_"+style+"_mdm"+mdm+version+'.pdf')

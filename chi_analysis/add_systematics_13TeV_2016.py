@@ -129,6 +129,7 @@ if __name__ == '__main__':
 
     samples=[]
     samples2=[]
+    samples3=[]
 
     samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
                        ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
@@ -494,6 +495,16 @@ if __name__ == '__main__':
          samples+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
 
+    for m in [[7500,0.01678352],[8000,0.004871688],[8500,0.001292072],[9000,0.0003054339],[9500,0.00006221544],[10000,0.00001040396],[10500,0.000001327101],[11000,0.0000001145733]]:
+        samples3+=[("QBH_"+str(m[0])+"_6",[("QBH_"+str(m[0])+"_6",m[1])]),]
+
+    for m in [[4500,0.05148],[5000,0.01829],[5500,0.006472],[6000,0.002250],[6500,0.0007599],[7000,0.0002461]]:
+        samples3+=[("QBH_"+str(m[0])+"_RS1",[("QBH_"+str(m[0])+"_RS1",m[1])]),]
+
+    #samples=samples3
+
+    #print samples
+
     dataevents={}
     data=None
     dataplot={}
@@ -574,7 +585,7 @@ if __name__ == '__main__':
         sample=prefix + '_GENnp-34-v5_chi2016.root'
       elif samples[i][0]=="QCDAntiCIplusLL12000":
         sample=prefix + '_GENnp-antici-v4_chi2016.root'
-      elif "DM" in samples[i][0] or "ll" in samples[i][0] or "cs" in samples[i][0] or "wide" in samples[i][0]:
+      elif "DM" in samples[i][0] or "ll" in samples[i][0] or "cs" in samples[i][0] or "wide" in samples[i][0] or "QBH" in samples[i][0]:
         sample=prefix + "_" + samples[i][0] + '_chi2016.root'
       #if "ADD" in samples[i][0]:
       #  sample=prefix + '_GENaddv3_chi2016.root'
@@ -585,9 +596,10 @@ if __name__ == '__main__':
       else:
         sample="datacards/"+prefix + '_GENv4_chi.root'
       print sample
+  
       out=TFile(sample,'UPDATE')
       closefiles=[out]
- 
+      
       # LO QCD file
       sample2="datacards/"+prefix + '_GENv4_chi.root'
       print sample2
@@ -846,6 +858,21 @@ if __name__ == '__main__':
           #  ci.Scale(5./4.) #to bug fix xsec from Phil
 	  print histname,"signal fraction in first bin", ci.GetBinContent(1)/nloqcd.GetBinContent(1)
           ci.Add(nloqcd)
+        elif "QBH" in samples[i][0]:
+            histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+            if j<3:
+                ci=nloqcd.Clone(histname)
+            else:
+                if samples[i][0].split("_")[2]=='6':
+                    histnamein='QCDADD'+samples[i][0].split("_")[2]+samples[i][0].split("_")[0]+samples[i][0].split("_")[1]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")
+                else:
+                    histnamein='QCD'+samples[i][0].split("_")[2]+samples[i][0].split("_")[0]+samples[i][0].split("_")[1]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")
+                cibackup=out.Get(histnamein)
+                ci=cibackup.Clone(histname)
+                ci=ci.Rebin(len(chi_binnings[j])-1,ci.GetName(),chi_binnings[j])
+                ci.Scale(samples[i][1][0][1]/1000000)
+                ci.Scale(1./nloqcdbackup.Integral())
+                ci.Add(nloqcd)
         elif "wide" in samples[i][0]:
           cibackup=out.Get(histname)
           try:
@@ -936,7 +963,7 @@ if __name__ == '__main__':
         histname=samples[i][0].replace("Anti","")+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         print histname
         if "LOCI" in samples[i][0] or "CT10" in samples[i][0] or "cteq" in samples[i][0] or "EWK" in samples[i][0]:
-                alt=nloqcd.Clone(histname)
+            alt=nloqcd.Clone(histname)
         else:
             alt=out.Get(histname)
         alt=alt.Rebin(len(chi_binnings[j])-1,alt.GetName(),chi_binnings[j])
