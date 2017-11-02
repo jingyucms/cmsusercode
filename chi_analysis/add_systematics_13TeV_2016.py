@@ -453,15 +453,15 @@ if __name__ == '__main__':
 
     for m in range(5,31):
     #for m in range(29,31):
-       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
-               ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
+       samples2+=[#("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
+               #("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
                ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
 
@@ -485,13 +485,13 @@ if __name__ == '__main__':
        mDMs=[1,3990]
      else:
        mDMs=[1,3000]
-     #mDMs=[1]
+     mDMs=[1]
      for mDM in mDMs:
       for weight in ['gdmv_1p0_gdma_0_gv_0p01_ga_0', 'gdmv_1p0_gdma_0_gv_0p05_ga_0', 'gdmv_1p0_gdma_0_gv_0p1_ga_0', 'gdmv_1p0_gdma_0_gv_0p2_ga_0', 'gdmv_1p0_gdma_0_gv_0p25_ga_0', 'gdmv_1p0_gdma_0_gv_0p3_ga_0', 'gdmv_1p0_gdma_0_gv_0p5_ga_0', 'gdmv_1p0_gdma_0_gv_0p75_ga_0', 'gdmv_1p0_gdma_0_gv_1_ga_0', 'gdmv_1p0_gdma_0_gv_1p5_ga_0', 'gdmv_1p0_gdma_0_gv_2p0_ga_0', 'gdmv_1p0_gdma_0_gv_2p5_ga_0', 'gdmv_1p0_gdma_0_gv_3p0_ga_0']:
-         samples+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
+         samples2+=[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMVector_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
-      #for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
-      for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p5']:
+      for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
+      #for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p5']:
          samples+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
 
@@ -1177,10 +1177,10 @@ if __name__ == '__main__':
 	   dmpdfcanvas=dmpdffile.Get("pdf")
 	   dmpdfplot=dmpdfcanvas.GetListOfPrimitives()[j+useUnfoldedData*1]
 	   dmpdfhist=[a for a in dmpdfplot.GetListOfPrimitives() if "mean" in str(a)][0]
-	   for b in range(nloPDFdownci.GetNbinsX()):
-	     print nloPDFdownci.GetBinContent(b+1),dmpdfhist.GetBinError(b+1)/dmpdfhist.GetBinContent(b+1)*ci.GetBinContent(b+1)/dataevents[j]
-             nloPDFupci.SetBinContent(b+1,sqrt(pow(nloPDFupci.GetBinContent(b+1),2)+pow(dmpdfhist.GetBinError(b+1)/dmpdfhist.GetBinContent(b+1)*ci.GetBinContent(b+1)/dataevents[j],2)))
-             nloPDFdownci.SetBinContent(b+1,-sqrt(pow(nloPDFdownci.GetBinContent(b+1),2)+pow(dmpdfhist.GetBinError(b+1)/dmpdfhist.GetBinContent(b+1)*ci.GetBinContent(b+1)/dataevents[j],2)))
+	   for b in range(nloPDFupci.GetNbinsX()):
+	     slope=(ci.GetBinContent(b+1)/dataevents[j]-nloqcd.GetBinContent(b+1))*dmpdfhist.GetBinError(1)/dmpdfhist.GetBinContent(1)
+             nloPDFupci.SetBinContent(b+1,sqrt(pow((nloPDFupci.GetBinCenter(b+1)-8.5)/7.5*slope,2)+pow(nloPDFupqcd.GetBinContent(b+1),2)))
+             nloPDFdownci.SetBinContent(b+1,-sqrt(pow((nloPDFdownci.GetBinCenter(b+1)-8.5)/7.5*slope,2)+pow(nloPDFdownqcd.GetBinContent(b+1),2)))
 	else:
            nloPDFdownci=nloPDFdownqcd
            nloPDFupci=nloPDFupqcd
@@ -1531,9 +1531,9 @@ if __name__ == '__main__':
             plots+=[alt]
 	  for j in range(len(massbins)):
 	    syss=["jes","jer","scale","pdf"]
-	    #for n in range(len(jessources)-1):
-	    #  syss+=["jes"+str(n+1)]
-            #syss+=["scaleMuR","scaleMuF"]
+	    for n in range(len(jessources)-1):
+	      syss+=["jes"+str(n+1)]
+            syss+=["scaleMuR","scaleMuF"]
 	    for sys in syss:
 	      for shift in ["Up","Down"]:
 	        histname=althists[j].GetName()+"_"+sys+shift
