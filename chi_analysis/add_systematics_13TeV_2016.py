@@ -3,6 +3,7 @@ from ROOT import *
 from DataFormats.FWLite import Events,Handle
 import array
 from math import *
+from scipy import stats
 
 #gROOT.Macro( os.path.expanduser( '~/rootlogon.C' ) )
 gROOT.Reset()
@@ -422,7 +423,7 @@ if __name__ == '__main__':
                        ("pythia8_add_m5200_13000_22000_0_0_0_1_13TeV_Nov14",1),
                        ]),
              ]
-    samples2+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
                        ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
                        ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
                        ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -492,7 +493,7 @@ if __name__ == '__main__':
              ]
       for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p01', 'gdmv_0_gdma_1p0_gv_0_ga_0p05', 'gdmv_0_gdma_1p0_gv_0_ga_0p1', 'gdmv_0_gdma_1p0_gv_0_ga_0p2', 'gdmv_0_gdma_1p0_gv_0_ga_0p25', 'gdmv_0_gdma_1p0_gv_0_ga_0p3', 'gdmv_0_gdma_1p0_gv_0_ga_0p5', 'gdmv_0_gdma_1p0_gv_0_ga_0p75', 'gdmv_0_gdma_1p0_gv_0_ga_1', 'gdmv_0_gdma_1p0_gv_0_ga_1p5', 'gdmv_0_gdma_1p0_gv_0_ga_2p0', 'gdmv_0_gdma_1p0_gv_0_ga_2p5', 'gdmv_0_gdma_1p0_gv_0_ga_3p0']:
       #for weight in ['gdmv_0_gdma_1p0_gv_0_ga_0p5']:
-         samples+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
+         samples2+=[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,[("DMAxial_Dijet_LO_Mphi_"+str(mass)+"_"+str(mDM)+"_1p0_1p0_Mar5_"+weight,0)]),
              ]
 
     for m in [[7500,0.01678352],[8000,0.004871688],[8500,0.001292072],[9000,0.0003054339],[9500,0.00006221544],[10000,0.00001040396],[10500,0.000001327101],[11000,0.0000001145733]]:
@@ -506,6 +507,7 @@ if __name__ == '__main__':
     #print samples
 
     dataevents={}
+    datahist={}
     data=None
     dataplot={}
     qcdnorm={}
@@ -585,6 +587,8 @@ if __name__ == '__main__':
         sample=prefix + '_GENnp-34-v5_chi2016.root'
       elif samples[i][0]=="QCDAntiCIplusLL12000":
         sample=prefix + '_GENnp-antici-v4_chi2016.root'
+      elif samples[i][0]=="QCD":
+        sample=prefix + '_QCD_chi2016.root'
       elif "DM" in samples[i][0] or "ll" in samples[i][0] or "cs" in samples[i][0] or "wide" in samples[i][0] or "QBH" in samples[i][0]:
         sample=prefix + "_" + samples[i][0] + '_chi2016.root'
       #if "ADD" in samples[i][0]:
@@ -1429,6 +1433,7 @@ if __name__ == '__main__':
         ciscaledown.Draw("hesame")
  
         origdata=data
+	datahist[j]=data
         dataplot[j]=TGraphAsymmErrors(cloneNormalize(data))
         plots+=[dataplot[j]]
         alpha=1.-0.6827
@@ -1529,11 +1534,14 @@ if __name__ == '__main__':
             else:
 	      alt.Draw("hesame")
             plots+=[alt]
+	  syshists={}
 	  for j in range(len(massbins)):
-	    syss=["jes","jer","scale","pdf"]
+	    syss=["jer","pdf"]
+	    #syss+=["jes"]
 	    for n in range(len(jessources)-1):
 	      syss+=["jes"+str(n+1)]
-            syss+=["scaleMuR","scaleMuF"]
+	    syss+=["scale"]
+            #syss+=["scaleMuR","scaleMuF"]
 	    for sys in syss:
 	      for shift in ["Up","Down"]:
 	        histname=althists[j].GetName()+"_"+sys+shift
@@ -1547,6 +1555,7 @@ if __name__ == '__main__':
                 for k in range(0,200):
                   out.Delete(sysHist.GetName()+";"+str(k))
 	        sysHist.Write()
+		syshists[sys+shift]=sysHist
                 canvas.cd(j+1)#j-2
                 alt=cloneNormalize(sysHist)
                 alt.Draw("hesame")
@@ -1556,6 +1565,17 @@ if __name__ == '__main__':
 	    legend.SetHeader((str(massbins[j][0])+"<m_{jj}<"+str(massbins[j][1])+" GeV").replace("4800<m_{jj}<7000","m_{jj}>4800").replace("4800<m_{jj}<13000","m_{jj}>4800"))
 	    legend.Draw("same")
 	    plots+=[legend]
+	    chi2=0
+	    for b in range(datahist[j].GetNbinsX()):
+	      unc2=max(pow(dataplot[j].GetErrorYlow(b),2),pow(dataplot[j].GetErrorYhigh(b),2))
+	      print "stat",sqrt(unc2)/datahist[j].GetBinContent(b+1)
+	      for sys in syss:
+	        unc2+=max(pow(syshists[sys+"Up"].GetBinContent(b+1)-althists[j].GetBinContent(b+1),2),pow(syshists[sys+"Down"].GetBinContent(b+1)-althists[j].GetBinContent(b+1),2))
+	      print "stat+sys",sqrt(unc2)/datahist[j].GetBinContent(b+1)
+	      chi2+=pow(datahist[j].GetBinContent(b+1)-althists[j].GetBinContent(b+1),2)/unc2
+	    pvalue=stats.chisqprob(chi2, datahist[j].GetNbinsX())
+            sign=-stats.norm.ppf(pvalue)
+	    print "sign",sign,"chi2/ndof",chi2/datahist[j].GetNbinsX()
         canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016_smear.pdf')
         canvas.SaveAs(prefix + "_"+samples[i][0].replace("QCD","") + '_sys2016_smear.eps')
 
