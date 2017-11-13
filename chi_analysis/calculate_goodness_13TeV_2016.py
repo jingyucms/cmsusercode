@@ -16,8 +16,11 @@ massbinssets=[[(6000,13000)],
 signal="QCD"    
 signalMass=""
 
+jesSources=16 # 1 corresponds to the single overall variation, 16 to all
+separateScaleUncertainties=False
+
 dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
-prefix="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsNov2/datacard_shapelimit13TeV"
 
 for massbins in massbinssets:
     limits={}
@@ -29,7 +32,8 @@ for massbins in massbinssets:
     cfg.writelines("""
 imax """+str(len(massbins))+""" number of channels
 jmax 1 number of backgrounds
-kmax 3 number of nuisance parameters
+kmax """+str(3+jesSources+1*separateScaleUncertainties)+""" number of nuisance parameters""")
+    cfg.writelines("""
 -----------
 """)
     for i in range(len(massbins)):
@@ -76,12 +80,18 @@ kmax 3 number of nuisance parameters
     #text+="\nunfold shape "
     #for i in range(len(massbins)):
     #   text+="1 1 "
-    text+="\njes shape "
+    if jesSources>1:
+     for n in range(jesSources):
+      text+="\njes"+str(n+1)+" shape "
+      for i in range(len(massbins)):
+         text+="1 1 - "
+    else:
+      text+="\njes shape "
+      for i in range(len(massbins)):
+         text+="1 1 - "
+    text+="\npdf shape "
     for i in range(len(massbins)):
-       text+="1 1 "
-    #text+="\npdf shape "
-    #for i in range(len(massbins)):
-    #   text+="- 1 "
+       text+="- 1 "
     text+="\nscale shape "
     for i in range(len(massbins)):
        text+="1 1 "
