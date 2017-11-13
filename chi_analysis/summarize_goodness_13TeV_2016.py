@@ -16,9 +16,6 @@ massbinssets=[[(6000,13000)],
 signal="QCD"    
 signalMass=""
 
-dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
-prefix="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
-
 for massbins in massbinssets:
     limits={}
     name=("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")

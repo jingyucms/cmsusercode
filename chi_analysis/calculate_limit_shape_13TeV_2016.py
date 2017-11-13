@@ -17,15 +17,16 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
   xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
 
 models=[]
-models=[3]
+#models=[3]
 #models+=[10,11]
-models+=[60,61,62,63,64,65,66,67,68,69]
+#models+=[60,61,62,63,64,65,66,67,68,69]
 #models+=[70,71,72,73,74,75,76,77]
 #models+=[78,79,80,81,82,83,84,85]
-#models+=[30,31,32,33,34,35,36,37,38]
-#models+=[40,41,42,43,44,45,46]
+models+=[30,31,32,33,34,35,36,37,38]
+models+=[40,41,42,43,44,45,46]
 #models=[88,89]
 #models=[60,61]
+models=[38]
 
 VectorDM=True
 AxialDM=True
@@ -218,7 +219,7 @@ for model in models:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
     signalMasses=[13000]
-    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
  if model==40:
     signal="AntiCIplusLL"    
@@ -404,7 +405,7 @@ for model in models:
  #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/"
  #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/DMMay2/datacard_shapelimit13TeV"
  dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
+ prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsNov2/datacard_shapelimit13TeV"
 
  if model>=30 and model<60:
     name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
