@@ -37,13 +37,19 @@ dataWithSignal="_DMAxial_Dijet_LO_Mphi_4000_3000_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv
 jesSources=16 # 1 corresponds to the single overall variation, 16 to all
 separateScaleUncertainties=False
 
+isGen=False
+
+isCB=False
+
+isInjection=False
+
 signalName={}
 signalExtraName={}
   
 if VectorDM:
   counter=100
-  for mdm in ["1","3000"]:
-  #for mdm in ["1"]:
+  #for mdm in ["1","3000"]:
+  for mdm in ["1"]:
     for gv in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
       #models+=[counter]
       signalName[counter]="DMVector_Dijet_LO_Mphi"
@@ -52,7 +58,8 @@ if VectorDM:
 
 if AxialDM:
   counter=1100
-  for mdm in ["1","3000"]:
+  #for mdm in ["1","3000"]:
+  for mdm in ["1"]:
     for ga in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
       #models+=[counter]
       signalName[counter]="DMAxial_Dijet_LO_Mphi"
@@ -120,13 +127,15 @@ for model in models:
     signalMasses=[12000,13000,14000,15000,16000,17000,18000,19000,20000,22000,24000]
     massbins=[(4800,13000)]
  if model==10:
-    signal="ADD6QBH"    
-    signalMasses=[6500,7000,7500,8000,8500,9000]
-    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+    signal="QBH_"    
+    signalMasses=[7500,8000,8500,9000,9500,10000,10500,11000]
+    massbins=[(4800,5400),(5400,6000),(6000,13000)]
+    signalExtra="_6"
  if model==11:
-    signal="RS1QBH"
-    signalMasses=[4000,4500,5000,5500,6000,6500]
-    massbins=[(3600,4200),(4200,4800),(4800,13000)]
+    signal="QBH_"
+    signalMasses=[4500,5000,5500,6000,6500,7000]
+    massbins=[(4800,5400),(5400,6000),(6000,13000)]
+    signalExtra="_RS1"
 
  if model==18:
     signal="cs_ct14nlo_"
@@ -393,6 +402,11 @@ for model in models:
     signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
     massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
+ #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+ #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
+ dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
+ prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsNov2/datacard_shapelimit13TeV"
+
  if model>=100:  # Dark Matter
     signal=signalName[model]
     signalExtra=signalExtraName[model]
@@ -401,12 +415,35 @@ for model in models:
     signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
     #signalMasses=[5000]
     includeSignalTheoryUncertainties=True # Assign QCD-only scale uncertainty to QCD+DM
+    
+    if isGen:
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/invertMatrixAug30/datacard_shapelimit13TeV"
+    elif isCB:
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+        #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/crystalBallSmearedAug30/datacard_shapelimit13TeV"
+    else:
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
 
- #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/"
- #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_15/src/cmsusercode/chi_analysis/DMMay2/datacard_shapelimit13TeV"
- dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsNov2/datacard_shapelimit13TeV"
+    if isInjection:
+        prefix=prefix.replace("/datacard_","Injection0p75/datacard_")
+    print prefix
 
+    name="limits"+testStat+asym+str(model)+"_"+signal
+    
+    if isGen:
+        name=name.replace("limits","limitsGen")
+    elif isCB:
+        name=name.replace("limits","limitsDetCB")
+    else:
+        name=name.replace("limits","limitsDet")
+
+    if isInjection:
+        name=name+"Injection0p75"
+    print name
+    
  if model>=30 and model<60:
     name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
@@ -489,10 +526,10 @@ for model in models:
         fname=prefix + '_GENnp-34-v5_chi2016.root'
     elif signalWithMass=="AntiCIplusLL12000":
         fname=prefix + '_GENnp-antici-v4_chi2016.root'
-    elif signalWithMass=="ADD6QBH"+str(signalMass):
-        fname=prefix+"_QBH_"+str(signalMass)+"_6_chi_v1.root"
-    elif signalWithMass=="RS1QBH"+str(signalMass):
-        fname=prefix+"_QBH_"+str(signalMass)+"_RS1_chi_v1.root"
+    elif signalWithMass=="QBH_"+str(signalMass)+"_6":
+        fname=prefix + "_" + signalWithMass + "_chi2016.root"
+    elif signalWithMass=="QBH_"+str(signalMass)+"_RS1":
+        fname=prefix + "_" + signalWithMass + "_chi2016.root"
     elif "cs" in signal:
         fname=prefix+"_"+str(signalWithMass)+"_chi2016.root"
     elif "DM" in signal and version=="_v1":
@@ -582,7 +619,7 @@ for model in models:
       elif signalMass<=6000:
         massbins=[(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
     print fname
-    if not "DM" in signal and not "cs" in signal:
+    if not "DM" in signal and not "cs" in signal and not "QBH" in signal:
         signalWithMass="QCD"+signalWithMass
     f=TFile(fname)
     cfg=open("chi_datacard13TeV"+str(model)+"_"+signalWithMass.replace("QCD","")+"_2016.txt","w")
@@ -734,9 +771,9 @@ kmax """+str(3+jesSources+1*separateScaleUncertainties)+""" number of nuisance p
     # diagnostics
     diagnostic=True
     if diagnostic:
-      out=system_call("mkdir "+name)
-      out=system_call("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+" -n "+signalWithMass.replace("QCD","")+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
-      out=system_call("python diffNuisances.py -p x -a "+name+"/mlfit"+signalWithMass.replace("QCD","")+".root -A")
+      out=system_call("mkdir "+name+version)
+      out=system_call("combine -m "+str(signalMass)+" -M MaxLikelihoodFit "+poi+" --plots --out "+name+version+" -n "+signalWithMass.replace("QCD","")+" fixedMu_"+signalWithMass.replace("QCD","")+".root")
+      out=system_call("python diffNuisances.py -p x -a "+name+version+"/mlfit"+signalWithMass.replace("QCD","")+".root -A")
       print out
 
  for signalMass in signalMasses:
