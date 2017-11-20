@@ -22,11 +22,11 @@ models=[]
 #models+=[60,61,62,63,64,65,66,67,68,69]
 #models+=[70,71,72,73,74,75,76,77]
 #models+=[78,79,80,81,82,83,84,85]
-models+=[30,31,32,33,34,35,36,37,38]
-models+=[40,41,42,43,44,45,46]
+#models+=[30,31,32,33,34,35,36,37,38]
+#models+=[40,41,42,43,44,45,46]
+models+=[47]
 #models=[88,89]
 #models=[60,61]
-models=[38]
 
 VectorDM=True
 AxialDM=True
@@ -82,7 +82,7 @@ for model in models:
  signalExtra=""
  includeSignalTheoryUncertainties=False
 
- if model<100:
+ if model<100 and model!=47:
     version=""
  
  if model==1:
@@ -266,6 +266,11 @@ for model in models:
  #   signal="AntiCIplusLL"    
  #   signalMasses=[12000]
  #   massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+ if model==47:
+    signal="DMAxial_Dijet_LO_Mphi"
+    signalExtra="_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1"
+    signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
+    includeSignalTheoryUncertainties=True # Assign QCD-only scale uncertainty to QCD+DM
 
  if model>=60 and model<100:
     includeSignalTheoryUncertainties=True
@@ -444,7 +449,9 @@ for model in models:
         name=name+"Injection0p75"
     print name
     
- if model>=30 and model<60:
+ if model==47:
+    name="pvalue_"+testStat+asym+signal+signalExtra
+ elif model>=30 and model<60:
     name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
     name="limits"+testStat+asym+str(model)+"_"+signal
