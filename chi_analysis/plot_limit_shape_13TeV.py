@@ -22,9 +22,13 @@ gStyle.SetLegendBorderSize(0)
 
 if __name__=="__main__":
 
- models=[1,2,3,4,5,6,7,8,9]
+ models=[]
+ #models=[1,2,3,4,5,6,7,8,9]
  models+=[20,21,22,23,24,25,26,27,28,29]
- models+=[10]
+ #models+=[10]
+ #models=[18,19]
+ #models+=[10,11]
+ #models+=[60,61,62,63,64,65,66,67,68,69]
 
  for model in models:
 
@@ -47,10 +51,16 @@ if __name__=="__main__":
     if model==9:
        signal="cs_nn30nlo_0_"    
     if model==10:
-       signal="QBH"    
+       signal="ADD6QBH"    
+    if model==11:
+       signal="RS1QBH"    
 
+    if model>=18 and model<20:
+       signal="cs_ct14nlo_"
     if model>=20 and model<30:
        signal="cs_nn30nlo_0_"
+    if model>=60 and model<70:
+       signal="cs_ct14nlo_"
 
     print signal
 

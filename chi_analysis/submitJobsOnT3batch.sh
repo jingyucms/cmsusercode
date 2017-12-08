@@ -30,6 +30,7 @@ DBG=2
 #### The following configurations you should not need to change
 # The SE's user home area (SRMv2 URL)
 USER_SRM_HOME="srm://t3se01.psi.ch:8443/srm/managerv2?SFN=/pnfs/psi.ch/cms/trivcat/store/user"
+USER_XRD_HOME="root://t3dcachedb.psi.ch:1094///pnfs/psi.ch/cms/trivcat/store/user/"
 
 # Top working directory on worker node's local disk. The batch
 # job working directory will be created below this
@@ -100,8 +101,10 @@ RESULTDIR=$STARTDIR/$JOBDIR
 gfal-mkdir $USER_SRM_HOME/$HN_NAME/$SEUSERSUBDIR/$JOBDIR
 if test x"$SEUSERSUBDIR" = x; then
    SERESULTDIR=$USER_SRM_HOME/$HN_NAME/$JOBDIR
+   SERESULTDIRXRD=$USER_XRD_HOME/$HN_NAME/$JOBDIR
 else
-   SERESULTDIR=$USER_SRM_HOME/$HN_NAME/$SEUSERSUBDIR/$JOBDIR   
+   SERESULTDIR=$USER_SRM_HOME/$HN_NAME/$SEUSERSUBDIR/$JOBDIR
+   SERESULTDIRXRD=$USER_XRD_HOME/$HN_NAME/$SEUSERSUBDIR/$JOBDIR
 
 fi
 if test -e "$WORKDIR"; then
@@ -134,7 +137,8 @@ source $VO_CMS_SW_DIR/cmsset_default.sh
 #  our shared home
 scramv1 list > myout.txt 2>myerr.txt
 
-lcg-ls -b -D srmv2 -l srm://t3se01.psi.ch:8443/srm/managerv2?SFN=/pnfs/psi.ch/cms/ >> myout.txt 2>>myerr.txt
+gfal-ls srm://t3se01.psi.ch:8443/srm/managerv2?SFN=/pnfs/psi.ch/cms/ >> myout.txt 2>>myerr.txt
+#lcg-ls -b -D srmv2 -l srm://t3se01.psi.ch:8443/srm/managerv2?SFN=/pnfs/psi.ch/cms/ >> myout.txt 2>>myerr.txt
 
 # create a dummy file for copying back to the SE
 dd if=/dev/urandom of=mybigfile count=100 &>/dev/null
@@ -152,7 +156,8 @@ fi
 
 cd $WORKDIR
 
-cmsRun $CMSSW_CONFIG_FILE>> myout.txt 2>>/dev/null
+cmsenv
+cmsRun $CMSSW_CONFIG_FILE>> myout.txt 2>>myerr.txt
 
 
 #### RETRIEVAL OF OUTPUT FILES AND CLEANING UP ############################
@@ -194,7 +199,8 @@ if test x"$SEOUTFILES" != x; then
        if test ! -e $WORKDIR/$n; then
           echo "WARNING: Cannot find output file $WORKDIR/$n. Ignoring it" >&2
        else
-          lcg-cp $srmdebug -b -D srmv2 file:$WORKDIR/$n $SERESULTDIR/$n
+          #lcg-cp $srmdebug -b -D srmv2 file:$WORKDIR/$n $SERESULTDIR/$n
+          xrdcp -d 1 $WORKDIR/$n $SERESULTDIRXRD/$n -f
           if test $? -ne 0; then
              echo "ERROR: Failed to copy $WORKDIR/$n to $SERESULTDIR/$n" >&2
           fi

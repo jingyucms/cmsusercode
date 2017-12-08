@@ -38,7 +38,7 @@ if __name__=="__main__":
     gStyle.SetOptStat(0)
     gStyle.SetOptFit(0)
     gStyle.SetTitleOffset(1.2,"Y")
-    gStyle.SetPadLeftMargin(0.15)
+    gStyle.SetPadLeftMargin(0.16)
     gStyle.SetPadBottomMargin(0.11)
     gStyle.SetPadTopMargin(0.05)
     gStyle.SetPadRightMargin(0.05)
@@ -56,7 +56,7 @@ if __name__=="__main__":
 
     gROOT.LoadMacro("CMS_lumi.C");
     iPeriod = 4;	#// 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
-    iPos = 33;
+    iPos = 11;
 
     massbins13=[(1900,2400),
                 (2400,3000),
@@ -88,16 +88,16 @@ if __name__=="__main__":
     if showRunI: prefix+="_withrun1"
     if ak5Compare: prefix+="_ak5"
 
-    c = TCanvas("combined", "combined", 0, 0, 800, 1000)
+    c = TCanvas("combined", "combined", 0, 0, 600, 800)
     c.Divide(1,1)
     
     pad=[]
     
-    pad1=TPad("","",0,0.59,1,1)
-    pad2=TPad("","",0,0.49,1,0.59)
-    pad3=TPad("","",0,0.39,1,0.49)
-    pad4=TPad("","",0,0.29,1,0.39)
-    pad5=TPad("","",0,0.19,1,0.29)
+    pad1=TPad("","",0,0.63,1,1)
+    pad2=TPad("","",0,0.52,1,0.63)
+    pad3=TPad("","",0,0.41,1,0.52)
+    pad4=TPad("","",0,0.30,1,0.41)
+    pad5=TPad("","",0,0.19,1,0.30)
     pad6=TPad("","",0,0.00,1,0.19)
 
     pad.append(pad1)
@@ -199,7 +199,7 @@ if __name__=="__main__":
             print histname
             h6=f.Get(histname)
             h6=h6.Rebin(len(chi_binnings[massbin])-1,h6.GetName()+"_rebin",chi_binnings[massbin])
-            h6.SetLineColor(7)
+            h6.SetLineColor(kGreen+3)
             h6.SetLineStyle(4)
             h6.Scale(1./h6.Integral())
             for b in range(h6.GetNbinsX()):
@@ -351,11 +351,11 @@ if __name__=="__main__":
         pad[5-massbin].cd()
 
         if massbin==5:
-            hNloQcd.GetYaxis().SetRangeUser(0.01,0.35)        
+            hNloQcd.GetYaxis().SetRangeUser(0.02,0.23)        
         elif massbin>=3:
-            hNloQcd.GetYaxis().SetRangeUser(0.02,0.14)       
+            hNloQcd.GetYaxis().SetRangeUser(0.04,0.11)       
         else:
-            hNloQcd.GetYaxis().SetRangeUser(0.02,0.14)          
+            hNloQcd.GetYaxis().SetRangeUser(0.04,0.11)          
             
         if massbin!=5:
             hNloQcd.GetYaxis().SetTitleSize(0.)
@@ -363,16 +363,16 @@ if __name__=="__main__":
 	bigger=1.2
 
         if massbin==5:
-            hNloQcd.GetYaxis().SetTitleOffset(0.72)
-            hNloQcd.GetYaxis().SetTitleSize(0.08*bigger)
-            hNloQcd.GetYaxis().SetLabelSize(0.06*bigger)
+            hNloQcd.GetYaxis().SetTitleOffset(0.65)
+            hNloQcd.GetYaxis().SetTitleSize(0.096*bigger)
+            hNloQcd.GetYaxis().SetLabelSize(0.074*bigger)
             hNloQcd.GetYaxis().SetLabelOffset(0.005)
 
         if massbin==0:
-            hNloQcd.GetXaxis().SetTitleSize(0.18*bigger)
-            hNloQcd.GetXaxis().SetLabelSize(0.13*bigger)
-            hNloQcd.GetXaxis().SetTitleOffset(0.7)
-            hNloQcd.GetYaxis().SetLabelSize(0.13*bigger)
+            hNloQcd.GetXaxis().SetTitleSize(0.19*bigger)
+            hNloQcd.GetXaxis().SetLabelSize(0.14*bigger)
+            hNloQcd.GetXaxis().SetTitleOffset(0.78)
+            hNloQcd.GetYaxis().SetLabelSize(0.14*bigger)
             hNloQcd.GetYaxis().SetLabelOffset(0.005)
         
         if massbin<5 and massbin>0:
@@ -386,18 +386,18 @@ if __name__=="__main__":
             hNloQcd.GetYaxis().SetNdivisions(503)
 
         if massbin==5:
-            hNloQcd.GetYaxis().SetNdivisions(510)
+            hNloQcd.GetYaxis().SetNdivisions(505)
 
         if massbin!=5 and massbin!=0:            
-            hNloQcd.GetXaxis().SetTickLength(0.04)
+            hNloQcd.GetXaxis().SetTickLength(0.10)
             hNloQcd.GetYaxis().SetTickLength(0.025)
         if massbin==0:
-            hNloQcd.GetXaxis().SetTickLength(0.03)
+            hNloQcd.GetXaxis().SetTickLength(0.10)
             hNloQcd.GetYaxis().SetTickLength(0.05)
         if massbin==5:
-            hNloQcd.GetXaxis().SetTickLength(0.01)
+            hNloQcd.GetXaxis().SetTickLength(0.05)
 
-        hNloQcd.GetXaxis().SetNdivisions(110)
+        #hNloQcd.GetXaxis().SetNdivisions(210)
 
         h14G.SetMarkerSize(1.0)
         hNloQcd.SetLineColor(1)
@@ -415,27 +415,27 @@ if __name__=="__main__":
         #h14Gsys.Draw("||same")
         h14Gsysstat.Draw("zesame")
               
-        if massbin==0: title="1.9 < #font[72]{M_{jj}} < 2.4 TeV"
-        if massbin==1: title="2.4 < #font[72]{M_{jj}} < 3.0 TeV"
-        if massbin==2: title="3.0 < #font[72]{M_{jj}} < 3.6 TeV"
-        if massbin==3: title="3.6 < #font[72]{M_{jj}} < 4.2 TeV"
-        if massbin==4: title="4.2 < #font[72]{M_{jj}} < 4.8 TeV"
-        if massbin==5: title=" #font[72]{M_{jj}} > 4.8 TeV"
+        if massbin==0: title="1.9 < #font[72]{M}_{jj} < 2.4 TeV"
+        if massbin==1: title="2.4 < #font[72]{M}_{jj} < 3.0 TeV"
+        if massbin==2: title="3.0 < #font[72]{M}_{jj} < 3.6 TeV"
+        if massbin==3: title="3.6 < #font[72]{M}_{jj} < 4.2 TeV"
+        if massbin==4: title="4.2 < #font[72]{M}_{jj} < 4.8 TeV"
+        if massbin==5: title=" #font[72]{M}_{jj} > 4.8 TeV"
 
         if massbin==5:
-            ylabel1=0.24
-            ylabel2=0.31
+            ylabel1=0.33
+            ylabel2=0.23
             Size=0.06
         elif massbin==0:
             ylabel1=0.785
             ylabel2=0.95
-            Size=0.13
+            Size=0.12
         else:
             ylabel1=0.6
             ylabel2=0.95
-            Size=0.246
+            Size=0.21
         
-        l=TLegend(0.56,ylabel1,1.0,ylabel2,title)
+        l=TLegend(0.65,ylabel1,1.0,ylabel2,title)
         l.SetTextSize(Size)
         l.SetFillStyle(0)
         l.Draw("same")
@@ -449,16 +449,21 @@ if __name__=="__main__":
     h3newnew.SetLineStyle(3)
     h3newnew.SetLineWidth(2)
     
-    l2=TLegend(0.21,0.35,0.8,0.83,"")
+    l2=TLegend(0.22,0.45,0.55,0.68,"")
     l2.SetTextSize(0.06)
     l2.AddEntry(h14G,"Data","ple")
-    l2.AddEntry(h3newnew,"NLO QCD+EWK prediction","fl")
+    l2.AddEntry(h3newnew,"NLO QCD+EW","fl")
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
-    l2.AddEntry(h6,"M_{QBH} (ADD6) = 7.5 TeV","l")
-    l2.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 11 TeV","l")
-    l2.AddEntry(h5,"#Lambda_{T} (GRW) = 10 TeV","l")
     l2.SetFillStyle(0)
     l2.Draw("same")
+    
+    l3=TLegend(0.495,0.44,0.80,0.83,"")
+    l3.SetTextSize(0.06)
+    l3.AddEntry(h6,"M_{QBH} (n_{ED} = 6 ADD) = 7.5 TeV","l")
+    l3.AddEntry(h4,"#Lambda_{LL}^{#font[122]{+}} (CI) = 11 TeV","l")
+    l3.AddEntry(h5,"#Lambda_{T} (GRW) = 10 TeV","l")
+    l3.SetFillStyle(0)
+    l3.Draw("same")
     
     #// writing the lumi information and the CMS "logo"
     CMS_lumi( c, iPeriod, iPos );

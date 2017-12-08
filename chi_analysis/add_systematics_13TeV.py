@@ -87,7 +87,7 @@ if __name__ == '__main__':
     samples=[]
     samples2=[]
 
-    samples2=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples=[("QCDCIplusLL8000",[("pythia8_ci_m1500_1900_8000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -160,7 +160,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDCIminusLL8000",[("pythia8_ci_m1500_1900_8000_-1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_8000_-1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_8000_-1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_8000_-1_0_0_13TeV_Nov14",6.446e-08),
@@ -233,7 +233,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_18000_-1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
              ]
-    samples2+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDADD6000",[("pythia8_add_m1500_1900_6000_0_0_0_1_13TeV_Nov14",3.307e-06),
 		       ("pythia8_add_m1900_2400_6000_0_0_0_1_13TeV_Nov14",8.836e-07),
 		       ("pythia8_add_m2400_2800_6000_0_0_0_1_13TeV_Nov14",1.649e-07),
 		       ("pythia8_add_m2800_3300_6000_0_0_0_1_13TeV_Nov14",6.446e-08),
@@ -305,8 +305,80 @@ if __name__ == '__main__':
 		       ("pythia8_add_m3800_4300_14000_0_0_0_1_13TeV_Nov14",5.867e-09),
 		       ("pythia8_add_m4300_13000_14000_0_0_0_1_13TeV_Nov14",3.507e-09),
 		       ]),
+             ("QCDADD15000",[("pythia8_add_m1500_1900_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_15000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_15000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD16000",[("pythia8_add_m1500_1900_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_16000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_16000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD17000",[("pythia8_add_m1500_1900_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_17000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_17000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD18000",[("pythia8_add_m1500_1900_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_18000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_18000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD19000",[("pythia8_add_m1500_1900_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_19000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_19000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD20000",[("pythia8_add_m1500_1900_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_20000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_20000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD21000",[("pythia8_add_m1500_1900_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_21000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_21000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
+             ("QCDADD22000",[("pythia8_add_m1500_1900_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m1900_2400_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2400_2800_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m2800_3300_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3300_3800_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m3800_4300_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m4300_5200_22000_0_0_0_1_13TeV_Nov14",1),
+		       ("pythia8_add_m5200_13000_22000_0_0_0_1_13TeV_Nov14",1),
+		       ]),
              ]
-    samples2+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
+    samples+=[("QCD",[("pythia8_ci_m1000_1500_50000_1_0_0_13TeV_Nov14",3.769e-05),
 		       ("pythia8_ci_m1500_1900_50000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_50000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_50000_1_0_0_13TeV_Nov14",1.649e-07),
@@ -316,7 +388,7 @@ if __name__ == '__main__':
 		       ("pythia8_ci_m4300_13000_50000_1_0_0_13TeV_Nov14",3.507e-09),
 		       ]),
 	    ]
-    samples2+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
+    samples+=[("QCDAntiCIplusLL12000",[("pythia8_ci_m1500_1900_12000_1_0_0_13TeV_Nov14",3.307e-06),
 		       ("pythia8_ci_m1900_2400_12000_1_0_0_13TeV_Nov14",8.836e-07),
 		       ("pythia8_ci_m2400_2800_12000_1_0_0_13TeV_Nov14",1.649e-07),
 		       ("pythia8_ci_m2800_3300_12000_1_0_0_13TeV_Nov14",6.446e-08),
@@ -334,16 +406,16 @@ if __name__ == '__main__':
              ]
 
     for m in range(5,31):
-       samples2+=[("cs_nn30nlo_0_"+str(m*1000)+"_LL+",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_LL-",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_RR+",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_RR-",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_VV+",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_VV-",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_AA+",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_AA-",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_V-A+",[]),
-               ("cs_nn30nlo_0_"+str(m*1000)+"_V-A-",[]),
+       samples2+=[("cs_ct14nlo_"+str(m*1000)+"_LL+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_LL-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_RR-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_VV-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_AA-",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A+",[]),
+               ("cs_ct14nlo_"+str(m*1000)+"_V-A-",[]),
                ]
 
     xsecs={}
@@ -359,7 +431,7 @@ if __name__ == '__main__':
      for gq in ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5", "6.0", "8.0", "10.0", "12.0", "15.0", "20.0"]:
       for vector in ["800"]:#,"801"
         if "DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5" in xsecs.keys():
-         samples+=[("DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",[("dijet_"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",0)]),
+         samples2+=[("DM"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",[("dijet_"+str(mass)+"_1_"+gq+"_"+vector+"_zprime5",0)]),
              ]
 
     dataevents={}
@@ -406,23 +478,39 @@ if __name__ == '__main__':
       elif samples[i][0]=="QCDCIminusLL18000":
         sample=prefix + '_GENnp-17-v4_chi.root'
       elif samples[i][0]=="QCDADD6000":
-        sample=prefix + '_GENnp-18-v4_chi.root'
+        sample=prefix + '_GENnp-18-v5_chi.root'
       elif samples[i][0]=="QCDADD7000":
-        sample=prefix + '_GENnp-19-v4_chi.root'
+        sample=prefix + '_GENnp-19-v5_chi.root'
       elif samples[i][0]=="QCDADD8000":
-        sample=prefix + '_GENnp-20-v4_chi.root'
+        sample=prefix + '_GENnp-20-v5_chi.root'
       elif samples[i][0]=="QCDADD9000":
-        sample=prefix + '_GENnp-21-v4_chi.root'
+        sample=prefix + '_GENnp-21-v5_chi.root'
       elif samples[i][0]=="QCDADD10000":
-        sample=prefix + '_GENnp-22-v4_chi.root'
+        sample=prefix + '_GENnp-22-v5_chi.root'
       elif samples[i][0]=="QCDADD11000":
-        sample=prefix + '_GENnp-23-v4_chi.root'
+        sample=prefix + '_GENnp-23-v5_chi.root'
       elif samples[i][0]=="QCDADD12000":
-        sample=prefix + '_GENnp-24-v4_chi.root'
+        sample=prefix + '_GENnp-24-v5_chi.root'
       elif samples[i][0]=="QCDADD13000":
-        sample=prefix + '_GENnp-25-v4_chi.root'
+        sample=prefix + '_GENnp-25-v5_chi.root'
       elif samples[i][0]=="QCDADD14000":
-        sample=prefix + '_GENnp-26-v4_chi.root'
+        sample=prefix + '_GENnp-26-v5_chi.root'
+      elif samples[i][0]=="QCDADD15000":
+        sample=prefix + '_GENnp-27-v5_chi.root'
+      elif samples[i][0]=="QCDADD16000":
+        sample=prefix + '_GENnp-28-v5_chi.root'
+      elif samples[i][0]=="QCDADD17000":
+        sample=prefix + '_GENnp-29-v5_chi.root'
+      elif samples[i][0]=="QCDADD18000":
+        sample=prefix + '_GENnp-30-v5_chi.root'
+      elif samples[i][0]=="QCDADD19000":
+        sample=prefix + '_GENnp-31-v5_chi.root'
+      elif samples[i][0]=="QCDADD20000":
+        sample=prefix + '_GENnp-32-v5_chi.root'
+      elif samples[i][0]=="QCDADD21000":
+        sample=prefix + '_GENnp-33-v5_chi.root'
+      elif samples[i][0]=="QCDADD22000":
+        sample=prefix + '_GENnp-34-v5_chi.root'
       elif samples[i][0]=="QCDAntiCIplusLL12000":
         sample=prefix + '_GENnp-antici-v4_chi.root'
       elif "DM" in samples[i][0] or "ll" in samples[i][0] or "cs" in samples[i][0]:
@@ -585,16 +673,13 @@ if __name__ == '__main__':
             ci.SetBinContent(b+1,ci.GetBinContent(b+1)*correction)
           ci.Scale(1./ci.Integral())
 	elif "lo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
-          filenamecinlo="fastnlo/RunII/CIJET_fnl5662i_"+samples[i][0].replace("QCD","")+".root"
+          filenamecinlo="fastnlo/RunII/fnl5662j_"+samples[i][0].replace("QCD","")+".root" # calcTheoryUncert.py from Jingyu already gives normalized signals
           print filenamecinlo
           cinlofile = TFile.Open(filenamecinlo)
           closefiles+=[cinlofile]
 	  ci=None
           for k in mass_bins_nlo_list[j]:
-            if j>=3:
-               histname2='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])
-	    else:
-               histname2="chi-"+str(massbins[3][0])+"-"+str(massbins[3][1])
+            histname2='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])
             print histname2
             hci = TH1F(cinlofile.Get(histname2))
             #hci=rebin(hci,len(chi_binnings[j])-1,chi_binnings[j])
@@ -603,14 +688,14 @@ if __name__ == '__main__':
                ci.Add(hci)
 	    else:
 	       ci=hci
-               if j<3: break
+          cibackup=ci.Clone(ci.GetName()+"_backup")
+	  # apply EWK corrections
+	  ci.Scale(nloqcdbackup.Integral()/nloqcd.Integral())
+	  ci.Add(nloqcdbackup,-1)
+	  ci.Scale(nloqcd.Integral()/nloqcdbackup.Integral())
+	  ci.Add(nloqcd,+1)
   	  histname=histname.replace("_backup","")
-          #if j>=2:
-	  #print "AAA",histname,ci.Integral()/nloqcdbackup.Integral()/1000.
-	  ci.Scale(1./nloqcdbackup.Integral())
-	  #else:
 	  #   ci.Scale(nloqcd.Integral()/ci.Integral()/5.) # fake signal size for lower mass bins
-          ci.Add(nloqcd)
 	elif "LOCI" in samples[i][0]:
 	  lambdamass=samples[i][0].split("I")[-1]
 	  if "QCDDNLO" in samples[i][0]:
@@ -713,8 +798,8 @@ if __name__ == '__main__':
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         clone=ci.Clone(histname)
         clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
-	jerup=clone.Clone(histname+"_jerUp")
-        jerdown=clone.Clone(histname+"_jerDown")
+	cijerup=clone.Clone(histname+"_jerUp")
+        cijerdown=clone.Clone(histname+"_jerDown")
 	slopes={}
 	slopes[1900]=0.011
 	slopes[2400]=0.012 
@@ -724,14 +809,14 @@ if __name__ == '__main__':
 	slopes[4800]=0.016
 	#slopes[5400]=0.15
 	for b in range(clone.GetNbinsX()):
-	    jerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
-            jerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+	    cijerup.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.+(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
+            cijerdown.SetBinContent(b+1,clone.GetBinContent(b+1)*(1.-(clone.GetBinCenter(b+1)-8.5)/7.5*slopes[massbins[j][0]]))
 	out.cd()
 	for k in range(0,200):
             out.Delete(histname+"_jerUp"+";"+str(k))
             out.Delete(histname+"_jerDown"+";"+str(k))
-        jerup.Write()
-        jerdown.Write()
+        cijerup.Write()
+        cijerdown.Write()
         histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         clone=alt.Clone(histname)
         clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
@@ -751,19 +836,19 @@ if __name__ == '__main__':
         histname=samples[i][0]+'#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         clone=ci.Clone(histname)
         clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
-        jesup=clone.Clone(histname+"_jesUp")
-        jesdown=clone.Clone(histname+"_jesDown")
+        cijesup=clone.Clone(histname+"_jesUp")
+        cijesdown=clone.Clone(histname+"_jesDown")
         jespad=jescifile.Get("jes")
 	jes=jespad.GetListOfPrimitives()[j]
         for b in range(clone.GetNbinsX()):
-	    jesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
-            jesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
+	    cijesup.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[2].GetBinContent(b+1))
+            cijesdown.SetBinContent(b+1,clone.GetBinContent(b+1)*jes.GetListOfPrimitives()[4].GetBinContent(b+1))
 	out.cd()
 	for k in range(0,200):
             out.Delete(histname+"_jesUp"+";"+str(k))
             out.Delete(histname+"_jesDown"+";"+str(k))
-        jesup.Write()
-        jesdown.Write()
+        cijesup.Write()
+        cijesdown.Write()
         histname=samples[i][0]+'_ALT#chi'+str(massbins[j]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
         clone=alt.Clone(histname)
         clone=clone.Rebin(len(chi_binnings[j])-1,clone.GetName(),chi_binnings[j])
@@ -795,8 +880,8 @@ if __name__ == '__main__':
 	    nloPDFupqcd=hnloPDFup
         for b in range(nloPDFupqcd.GetXaxis().GetNbins()):
            nloPDFupqcd.SetBinContent(b+1,nloPDFupqcd.GetBinContent(b+1)*nloPDFupqcd.GetBinWidth(b+1))
-	nloPDFupqcd.Add(nloqcdbackup,-1)
-	nloPDFupqcd.Scale(1./nloqcdbackup.Integral())
+        nloPDFupqcd.Add(nloqcdbackup,-1)
+        nloPDFupqcd.Scale(1./nloqcdbackup.Integral())
 
         nloPDFdownqcd=None
         for k in mass_bins_nlo_list[j]:
@@ -811,8 +896,8 @@ if __name__ == '__main__':
 	    nloPDFdownqcd=hnloPDFdown
         for b in range(nloPDFdownqcd.GetXaxis().GetNbins()):
            nloPDFdownqcd.SetBinContent(b+1,nloPDFdownqcd.GetBinContent(b+1)*nloPDFdownqcd.GetBinWidth(b+1))
-	nloPDFdownqcd.Add(nloqcdbackup,-1)
-	nloPDFdownqcd.Scale(1./nloqcdbackup.Integral())
+        nloPDFdownqcd.Add(nloqcdbackup,-1)
+        nloPDFdownqcd.Scale(1./nloqcdbackup.Integral())
 
         pdfup=alt.Clone(alt.GetName()+"_pdfUp")
         pdfdown=alt.Clone(alt.GetName()+"_pdfDown")
@@ -832,6 +917,51 @@ if __name__ == '__main__':
         pdfup.Write()
         pdfdown.Write()
 
+        if "lo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
+     	   nloPDFupci=None
+     	   for k in mass_bins_nlo_list[j]:
+     	    histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFUp"
+     	    print histname
+            hnloPDFup = TH1F(cinlofile.Get(histname))
+            hnloPDFup=hnloPDFup.Rebin(len(chi_binnings[j])-1,histname.replace("_backup",""),chi_binnings[j])
+     	    if nloPDFupci:
+     	       nloPDFupci.Add(hnloPDFup)
+     	    else:
+     	       nloPDFupci=hnloPDFup
+           nloPDFupci.Add(cibackup,-1)
+     	   nloPDFupci.Scale(1./cibackup.Integral())
+
+     	   nloPDFdownci=None
+     	   for k in mass_bins_nlo_list[j]:
+     	    histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"PDFDown"
+     	    print histname
+            hnloPDFdown = TH1F(cinlofile.Get(histname))
+            hnloPDFdown=hnloPDFdown.Rebin(len(chi_binnings[j])-1,histname.replace("_backup",""),chi_binnings[j])
+     	    if nloPDFdownci:
+     	       nloPDFdownci.Add(hnloPDFdown)
+     	    else:
+     	       nloPDFdownci=hnloPDFdown
+           nloPDFdownci.Add(cibackup,-1)
+     	   nloPDFdownci.Scale(1./cibackup.Integral())
+
+     	   cipdfup=ci.Clone(ci.GetName()+"_pdfUp")
+     	   cipdfdown=ci.Clone(ci.GetName()+"_pdfDown")
+     	   cipdfup.Add(nloPDFupci,dataevents[j])
+     	   cipdfdown.Add(nloPDFdownci,dataevents[j])
+     	   for b in range(cipdfup.GetXaxis().GetNbins()):
+     	       cipdfup.SetBinError(b+1,0)
+     	       cipdfdown.SetBinError(b+1,0)
+     	       if cipdfup.GetBinCenter(b+1)-8.5>0:
+     	   	  tmp=cipdfup.GetBinContent(b+1)
+     	   	  cipdfup.SetBinContent(b+1,cipdfdown.GetBinContent(b+1))
+     	   	  cipdfdown.SetBinContent(b+1,tmp)
+     	   out.cd()
+     	   for k in range(0,200):
+     	       out.Delete(ci.GetName()+"_pdfUp"+";"+str(k))
+     	       out.Delete(ci.GetName()+"_pdfDown"+";"+str(k))
+     	   cipdfup.Write()
+     	   cipdfdown.Write()
+
         # NLO Scaleup/down
         nloScaleupqcd=None
         for k in mass_bins_nlo_list[j]:
@@ -846,8 +976,8 @@ if __name__ == '__main__':
 	    nloScaleupqcd=hnloScaleup
         for b in range(nloScaleupqcd.GetXaxis().GetNbins()):
            nloScaleupqcd.SetBinContent(b+1,nloScaleupqcd.GetBinContent(b+1)*nloScaleupqcd.GetBinWidth(b+1))
-	nloScaleupqcd.Add(nloqcdbackup,-1)
-	nloScaleupqcd.Scale(1./nloqcdbackup.Integral())
+        nloScaleupqcd.Add(nloqcdbackup,-1)
+        nloScaleupqcd.Scale(1./nloqcdbackup.Integral())
 
         nloScaledownqcd=None
         for k in mass_bins_nlo_list[j]:
@@ -862,8 +992,8 @@ if __name__ == '__main__':
 	    nloScaledownqcd=hnloScaledown
         for b in range(nloScaledownqcd.GetXaxis().GetNbins()):
            nloScaledownqcd.SetBinContent(b+1,nloScaledownqcd.GetBinContent(b+1)*nloScaledownqcd.GetBinWidth(b+1))
-	nloScaledownqcd.Add(nloqcdbackup,-1)
-	nloScaledownqcd.Scale(1./nloqcdbackup.Integral())
+        nloScaledownqcd.Add(nloqcdbackup,-1)
+        nloScaledownqcd.Scale(1./nloqcdbackup.Integral())
 
         scaleup=alt.Clone(alt.GetName()+"_scaleUp")
         scaledown=alt.Clone(alt.GetName()+"_scaleDown")
@@ -882,6 +1012,51 @@ if __name__ == '__main__':
             out.Delete(alt.GetName()+"_scaleDown"+";"+str(k))
         scaleup.Write()
         scaledown.Write()
+	
+        if "lo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
+     	   nloScaleupci=None
+     	   for k in mass_bins_nlo_list[j]:
+     	    histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleUp"
+     	    print histname
+            hnloScaleup = TH1F(cinlofile.Get(histname))
+            hnloScaleup=hnloScaleup.Rebin(len(chi_binnings[j])-1,histname.replace("_backup",""),chi_binnings[j])
+     	    if nloScaleupci:
+     	       nloScaleupci.Add(hnloScaleup)
+     	    else:
+     	       nloScaleupci=hnloScaleup
+           nloScaleupci.Add(cibackup,-1)
+     	   nloScaleupci.Scale(1./cibackup.Integral())
+
+     	   nloScaledownci=None
+     	   for k in mass_bins_nlo_list[j]:
+     	    histname='chi-'+str(mass_bins_nlo3[k])+"-"+str(mass_bins_nlo3[k+1])+"scaleDown"
+     	    print histname
+            hnloScaledown = TH1F(cinlofile.Get(histname))
+            hnloScaledown=hnloScaledown.Rebin(len(chi_binnings[j])-1,histname.replace("_backup",""),chi_binnings[j])
+     	    if nloScaledownci:
+     	       nloScaledownci.Add(hnloScaledown)
+     	    else:
+     	       nloScaledownci=hnloScaledown
+           nloScaledownci.Add(cibackup,-1)
+     	   nloScaledownci.Scale(1./cibackup.Integral())
+
+     	   ciscaleup=ci.Clone(ci.GetName()+"_scaleUp")
+     	   ciscaledown=ci.Clone(ci.GetName()+"_scaleDown")
+     	   ciscaleup.Add(nloScaleupci,dataevents[j])
+     	   ciscaledown.Add(nloScaledownci,dataevents[j])
+     	   for b in range(ciscaleup.GetXaxis().GetNbins()):
+     	       ciscaleup.SetBinError(b+1,0)
+     	       ciscaledown.SetBinError(b+1,0)
+     	       if ciscaleup.GetBinCenter(b+1)-8.5>0:
+     	   	  tmp=ciscaleup.GetBinContent(b+1)
+     	   	  ciscaleup.SetBinContent(b+1,ciscaledown.GetBinContent(b+1))
+     	   	  ciscaledown.SetBinContent(b+1,tmp)
+     	   out.cd()
+     	   for k in range(0,200):
+     	       out.Delete(ci.GetName()+"_scaleUp"+";"+str(k))
+     	       out.Delete(ci.GetName()+"_scaleDown"+";"+str(k))
+     	   ciscaleup.Write()
+     	   ciscaledown.Write()
 	
 	# DATA BLINDED
 	#data=alt.Clone("data_blinded")
@@ -914,6 +1089,8 @@ if __name__ == '__main__':
         alt.Draw("he")
 	alt.GetYaxis().SetRangeUser(0,alt.GetMaximum()*3)
         legend1.AddEntry(alt,"QCD","l")
+	
+	# background uncertainties
 	jerup=cloneNormalize(jerup)
 	plots+=[jerup]
 	jerup.SetLineColor(3)
@@ -958,10 +1135,56 @@ if __name__ == '__main__':
 	scaledown.SetLineColor(7)
 	scaledown.SetLineStyle(3)
         scaledown.Draw("hesame")
+	
 	ci=cloneNormalize(ci)
 	plots+=[ci]
         ci.Draw("hesame")
         legend1.AddEntry(ci,"New Physics","l")
+	
+	# signal uncertainties
+	cijerup=cloneNormalize(cijerup)
+	plots+=[cijerup]
+	cijerup.SetLineColor(3)
+	cijerup.SetLineStyle(2)
+        cijerup.Draw("hesame")
+	cijerdown=cloneNormalize(cijerdown)
+	plots+=[cijerdown]
+	cijerdown.SetLineColor(3)
+	cijerdown.SetLineStyle(3)
+        cijerdown.Draw("hesame")
+	cijesup=cloneNormalize(cijesup)
+	plots+=[cijesup]
+	cijesup.SetLineColor(4)
+	cijesup.SetLineStyle(2)
+        cijesup.Draw("hesame")
+	cijesdown=cloneNormalize(cijesdown)
+	plots+=[cijesdown]
+	cijesdown.SetLineColor(4)
+	cijesdown.SetLineStyle(3)
+        cijesdown.Draw("hesame")
+        if "lo" in samples[i][0] or "cteq66" in samples[i][0] or "cteq6ll" in samples[i][0]:
+	 cipdfup=cloneNormalize(cipdfup)
+	 plots+=[cipdfup]
+	 cipdfup.SetLineColor(6)
+	 cipdfup.SetLineStyle(2)
+         cipdfup.Draw("hesame")
+	 cipdfdown=cloneNormalize(cipdfdown)
+	 plots+=[cipdfdown]
+	 cipdfdown.SetLineColor(6)
+	 cipdfdown.SetLineStyle(3)
+         cipdfdown.Draw("hesame")
+	 ciscaleup=cloneNormalize(ciscaleup)
+	 plots+=[ciscaleup]
+	 ciscaleup.SetLineColor(7)
+	 ciscaleup.SetLineStyle(2)
+         ciscaleup.Draw("hesame")
+	 ciscaledown=cloneNormalize(ciscaledown)
+	 plots+=[ciscaledown]
+	 ciscaledown.SetLineColor(7)
+	 ciscaledown.SetLineStyle(3)
+         ciscaledown.Draw("hesame")
+ 
+	
 	origdata=data
 	data=TGraphAsymmErrors(cloneNormalize(data))
 	plots+=[data]
