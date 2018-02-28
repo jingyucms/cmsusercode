@@ -31,12 +31,21 @@ if __name__ == '__main__':
 	    #(61,63),(62,64),(63,65),(64,66),(65,67),(66,68),(67,69), #ddt n2b1
 	    #(31,31),(32,32),(33,33),(34,34), #pt300 n2b1
 	    #(35,35),(36,36),(37,37),(38,38), #pt400 n2b1
-            (62,62),(63,63),(64,64),(65,65),(66,66),(67,67), #pt500 ddt n2b1
+            #(62,62),(63,63),(64,64),(65,65),(66,66),(67,67), #pt500 ddt n2b1
 	    #(71,71),(72,72),(73,73),(74,74),(75,75),(76,76), #pt300 ddt n2b1
-	    (81,81),(82,82),(83,83),(84,84),(85,85),(86,86), #pt400 ddt n2b1
-	    (91,91),(92,92),(93,93),(94,94),(95,95),(96,96), #pt500 ddt n2b2
+	    #(81,81),(82,82),(83,83),(84,84),(85,85),(86,86), #pt400 ddt n2b1
+	    #(91,91),(92,92),(93,93),(94,94),(95,95),(96,96), #pt500 ddt n2b2
 	    #(101,101),(102,102),(103,103),(104,104),(105,105),(106,106), #pt300 ddt n2b2
-	    (111,111),(112,112),(113,113),(114,114),(115,115),(116,116), #pt400 ddt n2b2
+	    #(111,111),(112,112),(113,113),(114,114),(115,115),(116,116), #pt400 ddt n2b2
+	    #(27,27),
+	    #(64,64),
+	    #(74,74),
+	    #(83,83),
+	    #(94,94),
+	    (66,66),
+	    #(75,75),
+	    #(85,85),
+	    #(95,95),
 	    ]
  #scenarios=[(73,73),(74,74)]
  #scenarios=[(99,99)]
@@ -121,10 +130,12 @@ if __name__ == '__main__':
      	 hqcdadd=f.Get("plot"+plot[0]+"8")
      	 hqcd.Add(hqcdadd,lumi*25.24/689668) #HT2000
       hvvW=f.Get("plot"+plot[0]+"1")
-      hvvW.Scale(lumi*95.14/636594) #HT600
+      #hvvW.Scale(lumi*95.14/636594) #HT600 WJetsToQQ_HT-600toInf_tarball
+      hvvW.Scale(lumi*95.14/217099) #HT600 processed-output.dat-rth:W
       hvvZ=f.Get("plot"+plot[0]+"2")
-      hvvZ.Scale(lumi*4.134e+01/1005952) #HT600
-      #hvvZ.Scale(lumi*1036./1389394) #HT180
+      #hvvZ.Scale(lumi*4.134e+01/671159) #HT600 ZJetsToQQ_HT600toInf_gridpack (old wrong? number 1005952)
+      hvvZ.Scale(lumi*4.134e+01/1341291) #HT600 processed-output.dat-rth:Z01
+      #hvvZ.Scale(lumi*1036./1389394) #HT180 ZJetsFullyHadronic_HT180_LO_MLM_tarball
       qcdhist=hqcd.Clone("qcdhist")
       sigWhist=hvvW.Clone("sigWhist")
       sigWhist.Scale(signalSF)
@@ -325,6 +336,7 @@ if __name__ == '__main__':
       xframe.GetYaxis().SetTitle("Events")
       xframe.Draw()
       canvas.SaveAs(prefix+"_"+plot[0]+name+"_fit"+fit+".pdf")
+      canvas.SaveAs(prefix+"_"+plot[0]+name+"_fit"+fit+".root")
 
      if Wonly: continue
 
@@ -375,3 +387,4 @@ if __name__ == '__main__':
       xframe.GetYaxis().SetTitle("Events")
       xframe.Draw()
       canvas.SaveAs(prefix+"_"+plot[0]+str(scenario)+str(btagscenario)+"combined_fit"+fit+".pdf")
+      canvas.SaveAs(prefix+"_"+plot[0]+str(scenario)+str(btagscenario)+"combined_fit"+fit+".root")

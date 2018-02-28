@@ -45,7 +45,9 @@ if __name__ == '__main__':
  #for runSet in [52,53,54,55,56,57,58]:
  #for runSet in [59,52,57,58]:
  #for runSet in [52,53,54,57,58,59]:
- for runSet in [52,57,58]:
+ #for runSet in [52,57,58]:
+ #for runSet in [27,64,74,83,94,66,75,85,95]:
+ for runSet in [162]:
   theory=0
   normalize=(runSet<20)
  
@@ -184,7 +186,7 @@ if __name__ == '__main__':
  	     #"root://eoscms.cern.ch//eos/cms/store/cmst3/group/exovv/precision/ZJetsToQQ_HT600toInf_gridpack.tar.gz/ntupler/",
  	     #"root://eoscms.cern.ch//eos/cms/store/cmst3/group/exovv/precision/ZJetsFullyHadronic_HT180_LO_MLM_tarball.tar.xz/ntupler/",
 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:W.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:Z.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:Z01.root",
  	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/exovv/precision/QCD_HT300to500_tarball.tar.xz/ntupler/",
  	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/exovv/precision/QCD_HT500to700_tarball.tar.xz/ntupler/",
  	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/exovv/precision/QCD_HT700to1000_tarball.tar.xz/ntupler/",
@@ -197,6 +199,9 @@ if __name__ == '__main__':
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:HS1.01:PS1.0:CS1.0.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:HS1.0:PS1.01:CS1.0.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:HS1.0:PS1.0:CS1.01.root",
+ 	     ]
+   if theory==1000:
+     samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:TT.root",
  	     ]
    selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>500))"
    if runSet==21: selection += "&&(j_tau21_b1[0]<0.5)"
@@ -284,7 +289,8 @@ if __name__ == '__main__':
    plots = [("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
  	   ]
   if runSet==52:
-   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
+   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
@@ -350,7 +356,7 @@ if __name__ == '__main__':
  	    ]
   if runSet==54:
    samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W+.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W-.root",
  	     ]
@@ -407,16 +413,16 @@ if __name__ == '__main__':
  	    ("j_mass_mmdt[0]",selection+"&&(j_n2_b1[0]<0.1)","m_{mMDT} (GeV)"),
  	    ]
   if runSet==56:
-   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
+   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
  	     ]
    selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300))"
    normalize=True
@@ -445,7 +451,8 @@ if __name__ == '__main__':
  	    ("j_mass_mmdt[0]",selection+"&&(j_n2_b1[0]<0.1)","m_{mMDT} (GeV)"),
  	    ]
   if runSet==57:
-   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
+   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
@@ -481,7 +488,8 @@ if __name__ == '__main__':
  	    ("j_mass_mmdt[0]",selection+"&&(j_pt[0]>800)","m_{mMDT} (GeV)"),
  	    ]
   if runSet==58:
-   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
+   samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z01.root",
@@ -517,7 +525,7 @@ if __name__ == '__main__':
   if runSet==59:
    samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W:UE.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W:UE.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:W.root",
  	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
  	     ]
@@ -534,8 +542,8 @@ if __name__ == '__main__':
 
   if runSet==60:
    samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W:UE.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W:UE.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:W.root",
  	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
  	     ]
@@ -552,7 +560,7 @@ if __name__ == '__main__':
   if runSet==159:
    samples = ["/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W:UE.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W:UE.root",
- 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W.root",
+ 	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:W01.root",
  	     "/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-rth:W.root",
  	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:Z.root",
  	     ]
@@ -565,6 +573,308 @@ if __name__ == '__main__':
    plots = [("j_pt[0]",selection,"jet p_{T} (GeV)"),
             ("abs(j_eta[0])",selection,"jet |#eta|"),
             ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ]
+  if runSet==162:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==163:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_n2_b1[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==164:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_n2_b1[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==165:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WH.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZH.root",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_n2_b1[0]<0.15))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==166:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_n2_b1[0]<0.15))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==167:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WH.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZH.root",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_tau21_b1[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==168:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_tau21_b1[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==169:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WH.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZH.root",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_n2_b1_mmdt[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==170:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_n2_b1_mmdt[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==171:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/wqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:WH.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZP.root",
+ 	     #"/afs/cern.ch/user/h/hinzmann/workspace/Wmass/trackObservables/processing/processed-output.dat-0:ZH.root",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_tau21_b1_mmdt[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
+ 	    ]
+  if runSet==172:
+   samples = ["root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_pythia/ntupler/",
+ 	     "root://eoscms.cern.ch//eos/cms/store/cmst3/group/monojet/precision/zqq_pt150_100_tarball.tar.xz_herwig/ntupler/",
+ 	     ]
+   selection = "((abs(j_eta[0])<2.4)&&(j_pt[0]>300)&&(j_tau21_b1_mmdt[0]<0.2))"
+   normalize=True
+   names = [#"pt",
+           #"eta",
+           "mass_mmdt",
+ 	   "mass",
+           "mass_trim",
+ 	   "mass_rsd",
+ 	   "mass_softdrop_b2",
+ 	   "mass_softdrop_m1",
+ 	   ]
+   plots = [#("j_pt[0]",selection,"jet p_{T} (GeV)"),
+            #("abs(j_eta[0])",selection,"jet |#eta|"),
+            ("j_mass_mmdt[0]",selection,"m_{mMDT} (GeV)"),
+ 	    ("j_mass_prun[0]",selection,"pruned jet mass (GeV)"),
+ 	    ("j_mass_trim[0]",selection,"trimmed jet mass (GeV)"),
+ 	    ("j_mass_rsd[0]",selection,"r. softdrop (#beta=0) jet mass (GeV)"),
+ 	    ("j_mass_sdb2[0]",selection,"softdrop (#beta=2) jet mass (GeV)"),
+ 	    ("j_mass_sdm1[0]",selection,"softdrop (#beta=-1) jet mass (GeV)"),
  	    ]
 
 
@@ -629,9 +939,17 @@ if __name__ == '__main__':
        for fn in p.stdout:
          if not ".root" in fn: continue
 	 count+=1
-	 tree.Add(sample+fn.replace("\n",""))
+	 fFile = TFile.Open(sample+fn.replace("\n",""))
+         if not fFile or fFile.IsZombie():
+	   print "skip broken file"
+	   continue
+	 fFile.Close()
+	 sys.stdout.write(str(count)+",")
+	 sys.stdout.flush()
+         tree.Add(sample+fn.replace("\n",""))
 	 #if count>10 and "QCD" in sample: break ######
 	 #break #####
+     print ""
      ts+=[tree]
      print sample,tree.GetEntries()
  
@@ -649,13 +967,19 @@ if __name__ == '__main__':
  	  canvas.SetLogy(True)
      elif "pruned jet mass" in plot[2]:
  	hist=TH1F(histname,histname,30,0,150);
- 	if runSet==6 or runSet==8:
+ 	if (runSet>=162 and runSet<=172):
+ 	  hist=TH1F(histname,histname,40,70,110);
+        elif runSet==6 or runSet==8:
  	  hist=TH1F(histname,histname,50,0,150);
- 	if runSet==9:
+ 	elif runSet==9:
  	  hist=TH1F(histname,histname,25,0,150);
      elif "jet mass (GeV)" in plot[2] or "mMDT" in plot[2]:
        if "-0" in sample and "UE" in sample and (runSet==59 or runSet==60 or runSet==57 or runSet==52 or runSet==58):
  	  hist=TH1F(histname,histname,80,70,110);
+       elif (runSet>=162 and runSet<=172) and "r." in plot[2]:
+ 	  hist=TH1F(histname,histname,40,60,100);
+       elif (runSet>=162 and runSet<=172):
+ 	  hist=TH1F(histname,histname,40,70,110);
        elif "-0" in sample and (runSet==59 or runSet==60):
  	  hist=TH1F(histname,histname,25,70,110);
        elif "-rth" in sample and (runSet==59 or runSet==60):
@@ -682,8 +1006,9 @@ if __name__ == '__main__':
 
      if runSet==50 and s>2: cutstring += "&&(j_n2_b1[0]<0.25)"
      if runSet==51 and s>2: cutstring += "&&(ddt05(j_n2_b1[0],j_pt[0],j_mass_mmdt[0])<0)"
-     if runSet==52 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
-     if runSet==52 and s==4: cutstring += "&&(j_ncHadrons[0]>1)"
+     if runSet==52 and s==2: cutstring += "&&(j_ncHadrons[0]>0)"
+     if runSet==52 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==52 and s==5: cutstring += "&&(j_ncHadrons[0]>1)&&(j_nbHadrons[0]<1)"
      if runSet==56 and s==2: cutstring = "(kNNLOW(j_pt[0]))*("+cutstring+")"
      if runSet==56 and s==3: cutstring = "(kNNLOW(j_pt[0]))*(1.0+d1kNLOW(j_pt[0]))*(1.0+d2kNLOW(j_pt[0]))*("+cutstring+")"
      if runSet==56 and s==4: cutstring = "(kNNLOW(j_pt[0]))*(1.0+d1kappaEWW(j_pt[0]))*(1.0+d2kappaEWW(j_pt[0]))*("+cutstring+")"
@@ -692,16 +1017,29 @@ if __name__ == '__main__':
      if runSet==56 and s==8: cutstring = "(kNNLOZ(j_pt[0]))*(1.0+d1kNLOZ(j_pt[0]))*(1.0+d2kNLOZ(j_pt[0]))*("+cutstring+")"
      if runSet==56 and s==9: cutstring = "(kNNLOZ(j_pt[0]))*(1.0+d1kappaEWZ(j_pt[0]))*(1.0+d2kappaEWZ(j_pt[0]))*("+cutstring+")"
      if runSet==56 and s==10: cutstring = "(kNNLOZ(j_pt[0]))*(1.0+dPDFZ(j_pt[0]))*("+cutstring+")"
-     if runSet==57 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
-     if runSet==57 and s==4: cutstring += "&&(j_ncHadrons[0]>1)"
-     if runSet==58 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
-     if runSet==58 and s==4: cutstring += "&&(j_ncHadrons[0]>1)"
+     if runSet==57 and s==2: cutstring += "&&(j_ncHadrons[0]>0)"
+     if runSet==57 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==57 and s==5: cutstring += "&&(j_ncHadrons[0]>1)&&(j_nbHadrons[0]<1)"
+     if runSet==58 and s==2: cutstring += "&&(j_ncHadrons[0]>0)"
+     if runSet==58 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==58 and s==5: cutstring += "&&(j_ncHadrons[0]>1)&&(j_nbHadrons[0]<1)"
      if runSet==59 and s!=1: cutstring += "&&(j_n2_b1[0]<0.2)"
      if runSet==60 and s!=3: cutstring += "&&(ddt1(j_n2_b1[0],j_pt[0],j_mass_mmdt[0])<0)"
      if runSet==159 and s!=1: cutstring += "&&(j_n2_b1[0]<0.2)"
      if runSet==159 and s==2: cutstring = "(weight_n2nonpert(j_pt[0]))*("+cutstring+")"
      if runSet==159 and s==1: cutstring = "(weight_raw(j_pt[0]))*("+cutstring+")"
      if runSet==159 and s==4: cutstring = "(weight_n2detector(j_pt[0]))*("+cutstring+")"
+     if runSet==164 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==164 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==166 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==166 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==168 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==168 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==170 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==170 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==172 and s==3: cutstring += "&&(j_nbHadrons[0]>1)"
+     if runSet==172 and s==4: cutstring += "&&(j_nbHadrons[0]>1)"
+     if "TT" in sample: cutstring = "(-1*(event_weights<0)+1*(event_weights>0))*("+cutstring+")"
 
      print s,histname,variable,cutstring
      tree.Project(histname,variable,cutstring)
@@ -730,7 +1068,7 @@ if __name__ == '__main__':
      if normalize and hist.Integral()>0:
        if runSet==50 or runSet==51:
  	 hist.Scale(integral/hist.Integral(hist.GetXaxis().FindBin(65),hist.GetXaxis().FindBin(105)))
-       elif (runSet==59 or runSet==60) and "mass" in variable:
+       elif (runSet==59 or runSet==60 or (runSet>=162 and runSet<=172)) and "mass" in variable:
  	 hist.Scale(integral/hist.Integral()/hist.GetXaxis().GetBinWidth(1))
        else:
  	 hist.Scale(integral/hist.Integral())
@@ -827,6 +1165,22 @@ if __name__ == '__main__':
        entry="charged"
      elif "HS1.0:PS1.0:CS1.0" in sample:
        entry="central"
+     elif ("W" in sample or "w" in sample) and (runSet==162 or runSet==163 or runSet==165 or runSet==167 or runSet==169 or runSet==171) and s==1:
+       entry="W, Pythia"
+     elif ("W" in sample or "w" in sample) and (runSet==162 or runSet==163 or runSet==165 or runSet==167 or runSet==169 or runSet==171) and s==2:
+       entry="W, Herwig"
+     elif ("Z" in sample or "z" in sample) and (runSet==162 or runSet==163 or runSet==165 or runSet==167 or runSet==169 or runSet==171) and s==3:
+       entry="Z, Pythia"
+     elif ("Z" in sample or "z" in sample) and (runSet==162 or runSet==163 or runSet==165 or runSet==167 or runSet==169 or runSet==171) and s==4:
+       entry="Z, Herwig"
+     elif ("Z" in sample or "z" in sample) and (runSet==164 or runSet==166 or runSet==168 or runSet==170 or runSet==172) and s==1:
+       entry="Z, Pythia"
+     elif ("Z" in sample or "z" in sample) and (runSet==164 or runSet==166 or runSet==168 or runSet==170 or runSet==172) and s==2:
+       entry="Z, Herwig"
+     elif ("Z" in sample or "z" in sample) and (runSet==164 or runSet==166 or runSet==168 or runSet==170 or runSet==172) and s==3:
+       entry="Z #rightarrow bb, Pythia"
+     elif ("Z" in sample or "z" in sample) and (runSet==164 or runSet==166 or runSet==168 or runSet==170 or runSet==172) and s==4:
+       entry="Z #rightarrow bb, Herwig"
      elif "W" in sample and (runSet==59 or runSet==159) and s==1:
        entry="W, no non-pert. eff"
      elif "W" in sample and (runSet==59 or runSet==159) and s==3:
@@ -867,9 +1221,11 @@ if __name__ == '__main__':
        entry="Z (NNLO+1#sigma EW)"
      elif "Z" in sample and runSet==56 and s==10:
        entry="Z (NNLO+1#sigma PDF)"
-     elif "Z" in sample and (runSet==52 or runSet==57 or runSet==58) and s==3:
-       entry="Z #rightarrow bb"
+     elif "W" in sample and (runSet==52 or runSet==57 or runSet==58) and s==2:
+       entry="W #rightarrow cs"
      elif "Z" in sample and (runSet==52 or runSet==57 or runSet==58) and s==4:
+       entry="Z #rightarrow bb"
+     elif "Z" in sample and (runSet==52 or runSet==57 or runSet==58) and s==5:
        entry="Z #rightarrow cc"
      elif "W:UE" in sample:
        entry="W, no non-pert. eff"
@@ -905,16 +1261,31 @@ if __name__ == '__main__':
  	   maxbin=b
  	   maxcontent=hist.GetBinContent(b+1)
        mean=hist.GetXaxis().GetBinCenter(maxbin)
+       print "max",mean
+       fitmin=-1.0
+       fitmax=1.0
+       if runSet==162 or runSet==163 or runSet==164 or runSet==165 or runSet==166:
+         fitmin=-1.0
+	 fitmax=0.67
        g1 = TF1("g1","gaus", 0.7*mean,1.3*mean)
        hist.Fit(g1, "R0")
        mean=g1.GetParameter(1)
        sigma=g1.GetParameter(2)
-       g1 = TF1("g1","gaus", mean-1.0*sigma,mean+1.0*sigma)
+       g1 = TF1("g1","gaus", mean+fitmin*sigma,mean+fitmax*sigma)
+       g1.SetParameter(1,mean)
+       g1.SetParameter(2,sigma)
        hist.Fit(g1, "R0")
-       #mean=g1.GetParameter(1)
-       #sigma=g1.GetParameter(2)
-       #g1 = TF1("g1","gaus", mean-1.5*sigma,mean+1.5*sigma)
-       #hist.Fit(g1, "R0")
+       mean=g1.GetParameter(1)
+       sigma=g1.GetParameter(2)
+       g1 = TF1("g1","gaus", mean+fitmin*sigma,mean+fitmax*sigma)
+       g1.SetParameter(1,mean)
+       g1.SetParameter(2,sigma)
+       hist.Fit(g1, "R0")
+       print "gauss fit",g1.GetParameter(1)
+       xq=array.array('d',[0.5])
+       yq=array.array('d',[0.])
+       hist.GetQuantiles(1,yq,xq)
+       print "median", yq[0]
        if (g1.GetParameter(1)>65 and g1.GetParameter(1)<105) and runSet!=59 and runSet!=60:
  	 hmean = int(g1.GetParameter(1)*1000.)/1000.
  	 entry+= " "+str(hmean)+""

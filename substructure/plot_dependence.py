@@ -33,7 +33,7 @@ if __name__=="__main__":
         c.SetLogx()
       mg=TMultiGraph()
       colors=[1,2,4,6,7,8,9,15,1,2,3,4,6,7,8,9,15]
-      styles=[24,25,26,27,28]
+      styles=[24,25,26,27,24,26,27]
     
       l3=TLegend(0.3,0.42,0.8,0.75,"")
       l3.SetTextSize(0.05)
@@ -86,6 +86,21 @@ if __name__=="__main__":
         style+=1
         
 	
+        xs=[0.15,0.2,0.25,0.3,0.35,0.4,0.45]
+        ys=[92.121, 92.209, 92.938, 92.979, 93.320, 93.412, 93.472]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        g.SetMarkerStyle(styles[style])
+        g.SetMarkerSize(1)
+        g.SetLineColor(colors[style])
+        g.SetLineStyle(1)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        l3.AddEntry(g,"Z #rightarrow c#bar{c}","pl")
+        style+=1
+        
+	
         xs=[0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
         ys=[91.042,91.025,91.000,90.939,90.825,90.700,90.562,90.496]
         pointsX=array.array("f",[x for x in xs])
@@ -115,7 +130,7 @@ if __name__=="__main__":
         #style+=1
 
 	xs=[0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
-        ys=[81.298,81.019,81.393,81.471,82.27,82.696,82.66,82.541]
+        ys=[81.528,81.014,81.412,81.501,82.258,82.689,82.640,82.513]
         pointsX=array.array("f",[x for x in xs])
         pointsY=array.array("f",[y for y in ys])
         g=TGraph(len(pointsX),pointsX,pointsY)
@@ -128,8 +143,8 @@ if __name__=="__main__":
         l3.AddEntry(g,"W","pl")
         style+=1
        
-        xs=[0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
-        ys=[80.321,80.321,80.293,80.262,80.209,80.039,80.010,79.995]
+	xs=[0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
+        ys=[81.009,80.873,81.333,81.541,81.507,82.187,82.369,82.495]
         pointsX=array.array("f",[x for x in xs])
         pointsY=array.array("f",[y for y in ys])
         g=TGraph(len(pointsX),pointsX,pointsY)
@@ -139,7 +154,7 @@ if __name__=="__main__":
         g.SetLineStyle(1)
         g.SetLineWidth(2)
         mg.Add(g)
-        l3.AddEntry(g,"W (no non-pert. eff.)","pl")
+        l3.AddEntry(g,"W #rightarrow c#bar{s}/#bar{c}s","pl")
         style+=1
        
         xs=[0,1]
@@ -156,6 +171,20 @@ if __name__=="__main__":
         l3.AddEntry(g,"W (world average)","pl")
         #style+=1
 
+        xs=[0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
+        ys=[80.321,80.321,80.293,80.262,80.209,80.039,80.010,79.995]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        g.SetMarkerStyle(styles[style])
+        g.SetMarkerSize(1)
+        g.SetLineColor(colors[style])
+        g.SetLineStyle(1)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        l3.AddEntry(g,"W (no non-pert. eff.)","pl")
+        style+=1
+       
       if name=="ptgen":
         l3.AddEntry(g,"Z","pl")
 	
@@ -202,6 +231,48 @@ if __name__=="__main__":
         style+=1
        
         xs=[300,350,400,450,500,550]
+        ys=[92.565,92.253,92.135,91.617,91.175,91.846]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        g.SetMarkerStyle(styles[style])
+        g.SetMarkerSize(1)
+        g.SetLineColor(colors[style])
+        g.SetLineStyle(1)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        l3.AddEntry(g,"Z #rightarrow c#bar{c}","pl")
+        #style+=1
+       
+        xs=[300,350,400,450,500,550]
+        ys=[93.868,93.634,93.196,92.709,92.459,91.948]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        #g.SetMarkerStyle(styles[style])
+        #g.SetMarkerSize(1)
+        g.SetLineColor(colors[style])
+        g.SetLineStyle(2)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        #l3.AddEntry(g,"Z, b#bar{b}, N_{2}^{#beta=1}<0.2","pl")
+        style+=1
+       
+        xs=[0,1000]
+        ys=[91.1876,91.1876]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        g.SetMarkerStyle(1)
+        g.SetMarkerSize(1)
+        g.SetLineColor(15)
+        g.SetLineStyle(9)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        l3.AddEntry(g,"Z (world average)","pl")
+        #style+=1
+       
+        xs=[300,350,400,450,500,550]
         ys=[91.004,90.992,91.027,91.026,90.963,90.989]
         pointsX=array.array("f",[x for x in xs])
         pointsY=array.array("f",[y for y in ys])
@@ -229,22 +300,8 @@ if __name__=="__main__":
         #l3.AddEntry(g,"Z, N_{2}^{#beta=1}<0.2, no non-pert. eff.","pl")
         style+=1
 	
-        xs=[0,1000]
-        ys=[91.1876,91.1876]
-        pointsX=array.array("f",[x for x in xs])
-        pointsY=array.array("f",[y for y in ys])
-        g=TGraph(len(pointsX),pointsX,pointsY)
-        g.SetMarkerStyle(1)
-        g.SetMarkerSize(1)
-        g.SetLineColor(15)
-        g.SetLineStyle(9)
-        g.SetLineWidth(2)
-        mg.Add(g)
-        l3.AddEntry(g,"Z (world average)","pl")
-        #style+=1
-       
         xs=[300,350,400,450,500,550]
-        ys=[81.598,81.404,81.179,81.011,80.645,80.643]
+        ys=[81.675,81.404,81.120,81.046,80.821,80.653]
         pointsX=array.array("f",[x for x in xs])
         pointsY=array.array("f",[y for y in ys])
         g=TGraph(len(pointsX),pointsX,pointsY)
@@ -258,7 +315,7 @@ if __name__=="__main__":
         #style+=1
        
         xs=[300,350,400,450,500,550]
-        ys=[82.982,82.557,82.424,81.579,80.925,80.833]
+        ys=[82.999,82.503,81.949,81.454,80.968,80.891]
         pointsX=array.array("f",[x for x in xs])
         pointsY=array.array("f",[y for y in ys])
         g=TGraph(len(pointsX),pointsX,pointsY)
@@ -270,6 +327,48 @@ if __name__=="__main__":
         mg.Add(g)
         #l3.AddEntry(g,"W, N_{2}^{#beta=1}<0.2","pl")
         style+=1
+       
+        xs=[300,350,400,450,500,550]
+        ys=[81.548,81.329,81.398,81.377,80.954,80.692]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        g.SetMarkerStyle(styles[style])
+        g.SetMarkerSize(1)
+        g.SetLineColor(colors[style])
+        g.SetLineStyle(1)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        l3.AddEntry(g,"W #rightarrow c#bar{s}/#bar{c}s","pl")
+        #style+=1
+       
+        xs=[300,350,400,450,500,550]
+        ys=[82.848,82.243,81.926,81.336,81.123,80.960]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        #g.SetMarkerStyle(styles[style])
+        #g.SetMarkerSize(1)
+        g.SetLineColor(colors[style])
+        g.SetLineStyle(2)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        #l3.AddEntry(g,"W, N_{2}^{#beta=1}<0.2","pl")
+        style+=1
+       
+        xs=[0,1000]
+        ys=[80.385,80.385]
+        pointsX=array.array("f",[x for x in xs])
+        pointsY=array.array("f",[y for y in ys])
+        g=TGraph(len(pointsX),pointsX,pointsY)
+        g.SetMarkerStyle(1)
+        g.SetMarkerSize(1)
+        g.SetLineColor(15)
+        g.SetLineStyle(9)
+        g.SetLineWidth(2)
+        mg.Add(g)
+        l3.AddEntry(g,"W (world average)","pl")
+        #style+=1
        
         xs=[300,350,400,450,500,550]
         ys=[80.292,80.315,80.306,80.358,80.331,80.144]
@@ -298,20 +397,6 @@ if __name__=="__main__":
         mg.Add(g)
         #l3.AddEntry(g,"W, N_{2}^{#beta=1}<0.2, no non-pert. eff.","pl")
         style+=1
-       
-        xs=[0,1000]
-        ys=[80.385,80.385]
-        pointsX=array.array("f",[x for x in xs])
-        pointsY=array.array("f",[y for y in ys])
-        g=TGraph(len(pointsX),pointsX,pointsY)
-        g.SetMarkerStyle(1)
-        g.SetMarkerSize(1)
-        g.SetLineColor(15)
-        g.SetLineStyle(9)
-        g.SetLineWidth(2)
-        mg.Add(g)
-        l3.AddEntry(g,"W (world average)","pl")
-        #style+=1
        
       mg.Draw("apl")
       mg.SetTitle("")
