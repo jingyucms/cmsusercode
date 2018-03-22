@@ -124,9 +124,10 @@ if __name__=="__main__":
     new_hists=[]
     
     for massbin in reversed(range(len(massbins13))):
-      # NLO OCD plot (with EWK correction)
+        # NLO OCD plot (with EWK correction)
         if True:
-            filename="fastnlo/RunII/fnl5662j_cs_ct14nlo_30000_LL+.root"
+            filename="fastnlo/RunII/fnl5662j_v23_fix_CT14nlo_allmu_ak4.root"
+            #filename="fastnlo/RunII/fnl5662j_cs_ct14nlo_30000_LL+.root"
             print filename
             fNloQcd = TFile.Open(filename)
             new_hists+=[fNloQcd]
@@ -135,7 +136,7 @@ if __name__=="__main__":
             hNloQcd=fNloQcd.Get(histname)
 	    print "NLO QCD hist: "
             print fNloQcd
-	    hNloQcd=rebin2(hNloQcd,len(chi_binnings[massbin])-1,chi_binnings[massbin])
+	    hNloQcd=rebin(hNloQcd,len(chi_binnings[massbin])-1,chi_binnings[massbin])
             hNloQcd.SetLineColor(5)
             hNloQcd.SetLineStyle(3)
             hNloQcd.SetLineWidth(2)
@@ -175,12 +176,12 @@ if __name__=="__main__":
 
         # CI and ADD signal  
 
-        if massbin>=0:
-            filename='datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_4500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1_chi2016.root'
+        if massbin>=1:
+            filename='./invertMatrixOct20/datacard_shapelimit13TeV_DMAxial_Dijet_LO_Mphi_5000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1_chi2016.root'
             print filename
             f = TFile.Open(filename)
             new_hists+=[f]
-            histname='DMAxial_Dijet_LO_Mphi_4500_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+            histname='DMAxial_Dijet_LO_Mphi_5000_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
             print histname
             h4=f.Get(histname)
             h4=rebin2(h4,len(chi_binnings[massbin])-1,chi_binnings[massbin])
@@ -193,11 +194,11 @@ if __name__=="__main__":
             h4.SetLineStyle(1)
         
         if massbin>1:
-            filename="datacard_shapelimit13TeV_cs_ct14nlo_13000_LL+_chi2016.root"
+            filename="./invertMatrixOct20/datacard_shapelimit13TeV_cs_ct14nlo_14000_LL+_chi2016.root"
             print filename
             f = TFile.Open(filename)
             new_hists+=[f]
-            histname='cs_ct14nlo_13000_LL+#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800-13000","4800-5400")+"_rebin1"
+            histname='cs_ct14nlo_14000_LL+#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"").replace("4800-13000","4800-5400")+"_rebin1"
             print histname
             h7=f.Get(histname)
             h7=rebin2(h7,len(chi_binnings[massbin])-1,chi_binnings[massbin])
@@ -206,7 +207,7 @@ if __name__=="__main__":
             h7.SetLineWidth(2)
 
         if massbin>3:
-            filename="datacard_shapelimit13TeV_GENnp-22-v5_chi2016.root"
+            filename="./invertMatrixOct20/datacard_shapelimit13TeV_GENnp-22-v5_chi2016.root"
             print filename
             f = TFile.Open(filename)
             new_hists+=[f]
@@ -220,7 +221,7 @@ if __name__=="__main__":
             #for b in range(h5.GetNbinsX()):
             #    h5.SetBinContent(b+1,h5.GetBinContent(b+1)/h5.GetBinWidth(b+1))
             
-            filename="datacard_shapelimit13TeV_QBH_8000_6_chi_v1.root"
+            filename="./invertMatrixOct20/datacard_shapelimit13TeV_QBH_8000_6_chi_v1.root"
             print filename
             f = TFile.Open(filename)
             new_hists+=[f]
@@ -237,20 +238,11 @@ if __name__=="__main__":
             h6.Add(TF1("offset",str(offsets[massbin]),1,16))
             h5.SetLineWidth(2)
             h6.SetLineWidth(2)
-            
-        #h4.Add(TF1("offset",str(offsets[massbin]),1,16))
-        #h7.Add(TF1("offset",str(offsets[massbin]),1,16))
-        #h4.SetLineWidth(2)
-        #h7.SetLineWidth(2)        # Unfolded data
       
         if unfoldedData:
-          filename="Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root"
+          filename="./datacards/Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf_MatrixInvert.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',".0-").replace(' ',"")
           histname="dijet_mass_"+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_chi_unfolded;1"
-##           if massbin<6:
-##               histname="dijet_mass2_chi2;"+str(massbin+1)
-##           if massbin==6:
-##               histname="dijet_mass2_chi3;1"
 	else:
           filename="datacards/datacard_shapelimit13TeV_25nsData11combi_chi.root"
           masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
@@ -294,62 +286,9 @@ if __name__=="__main__":
 	new_hists+=[h14Gsys]
 	h14Gsysstat=h14G.Clone(histname+"sysstat")
 	new_hists+=[h14Gsysstat]
-
-        # reco
-        
-        if unfoldedData:
-          filename="Unfolded_chiNtuple_dataReReco_v3_Coarse_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf.root"
-          masstext=str(massbins13[massbin]).strip("()").replace(',',".0-").replace(' ',"")
-          histname="dijet_mass_"+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_chi;1"
-          #if massbin<6:
-          #    histname="dijet_mass2_chi2;"+str(massbin+1)
-          #if massbin==6:
-          #    histname="dijet_mass2_chi3;1"
-	else:
-          filename="datacards/Unfolded_chiNtuple_dataReReco_prelimJEC_PFHT900_fromCB_AK4SF_pythia8_Pt_170toInf_noRebin.root"
-          masstext=str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")
-          histname='data_obs#chi'+masstext+'_rebin1'
-        print filename
-        fData_ = TFile.Open(filename)
-        new_hists+=[fData_]
-        print histname
-        h14_=fData_.Get(histname)
-	if not unfoldedData:
-          for b in range(h14_.GetXaxis().GetNbins()):
-            h14_.SetBinContent(b+1,h14_.GetBinContent(b+1)*h14_.GetBinWidth(b+1))
-            h14_.SetBinError(b+1,h14_.GetBinError(b+1)*h14_.GetBinWidth(b+1))
-	origh14_=h14_.Rebin(len(chi_binnings[massbin])-1,h14_.GetName()+"rebinorig",chi_binnings[massbin])
-	h14_=rebin2(h14_,len(chi_binnings[massbin])-1,chi_binnings[massbin])
-	    
-	h14G_=TGraphAsymmErrors(h14_.Clone(histname+"G"))
-	new_hists+=[h14G_]
-        h14G_.SetMarkerStyle(21)
-        h14G_.SetMarkerSize(0.4)
-        h14G_.SetMarkerColor(4)
-        h14G_.SetLineColor(4)
-	alpha=1.-0.6827
-	nevents=0
-	for b in range(h14G_.GetN()):
-	    if unfoldedData:
-	        N=origh14_.GetBinContent(b+1)
-	    else:
-	        N=1./pow(h14_.GetBinError(b+1)/h14_.GetBinContent(b+1),2)
-	    print N
-	    nevents+=N
-	    L=0
-	    if N>0:
-	        L=ROOT.Math.gamma_quantile(alpha/2.,N,1.)
-            U=ROOT.Math.gamma_quantile_c(alpha/2.,N+1,1.)
-            h14G_.SetPointEYlow(b,(N-L)/N*h14_.GetBinContent(b+1))
-            h14G_.SetPointEYhigh(b,(U-N)/N*h14_.GetBinContent(b+1))
-        print "data events:", nevents
-	
-	h14Gsys_=h14G_.Clone(histname+"sys")
-	new_hists+=[h14Gsys_]
-	h14Gsysstat_=h14G_.Clone(histname+"sysstat")
-	new_hists+=[h14Gsysstat_]
         
         filename="datacard_shapelimit13TeV_QCD_chi2016_backup.root"
+        #filename="datacard_shapelimit13TeV_QCD_chi.root"
         print filename
         fsys = TFile.Open(filename)
         new_hists+=[fsys]
@@ -392,7 +331,7 @@ if __name__=="__main__":
             theory_sumdown=sqrt(theory_sumdown)
             theory_sumup=sqrt(theory_sumup)
 
-	    print "delta,error",pow(hNloQcdbackup.GetBinContent(b+1)-h14G.GetY()[b],2), pow(max(exp_sumdown,exp_sumup)*h14G.GetY()[b],2),pow(max(theory_sumdown,theory_sumup)*h14G.GetY()[b],2),pow(max(h14G.GetErrorYlow(b),h14G.GetErrorYhigh(b)),2)
+	    #print "delta,error",pow(hNloQcdbackup.GetBinContent(b+1)-h14G.GetY()[b],2), pow(max(exp_sumdown,exp_sumup)*h14G.GetY()[b],2),pow(max(theory_sumdown,theory_sumup)*h14G.GetY()[b],2),pow(max(h14G.GetErrorYlow(b),h14G.GetErrorYhigh(b)),2)
 	    chi2+=pow(hNloQcdbackup.GetBinContent(b+1)-h14G.GetY()[b],2) / \
 	           (pow(max(exp_sumdown,exp_sumup)*h14G.GetY()[b],2)+pow(max(theory_sumdown,theory_sumup)*h14G.GetY()[b],2)+pow(max(h14G.GetErrorYlow(b),h14G.GetErrorYhigh(b)),2))
 
@@ -411,7 +350,7 @@ if __name__=="__main__":
             h2new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)-theory_sumdown*hNloQcdbackup.GetBinContent(b+1))
             h3new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)+theory_sumup*hNloQcdbackup.GetBinContent(b+1))
 	    print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup*h14G.GetY()[b],2)),sqrt(pow(exp_sumdown*h14G.GetY()[b],2)))
-	    print "sum rel error",sqrt(pow(exp_sumup,2)+pow(theory_sumup,2)+pow(h14G.GetErrorYhigh(b)/h14G.GetY()[b],2))
+	    #print "sum rel error",sqrt(pow(exp_sumup,2)+pow(theory_sumup,2)+pow(h14G.GetErrorYhigh(b)/h14G.GetY()[b],2))
         pvalue=stats.chisqprob(chi2, h14.GetXaxis().GetNbins())
         sign=stats.norm.ppf(pvalue)
         print "sign",sign,"chi2/ndof",chi2/h14.GetXaxis().GetNbins()
@@ -419,10 +358,10 @@ if __name__=="__main__":
         new_hists+=[h3new]
         h2new.SetLineStyle(1)
         h3new.SetLineStyle(1)
-        h2new.SetLineColor(15)
+        h2new.SetLineColor(kGray)
         h2new.SetFillColor(10)
-        h3new.SetLineColor(15)
-        h3new.SetFillColor(15)
+        h3new.SetLineColor(kGray)
+        h3new.SetFillColor(kGray)
                   
         h14G.Apply(TF2("offset",str(offsets[massbin])+"+y",1,16))
         h14Gsys.Apply(TF2("offset",str(offsets[massbin])+"+y",1,16))
@@ -446,11 +385,11 @@ if __name__=="__main__":
         pad[6-massbin].cd()
 
         if massbin==6:
-            hNloQcd.GetYaxis().SetRangeUser(0.02,0.349)        
+            hNloQcd.GetYaxis().SetRangeUser(0.016,0.349)        
         elif massbin>=3:
-            hNloQcd.GetYaxis().SetRangeUser(0.02,0.13)       
+            hNloQcd.GetYaxis().SetRangeUser(0.016,0.13)       
         else:
-            hNloQcd.GetYaxis().SetRangeUser(0.02,0.13)          
+            hNloQcd.GetYaxis().SetRangeUser(0.016,0.13)          
             
         if massbin!=6:
             hNloQcd.GetYaxis().SetTitleSize(0.)
@@ -459,7 +398,7 @@ if __name__=="__main__":
         evenBigger=1.35
 
         if massbin==6:
-            hNloQcd.GetYaxis().SetTitleOffset(0.65)
+            hNloQcd.GetYaxis().SetTitleOffset(0.7)
             hNloQcd.GetYaxis().SetTitleSize(0.0667*evenBigger)
             hNloQcd.GetYaxis().SetLabelSize(0.0667*bigger)
             hNloQcd.GetYaxis().SetLabelOffset(0.005)
@@ -505,7 +444,8 @@ if __name__=="__main__":
         h2new.Draw("histsame")
         #hNloQcd.Draw("histsame")
         #hNloQcdNoEwk.Draw("histsame")
-        h4.Draw("histsame")
+        if massbin>=0 and massbin<6:
+            h4.Draw("histsame")
         if massbin>1:
             h7.Draw("histsame")
         if massbin>3:
@@ -565,10 +505,10 @@ if __name__=="__main__":
     #l2.AddEntry(hNloQcdNoEwk,"NLO QCD prediction","l")
 
     #l2.AddEntry(h4,"M_{Med} (DM g_{q} = 0.75) = 4.5 TeV","l")
-    l2.AddEntry(h7,"#Lambda_{LL}^{#font[122]{+}} (CI) = 13 TeV","l")
+    l2.AddEntry(h7,"#Lambda_{LL}^{#font[122]{+}} (CI) = 14 TeV","l")
     l2.AddEntry(h5,"#Lambda_{T} (GRW) = 10 TeV","l")
     l2.AddEntry(h6,"M_{QBH} (n_{ED} = 6 ADD) = 8 TeV","l")
-    l2.AddEntry(h4,"M_{Med} (DM g_{q} = 1.0) = 4.5 TeV","l")
+    l2.AddEntry(h4,"M_{Med} (DM g_{q} = 1.0) = 5 TeV","l")
     l2.SetFillStyle(0)
     l2.Draw("same")
     
@@ -576,15 +516,15 @@ if __name__=="__main__":
     #CMS_lumi( c, iPeriod, iPos );
 
     # CMS
-    leg2=TLatex(1,0.365,"#bf{CMS} #it{Preliminary}")
+    #leg2=TLatex(1,0.365,"#bf{CMS} #it{Preliminary}")
+    leg2=TLatex(1,0.36,"#bf{CMS}")
     leg2.SetTextFont(42)
     leg2.SetTextSize(0.076)
     # lumi
-    leg3=TLatex(11,0.365,"35.9 fb^{-1} (13 TeV)")
+    leg3=TLatex(11.2,0.36,"35.9 fb^{-1} (13 TeV)")
     leg3.SetTextFont(42)
     leg3.SetTextSize(0.076)
     leg2.Draw("same")
     leg3.Draw("same")
     
-    c.SaveAs(prefix + "_combined_RunII_25ns_v2_2016.pdf")
-    c.SaveAs(prefix + "_combined_RunII_25ns_v2_2016.eps")
+    #c.SaveAs("~/Desktop/"+prefix + "_combined_RunII_25ns_v2_2016.pdf")

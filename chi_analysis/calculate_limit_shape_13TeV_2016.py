@@ -17,14 +17,13 @@ for l in open("xsecs_13TeV_dm.txt").readlines():
   xsecs[l.split("     ")[0]]=eval(l.split("     ")[1])
 
 models=[]
-#models=[3]
+models+=[11]
 #models+=[10,11]
 #models+=[60,61,62,63,64,65,66,67,68,69]
 #models+=[70,71,72,73,74,75,76,77]
 #models+=[78,79,80,81,82,83,84,85]
 #models+=[30,31,32,33,34,35,36,37,38]
 #models+=[40,41,42,43,44,45,46]
-models+=[47]
 #models=[88,89]
 #models=[60,61]
 
@@ -48,8 +47,8 @@ signalExtraName={}
   
 if VectorDM:
   counter=100
-  #for mdm in ["1","3000"]:
-  for mdm in ["1"]:
+  for mdm in ["1","3000"]:
+  #for mdm in ["1"]:
     for gv in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
       #models+=[counter]
       signalName[counter]="DMVector_Dijet_LO_Mphi"
@@ -58,8 +57,8 @@ if VectorDM:
 
 if AxialDM:
   counter=1100
-  #for mdm in ["1","3000"]:
-  for mdm in ["1"]:
+  for mdm in ["1","3000"]:
+  #for mdm in ["1"]:
     for ga in ["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]:
       #models+=[counter]
       signalName[counter]="DMAxial_Dijet_LO_Mphi"
@@ -69,6 +68,8 @@ if AxialDM:
 
 testStat="LHC"# in 2012 and 2015 data used "LEP", checking "TEV" and "LHC" for 2016 data
 asym="a" #"a" for asymptotic CLS
+#testStat="LEP"
+#asym=""
 # The POI for LHC-style CLS is not clear, since CI models have no freedom  in signal strength or cross section.
 # The LEP-style and TEV-style CLS do not fit the POI.
 
@@ -82,7 +83,7 @@ for model in models:
  signalExtra=""
  includeSignalTheoryUncertainties=False
 
- if model<100 and model!=47:
+ if model<100:
     version=""
  
  if model==1:
@@ -94,7 +95,8 @@ for model in models:
  if model==3:
     signal="ADD"
     signalMasses=[9000,10000,11000,12000,13000,14000,15000,16000,17000]
-    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)] #signal MC statistics not enough in bins <4200
+    #massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)] #signal MC statistics not enough in bins <4200
+    massbins=[(4800,5400),(5400,6000),(6000,13000)] #signal MC statistics not enough in bins <4200
     #includeSignalTheoryUncertainties=True # from QCD-only though
  if model==4:
     signal="cs_nn30nlo_0_"
@@ -134,7 +136,8 @@ for model in models:
  if model==11:
     signal="QBH_"
     signalMasses=[4500,5000,5500,6000,6500,7000]
-    massbins=[(4800,5400),(5400,6000),(6000,13000)]
+    #massbins=[(4800,5400),(5400,6000),(6000,13000)]
+    massbins=[(5400,6000),(6000,13000)]
     signalExtra="_RS1"
 
  if model==18:
@@ -228,7 +231,7 @@ for model in models:
     signal="cs_ct14nlo_"
     signalExtra="_LL+"
     signalMasses=[13000]
-    massbins=[(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
+    massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
  if model==40:
     signal="AntiCIplusLL"    
@@ -266,11 +269,6 @@ for model in models:
  #   signal="AntiCIplusLL"    
  #   signalMasses=[12000]
  #   massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
- if model==47:
-    signal="DMAxial_Dijet_LO_Mphi"
-    signalExtra="_1_1p0_1p0_Mar5_gdmv_0_gdma_1p0_gv_0_ga_1"
-    signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
-    includeSignalTheoryUncertainties=True # Assign QCD-only scale uncertainty to QCD+DM
 
  if model>=60 and model<100:
     includeSignalTheoryUncertainties=True
@@ -407,54 +405,51 @@ for model in models:
     signalMasses=[14000,15000,16000,17000,18000,19000,20000,22000,24000,26000,28000,30000]
     massbins=[(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,5400),(5400,6000),(6000,13000)]
 
- #dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
- #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
- dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
- prefix="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/smearedDatacardsNov2/datacard_shapelimit13TeV"
+ dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/"
+ prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/smearedDatacardsNov2/datacard_shapelimit13TeV"
 
- if model>=100:  # Dark Matter
+ if model>=30 and model<60:
+    name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")    
+ elif model>=100:  # Dark Matter
     signal=signalName[model]
     signalExtra=signalExtraName[model]
     #if float(signalExtraName[model].split("_")[2])<=2:
     #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000,7000]
     signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
-    #signalMasses=[5000]
+    #signalMasses=[6000]
     includeSignalTheoryUncertainties=True # Assign QCD-only scale uncertainty to QCD+DM
     
     if isGen:
-        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
-        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/invertMatrixAug30/datacard_shapelimit13TeV"
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/invertMatrixOct20/datacard_shapelimit13TeV"
+        #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/dAgostiniNoPdfOct20/datacard_shapelimit13TeV"
+        #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/invertMatrixNoPdfOct20/datacard_shapelimit13TeV"
     elif isCB:
         dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
         #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
         prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/crystalBallSmearedAug30/datacard_shapelimit13TeV"
     else:
-        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/"
-        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_9_2_4/src/cmsusercode/chi_analysis/smearedDatacardsAug30/datacard_shapelimit13TeV"
-
+        dire="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/"
+        prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/smearedDatacardsNov2/datacard_shapelimit13TeV"
+        #prefix="/uscms_data/d3/jingyu/ChiAnalysis/DMlimits/CMSSW_8_0_25/src/cmsusercode/chi_analysis/smearedDatacardsNoPdfOct20/datacard_shapelimit13TeV"
     if isInjection:
         prefix=prefix.replace("/datacard_","Injection0p75/datacard_")
     print prefix
 
     name="limits"+testStat+asym+str(model)+"_"+signal
-    
+   
     if isGen:
         name=name.replace("limits","limitsGen")
     elif isCB:
         name=name.replace("limits","limitsDetCB")
     else:
         name=name.replace("limits","limitsDet")
-
+        
     if isInjection:
         name=name+"Injection0p75"
-    print name
-    
- if model==47:
-    name="pvalue_"+testStat+asym+signal+signalExtra
- elif model>=30 and model<60:
-    name="pvalue_"+testStat+asym+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")
  else:
-    name="limits"+testStat+asym+str(model)+"_"+signal
+    name="limits"+testStat+asym+str(model)+"_"+signal  
+ print name
 
  limits={}
  for signalMass in signalMasses:

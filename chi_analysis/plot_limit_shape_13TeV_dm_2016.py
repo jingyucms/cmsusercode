@@ -4,20 +4,17 @@ from math import *
 import numpy as np
 
 #gROOT.Macro( os.path.expanduser( '~/rootlogon.C' ) )
-gROOT.Reset()
-gROOT.SetStyle("Plain")
+gROOT.ForceStyle()
 gStyle.SetOptStat(0)
 gStyle.SetOptFit(0)
 gStyle.SetTitleOffset(0.9,"XY")
-gStyle.SetPadLeftMargin(0.1)
-gStyle.SetPadBottomMargin(0.1)
+gStyle.SetPadLeftMargin(0.12)
+gStyle.SetPadBottomMargin(0.12)
 gStyle.SetPadTopMargin(0.075)
-gStyle.SetPadRightMargin(0.1)
+gStyle.SetPadRightMargin(0.12)
 gStyle.SetMarkerSize(1.5)
 gStyle.SetHistLineWidth(1)
 gStyle.SetStatFontSize(0.020)
-gStyle.SetTitleSize(0.04, "XYZ")
-gStyle.SetLabelSize(0.03, "XYZ")
 gStyle.SetNdivisions(513, "Y")
 gStyle.SetNdivisions(510, "X")
 gStyle.SetLegendBorderSize(0)
@@ -37,9 +34,9 @@ if __name__=="__main__":
   version="_v5"
 
   isGen=False
-  isCB=True
+  isCB=False
   
-  isInjection=True
+  isInjection=False
   injectiontext="Injection1p0"
   
   if isGen:
@@ -58,10 +55,9 @@ if __name__=="__main__":
   gs=["0p01","0p05","0p1","0p2","0p25","0p3","0p5","0p75","1","1p5","2p0","2p5","3p0"]
   gsplot=["0p1","0p2","0p25","0p3","0p5","0p75","1","1p5"]
   mdms=["1","3000"]
-  #mdms=["1"]
-  #signalMasses=[1000,1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
-  #signalMasses=[1500,1750,2000,2250,2500,3000,3500,4000,4500,5000,6000]
   signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
+  #signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
+  #signalMasses=[2000,2250,2500,3000,3500,4000,4500,5000,6000]
  
   for mdm in mdms:
     for g in gs:
@@ -162,8 +158,6 @@ if __name__=="__main__":
       if asym: # reorder expected limits to exp,-1,+1,-2,+2
         for g in range(len(limits)):
           limits[g]=[limits[g][0],limits[g][1],limits[g][2],limits[g][5],limits[g][6],limits[g][4],limits[g][7],limits[g][3]]
-
-      #print limits
 
       canvas = TCanvas("","",0,0,300,300)
       #canvas.GetPad(0).SetLogy()
@@ -332,6 +326,8 @@ if __name__=="__main__":
 
       #print "limit: %.6f," % (limit), "%.6f," % (exp), "%.6f, %.6f, 0, 0" % ((-max(exp-exp1p,exp1m-exp)+exp),(exp+max(exp-exp1p,exp1m-exp)))
       print "limit: %.6f," % (limit), "%.6f," % (exp), "%.6f, %.6f, %.6f, %.6f" % (exp-min(exp1p,exp1m),max(exp1p,exp1m)-exp, exp-min(exp2p,exp2m), max(exp2p,exp2m)-exp)
+
+      signalMass=signalMass/1000.
  
       g_q.SetPoint(g_q.GetN(),signalMass,limit)
       g_q_exp.SetPoint(g_q_exp.GetN(),signalMass,exp)
@@ -365,21 +361,21 @@ if __name__=="__main__":
   
       canvas.SaveAs(prefix+testStat+asym+signal+version+'.pdf')
 
-    canvas = TCanvas("","",0,0,300,300)
+    canvas = TCanvas("","",0,0,1800,1550)
     mg=TMultiGraph()
 
-    min_x_new=signalMasses[0]
+    min_x_new=signalMasses[0]/1000
     #min_x_new=2000
 
     ymin=0.0
     ymax=1.42788
     #ymax=3
-    xs=np.linspace(4000,6000,num=20000)
+    xs=np.linspace(4,6,num=20000)
     for x in xs:
       if g_q_exp.Eval(x)>=1.42788:
         max_x_new=x
         break
-    max_x_new=signalMasses[-1]
+    max_x_new=signalMasses[-1]/1000
       
     g_q_band_2sigma.SetFillStyle(1001)
     g_q_band_2sigma.SetFillColor(kOrange)
@@ -416,20 +412,20 @@ if __name__=="__main__":
     
     mg.Draw("apl")
     mg.SetTitle("")
-    mg.GetXaxis().SetTitle("M_{Med} [GeV]")
+    mg.GetXaxis().SetTitle("M_{Med} [TeV]")
     mg.GetYaxis().SetTitle("g_{q}")
-    mg.GetYaxis().SetLabelSize(0.03)
-    mg.GetYaxis().SetTitleSize(0.04)
-    mg.GetYaxis().SetTitleOffset(1.1)
+    mg.GetYaxis().SetLabelSize(0.04)
+    mg.GetYaxis().SetTitleSize(0.05)
+    mg.GetYaxis().SetTitleOffset(0.95)
     mg.GetXaxis().SetLimits(min_x_new,max_x_new)
     #mg.GetXaxis().SetRangeUser(min_x_new,max_x_new)
     mg.GetYaxis().SetRangeUser(ymin,ymax)
     mg.GetYaxis().SetNdivisions(510)
     mg.GetXaxis().SetNdivisions(510)
-    mg.GetXaxis().SetLabelSize(0.03)
+    mg.GetXaxis().SetLabelSize(0.04)
     mg.GetXaxis().SetLabelOffset(0.015)
-    mg.GetXaxis().SetTitleSize(0.04)
-    mg.GetXaxis().SetTitleOffset(1.2)
+    mg.GetXaxis().SetTitleSize(0.05)
+    mg.GetXaxis().SetTitleOffset(1.1)
 
     y1=TGaxis(min_x_new, ymin, min_x_new, ymax, ymin,ymax,510,"")
     y1.SetLabelSize(0)
@@ -445,9 +441,12 @@ if __name__=="__main__":
     myFunc=TF1("myFunc","pow((x-1/(12*3.141592653))*(4*3.141592653)/6,0.5)",minwidth,1)
     y2=TGaxis(max_x_new, ymin, max_x_new, ymax,"myFunc",510,"+L")
     y2.SetTitle("#Gamma/M_{Med}")
-    y2.SetLabelSize(0.03)
-    y2.SetTitleSize(0.04)
-    y2.SetTitleOffset(1.1)
+    y2.SetLabelSize(0.04)
+    y2.SetTitleSize(0.05)
+    y2.SetTitleOffset(1.)
+    y2.SetTitleFont(42)
+    y2.SetLabelFont(42)
+    y2.SetLabelOffset(0.005)
     y2.Draw()
 
     l0p5=TLine(min_x_new,0.5,max_x_new,0.5)
@@ -461,43 +460,51 @@ if __name__=="__main__":
     #l0p5T.Draw("same")
 
     l1p0=TLine(min_x_new,1,max_x_new,1)
-    l1p0.SetLineColor(kGray+1)
-    l1p0.SetLineStyle(kDashed)
+    l1p0.SetLineColor(kGray+3)
+    l1p0.SetLineStyle(7)
     l1p0.Draw("same")
       
-    l1p0T=TLatex((max_x_new-min_x_new)*0.35+min_x_new,1.0-0.05,"g_{q}=1.0")
-    l1p0T.SetTextSize(0.03)
-    l1p0T.SetTextColor(kGray+1)
+    l1p0T=TLatex((max_x_new-min_x_new)*0.5+min_x_new,1.0-0.07,"g_{q}=1.0")
+    l1p0T.SetTextSize(0.04)
+    l1p0T.SetTextFont(42)
+    l1p0T.SetTextColor(kGray+3)
     l1p0T.Draw("same")
     
     if style=="DMAxial":
-      lt=TLatex(signalMasses[0]+100,1.27,"#splitline{Vector/Axial-Vector Mediator}{ m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
+      #lt=TLatex(signalMasses[0]+100,1.27,"#splitline{Vector/Axial-Vector Mediator}{m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
+      lt=TLatex(3600/1000.,0.14,"#splitline{#bf{Vector/Axial-Vector Mediator}}{#bf{m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}}")
       #lt=TLatex(signalMasses[0]+100,1.31,"m_{DM} = "+mdm+" GeV, g_{DM} = 1.0")
     else:
-      lt=TLatex(signalMasses[0]+100,1.26,"#splitline{Vector Mediator}{ m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}")
+      lt=TLatex((signalMasses[0]+100)/1000.,1.26,"#splitline{#bf{Vector Mediator}}{#bf{m_{DM} = "+mdm+" GeV, g_{DM} = 1.0}}")
     lt.SetTextSize(0.04)
+    lt.SetTextFont(42)
     lt.Draw("same")
     
-    l=TLegend(0.52,0.15,0.87,0.35,"95% CL upper limits")
+    #l=TLegend(0.13,0.5,0.43,0.72,"95% CL upper limits")
+    l=TLegend(0.15,0.52,0.4,0.79,"95% CL upper limits")
     l.SetFillColor(0)
+    l.SetTextFont(42)
     l.SetFillStyle(0)
     l.SetTextSize(0.04)
     l.SetShadowColor(0)
     l.AddEntry(g_q,"Observed","LP")
     l.AddEntry(g_q_exp,"Expected","LP")
-    l.AddEntry(g_q_band,"Expected #pm 1#sigma","F")
-    l.AddEntry(g_q_band_2sigma,"Expected #pm 2#sigma","F")
+    l.AddEntry(g_q_band,"Expected #pm 1 s.d.","F")
+    l.AddEntry(g_q_band_2sigma,"Expected #pm 2 s.d.","F")
     l.Draw()
     
 
     # CMS
-    leg2=TLatex(min_x_new,ymax+0.03,"#bf{CMS} #it{Preliminary}")
+    #leg2=TLatex(min_x_new,ymax+0.03,"#bf{CMS} #it{Preliminary}")
+    cmsPos=min_x_new+220/1000.
+    leg2=TLatex(cmsPos,ymax-0.17,"#bf{CMS}")
     leg2.SetTextFont(42)
-    leg2.SetTextSize(0.04)
+    leg2.SetTextSize(0.06)
     # lumi
-    leg3=TLatex(max_x_new-1150,ymax+0.03,"35.9 fb^{-1} (13 TeV)")
+    lumiPos=max_x_new-1450/1000.
+    leg3=TLatex(lumiPos,ymax+0.03,"35.9 fb^{-1} (13 TeV)")
     leg3.SetTextFont(42)
-    leg3.SetTextSize(0.04)
+    leg3.SetTextSize(0.045)
     leg2.Draw("same")
     leg3.Draw("same")
     
