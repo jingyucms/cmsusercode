@@ -10,11 +10,11 @@ massbinssets=[[(4800,8000)],
 	      [(3000,3600)],
 	      [(2400,3000)],
 	      [(1900,2400)],
-	      [(4200,4800),(4800,13000)],
+	      [(3600,4200),(4200,4800),(4800,13000)],
 	      [(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)],
 	      ]
 
-for signal,signalMass in [("CIplusLL","12000"),("AntiCIplusLL","12000")]:
+for signal,signalMass in [("cs_nn30nlo_0_","12000"),("AntiCIplusLL","12000")]:
   for massbins in massbinssets:
     limits={}
     name="pvalue_"+signal+"_"+("_".join([s[0:4] for s in str(massbins).strip("[]").split("(")])).strip("_")+"_"+signalMass

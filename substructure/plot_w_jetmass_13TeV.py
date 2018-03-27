@@ -29,20 +29,27 @@ TGaxis.SetMaxDigits(3)
 
 if __name__ == '__main__':
 
- samples=[("data",[("JetHT_25ns_data6.txt",1.)]),
+ samples=[("data",[("JetHT_25ns_data7.txt",1.)]),
  	  ("V+jets",[("ZJetsToQQ_HT600toInf_13TeV-madgraph.txt",5.67),
 	            ("WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt",95.14),]),
  	  #("QCD",[("QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6.txt",1.)])
- 	  ("QCD",[#("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
+ 	  #("QCD",[("QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8.txt",0.000165),
  	  #("QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.txt",0.006830),
  	  #("QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.txt",0.114943),
  	  #("QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.txt",0.842650),
  	  #("QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.txt",9.4183),
- 	  ("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
- 	  ("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
- 	  ("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
- 	  ("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0),
-	  ("QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8.txt",117276.0),
+ 	  #("QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.txt",32.293),
+ 	  #("QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.txt",186.9),
+ 	  #("QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8.txt",648.2),
+ 	  #("QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8.txt",7823.0),
+	  #("QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8.txt",117276.0),
+	  #],)
+ 	  ("QCD",[("QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt",347700.),
+ 	  ("QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt",32100.),
+ 	  ("QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt",6831.),
+ 	  ("QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt",1207.),
+ 	  ("QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt",119.9),
+ 	  ("QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt",25.24),
 	  ],)
  	   ]
  colors=[1,2,4,6,1]
@@ -54,15 +61,15 @@ if __name__ == '__main__':
            #("jetAK10_trimmed_massCorr","trimmed jet mass (GeV)", ),
 	    ("jetAK8_pt","jet p_{T} (GeV)"),
 	    ("jetAK8_eta","jet #eta"),
-	    ("jetAK8_massdrop","jet massdrop"),
-	    ("jetAK8_tau21p","jet #tau_{21}'"),
+	    #("jetAK8_massdrop","jet massdrop"),
+	    ("jetAK8_tau21","jet #tau_{21}'"),
 	    ("jetAK8_cm","jet N constituents"),
 	    ("jetAK8_chm","jet N charged constituents"),
-	    ("subjetAK8_softdrop_N","jet N subjets"),
-	    ("subjetAK8_softdrop_pt","subjets p_{T}"),
+	    #("subjetAK8_softdrop_N","jet N subjets"),
+	    #("subjetAK8_softdrop_pt","subjets p_{T}"),
            ]
- cuts= [0,0.6,1.0]
- minpt=700
+ cuts= [0,0.45,0.6,1.0]
+ minpt=400
  maxpt=13000
  minmass=0
 
@@ -77,18 +84,18 @@ if __name__ == '__main__':
        histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,40,0,1000);
     if "jet #eta" in plot[1]:
        histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,25,-2.4,2.4);
-    if "jet massdrop" in plot[1]:
-       histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,40,0,1);
+    #if "jet massdrop" in plot[1]:
+    #   histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,40,0,1);
     if "jet #tau_{21}'" in plot[1]:
        histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,40,0,1);
     if "jet N constituents" in plot[1]:
        histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,100,0,100);
     if "jet N charged constituents" in plot[1]:
        histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,100,0,100);
-    if "jet N subjets" in plot[1]:
-       histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,10,0,10);
-    if "subjets p_{T}" in plot[1]:
-       histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,50,0,500);
+    #if "jet N subjets" in plot[1]:
+    #   histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,10,0,10);
+    #if "subjets p_{T}" in plot[1]:
+    #   histlist[plot[0]+str(cut)+sample]=TH1F(histname,histname,50,0,500);
     histlist[plot[0]+str(cut)+sample].GetYaxis().SetRangeUser(0,50000)
     histlist[plot[0]+str(cut)+sample].Sumw2()
 
@@ -148,10 +155,10 @@ if __name__ == '__main__':
         index=1
       else: continue
       #if event.jetAK8_chm[index]<25 or event.jetAK8_chm[index]>55: continue
-      if event.subjetAK8_softdrop_N[index]>1 and event.jetAK8_softdrop_mass[index]>0:
-        massdrop=max(event.subjetAK8_softdrop_mass[index][0],event.subjetAK8_softdrop_mass[index][1])/event.jetAK8_softdrop_mass[index]
-      else:
-        massdrop=0.9999
+      #if event.subjetAK8_softdrop_N[index]>1 and event.jetAK8_softdrop_mass[index]>0:
+      #  massdrop=max(event.subjetAK8_softdrop_mass[index][0],event.subjetAK8_softdrop_mass[index][1])/event.jetAK8_softdrop_mass[index]
+      #else:
+      #  massdrop=0.9999
       #if massdrop>0.4: continue
       tau21=event.jetAK8_tau2[index]/event.jetAK8_tau1[index]
       if event.jetAK8_softdrop_mass[index]>0:
@@ -159,25 +166,25 @@ if __name__ == '__main__':
       else:
         tau21p=0.9999
       for plot in plots:
-        if "jet massdrop" in plot[1]:
-	  var=massdrop
-        elif "jet #tau_{21}'" in plot[1]:
-	  var=tau21p
-        elif "subjets p_{T}" in plot[1]:
-          if event.subjetAK8_softdrop_N[index]>1:
-            var=min(event.subjetAK8_softdrop_pt[index][0],event.subjetAK8_softdrop_pt[index][1])
-	  else:
-	    var=0.
+        #if "jet massdrop" in plot[1]:
+	#  var=massdrop
+        if "jet #tau_{21}'" in plot[1]:
+	  var=tau21
+        #elif "subjets p_{T}" in plot[1]:
+        #  if event.subjetAK8_softdrop_N[index]>1:
+        #    var=min(event.subjetAK8_softdrop_pt[index][0],event.subjetAK8_softdrop_pt[index][1])
+	#  else:
+	#    var=0.
         else:
            var=getattr(event,plot[0])[index]
         for cut in cuts:
-          if tau21p<cut and tau21p>cuts[max(0,cuts.index(cut)-1)]:
+          if tau21<cut and tau21>cuts[max(0,cuts.index(cut)-1)]:
             histlist[plot[0]+str(cut)+sample].Fill(var,weight)
      f.Close()
 
  print "done with files, now plotting"
 
- f=TFile.Open("w_jet_mass13TeV_"+str(minpt)+"_"+str(minmass)+".root","RECREATE")
+ f=TFile.Open("w_jet_mass13TeV_76_"+str(minpt)+"_"+str(minmass)+".root","RECREATE")
  f.cd()
  for p in histlist.values():
    p.Write()
@@ -325,11 +332,11 @@ if __name__ == '__main__':
    legend3.SetFillStyle(0)
    legend3.Draw("same")
 
-   canvas.SaveAs("w_jet_mass13TeVtau21p_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".png")
-   canvas.SaveAs("w_jet_mass13TeVtau21p_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".pdf")
-   canvas.SaveAs("w_jet_mass13TeVtau21p_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".root")
-   canvas.SaveAs("w_jet_mass13TeVtau21p_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".C")
-   canvas.SaveAs("w_jet_mass13TeVtau21p_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".eps")
-   out=open("w_jet_mass13TeVtau21p_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".txt",'w')
+   canvas.SaveAs("w_jet_mass13TeV_76_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".png")
+   canvas.SaveAs("w_jet_mass13TeV_76_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".pdf")
+   canvas.SaveAs("w_jet_mass13TeV_76_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".root")
+   canvas.SaveAs("w_jet_mass13TeV_76_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".C")
+   canvas.SaveAs("w_jet_mass13TeV_76_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".eps")
+   out=open("w_jet_mass13TeV_76_"+str(minpt)+"_"+str(minmass)+"_"+plot[0]+str(cut)+".txt",'w')
    out.write(str(integrals))
    out.close()

@@ -8,15 +8,15 @@ massbinssets=[[(4800,13000)],
 	      [(3000,3600)],
 	      [(2400,3000)],
 	      [(1900,2400)],
-              [(4200,4800),(4800,13000)],
+              [(3600,4200),(4200,4800),(4800,13000)],
 	      [(1900,2400),(2400,3000),(3000,3600),(3600,4200),(4200,4800),(4800,13000)],
 	      ]
 
 signal="QCD"    
 signalMass=""
 
-dire="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/"
-prefix=dire+"datacard_shapelimit13TeV"
+dire="/mnt/t3nfs01/data01/shome/hinzmann/CMSSW_7_1_20_patch2/src/cmsusercode/chi_analysis/"
+prefix="/shome/hinzmann/CMSSW_7_4_7_patch2/src/cmsusercode/chi_analysis/datacard_shapelimit13TeV"
 
 for massbins in massbinssets:
     limits={}
@@ -89,11 +89,11 @@ kmax 3 number of nuisance parameters
     cfg.close()
     #os.system("combine chi_datacard_"+name+"_bestfit.txt -M MaxLikelihoodFit -n "+name+"bestfit > bestfit"+name+".txt")
     #os.system("python diffNuisances.py -a mlfit"+name+"bestfit.root > bestfit"+name+"_nuisances.txt")
-    os.system("combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -n "+name+"goodnessfit > goodnessfit"+name+".txt")
+    os.system("combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -n "+name+"goodnessfit |& tee goodnessfit"+name+".txt")
     for toy in range(0,20):
-       command="combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -t 450 --saveToys -n "+name+"goodnessfittoys_toy"+str(toy)+" > goodnessfittoys"+name+"_toy"+str(toy)+".txt"
+       command="combine chi_datacard_"+name+"_bestfit.txt -M GoodnessOfFit --algo saturated --fixedSignalStrength=0 -t 450 --saveToys -n "+name+"goodnessfittoys_toy"+str(toy)+" |& tee goodnessfittoys"+name+"_toy"+str(toy)+".txt"
        if toy!=9 and toy!=18 and toy!=19:
           command+="&"
        os.system(command)
     os.system('hadd -f higgsCombine'+name+'goodnessfittoys.GoodnessOfFit.mH120.123456.root higgsCombine'+name+'goodnessfittoys_toy*.GoodnessOfFit.mH120.123456.root')
-    os.system('root -q -b "'+dire+'/extractGoodnessStats.C(\\"'+name+'\\")" > goodnessfittoysmulti'+name+'.txt')
+    os.system('root -q -b "'+dire+'/extractGoodnessStats.C(\\"'+name+'\\")" |& tee goodnessfittoysmulti'+name+'.txt')

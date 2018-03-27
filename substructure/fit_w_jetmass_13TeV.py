@@ -13,18 +13,21 @@ if __name__ == '__main__':
 	   #("jetAK8_pt","jet p_{T} (GeV)"),
 	   #("jetAK8_eta","jet #eta"),
            ]
- cuts= [0,0.45,0.6,1.6,0.75,1.75,1.0,2.0]
+ cuts= [0,0.45,0.6,1.6,1.0,2.0]
  massmin=65
  massmax=165
- prefix="w_jet_mass13TeV_400_0"
+ prefix="w_jet_mass13TeV_76_400_0"
  #prefix="w_jet_mass13TeV_400_0_massdrop0.4"
  
  signalSF=1.21
+ signalweight=1.21 # adapt injected signal to data by hand
 
  mass=RooRealVar("mass","mass",(massmax-massmin)/5,massmin,massmax)
  s0=RooRealVar("s0","s0",85,80.,90.)
  s1=RooRealVar("s1","s1",8,6.,10.)
  sig=RooGaussian("sig","sig",mass,s0,s1) 
+
+ files=[]
  
  for plot in plots:
   for fit in ["data","b","sb"]:
@@ -43,10 +46,12 @@ if __name__ == '__main__':
       #hqcd=canvas.GetListOfPrimitives()[3]
       #hvv=canvas.GetListOfPrimitives()[2]
       f=TFile.Open(prefix+".root")
+      files+=[f]
       hdata=f.Get("plot"+plot[0]+str(cut)+"data")
       hqcd=f.Get("plot"+plot[0]+str(cut)+"QCD")
       hvv=f.Get("plot"+plot[0]+str(cut)+"V+jets")
-      hqcd.Scale(2600.)
+      #hqcd.Scale(2600.)
+      hqcd.Scale(hdata.Integral()/hqcd.Integral())
       hvv.Scale(2600.*signalSF)
       print hdata,hqcd,hvv
       integrals=eval(open(prefix+"_"+plot[0]+str(cut)+".txt").readline())
@@ -62,7 +67,6 @@ if __name__ == '__main__':
       else:
         sumqcdhist.Add(hqcd)
       sbhist=hqcd.Clone("sbhist")
-      signalweight=2.
       #if integrals[2][1]>0:
       #  weight=integrals[1][1]/integrals[2][1]
       sbhist.Add(hvv,signalweight)
@@ -77,6 +81,7 @@ if __name__ == '__main__':
      	sumsighist=hvv.Clone("sighist")
       else:
      	sumsighist.Add(hvv)
+   
     if fit=="data":
       if cut>1:
         data=RooDataHist("data"+str(cut),"data",RooArgList(mass),sumdatahist)
@@ -141,18 +146,22 @@ if __name__ == '__main__':
       canvas.SaveAs(prefix+"_"+plot[0]+str(cut)+"_sigfit.pdf")
 
     a0=RooRealVar("a0"+str(cut),"a0",100.,0.,1000.)
-    a1=RooRealVar("a1"+str(cut),"a1",50.,0.,1000.)
+    a1=RooRealVar("a1"+str(cut),"a1",100.,0.,1000.)
     a2=RooRealVar("a2"+str(cut),"a2",50.,0.,1000.)
     a3=RooRealVar("a3"+str(cut),"a3",0.1,0.,1000.)
     b0=RooRealVar("b0"+str(cut),"b0",120.,0.,100.)
     b1=RooRealVar("b1"+str(cut),"b1",50.,0.,100.)
     b2=RooRealVar("b2"+str(cut),"b2",50.,0.,100.)
-    bkg=RooVoigtian("bkg"+str(cut),"bkg",mass,a0,a1,a2)
-    #bkg=RooLogistics("bkg"+str(cut),"bkg",mass,a0,a1)
+    c0=RooRealVar("c0"+str(cut),"c0",100.,-1000.,1000.)
+    c1=RooRealVar("c1"+str(cut),"c1",100.,-1000.,1000.)
+    c2=RooRealVar("c2"+str(cut),"c2",50.,-1000.,1000.)
+    c3=RooRealVar("c3"+str(cut),"c3",0.1,-1000.,1000.)
+    #bkg=RooVoigtian("bkg"+str(cut),"bkg",mass,a0,a1,a2)
+    bkg=RooLogistics("bkg"+str(cut),"bkg",mass,a0,a1)
     #bkg=RooExpAndGauss("bkg"+str(cut),"bkg",mass,b0,b1,b2)
     #bkg=RooCBShape("bkg"+str(cut),"bkg",mass,a0,a1,a2,a3)
-    #if cut==0.45:
-    #  bkg=RooBifurGauss("bkg"+str(cut),"bkg",mass,b0,b1,b2)
+    #bkg=RooBifurGauss("bkg"+str(cut),"bkg",mass,b0,b1,b2)
+    #bkg=RooPolynomial("bkg"+str(cut),"bkg",mass,RooArgList(c0,c1,c2))
     
     #bkg1=RooVoigtian("bkg1"+str(cut),"bkg1",mass,a0,a1,a2)
     #bkg1=RooPolynomial("bkg1"+str(cut),"bkg1",mass,RooArgList(a0,a1))
@@ -201,9 +210,9 @@ if __name__ == '__main__':
     else:
       musigv=9999.
       musige=9999.
-    if fit=="sb":
-      musigv/=signalweight
-      musige/=signalweight
+    #if fit=="sb":
+    #  musigv/=signalweight
+    #  musige/=signalweight
 
     #N(sig)="+str(int(nsigv))+"+-"+str(int(nsige))+", 
     xframe=mass.frame(RooFit.Title("#mu(sig)="+str(int(musigv*1000.)/1000.)+"+-"+str(int(musige*1000.)/1000.)+", #chi^{2}/DOF = "+str(int((chi2.getVal()/(nbins-nfree))*10.)/10.)))
