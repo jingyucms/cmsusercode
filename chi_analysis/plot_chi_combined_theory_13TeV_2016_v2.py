@@ -241,18 +241,18 @@ if __name__=="__main__":
 	h14Gsysstat=h14G.Clone(histname+"sysstat")
 	new_hists+=[h14Gsysstat]
 
-        filename="datacard_shapelimit13TeV_QCD_chi2016_backup.root"
+        filename="datacard_shapelimit13TeV_QCD_chi2016.root"
         print filename
         fsys = TFile.Open(filename)
         new_hists+=[fsys]
         uncertaintynames=["jer","jes","pdf","scale"]
         uncertainties=[]
         for u in uncertaintynames:
-            histname1='QCD#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Up"
+            histname1='QCD_ALT#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Up"
             print histname1
-            histname2='QCD#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Down"
+            histname2='QCD_ALT#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Down"
             print histname2
-            histname3='QCD#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+            histname3='QCD_ALT#chi'+str(massbins[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
             print histname3
             up=fsys.Get(histname1)
             down=fsys.Get(histname2)
@@ -835,5 +835,5 @@ if __name__=="__main__":
     #// writing the lumi information and the CMS "logo"
     CMS_lumi( c, iPeriod, iPos );
 
-    #c.SaveAs(prefix + "_combined_theory"+str(massbin)+"_2016.pdf")
+    c.SaveAs(prefix + "_combined_theory"+str(massbin)+"_2016.pdf")
     #c.SaveAs(prefix + "_combined_theory"+str(massbin)+"_2016.eps")

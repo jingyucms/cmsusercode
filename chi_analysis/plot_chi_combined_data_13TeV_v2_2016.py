@@ -287,7 +287,8 @@ if __name__=="__main__":
 	h14Gsysstat=h14G.Clone(histname+"sysstat")
 	new_hists+=[h14Gsysstat]
         
-        filename="datacard_shapelimit13TeV_QCD_chi2016_backup.root"
+        #filename="datacard_shapelimit13TeV_QCD_chi2016_backup.root"
+        filename="datacard_shapelimit13TeV_QCD_chi2016.root"
         #filename="datacard_shapelimit13TeV_QCD_chi.root"
         print filename
         fsys = TFile.Open(filename)
@@ -295,11 +296,11 @@ if __name__=="__main__":
         uncertaintynames=["jer","jes","pdf","scale"]
         uncertainties=[]
         for u in uncertaintynames:
-            histname1='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Up"
+            histname1='QCD_ALT#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Up"
             print histname1
-            histname2='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Down"
+            histname2='QCD_ALT#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1_"+u+"Down"
             print histname2
-            histname3='QCD#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
+            histname3='QCD_ALT#chi'+str(massbins13[massbin]).strip("()").replace(',',"_").replace(' ',"")+"_rebin1"
             print histname3
             up=fsys.Get(histname1)
             down=fsys.Get(histname2)
@@ -307,6 +308,8 @@ if __name__=="__main__":
             uncertainties+=[[up,down,central]]
         h2new=h14.Clone("down"+str(massbins13[massbin]))
         h3new=h14.Clone("up"+str(massbins13[massbin]))
+        h4new=h14.Clone("PDFdown"+str(massbins13[massbin]))
+        h5new=h14.Clone("PDFup"+str(massbins13[massbin]))
 	chi2=0
         for b in range(h14.GetXaxis().GetNbins()):
             if b==0:# or b==h14G.GetXaxis().GetNbins()-1:
@@ -315,6 +318,10 @@ if __name__=="__main__":
 	    exp_sumup=0
             theory_sumdown=0
             theory_sumup=0
+            pdf_sumup=0
+            pdf_sumdown=0
+            scale_sumup=0
+            scale_sumdown=0
             for up,down,central in uncertainties:
 	        if b==0:# or b==h14G.GetXaxis().GetNbins()-1:
                     print massbins13[massbin],b,uncertaintynames[uncertainties.index([up,down,central])],abs(up.GetBinContent(b+1)-central.GetBinContent(b+1))/central.GetBinContent(b+1),abs(down.GetBinContent(b+1)-central.GetBinContent(b+1))/central.GetBinContent(b+1)
@@ -323,13 +330,21 @@ if __name__=="__main__":
                 if uncertaintynames[uncertainties.index([up,down,central])]=="jer" or uncertaintynames[uncertainties.index([up,down,central])]=="jes":
 		    exp_sumup+=addup
                     exp_sumdown+=adddown
+                elif uncertaintynames[uncertainties.index([up,down,central])]=="pdf":
+                    pdf_sumup=addup
+                    pdf_sumdown=adddown
+                    theory_sumup+=addup
+                    theory_sumdown+=adddown
 		else:
 		    theory_sumup+=addup
                     theory_sumdown+=adddown
+                    
             exp_sumdown=sqrt(exp_sumdown)
             exp_sumup=sqrt(exp_sumup)
             theory_sumdown=sqrt(theory_sumdown)
             theory_sumup=sqrt(theory_sumup)
+            pdf_sumdown=sqrt(pdf_sumdown)
+            pdf_sumup=sqrt(pdf_sumup)
 
 	    #print "delta,error",pow(hNloQcdbackup.GetBinContent(b+1)-h14G.GetY()[b],2), pow(max(exp_sumdown,exp_sumup)*h14G.GetY()[b],2),pow(max(theory_sumdown,theory_sumup)*h14G.GetY()[b],2),pow(max(h14G.GetErrorYlow(b),h14G.GetErrorYhigh(b)),2)
 	    chi2+=pow(hNloQcdbackup.GetBinContent(b+1)-h14G.GetY()[b],2) / \
@@ -349,7 +364,10 @@ if __name__=="__main__":
             h14G.SetPointEYhigh(b,0)
             h2new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)-theory_sumdown*hNloQcdbackup.GetBinContent(b+1))
             h3new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)+theory_sumup*hNloQcdbackup.GetBinContent(b+1))
+            h4new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)-pdf_sumdown*hNloQcdbackup.GetBinContent(b+1))
+            h5new.SetBinContent(b+1,hNloQcdbackup.GetBinContent(b+1)+pdf_sumup*hNloQcdbackup.GetBinContent(b+1))
 	    print "{0:.1f} TO {1:.1f}; {2:.4f} +{3:.4f},-{4:.4f} (DSYS=+{5:.4f},-{6:.4f})".format(h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1),h14G.GetY()[b],sqrt(pow(stat_up,2)),sqrt(pow(stat_down,2)),sqrt(pow(exp_sumup*h14G.GetY()[b],2)),sqrt(pow(exp_sumdown*h14G.GetY()[b],2)))
+            print "{0:.1f} TO {1:.1f}; {2:.4f} (DSYS=+{3:.4f},-{4:.4f}:scale DSYS=+{5:.4f},-{6:.4f}:PDF)".format(h2new.GetXaxis().GetBinLowEdge(b+1),h2new.GetXaxis().GetBinUpEdge(b+1),hNloQcdbackup.GetBinContent(b+1),h3new.GetBinContent(b+1)-hNloQcdbackup.GetBinContent(b+1),hNloQcdbackup.GetBinContent(b+1)-h2new.GetBinContent(b+1),h5new.GetBinContent(b+1)-hNloQcdbackup.GetBinContent(b+1),hNloQcdbackup.GetBinContent(b+1)-h4new.GetBinContent(b+1))
 	    #print "sum rel error",sqrt(pow(exp_sumup,2)+pow(theory_sumup,2)+pow(h14G.GetErrorYhigh(b)/h14G.GetY()[b],2))
         pvalue=stats.chisqprob(chi2, h14.GetXaxis().GetNbins())
         sign=stats.norm.ppf(pvalue)
